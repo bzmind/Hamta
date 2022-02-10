@@ -1,4 +1,5 @@
-﻿using Domain.Shared.BaseClasses;
+﻿using Domain.Comment_Aggregate;
+using Domain.Shared.BaseClasses;
 using Domain.Shared.Exceptions;
 using Domain.Shared.Value_Objects;
 
@@ -11,25 +12,23 @@ public class Product : BaseAggregateRoot
     public Score Score { get; private set; } = new Score(0);
     public Money Price { get; private set; }
     public bool InStock { get; private set; }
-    public ICollection<ProductImage> Images { get; private set; }
-    public ICollection<ProductComment> Comments { get; private set; }
+    public List<ProductImage> Images { get; private set; }
+    public List<Comment> Comments { get; private set; }
 
     public Product(long categoryId, string name, Money price)
     {
         NullOrEmptyDataDomainException.CheckString(name, nameof(name));
-
         CategoryId = categoryId;
         Name = name;
         Price = price;
         InStock = true;
         Images = new List<ProductImage>();
-        Comments = new List<ProductComment>();
+        Comments = new List<Comment>();
     }
 
     public void Edit(string name, Money price, Score score, bool inStock)
     {
         NullOrEmptyDataDomainException.CheckString(name, nameof(name));
-
         Name = name;
         Price = price;
         Score = score;
