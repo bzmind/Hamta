@@ -1,0 +1,55 @@
+﻿using Domain.Shared.BaseClasses;
+using Domain.Shared.Exceptions;
+using Domain.Shared.Value_Objects;
+
+namespace Domain.Product_Aggregate;
+
+public class Product : BaseAggregateRoot
+{
+    public long CategoryId { get; private set; }
+    public string Name { get; private set; }
+    public Score Score { get; private set; } = new Score(0);
+    public Money Price { get; private set; }
+    public bool InStock { get; private set; }
+    public ICollection<ProductImage> Images { get; private set; }
+    public ICollection<ProductComment> Comments { get; private set; }
+
+    public Product(long categoryId, string name, Money price)
+    {
+        NullOrEmptyDataDomainException.CheckString(name, nameof(name));
+
+        CategoryId = categoryId;
+        Name = name;
+        Price = price;
+        InStock = true;
+        Images = new List<ProductImage>();
+        Comments = new List<ProductComment>();
+    }
+
+    public void Edit(string name, Money price, Score score, bool inStock)
+    {
+        NullOrEmptyDataDomainException.CheckString(name, nameof(name));
+
+        Name = name;
+        Price = price;
+        Score = score;
+        InStock = inStock;
+    }
+
+    public void AddImage(string imageName)
+    {
+        Images.Add(new ProductImage(Id, imageName));
+    }
+
+    public void RemoveImage(string imageName)
+    {
+        var image = Images.FirstOrDefault(i => i.Name == imageName);
+
+        if (image == null)
+            throw new InvalidDataDomainException($"No image was found with the provided name: {imageName}");
+
+        Images.Remove(image);
+    }
+
+    public void AddComment()
+}
