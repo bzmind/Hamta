@@ -1,2 +1,2 @@
 # Didikala
-A shopping website cloned from digikala.com
+A shopping website cloned from www.digikala.com
