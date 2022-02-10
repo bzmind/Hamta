@@ -7,12 +7,23 @@ public class Money : BaseValueObject
 {
     public int Value { get; private set; }
 
-    public Money(int price)
+    public Money(int toomanPrice)
     {
-        if (price < 0)
-            throw new InvalidDataDomainException("Invalid value: price can't be negative");
+        Validate(toomanPrice);
+        Value = toomanPrice;
+    }
 
-        Value = price;
+    public Money DiscountByTooman(int discountTooman)
+    {
+        var money = new Money(Value - discountTooman);
+        return money;
+    }
+
+    public Money DiscountByPercent(int discountPercent)
+    {
+        var discount = Value * discountPercent / 100;
+        var money = new Money(Value - discount);
+        return money;
     }
 
     public static Money operator +(Money firstMoney, Money secondMoney)
@@ -23,5 +34,11 @@ public class Money : BaseValueObject
     public static Money operator -(Money firstMoney, Money secondMoney)
     {
         return new Money(firstMoney.Value - secondMoney.Value);
+    }
+
+    private void Validate(int value)
+    {
+        if (value < 0)
+            throw new InvalidDataDomainException("Invalid value: price can't be negative");
     }
 }
