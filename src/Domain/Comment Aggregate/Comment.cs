@@ -1,6 +1,6 @@
-﻿namespace Domain.Product_Aggregate;
+﻿namespace Domain.Comment_Aggregate;
 
-public class ProductComment
+public class Comment
 {
     public long ProductId { get; private set; }
     public long CustomerId { get; private set; }
