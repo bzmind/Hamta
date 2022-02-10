@@ -14,6 +14,7 @@ public class Product : BaseAggregateRoot
     public bool InStock { get; private set; }
     public List<ProductImage> Images { get; private set; }
     public List<Comment> Comments { get; private set; }
+    public List<ProductSpecification> Specifications { get; private set; }
 
     public Product(long categoryId, string name, Money price)
     {
@@ -49,6 +50,4 @@ public class Product : BaseAggregateRoot
 
         Images.Remove(image);
     }
-
-    public void AddComment()
 }
