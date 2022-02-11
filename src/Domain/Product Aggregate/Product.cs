@@ -11,7 +11,7 @@ public class Product : BaseAggregateRoot
     public string Name { get; private set; }
     public Score Score { get; private set; } = new Score(0);
     public Money Price { get; private set; }
-    public bool InStock { get; private set; }
+    public bool IsInStock { get; private set; }
     public List<ProductImage> Images { get; private set; }
     public List<Comment> Comments { get; private set; }
     public List<ProductSpecification> Specifications { get; private set; }
@@ -22,7 +22,7 @@ public class Product : BaseAggregateRoot
         CategoryId = categoryId;
         Name = name;
         Price = price;
-        InStock = true;
+        IsInStock = true;
         Images = new List<ProductImage>();
         Comments = new List<Comment>();
     }
@@ -33,7 +33,7 @@ public class Product : BaseAggregateRoot
         Name = name;
         Price = price;
         Score = score;
-        InStock = inStock;
+        IsInStock = inStock;
     }
 
     public void AddImage(string imageName)
