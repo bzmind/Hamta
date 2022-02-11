@@ -9,13 +9,13 @@ public class Comment
     public List<string>? PositivePoints { get; private set; }
     public List<string>? NegativePoints { get; private set; }
     public CommentStatus Status { get; private set; }
-    public CommentRecommendation Recommendation { get; private set; }
+    public CommentState State { get; private set; }
 
-    public enum CommentRecommendation
+    public enum CommentState
     {
-        نظری_ندارم,
-        این_محصول_را_پیشنهاد_میکنم,
-        این_محصول_را_پیشنهاد_نمیکنم
+        Neutral,
+        Positive,
+        Negative
     }
 
     public enum CommentStatus
