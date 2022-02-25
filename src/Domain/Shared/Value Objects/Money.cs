@@ -12,20 +12,7 @@ public class Money : BaseValueObject
         Validate(toomanPrice);
         Value = toomanPrice;
     }
-
-    public Money DiscountByTooman(int discountTooman)
-    {
-        var money = new Money(Value - discountTooman);
-        return money;
-    }
-
-    public Money DiscountByPercent(int discountPercent)
-    {
-        var discount = Value * discountPercent / 100;
-        var money = new Money(Value - discount);
-        return money;
-    }
-
+    
     public static Money operator +(Money firstMoney, Money secondMoney)
     {
         return new Money(firstMoney.Value + secondMoney.Value);
