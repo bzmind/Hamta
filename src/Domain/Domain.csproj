@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Category Aggregate\Services\" />
+    <Folder Include="Inventory Aggregate\" />
+  </ItemGroup>
+
 </Project>

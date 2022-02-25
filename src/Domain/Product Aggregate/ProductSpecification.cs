@@ -1,6 +1,11 @@
-﻿namespace Domain.Product_Aggregate;
+﻿using Domain.Shared.BaseClasses;
 
-public class ProductSpecification
+namespace Domain.Product_Aggregate;
+
+public class ProductSpecification : BaseEntity
 {
-    
+    public long ProductId { get; private set; }
+    public string Key { get; private set; }
+    public string Value { get; private set; }
+    public bool IsImportantFeature { get; private set; }
 }

@@ -11,7 +11,7 @@ public class OutOfRangeValueDomainException : BaseDomainException
 
     public OutOfRangeValueDomainException(string message) : base(message)
     {
-        
+
     }
 
     public static void CheckRange(int min, int max, float value, string fieldName)
