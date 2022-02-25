@@ -52,25 +52,13 @@ public class Comment : BaseEntity
         Status = status;
     }
 
-    public void IncreaseLikes()
-    {
-        Likes++;
-    }
+    public void IncreaseLikes() => Likes++;
 
-    public void DecreaseLikes()
-    {
-        Likes--;
-    }
+    public void DecreaseLikes() => Likes--;
 
-    public void IncreaseDislikes()
-    {
-        Dislikes++;
-    }
+    public void IncreaseDislikes() => Dislikes++;
 
-    public void DecreaseDislikes()
-    {
-        Dislikes--;
-    }
+    public void DecreaseDislikes() => Dislikes--;
 
     private void Validate(string title, string description)
     {
