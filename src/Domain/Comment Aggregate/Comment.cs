@@ -3,7 +3,7 @@ using Domain.Shared.Exceptions;
 
 namespace Domain.Comment_Aggregate;
 
-public class Comment : BaseEntity
+public class Comment : BaseAggregateRoot
 {
     public long ProductId { get; private set; }
     public long CustomerId { get; private set; }
