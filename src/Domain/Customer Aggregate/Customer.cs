@@ -34,6 +34,19 @@ public class Customer : BaseAggregateRoot
         PhoneNumber = phoneNumber;
     }
 
+    public void ActivateAddress(long addressId)
+    {
+        var address = Addresses.FirstOrDefault(a => a.Id == addressId);
+
+        if (address == null)
+            throw new InvalidDataDomainException($"No address was found with this ID: {addressId}");
+
+        if (address.IsActive)
+            return;
+
+        address.ActivateAddress();
+    }
+
     public void AddAddress(CustomerAddress address)
     {
         NullOrEmptyDataDomainException.CheckData(address, nameof(address));
