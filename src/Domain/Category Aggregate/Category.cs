@@ -79,7 +79,7 @@ public class Category : BaseAggregateRoot
         specification.Edit(specificationTitle);
     }
 
-    public void DeleteSpecification(long specificationId)
+    public void RemoveSpecification(long specificationId)
     {
         var specification = Specifications.FirstOrDefault(sc => sc.Id == specificationId);
         NullOrEmptyDataDomainException.CheckData(specification, nameof(specification));
