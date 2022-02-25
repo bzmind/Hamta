@@ -4,7 +4,7 @@ using Domain.Shared.Value_Objects;
 
 namespace Domain.Inventory_Aggregate;
 
-public class Inventory : BaseEntity
+public class Inventory : BaseAggregateRoot
 {
     public long ProductId { get; private set; }
     public int Count { get; private set; }
