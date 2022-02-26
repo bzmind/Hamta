@@ -7,17 +7,17 @@ namespace Domain.Inventory_Aggregate;
 public class Inventory : BaseAggregateRoot
 {
     public long ProductId { get; private set; }
-    public int Count { get; private set; }
+    public int Quantity { get; private set; }
     public Money Price { get; private set; }
     public string Color { get; private set; }
-    public bool IsAvailable { get => Count != 0; private set { } }
+    public bool IsAvailable { get => Quantity != 0; private set { } }
     public bool IsDiscounted { get; private set; }
 
-    public Inventory(long productId, int count, Money price, string color)
+    public Inventory(long productId, int quantity, Money price, string color)
     {
-        Validate(count, color);
+        Validate(quantity, color);
         ProductId = productId;
-        Count = count;
+        Quantity = quantity;
         Price = price;
         Color = color;
         IsAvailable = true;
@@ -27,7 +27,7 @@ public class Inventory : BaseAggregateRoot
     public void Edit(int count, Money price, string color)
     {
         Validate(count, color);
-        Count = count;
+        Quantity = count;
         Price = price;
         Color = color;
     }

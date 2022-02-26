@@ -49,7 +49,6 @@ public class Customer : BaseAggregateRoot
 
     public void AddAddress(CustomerAddress address)
     {
-        NullOrEmptyDataDomainException.CheckData(address, nameof(address));
         Addresses.Add(address);
     }
 
@@ -103,7 +102,6 @@ public class Customer : BaseAggregateRoot
 
     public void AddFavoriteItem(CustomerFavoriteItem favoriteItem)
     {
-        NullOrEmptyDataDomainException.CheckData(favoriteItem, nameof(favoriteItem));
         FavoriteItems.Add(favoriteItem);
     }
 
