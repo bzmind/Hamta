@@ -41,7 +41,6 @@ public class Category : BaseAggregateRoot
     {
         Validate(title, slug);
         var subcategory = new Category(title, slug);
-
         SubCategories.Add(subcategory);
     }
 
@@ -60,13 +59,15 @@ public class Category : BaseAggregateRoot
     public void RemoveSubCategory(long subCategoryId)
     {
         var subcategory = SubCategories.FirstOrDefault(sc => sc.Id == subCategoryId);
-        NullOrEmptyDataDomainException.CheckData(subcategory, nameof(subcategory));
+
+        if (subcategory == null)
+            throw new InvalidDataDomainException($"No SubCategory was found with this ID: {subCategoryId}");
+
         SubCategories.Remove(subcategory);
     }
 
     public void AddSpecification(CategorySpecification specification)
     {
-        NullOrEmptyDataDomainException.CheckData(specification, nameof(specification));
         NullOrEmptyDataDomainException.CheckString(specification.Title, nameof(specification.Title));
         Specifications.Add(specification);
     }
@@ -75,14 +76,20 @@ public class Category : BaseAggregateRoot
     {
         NullOrEmptyDataDomainException.CheckString(specificationTitle, nameof(specificationTitle));
         var specification = Specifications.FirstOrDefault(sc => sc.Id == specificationId);
-        NullOrEmptyDataDomainException.CheckData(specification, nameof(specification));
+
+        if (specification == null)
+            throw new InvalidDataDomainException($"No specification was found with this ID: {specificationId}");
+
         specification.Edit(specificationTitle);
     }
 
     public void RemoveSpecification(long specificationId)
     {
         var specification = Specifications.FirstOrDefault(sc => sc.Id == specificationId);
-        NullOrEmptyDataDomainException.CheckData(specification, nameof(specification));
+
+        if (specification == null)
+            throw new InvalidDataDomainException($"No specification was found with this ID: {specificationId}");
+
         Specifications.Remove(specification);
     }
 
