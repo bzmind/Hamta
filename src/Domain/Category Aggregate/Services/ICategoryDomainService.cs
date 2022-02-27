@@ -1,6 +1,6 @@
 ﻿namespace Domain.Category_Aggregate.Services;
 
-public interface ICategoryService
+public interface ICategoryDomainService
 {
     bool DoesCategoryExist(long categoryId);
 }

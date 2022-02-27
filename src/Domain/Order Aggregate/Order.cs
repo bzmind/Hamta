@@ -1,6 +1,116 @@
-﻿namespace Domain.Order_Aggregate;
+﻿using Domain.Order_Aggregate.Services;
+using Domain.Shared.Exceptions;
+using Domain.Shared.Value_Objects;
+
+namespace Domain.Order_Aggregate;
 
 public class Order
 {
+    public long UserId { get; private set; }
+    public OrderStatus Status { get; private set; }
+    public OrderAddress Address { get; private set; }
+    public List<OrderItem> Items { get; private set; }
+    public OrderShippingMethod ShippingMethod { get; private set; }
+    public Money ShippingCost { get => GetShippingCost(); private set { } }
+    public int TotalPrice { get => GetTotalPrice(); private set { } }
+
+    public enum OrderStatus { Pending, Preparing, Sending, Received }
+    public enum OrderShippingMethod { Normal, Fast }
+
+    private const int FastShippingCost = 20000;
+    private const int NormalShippingCost = 0;
+
+    public Order(long userId, List<OrderItem> items)
+    {
+
+        UserId = userId;
+        Status = OrderStatus.Pending;
+        Items = items;
+    }
     
+    public void AddOrderItem(OrderItem orderItem)
+    {
+        CheckOrderStatus();
+        var item = Items.FirstOrDefault(oi => oi.InventoryId == orderItem.InventoryId);
+
+        if (item != null)
+        {
+            item.IncreaseCount();
+            return;
+        }
+
+        Items.Add(orderItem);
+    }
+
+    public void RemoveOrderItem(long orderItemId)
+    {
+        CheckOrderStatus();
+        var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
+
+        if (orderItem == null)
+            throw new InvalidDataDomainException($"No orderItem was found with this ID: {orderItemId}");
+
+        Items.Remove(orderItem);
+    }
+
+    public void IncreaseItemCount(long orderItemId)
+    {
+        CheckOrderStatus();
+        var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
+
+        if (orderItem == null)
+            throw new InvalidDataDomainException($"No orderItem was found with this ID: {orderItemId}");
+
+        orderItem.IncreaseCount();
+    }
+
+    public void DecreaseItemCount(long orderItemId)
+    {
+        CheckOrderStatus();
+        var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
+
+        if (orderItem == null)
+            throw new InvalidDataDomainException($"No orderItem was found with this ID: {orderItemId}");
+
+        orderItem.DecreaseCount();
+    }
+
+    public void SetStatus(OrderStatus orderStatus)
+    {
+        Status = orderStatus;
+    }
+
+    public void Checkout(OrderAddress address, OrderShippingMethod shippingMethod)
+    {
+        CheckOrderStatus();
+        Address = address;
+        ShippingMethod = shippingMethod;
+        Status = OrderStatus.Preparing;
+    }
+
+    private int GetTotalPrice()
+    {
+        var price = 0;
+
+        foreach (var orderItem in Items)
+        {
+            price += orderItem.TotalPrice;
+        }
+
+        return price + ShippingCost.Value;
+    }
+
+    private Money GetShippingCost()
+    {
+        if (ShippingMethod == OrderShippingMethod.Fast)
+            return new Money(FastShippingCost);
+
+        return new Money(NormalShippingCost);
+    }
+    
+    private void CheckOrderStatus()
+    {
+        if (Status != OrderStatus.Pending)
+            throw new OperationNotAllowedDomainException("Cannot edit order details, order is already sent");
+    }
 }

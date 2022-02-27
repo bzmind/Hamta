@@ -28,9 +28,9 @@ public class Category : BaseAggregateRoot
         Slug = slug;
     }
 
-    public void SetParent(long categoryId, ICategoryService _categoryService)
+    public void SetParent(long categoryId, ICategoryDomainService categoryDomainService)
     {
-        if (_categoryService.DoesCategoryExist(categoryId) == false)
+        if (categoryDomainService.DoesCategoryExist(categoryId) == false)
             throw new DataNotFoundInDataBaseDomainException
                 ($"No category exist in database with this ID: {categoryId}");
 
