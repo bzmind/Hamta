@@ -7,9 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Category Aggregate\Services\" />
     <Folder Include="Inventory Aggregate\" />
-    <Folder Include="Order Aggregate\Services\" />
   </ItemGroup>
 
 </Project>
