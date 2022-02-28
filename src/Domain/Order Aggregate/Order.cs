@@ -1,14 +1,13 @@
-﻿using Domain.Order_Aggregate.Services;
-using Domain.Shared.Exceptions;
+﻿using Domain.Shared.Exceptions;
 using Domain.Shared.Value_Objects;
 
 namespace Domain.Order_Aggregate;
 
 public class Order
 {
-    public long UserId { get; private set; }
+    public long CustomerId { get; private set; }
     public OrderStatus Status { get; private set; }
-    public OrderAddress Address { get; private set; }
+    public OrderAddress? Address { get; private set; }
     public List<OrderItem> Items { get; private set; }
     public OrderShippingMethod ShippingMethod { get; private set; }
     public Money ShippingCost { get => GetShippingCost(); private set { } }
@@ -20,10 +19,9 @@ public class Order
     private const int FastShippingCost = 20000;
     private const int NormalShippingCost = 0;
 
-    public Order(long userId, List<OrderItem> items)
+    public Order(long customerId, List<OrderItem> items)
     {
-
-        UserId = userId;
+        CustomerId = customerId;
         Status = OrderStatus.Pending;
         Items = items;
     }

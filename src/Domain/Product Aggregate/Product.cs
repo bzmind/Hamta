@@ -10,39 +10,35 @@ public class Product : BaseAggregateRoot
     public long CategoryId { get; private set; }
     public string Name { get; private set; }
     public string? EnglishName { get; private set; }
+    public string Slug { get; private set; }
     public string Description { get; private set; }
-    public Score Score { get; private set; } = new (0);
+    public Score Score { get; private set; } = new(0);
     public List<ProductImage> Images { get; private set; }
     public List<ProductSpecification>? CustomSpecifications { get; private set; }
-    public List<CategorySpecification> CategorySpecifications { get; private set; }
     public List<ProductExtraDescription>? ExtraDescriptions { get; private set; }
 
-    public Product(long categoryId, string name, string? englishName, string description,
-        List<ProductImage> images, List<CategorySpecification> categorySpecifications)
+    public Product(long categoryId, string name, string slug, string description, List<ProductImage> images)
     {
-        NullOrEmptyDataDomainException.CheckString(name, nameof(name));
+        Validate(name, slug, description);
         CategoryId = categoryId;
         Name = name;
-        EnglishName = englishName;
         Description = description;
+        Slug = slug;
         Images = images;
-        CategorySpecifications = categorySpecifications;
     }
 
-    public void Edit(long categoryId, string name, string? englishName, string description,
-        List<ProductImage> images, List<CategorySpecification> categorySpecifications)
+    public void Edit(long categoryId, string name, string slug, string description, List<ProductImage> images)
     {
-        NullOrEmptyDataDomainException.CheckString(name, nameof(name));
+        Validate(name, slug, description);
         CategoryId = categoryId;
         Name = name;
-        EnglishName = englishName;
         Description = description;
         Images = images;
-        CategorySpecifications = categorySpecifications;
     }
 
     public void AddImage(string imageName)
     {
+        NullOrEmptyDataDomainException.CheckString(imageName, nameof(imageName));
         Images.Add(new ProductImage(Id, imageName));
     }
 
@@ -64,5 +60,23 @@ public class Product : BaseAggregateRoot
     public void SetExtraDescriptions(List<ProductExtraDescription> extraDescriptions)
     {
         ExtraDescriptions = extraDescriptions;
+    }
+
+    public void SetScore(Score score)
+    {
+        Score = score;
+    }
+
+    public void SetEnglishName(string englishName)
+    {
+        NullOrEmptyDataDomainException.CheckString(englishName, nameof(englishName));
+        EnglishName = englishName;
+    }
+
+    private void Validate(string name, string slug, string description)
+    {
+        NullOrEmptyDataDomainException.CheckString(name, nameof(name));
+        NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));
+        NullOrEmptyDataDomainException.CheckString(description, nameof(description));
     }
 }
