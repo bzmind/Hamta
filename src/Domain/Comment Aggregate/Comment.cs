@@ -5,8 +5,8 @@ namespace Domain.Comment_Aggregate;
 
 public class Comment : BaseAggregateRoot
 {
-    public long ProductId { get; private set; }
     public long CustomerId { get; private set; }
+    public long ProductId { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
     public List<string> PositivePoints { get; private set; }
