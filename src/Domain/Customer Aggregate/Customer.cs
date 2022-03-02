@@ -11,7 +11,6 @@ public class Customer : BaseAggregateRoot
     public List<CustomerAddress> Addresses { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
     public string? Avatar { get; private set; }
-    public string? CreditCardNumber { get; private set; }
     public bool IsSubscribedToNews { get; private set; }
     public List<CustomerFavoriteItem> FavoriteItems { get; private set; }
 
@@ -82,17 +81,6 @@ public class Customer : BaseAggregateRoot
     public void RemoveAvatar()
     {
         Avatar = null;
-    }
-
-    public void SetCreditCardNumber(string creditCardNumber)
-    {
-        NullOrEmptyDataDomainException.CheckString(creditCardNumber, nameof(creditCardNumber));
-        CreditCardNumber = creditCardNumber;
-    }
-
-    public void RemoveCreditCardNumber()
-    {
-        CreditCardNumber = null;
     }
 
     public void SetSubscriptionToNews(bool subscription)
