@@ -1,4 +1,4 @@
-﻿using Domain.Category_Aggregate;
+﻿using Domain.Product_Aggregate.Services;
 using Domain.Shared.BaseClasses;
 using Domain.Shared.Exceptions;
 using Domain.Shared.Value_Objects;
@@ -18,9 +18,10 @@ public class Product : BaseAggregateRoot
     public List<ProductExtraDescription>? ExtraDescriptions { get; private set; }
     public List<ProductQuestion> Questions { get; private set; }
 
-    public Product(long categoryId, string name, string slug, string description, List<ProductImage> images)
+    public Product(long categoryId, string name, string slug, string description, List<ProductImage> images,
+        IProductDomainService productService)
     {
-        Validate(name, slug, description);
+        Validate(name, slug, description, productService);
         CategoryId = categoryId;
         Name = name;
         Description = description;
@@ -28,9 +29,10 @@ public class Product : BaseAggregateRoot
         Images = images;
     }
 
-    public void Edit(long categoryId, string name, string slug, string description, List<ProductImage> images)
+    public void Edit(long categoryId, string name, string slug, string description, List<ProductImage> images,
+        IProductDomainService productService)
     {
-        Validate(name, slug, description);
+        Validate(name, slug, description, productService);
         CategoryId = categoryId;
         Name = name;
         Description = description;
@@ -111,10 +113,13 @@ public class Product : BaseAggregateRoot
         question.RemoveAnswer(answerId);
     }
 
-    private void Validate(string name, string slug, string description)
+    private void Validate(string name, string slug, string description, IProductDomainService productService)
     {
         NullOrEmptyDataDomainException.CheckString(name, nameof(name));
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));
         NullOrEmptyDataDomainException.CheckString(description, nameof(description));
+
+        if (productService.DoesSlugAlreadyExist(slug))
+            throw new SlugAlreadyExistsDomainException("Slug is already used, cannot use duplicated slug");
     }
 }
