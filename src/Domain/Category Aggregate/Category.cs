@@ -28,11 +28,6 @@ public class Category : BaseAggregateRoot
         Slug = slug;
     }
 
-    public void SetParent(long categoryId)
-    {
-        ParentId = categoryId;
-    }
-
     public void AddSubCategory(string title, string slug, ICategoryDomainService categoryService)
     {
         Validate(title, slug, categoryService);
