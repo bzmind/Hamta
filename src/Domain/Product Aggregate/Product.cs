@@ -16,6 +16,7 @@ public class Product : BaseAggregateRoot
     public List<ProductImage> Images { get; private set; }
     public List<ProductSpecification>? CustomSpecifications { get; private set; }
     public List<ProductExtraDescription>? ExtraDescriptions { get; private set; }
+    public List<ProductQuestion> Questions { get; private set; }
 
     public Product(long categoryId, string name, string slug, string description, List<ProductImage> images)
     {
@@ -71,6 +72,43 @@ public class Product : BaseAggregateRoot
     {
         NullOrEmptyDataDomainException.CheckString(englishName, nameof(englishName));
         EnglishName = englishName;
+    }
+
+
+    public void AddQuestion(ProductQuestion question)
+    {
+        Questions.Add(question);
+    }
+
+    public void RemoveQuestion(long questionId)
+    {
+        var question = Questions.FirstOrDefault(q => q.Id == questionId);
+
+        if (question == null)
+            throw new NullOrEmptyDataDomainException("No such answer was found for this question");
+
+        Questions.Remove(question);
+    }
+
+
+    public void AddAnswer(long questionId, ProductAnswer answer)
+    {
+        var question = Questions.FirstOrDefault(q => q.Id == questionId);
+
+        if (question == null)
+            throw new NullOrEmptyDataDomainException("No such question was found");
+
+        question.AddAnswer(answer);
+    }
+
+    public void RemoveAnswer(long answerParentId, long answerId)
+    {
+        var question = Questions.FirstOrDefault(q => q.Id == answerParentId);
+
+        if (question == null)
+            throw new NullOrEmptyDataDomainException("No such question was found for this product");
+        
+        question.RemoveAnswer(answerId);
     }
 
     private void Validate(string name, string slug, string description)
