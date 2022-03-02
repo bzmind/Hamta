@@ -88,13 +88,7 @@ public class Order
 
     private int GetTotalPrice()
     {
-        var price = 0;
-
-        foreach (var orderItem in Items)
-        {
-            price += orderItem.TotalPrice;
-        }
-
+        var price = Items.Sum(orderItem => orderItem.TotalPrice);
         return price + ShippingCost.Value;
     }
 

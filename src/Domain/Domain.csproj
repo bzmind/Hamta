@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Inventory Aggregate\" />
+    <Folder Include="Product Aggregate\Services\" />
   </ItemGroup>
 
 </Project>

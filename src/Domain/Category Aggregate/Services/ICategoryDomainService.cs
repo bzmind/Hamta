@@ -3,4 +3,5 @@
 public interface ICategoryDomainService
 {
     bool DoesCategoryExist(long categoryId);
+    bool DoesSlugAlreadyExist(string slug);
 }
