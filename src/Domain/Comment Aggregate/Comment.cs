@@ -13,8 +13,10 @@ public class Comment : BaseAggregateRoot
     public List<string> NegativePoints { get; private set; }
     public CommentStatus Status { get; private set; }
     public CommentRecommendation Recommendation { get; private set; }
-    public int Likes { get; private set; }
-    public int Dislikes { get; private set; }
+    public int Likes { get => UsersWhoLiked.Count; private set {} }
+    public int Dislikes { get => UsersWhoDisliked.Count; private set {} }
+    private List<long> UsersWhoLiked { get; set; }
+    private List<long> UsersWhoDisliked { get; set; }
 
     public enum CommentRecommendation { Neutral, Positive, Negative }
     public enum CommentStatus { Pending, Accepted, Rejected }
@@ -31,8 +33,8 @@ public class Comment : BaseAggregateRoot
         NegativePoints = new List<string>();
         Status = CommentStatus.Pending;
         Recommendation = recommendation;
-        Likes = 0;
-        Dislikes = 0;
+        UsersWhoLiked = new List<long>();
+        UsersWhoDisliked = new List<long>();
     }
 
     public void SetPositivePoints(List<string> positivePoints)
@@ -52,13 +54,33 @@ public class Comment : BaseAggregateRoot
         Status = status;
     }
 
-    public void IncreaseLikes() => Likes++;
+    public void SetLikes(long customerId)
+    {
+        var userExists = UsersWhoLiked.Any(u => u == customerId);
 
-    public void DecreaseLikes() => Likes--;
+        if (userExists)
+        {
+            UsersWhoLiked.Remove(customerId);
+            Likes--;
+        }
 
-    public void IncreaseDislikes() => Dislikes++;
+        UsersWhoLiked.Add(customerId);
+        Likes++;
+    }
 
-    public void DecreaseDislikes() => Dislikes--;
+    public void SetDislikes(long customerId)
+    {
+        var userExists = UsersWhoDisliked.Any(u => u == customerId);
+
+        if (userExists)
+        {
+            UsersWhoDisliked.Remove(customerId);
+            Dislikes--;
+        }
+
+        UsersWhoDisliked.Add(customerId);
+        Dislikes++;
+    }
 
     private void Validate(string title, string description)
     {
