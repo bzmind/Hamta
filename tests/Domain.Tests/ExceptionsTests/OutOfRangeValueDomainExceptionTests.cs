@@ -2,7 +2,7 @@
 using FluentAssertions;
 using Xunit;
 
-namespace Domain.Tests.Exceptions;
+namespace Domain.Tests.ExceptionsTests;
 
 public class OutOfRangeValueDomainExceptionTests
 {
