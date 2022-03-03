@@ -10,8 +10,28 @@ public class Order
     public OrderAddress? Address { get; private set; }
     public List<OrderItem> Items { get; private set; }
     public OrderShippingMethod ShippingMethod { get; private set; }
-    public Money ShippingCost { get => GetShippingCost(); private set { } }
-    public int TotalPrice { get => GetTotalPrice(); private set { } }
+
+    public Money ShippingCost
+    {
+        get
+        {
+            if (ShippingMethod == OrderShippingMethod.Fast)
+                return new Money(FastShippingCost);
+
+            return new Money(NormalShippingCost);
+        }
+        private set { }
+    }
+
+    public int TotalPrice
+    {
+        get
+        {
+            var price = Items.Sum(orderItem => orderItem.TotalPrice);
+            return price + ShippingCost.Value;
+        }
+        private set { }
+    }
 
     public enum OrderStatus { Pending, Preparing, Sending, Received }
     public enum OrderShippingMethod { Normal, Fast }
@@ -84,20 +104,6 @@ public class Order
         Address = address;
         ShippingMethod = shippingMethod;
         Status = OrderStatus.Preparing;
-    }
-
-    private int GetTotalPrice()
-    {
-        var price = Items.Sum(orderItem => orderItem.TotalPrice);
-        return price + ShippingCost.Value;
-    }
-
-    private Money GetShippingCost()
-    {
-        if (ShippingMethod == OrderShippingMethod.Fast)
-            return new Money(FastShippingCost);
-
-        return new Money(NormalShippingCost);
     }
     
     private void CheckOrderStatus()

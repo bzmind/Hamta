@@ -14,8 +14,8 @@ public class Product : BaseAggregateRoot
     public string Description { get; private set; }
     public Score Score { get; private set; } = new(0);
     public List<ProductImage> Images { get; private set; }
-    public List<ProductSpecification>? CustomSpecifications { get; private set; }
-    public List<ProductExtraDescription>? ExtraDescriptions { get; private set; }
+    public List<ProductSpecification> CustomSpecifications { get; private set; }
+    public List<ProductExtraDescription> ExtraDescriptions { get; private set; }
     public List<ProductQuestion> Questions { get; private set; }
 
     public Product(long categoryId, string name, string slug, string description, List<ProductImage> images,
@@ -27,6 +27,9 @@ public class Product : BaseAggregateRoot
         Description = description;
         Slug = slug;
         Images = images;
+        CustomSpecifications = new List<ProductSpecification>();
+        ExtraDescriptions = new List<ProductExtraDescription>();
+        Questions = new List<ProductQuestion>();
     }
 
     public void Edit(long categoryId, string name, string slug, string description, List<ProductImage> images,
@@ -91,8 +94,7 @@ public class Product : BaseAggregateRoot
 
         Questions.Remove(question);
     }
-
-
+    
     public void AddAnswer(long questionId, ProductAnswer answer)
     {
         var question = Questions.FirstOrDefault(q => q.Id == questionId);
