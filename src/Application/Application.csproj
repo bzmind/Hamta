@@ -6,4 +6,14 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Shared\" />
+    <Folder Include="Product Use Cases\" />
+    <Folder Include="Order Use Cases\" />
+    <Folder Include="Inventory Use Cases\" />
+    <Folder Include="Customer Use Cases\" />
+    <Folder Include="Comment Use Cases\" />
+    <Folder Include="Category Use Cases\" />
+  </ItemGroup>
+
 </Project>
