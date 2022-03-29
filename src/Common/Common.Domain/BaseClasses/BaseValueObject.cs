@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 
-namespace Domain.Shared.BaseClasses;
+namespace Common.Domain.BaseClasses;
 
 [AttributeUsage(AttributeTargets.Property | AttributeTargets.Field)]
 public class IgnoreMemberAttribute : Attribute

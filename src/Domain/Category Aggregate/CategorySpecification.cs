@@ -1,5 +1,5 @@
-﻿using Domain.Shared.BaseClasses;
-using Domain.Shared.Exceptions;
+﻿using Common.Domain.BaseClasses;
+using Common.Domain.Exceptions;
 
 namespace Domain.Category_Aggregate;
 

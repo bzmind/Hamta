@@ -1,7 +1,7 @@
-﻿using Domain.Product_Aggregate.Services;
-using Domain.Shared.BaseClasses;
-using Domain.Shared.Exceptions;
-using Domain.Shared.Value_Objects;
+﻿using Common.Domain.BaseClasses;
+using Common.Domain.Exceptions;
+using Common.Domain.Value_Objects;
+using Domain.Product_Aggregate.Services;
 
 namespace Domain.Product_Aggregate;
 
@@ -38,6 +38,7 @@ public class Product : BaseAggregateRoot
         Validate(name, slug, description, productService);
         CategoryId = categoryId;
         Name = name;
+        Slug = slug;
         Description = description;
         Images = images;
     }
@@ -121,7 +122,7 @@ public class Product : BaseAggregateRoot
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));
         NullOrEmptyDataDomainException.CheckString(description, nameof(description));
 
-        if (productService.DoesSlugAlreadyExist(slug))
+        if (productService.IsDuplicateSlug(slug))
             throw new SlugAlreadyExistsDomainException("Slug is already used, cannot use duplicated slug");
     }
 }

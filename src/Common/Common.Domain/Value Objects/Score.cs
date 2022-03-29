@@ -1,7 +1,7 @@
-﻿using Domain.Shared.BaseClasses;
-using Domain.Shared.Exceptions;
+﻿using Common.Domain.BaseClasses;
+using Common.Domain.Exceptions;
 
-namespace Domain.Shared.Value_Objects;
+namespace Common.Domain.Value_Objects;
 
 public class Score : BaseValueObject
 {

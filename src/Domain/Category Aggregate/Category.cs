@@ -1,6 +1,6 @@
-﻿using Domain.Category_Aggregate.Services;
-using Domain.Shared.BaseClasses;
-using Domain.Shared.Exceptions;
+﻿using Common.Domain.BaseClasses;
+using Common.Domain.Exceptions;
+using Domain.Category_Aggregate.Services;
 
 namespace Domain.Category_Aggregate;
 
@@ -90,7 +90,7 @@ public class Category : BaseAggregateRoot
         NullOrEmptyDataDomainException.CheckString(title, nameof(title));
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));
 
-        if (categoryService.DoesSlugAlreadyExist(slug))
+        if (categoryService.IsDuplicateSlug(slug))
             throw new SlugAlreadyExistsDomainException("Slug is already used, cannot use duplicated slug");
     }
 }

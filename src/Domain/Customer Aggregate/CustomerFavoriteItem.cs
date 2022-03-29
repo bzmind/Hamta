@@ -1,4 +1,4 @@
-﻿using Domain.Shared.BaseClasses;
+﻿using Common.Domain.BaseClasses;
 
 namespace Domain.Customer_Aggregate;
 

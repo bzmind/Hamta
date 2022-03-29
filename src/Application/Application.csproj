@@ -56,7 +56,6 @@
     <Folder Include="Product Use Cases\SetEnglishName\" />
     <Folder Include="Product Use Cases\SetExtraDescriptions\" />
     <Folder Include="Product Use Cases\SetScore\" />
-    <Folder Include="Shared\" />
   </ItemGroup>
 
   <ItemGroup>

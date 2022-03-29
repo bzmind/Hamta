@@ -2,6 +2,6 @@
 
 public interface ICategoryDomainService
 {
-    bool DoesCategoryExist(long categoryId);
-    bool DoesSlugAlreadyExist(string slug);
+    bool IsDuplicateCategory(long categoryId);
+    bool IsDuplicateSlug(string slug);
 }

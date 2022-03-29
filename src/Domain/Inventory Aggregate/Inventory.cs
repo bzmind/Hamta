@@ -1,6 +1,6 @@
-﻿using Domain.Shared.BaseClasses;
-using Domain.Shared.Exceptions;
-using Domain.Shared.Value_Objects;
+﻿using Common.Domain.BaseClasses;
+using Common.Domain.Exceptions;
+using Common.Domain.Value_Objects;
 
 namespace Domain.Inventory_Aggregate;
 

@@ -1,4 +1,4 @@
-﻿using Domain.Shared.Exceptions;
+﻿using Common.Domain.Exceptions;
 using FluentAssertions;
 using Xunit;
 

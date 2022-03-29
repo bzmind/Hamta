@@ -1,6 +1,6 @@
-﻿using Domain.Shared.BaseClasses;
+﻿using Common.Domain.BaseClasses;
 
-namespace Domain.Shared.Exceptions;
+namespace Common.Domain.Exceptions;
 
 public class SlugAlreadyExistsDomainException : BaseDomainException
 {

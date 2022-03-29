@@ -11,4 +11,8 @@
     <Folder Include="Product Aggregate\Services\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Common\Common.Domain\Common.Domain.csproj" />
+  </ItemGroup>
+
 </Project>
