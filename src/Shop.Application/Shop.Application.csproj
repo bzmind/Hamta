@@ -14,8 +14,6 @@
     <Folder Include="Category\Use Cases\Edit\" />
     <Folder Include="Category\Use Cases\RemoveSpecification\" />
     <Folder Include="Category\Use Cases\RemoveSubCategory\" />
-    <Folder Include="Comment\Use Cases\Create\" />
-    <Folder Include="Comment\Use Cases\" />
     <Folder Include="Comment\Use Cases\SetCommentStatus\" />
     <Folder Include="Comment\Use Cases\SetDislikes\" />
     <Folder Include="Comment\Use Cases\SetLikes\" />
