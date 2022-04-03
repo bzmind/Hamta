@@ -27,7 +27,7 @@ public class OutOfRangeValueDomainExceptionTests
         int min = 0;
         int max = 5;
         string fieldName = "test";
-        
+
         var result = () => OutOfRangeValueDomainException.CheckRange(min, max, value, fieldName);
 
         result.Should().ThrowExactly<OutOfRangeValueDomainException>()
