@@ -1,7 +1,7 @@
 ﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
-using Common.Domain.Value_Objects;
 using Shop.Domain.Product_Aggregate.Services;
+using Shop.Domain.Product_Aggregate.Value_Objects;
 
 namespace Shop.Domain.Product_Aggregate;
 

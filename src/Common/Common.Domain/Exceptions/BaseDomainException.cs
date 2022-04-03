@@ -1,4 +1,4 @@
-﻿namespace Common.Domain.BaseClasses;
+﻿namespace Common.Domain.Exceptions;
 
 public class BaseDomainException : Exception
 {

@@ -1,5 +1,4 @@
-﻿using Common.Domain.BaseClasses;
-using Common.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
 
 namespace Common.Domain.Value_Objects;
 
