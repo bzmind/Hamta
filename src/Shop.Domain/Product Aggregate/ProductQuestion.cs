@@ -3,7 +3,7 @@ using Common.Domain.Exceptions;
 
 namespace Shop.Domain.Product_Aggregate;
 
-public class ProductQuestion : BaseAggregateRoot
+public class ProductQuestion : BaseEntity
 {
     public long ProductId { get; private set; }
     public long CustomerId { get; private set; }

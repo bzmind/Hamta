@@ -7,7 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Inventory Aggregate\" />
+    <Folder Include="Category Aggregate\Repository\" />
+    <Folder Include="Comment Aggregate\Repository\" />
+    <Folder Include="Customer Aggregate\Repository\" />
+    <Folder Include="Inventory Aggregate\Repository\" />
+    <Folder Include="Order Aggregate\Repository\" />
+    <Folder Include="Product Aggregate\Repository\" />
     <Folder Include="Product Aggregate\Services\" />
   </ItemGroup>
 

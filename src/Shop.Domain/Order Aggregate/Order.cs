@@ -1,9 +1,10 @@
-﻿using Common.Domain.Exceptions;
+﻿using Common.Domain.BaseClasses;
+using Common.Domain.Exceptions;
 using Common.Domain.Value_Objects;
 
 namespace Shop.Domain.Order_Aggregate;
 
-public class Order
+public class Order : BaseAggregateRoot
 {
     public long CustomerId { get; private set; }
     public OrderStatus Status { get; private set; }
