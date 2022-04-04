@@ -58,15 +58,13 @@ public class Category : BaseAggregateRoot
         SubCategories.Remove(subcategory);
     }
 
-    public void AddSpecification(CategorySpecification specification)
+    public void AddSpecification(List<CategorySpecification> specifications)
     {
-        NullOrEmptyDataDomainException.CheckString(specification.Title, nameof(specification.Title));
-        Specifications.Add(specification);
+        Specifications = specifications;
     }
     
     public void EditSpecification(long specificationId, string specificationTitle)
     {
-        NullOrEmptyDataDomainException.CheckString(specificationTitle, nameof(specificationTitle));
         var specification = Specifications.FirstOrDefault(sc => sc.Id == specificationId);
 
         if (specification == null)

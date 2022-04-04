@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using Common.Application.Utility;
+using FluentValidation;
+using MediatR;
 using Shop.Domain.Category_Aggregate;
 using Shop.Domain.Category_Aggregate.Repository;
 using Shop.Domain.Category_Aggregate.Services;
@@ -38,14 +40,29 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
     public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = new Category(request.Title, request.Slug, _categoryDomainService);
-
+        //category.SubCategories.Add(new Category("ss", "sds", _categoryDomainService));
+        foreach (var requestSpecification in request.Specifications)
+        {
+            category.AddSpecification(requestSpecification);
+        }
         await _categoryRepository.AddAsync(category);
         await _categoryRepository.SaveAsync();
         return Unit.Value;
     }
 }
 
-public class CreateCategoryCommandValidation : 
+internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
 {
+    public CreateCategoryCommandValidator()
+    {
+        RuleFor(c => c.Title)
+            .NotNull()
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
+        RuleFor(c => c.Slug)
+            .NotNull()
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
+
+        RuleFor(c => c.)
+    }
 }

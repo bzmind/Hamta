@@ -10,6 +10,7 @@ public class CategorySpecification : BaseEntity
 
     public CategorySpecification(long categoryId, string title)
     {
+        NullOrEmptyDataDomainException.CheckString(title, nameof(title));
         CategoryId = categoryId;
         Title = title;
     }
