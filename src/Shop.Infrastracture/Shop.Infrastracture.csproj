@@ -6,4 +6,13 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Persistence.EF\Products\" />
+    <Folder Include="Persistence.EF\Orders\" />
+    <Folder Include="Persistence.EF\Inventories\" />
+    <Folder Include="Persistence.EF\Customers\" />
+    <Folder Include="Persistence.EF\Comments\" />
+    <Folder Include="Persistence.EF\Categories\" />
+  </ItemGroup>
+
 </Project>

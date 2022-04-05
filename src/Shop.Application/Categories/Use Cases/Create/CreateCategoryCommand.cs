@@ -15,7 +15,7 @@ public class CreateCategoryCommand : IRequest
     public List<Category> SubCategories { get; private set; }
     public List<CategorySpecification> Specifications { get; private set; }
 
-    public CreateCategoryCommand(string title, string slug, List<Category> subCategories,
+    public CreateCategoryCommand(long? parentId, string title, string slug, List<Category> subCategories,
         List<CategorySpecification> specifications)
     {
         Title = title;
@@ -39,20 +39,21 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
 
     public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = new Category(request.Title, request.Slug, _categoryDomainService);
+        var category = new Category(request.ParentId, request.Title, request.Slug, _categoryDomainService);
 
         // For testing purposes
-        category.SubCategories.Add(new Category("ss", "sds", _categoryDomainService));
+        category.SubCategories.Add(new Category(1, "ss", "sds", _categoryDomainService));
 
         var specifications = new List<CategorySpecification>();
         request.Specifications.ForEach(specification =>
             specifications.Add(new CategorySpecification(specification.CategoryId, specification.Title)));
-        category.SetSpecifications(specifications);
+        category.SetSpecifications(specifications, _categoryDomainService);
 
         var subCategories = new List<Category>();
         request.SubCategories.ForEach(subCategory =>
-            subCategories.Add(new Category(subCategory.Title, subCategory.Slug, _categoryDomainService)));
-        category.SetSubCategories(subCategories);
+            subCategories.Add(new Category(subCategory.ParentId, subCategory.Title, subCategory.Slug,
+                _categoryDomainService)));
+        category.SetSubCategories(subCategories, _categoryDomainService);
 
         await _categoryRepository.AddAsync(category);
         await _categoryRepository.SaveAsync();

@@ -12,7 +12,7 @@ public class Category : BaseAggregateRoot
     public List<Category> SubCategories { get; private set; }
     public List<CategorySpecification> Specifications { get; private set; }
 
-    public Category(string title, string slug, ICategoryDomainService categoryService)
+    public Category(long? parentId, string title, string slug, ICategoryDomainService categoryService)
     {
         Validate(title, slug, categoryService);
         Title = title;
@@ -21,19 +21,29 @@ public class Category : BaseAggregateRoot
         Specifications = new List<CategorySpecification>();
     }
 
-    public void Edit(string title, string slug, ICategoryDomainService categoryService)
+    public void Edit(long? parentId, string title, string slug, ICategoryDomainService categoryService)
     {
         Validate(title, slug, categoryService);
         Title = title;
         Slug = slug;
     }
 
-    public void SetSubCategories(List<Category> subCategories)
+    public void SetSubCategories(List<Category> subCategories, ICategoryDomainService categoryService)
     {
+        if (categoryService.IsThirdCategory(Id))
+            throw new OperationNotAllowedDomainException("This category can't have any sub categories");
+
+        subCategories.ForEach(subCategory =>
+        {
+            subCategory.ParentId = Id;
+        });
+
         SubCategories = subCategories;
     }
 
-    public void EditSubCategory(long subCategoryId, string title, string slug,
+    // I probably don't need these edit methods, because I can just edit the whole category object
+    // at once, and just call the SetSubCategories method to set the whole thing all together, yeah.
+    public void EditSubCategory(long subCategoryId, long? parentId, string title, string slug,
         ICategoryDomainService categoryService)
     {
         Validate(title, slug, categoryService);
@@ -41,9 +51,9 @@ public class Category : BaseAggregateRoot
         var subcategory = SubCategories.FirstOrDefault(sc => sc.Id == subCategoryId);
 
         if (subcategory == null)
-            throw new InvalidDataDomainException($"No SubCategory was found with this ID: {subCategoryId}");
+            throw new InvalidDataDomainException($"No sub category was found with this ID: {subCategoryId}");
 
-        subcategory.Edit(title, slug, categoryService);
+        subcategory.Edit(parentId, title, slug, categoryService);
     }
 
     public void RemoveSubCategory(long subCategoryId)
@@ -51,13 +61,22 @@ public class Category : BaseAggregateRoot
         var subcategory = SubCategories.FirstOrDefault(sc => sc.Id == subCategoryId);
 
         if (subcategory == null)
-            throw new InvalidDataDomainException($"No SubCategory was found with this ID: {subCategoryId}");
+            throw new InvalidDataDomainException($"No sub category was found with this ID: {subCategoryId}");
 
         SubCategories.Remove(subcategory);
     }
 
-    public void SetSpecifications(List<CategorySpecification> specifications)
+    public void SetSpecifications(List<CategorySpecification> specifications,
+        ICategoryDomainService categoryService)
     {
+        if (categoryService.IsThirdCategory(Id) || ParentId == null)
+            throw new OperationNotAllowedDomainException("This category can't have specifications");
+
+        specifications.ForEach(specification =>
+        {
+            specification.CategoryId = Id;
+        });
+
         Specifications = specifications;
     }
     

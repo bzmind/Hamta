@@ -3,4 +3,5 @@
 public interface ICategoryDomainService
 {
     bool IsDuplicateSlug(string slug);
+    bool IsThirdCategory(long id);
 }
