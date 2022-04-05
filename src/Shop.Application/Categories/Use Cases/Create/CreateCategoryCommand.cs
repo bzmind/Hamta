@@ -5,7 +5,7 @@ using Shop.Domain.Category_Aggregate;
 using Shop.Domain.Category_Aggregate.Repository;
 using Shop.Domain.Category_Aggregate.Services;
 
-namespace Shop.Application.Category_Use_Cases.Use_Cases.Create;
+namespace Shop.Application.Categories.Use_Cases.Create;
 
 public class CreateCategoryCommand : IRequest
 {
@@ -40,11 +40,20 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
     public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = new Category(request.Title, request.Slug, _categoryDomainService);
-        //category.SubCategories.Add(new Category("ss", "sds", _categoryDomainService));
-        foreach (var requestSpecification in request.Specifications)
-        {
-            category.AddSpecification(requestSpecification);
-        }
+
+        // For testing purposes
+        category.SubCategories.Add(new Category("ss", "sds", _categoryDomainService));
+
+        var specifications = new List<CategorySpecification>();
+        request.Specifications.ForEach(specification =>
+            specifications.Add(new CategorySpecification(specification.CategoryId, specification.Title)));
+        category.SetSpecifications(specifications);
+
+        var subCategories = new List<Category>();
+        request.SubCategories.ForEach(subCategory =>
+            subCategories.Add(new Category(subCategory.Title, subCategory.Slug, _categoryDomainService)));
+        category.SetSubCategories(subCategories);
+
         await _categoryRepository.AddAsync(category);
         await _categoryRepository.SaveAsync();
         return Unit.Value;

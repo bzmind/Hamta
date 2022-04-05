@@ -14,7 +14,6 @@
     <ProjectReference Include="..\Shop.Application\Shop.Application.csproj" />
     <ProjectReference Include="..\Shop.Domain\Shop.Domain.csproj" />
     <ProjectReference Include="..\Shop.Infrastracture\Shop.Infrastracture.csproj" />
-    <ProjectReference Include="..\Shop.Presentation\Shop.API\Shop.API.csproj" />
   </ItemGroup>
 
 </Project>

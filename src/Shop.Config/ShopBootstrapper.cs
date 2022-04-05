@@ -1,10 +1,9 @@
-﻿using Common.Application;
-using Common.Application.Validation;
+﻿using Common.Application.Validation;
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Application.Categories.Use_Cases.Create;
 using Shop.Application.Category_Use_Cases._Services;
-using Shop.Application.Category_Use_Cases.Use_Cases.Create;
 using Shop.Domain.Category_Aggregate.Services;
 
 namespace Shop.Config

@@ -28,11 +28,9 @@ public class Category : BaseAggregateRoot
         Slug = slug;
     }
 
-    public void AddSubCategory(string title, string slug, ICategoryDomainService categoryService)
+    public void SetSubCategories(List<Category> subCategories)
     {
-        Validate(title, slug, categoryService);
-        var subcategory = new Category(title, slug, categoryService);
-        SubCategories.Add(subcategory);
+        SubCategories = subCategories;
     }
 
     public void EditSubCategory(long subCategoryId, string title, string slug,
@@ -58,7 +56,7 @@ public class Category : BaseAggregateRoot
         SubCategories.Remove(subcategory);
     }
 
-    public void AddSpecification(List<CategorySpecification> specifications)
+    public void SetSpecifications(List<CategorySpecification> specifications)
     {
         Specifications = specifications;
     }
