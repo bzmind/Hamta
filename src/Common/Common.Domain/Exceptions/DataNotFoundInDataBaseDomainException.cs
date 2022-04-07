@@ -1,13 +1,13 @@
 ﻿namespace Common.Domain.Exceptions;
 
-public class DataNotFoundInDataBaseDomainException : BaseDomainException
+public class DataNotFoundInDatabaseDomainException : BaseDomainException
 {
-    public DataNotFoundInDataBaseDomainException()
+    public DataNotFoundInDatabaseDomainException()
     {
         
     }
 
-    public DataNotFoundInDataBaseDomainException(string message) : base(message)
+    public DataNotFoundInDatabaseDomainException(string message) : base(message)
     {
 
     }
