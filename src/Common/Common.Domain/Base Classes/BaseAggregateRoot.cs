@@ -1,4 +1,4 @@
-﻿namespace Common.Domain.BaseClasses;
+﻿namespace Common.Domain.Base_Classes;
 
 public class BaseAggregateRoot : BaseEntity
 {

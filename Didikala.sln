@@ -15,7 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Application", "src\Sho
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application.Tests", "tests\Application.Tests\Application.Tests.csproj", "{70A138E4-5CE4-4FCE-AC3D-7D19CD2C44F6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Infrastracture", "src\Shop.Infrastracture\Shop.Infrastracture.csproj", "{5C00B956-26C4-4378-BF4D-3904A3F3B68C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Infrastructure", "src\Shop.Infrastructure\Shop.Infrastructure.csproj", "{5C00B956-26C4-4378-BF4D-3904A3F3B68C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{29FBE186-D0AF-42CC-8378-ACC0014E4EFF}"
 EndProject
@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Query", "src\Shop.Quer
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.Config", "src\Shop.Config\Shop.Config.csproj", "{861B0463-4A10-4787-A95B-D653DA0937EC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.API", "src\Shop.Presentation\Shop.API\Shop.API.csproj", "{0142E8FC-4AC1-4CAD-8600-1312933DE727}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.API", "src\Shop.Presentation\Shop.API\Shop.API.csproj", "{0142E8FC-4AC1-4CAD-8600-1312933DE727}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

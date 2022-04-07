@@ -7,13 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Categories\Use Cases\AddSpecification\" />
-    <Folder Include="Categories\Use Cases\AddSubCategory\" />
-    <Folder Include="Categories\Use Cases\EditSpecification\" />
-    <Folder Include="Categories\Use Cases\EditSubCategory\" />
     <Folder Include="Categories\Use Cases\Edit\" />
-    <Folder Include="Categories\Use Cases\RemoveSpecification\" />
-    <Folder Include="Categories\Use Cases\RemoveSubCategory\" />
     <Folder Include="Comments\Use Cases\SetCommentStatus\" />
     <Folder Include="Comments\Use Cases\SetDislikes\" />
     <Folder Include="Comments\Use Cases\SetLikes\" />

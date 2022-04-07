@@ -5,30 +5,30 @@ using Shop.Domain.Category_Aggregate;
 using Shop.Domain.Category_Aggregate.Repository;
 using Shop.Domain.Category_Aggregate.Services;
 
-namespace Shop.Application.Categories.Use_Cases.Create;
+namespace Shop.Application.Categories.Use_Cases.Edit;
 
-public record CreateCategoryCommand(long? ParentId, string Title, string Slug,
+public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
     List<Category> SubCategories, List<CategorySpecification> Specifications) : IRequest;
 
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand>
+public class EditCategoryCommandHandler : IRequestHandler<EditCategoryCommand>
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICategoryDomainService _categoryDomainService;
 
-    public CreateCategoryCommandHandler(ICategoryRepository categoryRepository,
+    public EditCategoryCommandHandler(ICategoryRepository categoryRepository,
         ICategoryDomainService categoryDomainService)
     {
         _categoryRepository = categoryRepository;
         _categoryDomainService = categoryDomainService;
     }
 
-    public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<Unit> Handle(EditCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = new Category(request.ParentId, request.Title, request.Slug, _categoryDomainService);
+        var category = await _categoryRepository.GetAsTrackingAsync(request.Id);
 
-        // For testing purposes
-        //category.SubCategories.Add(new Category(1, "ss", "sds", _categoryDomainService));
-
+        if (category == null)
+            return Unit.Value;
+        
         var specifications = new List<CategorySpecification>();
         request.Specifications.ForEach(specification =>
             specifications.Add(new CategorySpecification(specification.CategoryId, specification.Title,
@@ -41,15 +41,14 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
                 _categoryDomainService)));
         category.SetSubCategories(subCategories);
 
-        await _categoryRepository.AddAsync(category);
         await _categoryRepository.SaveAsync();
         return Unit.Value;
     }
 }
 
-internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
+internal class EditCategoryCommandValidator : AbstractValidator<EditCategoryCommand>
 {
-    public CreateCategoryCommandValidator()
+    public EditCategoryCommandValidator()
     {
         RuleFor(c => c.Title)
             .NotNull()

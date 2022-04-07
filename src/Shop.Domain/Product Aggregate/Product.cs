@@ -1,4 +1,4 @@
-﻿using Common.Domain.BaseClasses;
+﻿using Common.Domain.Base_Classes;
 using Common.Domain.Exceptions;
 using Shop.Domain.Product_Aggregate.Services;
 using Shop.Domain.Product_Aggregate.Value_Objects;

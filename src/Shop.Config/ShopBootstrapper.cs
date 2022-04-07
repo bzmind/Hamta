@@ -2,8 +2,8 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Application.Categories.Services;
 using Shop.Application.Categories.Use_Cases.Create;
-using Shop.Application.Category_Use_Cases._Services;
 using Shop.Domain.Category_Aggregate.Services;
 
 namespace Shop.Config
