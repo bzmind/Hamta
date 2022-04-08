@@ -34,7 +34,7 @@ public class Category : BaseAggregateRoot
     public void SetSubCategories(List<Category> subCategories)
     {
         if (_categoryDomainService.IsThirdCategory(Id))
-            throw new OperationNotAllowedDomainException("This category can't have any sub categories");
+            throw new OperationNotAllowedDomainException("This category can't have sub categories");
 
         subCategories.ForEach(subCategory =>
         {
