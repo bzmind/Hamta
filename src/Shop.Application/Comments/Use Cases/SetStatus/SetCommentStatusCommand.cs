@@ -1,15 +1,15 @@
-﻿using Common.Application.Utility;
-using Common.Domain.Exceptions;
+﻿using Common.Application;
+using Common.Application.Base_Classes;
+using Common.Application.Utility;
 using FluentValidation;
-using MediatR;
 using Shop.Domain.Comment_Aggregate;
 using Shop.Domain.Comment_Aggregate.Repository;
 
 namespace Shop.Application.Comments.Use_Cases.SetStatus;
 
-public record SetCommentStatusCommand(long CommentId, Comment.CommentStatus Status) : IRequest;
+public record SetCommentStatusCommand(long CommentId, Comment.CommentStatus Status) : IBaseCommand;
 
-public class SetCommentStatusCommandHandler : IRequestHandler<SetCommentStatusCommand>
+public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStatusCommand>
 {
     private readonly ICommentRepository _commentRepository;
 
@@ -18,16 +18,16 @@ public class SetCommentStatusCommandHandler : IRequestHandler<SetCommentStatusCo
         _commentRepository = commentRepository;
     }
 
-    public async Task<Unit> Handle(SetCommentStatusCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(SetCommentStatusCommand request, CancellationToken cancellationToken)
     {
         var comment = await _commentRepository.GetAsTrackingAsync(request.CommentId);
 
         if (comment == null)
-            throw new DataNotFoundInDatabaseDomainException("No comment was found with the passed ID");
+            return OperationResult.NotFound();
 
         comment.SetCommentStatus(request.Status);
         await _commentRepository.SaveAsync();
-        return Unit.Value;
+        return OperationResult.Success();
     }
 }
 

@@ -11,13 +11,11 @@
     <Folder Include="Comments\Use Cases\SetStatus\" />
     <Folder Include="Comments\Use Cases\SetDislikes\" />
     <Folder Include="Comments\Use Cases\SetLikes\" />
-    <Folder Include="Customers\Use Cases\ActivateAddress\" />
     <Folder Include="Customers\Use Cases\AddAddress\" />
     <Folder Include="Customers\Use Cases\AddFavoriteItem\" />
     <Folder Include="Customers\Use Cases\Create\" />
     <Folder Include="Customers\Use Cases\EditAddress\" />
     <Folder Include="Customers\Use Cases\Edit\" />
-    <Folder Include="Customers\Use Cases\" />
     <Folder Include="Customers\Use Cases\RemoveAddress\" />
     <Folder Include="Customers\Use Cases\RemoveAvatar\" />
     <Folder Include="Customers\Use Cases\RemoveFavoriteItem\" />
