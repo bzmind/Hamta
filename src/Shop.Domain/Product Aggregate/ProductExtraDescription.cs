@@ -11,10 +11,15 @@ public class ProductExtraDescription : BaseEntity
 
     public ProductExtraDescription(long productId, string title, string description)
     {
-        NullOrEmptyDataDomainException.CheckString(title, nameof(title));
-        NullOrEmptyDataDomainException.CheckString(description, nameof(description));
+        Guard(title, description);
         ProductId = productId;
         Title = title;
         Description = description;
+    }
+
+    public void Guard(string title, string description)
+    {
+        NullOrEmptyDataDomainException.CheckString(title, nameof(title));
+        NullOrEmptyDataDomainException.CheckString(description, nameof(description));
     }
 }

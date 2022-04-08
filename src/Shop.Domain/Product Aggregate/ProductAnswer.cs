@@ -12,14 +12,19 @@ public class ProductAnswer : BaseEntity
     public string Description { get; private set; }
 
     public ProductAnswer(long productId, long customerId, long parentId,
-        string parentDescription,string description)
+        string parentDescription, string description)
     {
-        NullOrEmptyDataDomainException.CheckString(parentDescription, nameof(parentDescription));
-        NullOrEmptyDataDomainException.CheckString(description, nameof(description));
+        Guard(parentDescription, description);
         ProductId = productId;
         CustomerId = customerId;
         ParentId = parentId;
         ParentDescription = parentDescription;
         Description = description;
+    }
+
+    public void Guard(string parentDescription, string description)
+    {
+        NullOrEmptyDataDomainException.CheckString(parentDescription, nameof(parentDescription));
+        NullOrEmptyDataDomainException.CheckString(description, nameof(description));
     }
 }

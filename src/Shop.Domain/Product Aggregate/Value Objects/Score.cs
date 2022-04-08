@@ -12,7 +12,12 @@ public class Score : BaseValueObject
     
     public Score(float scoreValue)
     {
-        OutOfRangeValueDomainException.CheckRange(MinimumScore, MaximumScore, scoreValue, nameof(scoreValue));
+        Guard(scoreValue);
         Value = scoreValue;
+    }
+
+    private void Guard(float scoreValue)
+    {
+        OutOfRangeValueDomainException.CheckRange(MinimumScore, MaximumScore, scoreValue, nameof(scoreValue));
     }
 }

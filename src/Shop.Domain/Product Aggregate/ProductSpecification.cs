@@ -12,11 +12,16 @@ public class ProductSpecification : BaseEntity
 
     public ProductSpecification(long productId, string key, string value, bool isImportantFeature)
     {
-        NullOrEmptyDataDomainException.CheckString(key, nameof(key));
-        NullOrEmptyDataDomainException.CheckString(value, nameof(value));
+        Guard(key, value);
         ProductId = productId;
         Key = key;
         Value = value;
         IsImportantFeature = isImportantFeature;
+    }
+
+    private void Guard(string key, string value)
+    {
+        NullOrEmptyDataDomainException.CheckString(key, nameof(key));
+        NullOrEmptyDataDomainException.CheckString(value, nameof(value));
     }
 }

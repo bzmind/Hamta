@@ -15,7 +15,7 @@ public class Inventory : BaseAggregateRoot
 
     public Inventory(long productId, int quantity, Money price, string color)
     {
-        Validate(quantity, color);
+        Guard(quantity, color);
         ProductId = productId;
         Quantity = quantity;
         Price = price;
@@ -26,7 +26,7 @@ public class Inventory : BaseAggregateRoot
 
     public void Edit(int count, Money price, string color)
     {
-        Validate(count, color);
+        Guard(count, color);
         Quantity = count;
         Price = price;
         Color = color;
@@ -50,7 +50,7 @@ public class Inventory : BaseAggregateRoot
         IsDiscounted = false;
     }
 
-    private void Validate(int count, string color)
+    private void Guard(int count, string color)
     {
         if (count < 0)
             throw new OutOfRangeValueDomainException("Inventory products can't be less than zero");

@@ -10,7 +10,7 @@ public class OrderAddress : Address
     public OrderAddress(long orderId, string fullName, PhoneNumber phoneNumber, string province,
         string city, string fullAddress, string postalCode)
     {
-        Validate(fullName, province, city, fullAddress, postalCode);
+        Guard(fullName, province, city, fullAddress, postalCode);
         OrderId = orderId;
         FullName = fullName;
         PhoneNumber = phoneNumber;

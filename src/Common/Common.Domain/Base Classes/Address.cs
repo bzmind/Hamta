@@ -15,7 +15,7 @@ public abstract class Address : BaseEntity
     public void Edit(string fullName, PhoneNumber phoneNumber, string province, string city,
         string fullAddress, string postalCode)
     {
-        Validate(fullName, province, city, fullAddress, postalCode);
+        Guard(fullName, province, city, fullAddress, postalCode);
         FullName = fullName;
         PhoneNumber = phoneNumber;
         Province = province;
@@ -24,7 +24,7 @@ public abstract class Address : BaseEntity
         PostalCode = postalCode;
     }
     
-    protected void Validate(string fullName, string province, string city, string fullAddress, string postalCode)
+    protected void Guard(string fullName, string province, string city, string fullAddress, string postalCode)
     {
         NullOrEmptyDataDomainException.CheckString(fullName, nameof(fullName));
         NullOrEmptyDataDomainException.CheckString(province, nameof(province));

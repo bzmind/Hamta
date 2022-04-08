@@ -1,4 +1,5 @@
-﻿using Common.Domain.Base_Classes;
+﻿using System.Collections.ObjectModel;
+using Common.Domain.Base_Classes;
 using Common.Domain.Exceptions;
 using Common.Domain.Value_Objects;
 
@@ -9,7 +10,9 @@ public class Order : BaseAggregateRoot
     public long CustomerId { get; private set; }
     public OrderStatus Status { get; private set; }
     public OrderAddress? Address { get; private set; }
-    public List<OrderItem> Items { get; private set; }
+
+    private readonly List<OrderItem> _items;
+    public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
     public OrderShippingMethod ShippingMethod { get; private set; }
 
     public Money ShippingCost
@@ -44,21 +47,21 @@ public class Order : BaseAggregateRoot
     {
         CustomerId = customerId;
         Status = OrderStatus.Pending;
-        Items = items;
+        _items = items;
     }
-    
+
     public void AddOrderItem(OrderItem orderItem)
     {
         CheckOrderStatus();
         var item = Items.FirstOrDefault(oi => oi.InventoryId == orderItem.InventoryId);
 
-        if (item != null)
+        if (item == null)
         {
-            item.IncreaseCount();
+            _items.Add(orderItem);
             return;
         }
 
-        Items.Add(orderItem);
+        item.IncreaseCount();
     }
 
     public void RemoveOrderItem(long orderItemId)
@@ -69,7 +72,7 @@ public class Order : BaseAggregateRoot
         if (orderItem == null)
             throw new InvalidDataDomainException($"No orderItem was found with this ID: {orderItemId}");
 
-        Items.Remove(orderItem);
+        _items.Remove(orderItem);
     }
 
     public void IncreaseItemCount(long orderItemId)
@@ -106,7 +109,7 @@ public class Order : BaseAggregateRoot
         ShippingMethod = shippingMethod;
         Status = OrderStatus.Preparing;
     }
-    
+
     private void CheckOrderStatus()
     {
         if (Status != OrderStatus.Pending)

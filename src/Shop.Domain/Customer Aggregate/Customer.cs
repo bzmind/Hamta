@@ -1,4 +1,5 @@
-﻿using Common.Domain.Base_Classes;
+﻿using System.Collections.ObjectModel;
+using Common.Domain.Base_Classes;
 using Common.Domain.Exceptions;
 using Common.Domain.Value_Objects;
 
@@ -8,26 +9,28 @@ public class Customer : BaseAggregateRoot
 {
     public string FullName { get; private set; }
     public string Email { get; private set; }
-    public List<CustomerAddress> Addresses { get; private set; }
+
+    private readonly List<CustomerAddress> _addresses = new List<CustomerAddress>();
+    public ReadOnlyCollection<CustomerAddress> Addresses => _addresses.AsReadOnly();
     public PhoneNumber PhoneNumber { get; private set; }
     public string? Avatar { get; private set; }
     public bool IsSubscribedToNews { get; private set; }
-    public List<CustomerFavoriteItem> FavoriteItems { get; private set; }
+
+    private readonly List<CustomerFavoriteItem> _favoriteItems = new List<CustomerFavoriteItem>();
+    public ReadOnlyCollection<CustomerFavoriteItem> FavoriteItems => _favoriteItems.AsReadOnly();
 
     public Customer(string fullName, string email, PhoneNumber phoneNumber)
     {
-        Validate(fullName, email);
+        Guard(fullName, email);
         FullName = fullName;
         Email = email;
-        Addresses = new List<CustomerAddress>();
         PhoneNumber = phoneNumber;
         IsSubscribedToNews = false;
-        FavoriteItems = new List<CustomerFavoriteItem>();
     }
 
     public void Edit(string fullName, string email, PhoneNumber phoneNumber)
     {
-        Validate(fullName, email);
+        Guard(fullName, email);
         FullName = fullName;
         Email = email;
         PhoneNumber = phoneNumber;
@@ -38,7 +41,7 @@ public class Customer : BaseAggregateRoot
         var address = Addresses.FirstOrDefault(a => a.Id == addressId);
 
         if (address == null)
-            throw new InvalidDataDomainException($"No address was found with this ID: {addressId}");
+            throw new InvalidDataDomainException("Address was not found");
 
         if (address.IsActive)
             return;
@@ -46,9 +49,11 @@ public class Customer : BaseAggregateRoot
         address.ActivateAddress();
     }
 
-    public void AddAddress(CustomerAddress address)
+    public void AddAddress(long customerId, string fullName, PhoneNumber phoneNumber, string province,
+        string city, string fullAddress, string postalCode)
     {
-        Addresses.Add(address);
+        _addresses.Add(new CustomerAddress(customerId, fullName, phoneNumber, province, city, fullAddress,
+            postalCode));
     }
 
     public void EditAddress(long addressId, string fullName, PhoneNumber phoneNumber, string province,
@@ -57,7 +62,7 @@ public class Customer : BaseAggregateRoot
         var address = Addresses.FirstOrDefault(a => a.Id == addressId);
 
         if (address == null)
-            throw new NullOrEmptyDataDomainException($"No address was found with this ID: {addressId}");
+            throw new NullOrEmptyDataDomainException("Address was not found");
 
         address.Edit(fullName, phoneNumber, province, city, fullAddress, postalCode);
     }
@@ -67,9 +72,9 @@ public class Customer : BaseAggregateRoot
         var address = Addresses.FirstOrDefault(a => a.Id == addressId);
 
         if (address == null)
-            throw new NullOrEmptyDataDomainException($"No address was found with this ID: {addressId}");
+            throw new NullOrEmptyDataDomainException("Address was not found");
 
-        Addresses.Remove(address);
+        _addresses.Remove(address);
     }
 
     public void SetAvatar(string avatar)
@@ -90,7 +95,7 @@ public class Customer : BaseAggregateRoot
 
     public void AddFavoriteItem(CustomerFavoriteItem favoriteItem)
     {
-        FavoriteItems.Add(favoriteItem);
+        _favoriteItems.Add(favoriteItem);
     }
 
     public void RemoveFavoriteItem(long favoriteItemId)
@@ -98,12 +103,12 @@ public class Customer : BaseAggregateRoot
         var favoriteItem = FavoriteItems.FirstOrDefault(fi => fi.Id == favoriteItemId);
 
         if (favoriteItem == null)
-            throw new NullOrEmptyDataDomainException($"No favorite item was found with this ID: {favoriteItemId}");
+            throw new NullOrEmptyDataDomainException("Favorite item not found");
 
-        FavoriteItems.Remove(favoriteItem);
+        _favoriteItems.Remove(favoriteItem);
     }
 
-    private void Validate(string fullName, string email)
+    private void Guard(string fullName, string email)
     {
         NullOrEmptyDataDomainException.CheckString(fullName, nameof(fullName));
         NullOrEmptyDataDomainException.CheckString(email, nameof(email));

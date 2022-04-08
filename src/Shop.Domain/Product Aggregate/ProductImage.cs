@@ -10,8 +10,12 @@ public class ProductImage : BaseEntity
 
     public ProductImage(long productId, string name)
     {
-        NullOrEmptyDataDomainException.CheckString(name, nameof(name));
         ProductId = productId;
         Name = name;
+    }
+
+    private void Guard(string name)
+    {
+        NullOrEmptyDataDomainException.CheckString(name, nameof(name));
     }
 }

@@ -1,4 +1,5 @@
-﻿using Common.Domain.Base_Classes;
+﻿using System.Collections.ObjectModel;
+using Common.Domain.Base_Classes;
 using Common.Domain.Exceptions;
 using Shop.Domain.Category_Aggregate.Services;
 
@@ -9,24 +10,26 @@ public class Category : BaseAggregateRoot
     public long? ParentId { get; private set; }
     public string Title { get; private set; }
     public string Slug { get; private set; }
-    public List<Category> SubCategories { get; private set; }
-    public List<CategorySpecification> Specifications { get; private set; }
+
+    private List<Category> _subCategories = new List<Category>();
+    public ReadOnlyCollection<Category> SubCategories => _subCategories.AsReadOnly();
+
+    private List<CategorySpecification> _specifications = new List<CategorySpecification>();
+    public ReadOnlyCollection<CategorySpecification> Specifications => _specifications.AsReadOnly();
 
     private readonly ICategoryDomainService _categoryDomainService;
 
     public Category(long? parentId, string title, string slug, ICategoryDomainService categoryDomainService)
     {
-        Validate(title, slug);
+        Guard(title, slug);
         Title = title;
         Slug = slug;
-        SubCategories = new List<Category>();
-        Specifications = new List<CategorySpecification>();
         _categoryDomainService = categoryDomainService;
     }
 
     public void Edit(long? parentId, string title, string slug)
     {
-        Validate(title, slug);
+        Guard(title, slug);
         Title = title;
         Slug = slug;
     }
@@ -41,7 +44,7 @@ public class Category : BaseAggregateRoot
             subCategory.ParentId = Id;
         });
 
-        SubCategories = subCategories;
+        _subCategories = subCategories;
     }
 
     public void SetSpecifications(List<CategorySpecification> specifications)
@@ -54,10 +57,10 @@ public class Category : BaseAggregateRoot
             specification.CategoryId = Id;
         });
 
-        Specifications = specifications;
+        _specifications = specifications;
     }
 
-    private void Validate(string title, string slug)
+    private void Guard(string title, string slug)
     {
         NullOrEmptyDataDomainException.CheckString(title, nameof(title));
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));

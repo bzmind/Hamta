@@ -8,7 +8,7 @@ public class Money : BaseValueObject
 
     public Money(int toomanPrice)
     {
-        Validate(toomanPrice);
+        Guard(toomanPrice);
         Value = toomanPrice;
     }
     
@@ -22,7 +22,7 @@ public class Money : BaseValueObject
         return new Money(firstMoney.Value - secondMoney.Value);
     }
 
-    private void Validate(int value)
+    private void Guard(int value)
     {
         if (value < 0)
             throw new InvalidDataDomainException("Invalid value: price can't be negative");

@@ -1,4 +1,5 @@
-﻿using Common.Domain.Base_Classes;
+﻿using System.Collections.ObjectModel;
+using Common.Domain.Base_Classes;
 using Common.Domain.Exceptions;
 using Shop.Domain.Product_Aggregate.Services;
 using Shop.Domain.Product_Aggregate.Value_Objects;
@@ -13,40 +14,45 @@ public class Product : BaseAggregateRoot
     public string Slug { get; private set; }
     public string Description { get; private set; }
     public Score Score { get; private set; } = new(0);
-    public List<ProductImage> Images { get; private set; }
-    public List<ProductSpecification> CustomSpecifications { get; private set; }
-    public List<ProductExtraDescription> ExtraDescriptions { get; private set; }
-    public List<ProductQuestion> Questions { get; private set; }
+
+    private List<ProductImage> _images;
+    public ReadOnlyCollection<ProductImage> Images => _images.AsReadOnly();
+
+    private List<ProductSpecification> _customSpecifications = new List<ProductSpecification>();
+    public ReadOnlyCollection<ProductSpecification> CustomSpecifications => _customSpecifications.AsReadOnly();
+
+    private List<ProductExtraDescription> _extraDescriptions = new List<ProductExtraDescription>();
+    public ReadOnlyCollection<ProductExtraDescription> ExtraDescriptions => _extraDescriptions.AsReadOnly();
+
+    private readonly List<ProductQuestion> _questions = new List<ProductQuestion>();
+    public ReadOnlyCollection<ProductQuestion> Questions => _questions.AsReadOnly();
 
     public Product(long categoryId, string name, string slug, string description, List<ProductImage> images,
         IProductDomainService productService)
     {
-        Validate(name, slug, description, productService);
+        Guard(name, slug, description, productService);
         CategoryId = categoryId;
         Name = name;
         Description = description;
         Slug = slug;
-        Images = images;
-        CustomSpecifications = new List<ProductSpecification>();
-        ExtraDescriptions = new List<ProductExtraDescription>();
-        Questions = new List<ProductQuestion>();
+        _images = images;
     }
 
     public void Edit(long categoryId, string name, string slug, string description, List<ProductImage> images,
         IProductDomainService productService)
     {
-        Validate(name, slug, description, productService);
+        Guard(name, slug, description, productService);
         CategoryId = categoryId;
         Name = name;
         Slug = slug;
         Description = description;
-        Images = images;
+        _images = images;
     }
 
     public void AddImage(string imageName)
     {
         NullOrEmptyDataDomainException.CheckString(imageName, nameof(imageName));
-        Images.Add(new ProductImage(Id, imageName));
+        _images.Add(new ProductImage(Id, imageName));
     }
 
     public void RemoveImage(string imageName)
@@ -56,17 +62,17 @@ public class Product : BaseAggregateRoot
         if (image == null)
             throw new InvalidDataDomainException($"No image was found with the provided name: {imageName}");
 
-        Images.Remove(image);
+        _images.Remove(image);
     }
 
     public void SetCustomSpecifications(List<ProductSpecification> customSpecifications)
     {
-        CustomSpecifications = customSpecifications;
+        _customSpecifications = customSpecifications;
     }
 
     public void SetExtraDescriptions(List<ProductExtraDescription> extraDescriptions)
     {
-        ExtraDescriptions = extraDescriptions;
+        _extraDescriptions = extraDescriptions;
     }
 
     public void SetScore(Score score)
@@ -83,7 +89,7 @@ public class Product : BaseAggregateRoot
 
     public void AddQuestion(ProductQuestion question)
     {
-        Questions.Add(question);
+        _questions.Add(question);
     }
 
     public void RemoveQuestion(long questionId)
@@ -93,7 +99,7 @@ public class Product : BaseAggregateRoot
         if (question == null)
             throw new NullOrEmptyDataDomainException("No such answer was found for this question");
 
-        Questions.Remove(question);
+        _questions.Remove(question);
     }
     
     public void AddAnswer(long questionId, ProductAnswer answer)
@@ -116,7 +122,7 @@ public class Product : BaseAggregateRoot
         question.RemoveAnswer(answerId);
     }
 
-    private void Validate(string name, string slug, string description, IProductDomainService productService)
+    private void Guard(string name, string slug, string description, IProductDomainService productService)
     {
         NullOrEmptyDataDomainException.CheckString(name, nameof(name));
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));

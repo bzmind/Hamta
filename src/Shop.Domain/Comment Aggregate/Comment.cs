@@ -1,4 +1,5 @@
-﻿using Common.Domain.Base_Classes;
+﻿using System.Collections.ObjectModel;
+using Common.Domain.Base_Classes;
 using Common.Domain.Exceptions;
 
 namespace Shop.Domain.Comment_Aggregate;
@@ -9,8 +10,12 @@ public class Comment : BaseAggregateRoot
     public long ProductId { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
-    public List<string> PositivePoints { get; private set; }
-    public List<string> NegativePoints { get; private set; }
+
+    private List<string> _positivePoints = new List<string>();
+    public ReadOnlyCollection<string> PositivePoints => _positivePoints.AsReadOnly();
+
+    private List<string> _negativePoints = new List<string>();
+    public ReadOnlyCollection<string> NegativePoints => _negativePoints.AsReadOnly();
     public CommentStatus Status { get; private set; }
     public CommentRecommendation Recommendation { get; private set; }
     public int Likes { get => UsersWhoLiked.Count; private set {} }
@@ -24,13 +29,11 @@ public class Comment : BaseAggregateRoot
     public Comment(long productId, long customerId, string title, string description,
         CommentRecommendation recommendation)
     {
-        Validate(title, description);
+        Guard(title, description);
         ProductId = productId;
         CustomerId = customerId;
         Title = title;
         Description = description;
-        PositivePoints = new List<string>();
-        NegativePoints = new List<string>();
         Status = CommentStatus.Pending;
         Recommendation = recommendation;
         Likes = 0;
@@ -42,13 +45,13 @@ public class Comment : BaseAggregateRoot
     public void SetPositivePoints(List<string> positivePoints)
     {
         ValidateCommentPoints(positivePoints, nameof(positivePoints));
-        PositivePoints = positivePoints;
+        _positivePoints = positivePoints;
     }
 
     public void SetNegativePoints(List<string> negativePoints)
     {
         ValidateCommentPoints(negativePoints, nameof(negativePoints));
-        NegativePoints = negativePoints;
+        _negativePoints = negativePoints;
     }
 
     public void SetCommentStatus(CommentStatus status)
@@ -84,7 +87,7 @@ public class Comment : BaseAggregateRoot
         Dislikes++;
     }
 
-    private void Validate(string title, string description)
+    private void Guard(string title, string description)
     {
         NullOrEmptyDataDomainException.CheckString(title, nameof(title));
         NullOrEmptyDataDomainException.CheckString(description, nameof(description));
