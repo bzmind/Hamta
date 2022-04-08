@@ -2,7 +2,6 @@
 using Common.Application.Base_Classes;
 using Common.Application.Utility;
 using FluentValidation;
-using MediatR;
 using Shop.Domain.Category_Aggregate;
 using Shop.Domain.Category_Aggregate.Repository;
 using Shop.Domain.Category_Aggregate.Services;

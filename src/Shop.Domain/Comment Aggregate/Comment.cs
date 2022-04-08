@@ -33,6 +33,8 @@ public class Comment : BaseAggregateRoot
         NegativePoints = new List<string>();
         Status = CommentStatus.Pending;
         Recommendation = recommendation;
+        Likes = 0;
+        Dislikes = 0;
         UsersWhoLiked = new List<long>();
         UsersWhoDisliked = new List<long>();
     }
@@ -92,6 +94,11 @@ public class Comment : BaseAggregateRoot
     {
         if (points == null)
             throw new NullOrEmptyDataDomainException($"{fieldName} is null");
+
+        foreach (var point in points)
+        {
+            NullOrEmptyDataDomainException.CheckString(point, nameof(point));
+        }
 
         if (points.Count > 5)
             throw new OutOfRangeValueDomainException($"{fieldName} count is more than limit");
