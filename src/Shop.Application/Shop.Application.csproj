@@ -8,11 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Categories\Use Cases\Edit\" />
-    <Folder Include="Comments\Use Cases\SetCommentStatus\" />
+    <Folder Include="Comments\Use Cases\SetStatus\" />
     <Folder Include="Comments\Use Cases\SetDislikes\" />
     <Folder Include="Comments\Use Cases\SetLikes\" />
-    <Folder Include="Comments\Use Cases\SetNegativePoints\" />
-    <Folder Include="Comments\Use Cases\SetPositivePoints\" />
     <Folder Include="Customers\Use Cases\ActivateAddress\" />
     <Folder Include="Customers\Use Cases\AddAddress\" />
     <Folder Include="Customers\Use Cases\AddFavoriteItem\" />
@@ -52,12 +50,6 @@
     <Folder Include="Products\Use Cases\SetEnglishName\" />
     <Folder Include="Products\Use Cases\SetExtraDescriptions\" />
     <Folder Include="Products\Use Cases\SetScore\" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="FluentValidation" Version="10.4.0" />
-    <PackageReference Include="MediatR" Version="10.0.1" />
-    <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="10.0.1" />
   </ItemGroup>
 
   <ItemGroup>

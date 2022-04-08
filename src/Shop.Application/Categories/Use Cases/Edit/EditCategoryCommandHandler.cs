@@ -1,6 +1,7 @@
-﻿using Common.Application.Utility;
+﻿using Common.Application;
+using Common.Application.Base_Classes;
+using Common.Application.Utility;
 using FluentValidation;
-using MediatR;
 using Shop.Domain.Category_Aggregate;
 using Shop.Domain.Category_Aggregate.Repository;
 using Shop.Domain.Category_Aggregate.Services;
@@ -8,9 +9,9 @@ using Shop.Domain.Category_Aggregate.Services;
 namespace Shop.Application.Categories.Use_Cases.Edit;
 
 public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
-    List<Category> SubCategories, List<CategorySpecification> Specifications) : IRequest;
+    List<Category> SubCategories, List<CategorySpecification> Specifications) : IBaseCommand;
 
-public class EditCategoryCommandHandler : IRequestHandler<EditCategoryCommand>
+public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICategoryDomainService _categoryDomainService;
@@ -22,12 +23,12 @@ public class EditCategoryCommandHandler : IRequestHandler<EditCategoryCommand>
         _categoryDomainService = categoryDomainService;
     }
 
-    public async Task<Unit> Handle(EditCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(EditCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = await _categoryRepository.GetAsTrackingAsync(request.Id);
 
         if (category == null)
-            return Unit.Value;
+            return OperationResult.NotFound();
         
         var specifications = new List<CategorySpecification>();
         request.Specifications.ForEach(specification =>
@@ -42,7 +43,7 @@ public class EditCategoryCommandHandler : IRequestHandler<EditCategoryCommand>
         category.SetSubCategories(subCategories);
 
         await _categoryRepository.SaveAsync();
-        return Unit.Value;
+        return OperationResult.Success();
     }
 }
 

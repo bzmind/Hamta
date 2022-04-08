@@ -1,4 +1,6 @@
-﻿using Common.Application.Utility;
+﻿using Common.Application;
+using Common.Application.Base_Classes;
+using Common.Application.Utility;
 using FluentValidation;
 using MediatR;
 using Shop.Domain.Category_Aggregate;
@@ -8,9 +10,9 @@ using Shop.Domain.Category_Aggregate.Services;
 namespace Shop.Application.Categories.Use_Cases.Create;
 
 public record CreateCategoryCommand(long? ParentId, string Title, string Slug,
-    List<Category> SubCategories, List<CategorySpecification> Specifications) : IRequest;
+    List<Category> SubCategories, List<CategorySpecification> Specifications) : IBaseCommand;
 
-public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryCommand>
+public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand>
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICategoryDomainService _categoryDomainService;
@@ -22,28 +24,34 @@ public class CreateCategoryCommandHandler : IRequestHandler<CreateCategoryComman
         _categoryDomainService = categoryDomainService;
     }
 
-    public async Task<Unit> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = new Category(request.ParentId, request.Title, request.Slug, _categoryDomainService);
 
         // For testing purposes
         //category.SubCategories.Add(new Category(1, "ss", "sds", _categoryDomainService));
 
-        var specifications = new List<CategorySpecification>();
-        request.Specifications.ForEach(specification =>
-            specifications.Add(new CategorySpecification(specification.CategoryId, specification.Title,
-                specification.Description)));
-        category.SetSpecifications(specifications);
+        if (request.Specifications.Count > 0)
+        {
+            var specifications = new List<CategorySpecification>();
+            request.Specifications.ForEach(specification =>
+                specifications.Add(new CategorySpecification(specification.CategoryId, specification.Title,
+                    specification.Description)));
+            category.SetSpecifications(specifications);
+        }
 
-        var subCategories = new List<Category>();
-        request.SubCategories.ForEach(subCategory =>
-            subCategories.Add(new Category(subCategory.ParentId, subCategory.Title, subCategory.Slug,
-                _categoryDomainService)));
-        category.SetSubCategories(subCategories);
+        if (request.SubCategories.Count > 0)
+        {
+            var subCategories = new List<Category>();
+            request.SubCategories.ForEach(subCategory =>
+                subCategories.Add(new Category(subCategory.ParentId, subCategory.Title, subCategory.Slug,
+                    _categoryDomainService)));
+            category.SetSubCategories(subCategories);
+        }
 
         await _categoryRepository.AddAsync(category);
         await _categoryRepository.SaveAsync();
-        return Unit.Value;
+        return OperationResult.Success();
     }
 }
 
