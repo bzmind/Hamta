@@ -1,6 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.Base_Classes;
-using Common.Application.Utility;
+using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.Category_Aggregate;
 using Shop.Domain.Category_Aggregate.Repository;
@@ -26,9 +26,6 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
     public async Task<OperationResult> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
         var category = new Category(request.ParentId, request.Title, request.Slug, _categoryDomainService);
-
-        // For testing purposes
-        //category.SubCategories.Add(new Category(1, "ss", "sds", _categoryDomainService));
 
         if (request.Specifications.Count > 0)
         {

@@ -1,4 +1,4 @@
-﻿namespace Common.Application.Utility;
+﻿namespace Common.Application.Validation;
 
 public static class ValidationMessages
 {

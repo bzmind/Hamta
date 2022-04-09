@@ -9,31 +9,36 @@ public class Customer : BaseAggregateRoot
 {
     public string FullName { get; private set; }
     public string Email { get; private set; }
+    public string Password { get; private set; }
 
     private readonly List<CustomerAddress> _addresses = new List<CustomerAddress>();
     public ReadOnlyCollection<CustomerAddress> Addresses => _addresses.AsReadOnly();
     public PhoneNumber PhoneNumber { get; private set; }
-    public string? Avatar { get; private set; }
+    public string AvatarName { get; private set; } = DefaultAvatarName;
     public bool IsSubscribedToNews { get; private set; }
 
     private readonly List<CustomerFavoriteItem> _favoriteItems = new List<CustomerFavoriteItem>();
     public ReadOnlyCollection<CustomerFavoriteItem> FavoriteItems => _favoriteItems.AsReadOnly();
 
-    public Customer(string fullName, string email, PhoneNumber phoneNumber)
+    private const string DefaultAvatarName = "default-avatar.png";
+
+    public Customer(string fullName, string email, string password, string phoneNumber)
     {
         Guard(fullName, email);
+        NullOrEmptyDataDomainException.CheckString(password, nameof(password));
         FullName = fullName;
         Email = email;
-        PhoneNumber = phoneNumber;
+        Password = password;
+        PhoneNumber = new PhoneNumber(phoneNumber);
         IsSubscribedToNews = false;
     }
 
-    public void Edit(string fullName, string email, PhoneNumber phoneNumber)
+    public void Edit(string fullName, string email, string phoneNumber)
     {
         Guard(fullName, email);
         FullName = fullName;
         Email = email;
-        PhoneNumber = phoneNumber;
+        PhoneNumber = new PhoneNumber(phoneNumber);
     }
 
     public void ActivateAddress(long addressId)
@@ -49,14 +54,14 @@ public class Customer : BaseAggregateRoot
         address.ActivateAddress();
     }
 
-    public void AddAddress(long customerId, string fullName, PhoneNumber phoneNumber, string province,
+    public void AddAddress(long customerId, string fullName, string phoneNumber, string province,
         string city, string fullAddress, string postalCode)
     {
-        _addresses.Add(new CustomerAddress(customerId, fullName, phoneNumber, province, city, fullAddress,
+        _addresses.Add(new CustomerAddress(customerId, fullName, new PhoneNumber(phoneNumber), province, city, fullAddress,
             postalCode));
     }
 
-    public void EditAddress(long addressId, string fullName, PhoneNumber phoneNumber, string province,
+    public void EditAddress(long addressId, string fullName, string phoneNumber, string province,
         string city, string fullAddress, string postalCode)
     {
         var address = Addresses.FirstOrDefault(a => a.Id == addressId);
@@ -64,7 +69,7 @@ public class Customer : BaseAggregateRoot
         if (address == null)
             throw new NullOrEmptyDataDomainException("Address was not found");
 
-        address.Edit(fullName, phoneNumber, province, city, fullAddress, postalCode);
+        address.Edit(fullName, new PhoneNumber(phoneNumber), province, city, fullAddress, postalCode);
     }
 
     public void RemoveAddress(long addressId)
@@ -77,17 +82,14 @@ public class Customer : BaseAggregateRoot
         _addresses.Remove(address);
     }
 
-    public void SetAvatar(string avatar)
+    public void SetAvatar(string avatarName)
     {
-        NullOrEmptyDataDomainException.CheckString(avatar, nameof(avatar));
-        Avatar = avatar;
+        if (string.IsNullOrEmpty(avatarName))
+            AvatarName = DefaultAvatarName;
+        
+        AvatarName = avatarName;
     }
-
-    public void RemoveAvatar()
-    {
-        Avatar = null;
-    }
-
+    
     public void SetSubscriptionToNews(bool subscription)
     {
         IsSubscribedToNews = subscription;

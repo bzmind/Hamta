@@ -17,7 +17,6 @@
     <Folder Include="Customers\Use Cases\EditAddress\" />
     <Folder Include="Customers\Use Cases\Edit\" />
     <Folder Include="Customers\Use Cases\RemoveAddress\" />
-    <Folder Include="Customers\Use Cases\RemoveAvatar\" />
     <Folder Include="Customers\Use Cases\RemoveFavoriteItem\" />
     <Folder Include="Customers\Use Cases\SetAvatar\" />
     <Folder Include="Customers\Use Cases\SetSubscriptionToNews\" />

@@ -1,6 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.Base_Classes;
-using Common.Application.Utility;
+using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.Category_Aggregate;
 using Shop.Domain.Category_Aggregate.Repository;

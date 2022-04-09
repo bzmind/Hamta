@@ -19,7 +19,8 @@
   <ItemGroup>
     <Folder Include="Exceptions\" />
     <Folder Include="Base Classes\" />
-    <Folder Include="Utility\" />
+    <Folder Include="Security\" />
+    <Folder Include="Validation\CustomFluentValidations\" />
   </ItemGroup>
 
 </Project>
