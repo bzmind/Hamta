@@ -7,46 +7,30 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Categories\Use Cases\Edit\" />
-    <Folder Include="Comments\Use Cases\SetStatus\" />
-    <Folder Include="Comments\Use Cases\SetDislikes\" />
-    <Folder Include="Comments\Use Cases\SetLikes\" />
-    <Folder Include="Customers\Use Cases\AddAddress\" />
-    <Folder Include="Customers\Use Cases\AddFavoriteItem\" />
-    <Folder Include="Customers\Use Cases\Create\" />
-    <Folder Include="Customers\Use Cases\EditAddress\" />
-    <Folder Include="Customers\Use Cases\Edit\" />
-    <Folder Include="Customers\Use Cases\RemoveAddress\" />
-    <Folder Include="Customers\Use Cases\RemoveFavoriteItem\" />
-    <Folder Include="Customers\Use Cases\SetAvatar\" />
-    <Folder Include="Customers\Use Cases\SetSubscriptionToNews\" />
-    <Folder Include="Inventories\Use Cases\Create\" />
-    <Folder Include="Inventories\Use Cases\DiscountByPercent\" />
-    <Folder Include="Inventories\Use Cases\DiscountByTooman\" />
-    <Folder Include="Inventories\Use Cases\Edit\" />
-    <Folder Include="Inventories\Use Cases\" />
-    <Folder Include="Inventories\Use Cases\RemoveDiscount\" />
-    <Folder Include="Orders\Use Cases\AddOrderItem\" />
-    <Folder Include="Orders\Use Cases\Checkout\" />
-    <Folder Include="Orders\Use Cases\Create\" />
-    <Folder Include="Orders\Use Cases\DecreaseItemCount\" />
-    <Folder Include="Orders\Use Cases\IncreaseItemCount\" />
-    <Folder Include="Orders\Use Cases\" />
-    <Folder Include="Orders\Use Cases\RemoveOrderItem\" />
-    <Folder Include="Orders\Use Cases\SetStatus\" />
-    <Folder Include="Products\Use Cases\AddAnswer\" />
-    <Folder Include="Products\Use Cases\AddImage\" />
-    <Folder Include="Products\Use Cases\AddQuestion\" />
-    <Folder Include="Products\Use Cases\Create\" />
-    <Folder Include="Products\Use Cases\Edit\" />
-    <Folder Include="Products\Use Cases\" />
-    <Folder Include="Products\Use Cases\RemoveAnswer\" />
-    <Folder Include="Products\Use Cases\RemoveImage\" />
-    <Folder Include="Products\Use Cases\RemoveQuestion\" />
-    <Folder Include="Products\Use Cases\SetCustomSpecifications\" />
-    <Folder Include="Products\Use Cases\SetEnglishName\" />
-    <Folder Include="Products\Use Cases\SetExtraDescriptions\" />
-    <Folder Include="Products\Use Cases\SetScore\" />
+    <Folder Include="Inventories\UseCases\Edit\" />
+    <Folder Include="Inventories\UseCases\" />
+    <Folder Include="Inventories\UseCases\RemoveDiscount\" />
+    <Folder Include="Orders\UseCases\AddOrderItem\" />
+    <Folder Include="Orders\UseCases\Checkout\" />
+    <Folder Include="Orders\UseCases\Create\" />
+    <Folder Include="Orders\UseCases\DecreaseItemCount\" />
+    <Folder Include="Orders\UseCases\IncreaseItemCount\" />
+    <Folder Include="Orders\UseCases\" />
+    <Folder Include="Orders\UseCases\RemoveOrderItem\" />
+    <Folder Include="Orders\UseCases\SetStatus\" />
+    <Folder Include="Products\UseCases\AddAnswer\" />
+    <Folder Include="Products\UseCases\AddImage\" />
+    <Folder Include="Products\UseCases\AddQuestion\" />
+    <Folder Include="Products\UseCases\Create\" />
+    <Folder Include="Products\UseCases\Edit\" />
+    <Folder Include="Products\UseCases\" />
+    <Folder Include="Products\UseCases\RemoveAnswer\" />
+    <Folder Include="Products\UseCases\RemoveImage\" />
+    <Folder Include="Products\UseCases\RemoveQuestion\" />
+    <Folder Include="Products\UseCases\SetCustomSpecifications\" />
+    <Folder Include="Products\UseCases\SetEnglishName\" />
+    <Folder Include="Products\UseCases\SetExtraDescriptions\" />
+    <Folder Include="Products\UseCases\SetScore\" />
   </ItemGroup>
 
   <ItemGroup>

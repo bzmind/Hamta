@@ -1,7 +1,7 @@
 ﻿using Common.Domain.Exceptions;
-using Shop.Domain.Category_Aggregate;
-using Shop.Domain.Category_Aggregate.Repository;
-using Shop.Domain.Category_Aggregate.Services;
+using Shop.Domain.CategoryAggregate;
+using Shop.Domain.CategoryAggregate.Repository;
+using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories.Services;
 

@@ -4,7 +4,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Application.Categories.Services;
 using Shop.Application.Categories.Use_Cases.Create;
-using Shop.Domain.Category_Aggregate.Services;
+using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Config
 {

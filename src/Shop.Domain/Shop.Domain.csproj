@@ -7,17 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Category Aggregate\Repository\" />
-    <Folder Include="Comment Aggregate\Repository\" />
-    <Folder Include="Customer Aggregate\Repository\" />
-    <Folder Include="Inventory Aggregate\Repository\" />
-    <Folder Include="Order Aggregate\Repository\" />
-    <Folder Include="Product Aggregate\Repository\" />
-    <Folder Include="Product Aggregate\Services\" />
+    <ProjectReference Include="..\Common\Common.Domain\Common.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common\Common.Domain\Common.Domain.csproj" />
+    <Folder Include="ColorAggregate\Repository\" />
   </ItemGroup>
 
 </Project>
