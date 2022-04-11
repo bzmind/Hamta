@@ -1,5 +1,5 @@
 ﻿using Common.Domain.Exceptions;
-using Common.Domain.Value_Objects;
+using Common.Domain.ValueObjects;
 
 namespace Shop.Domain.ProductAggregate.Value_Objects;
 

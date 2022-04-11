@@ -1,8 +1,8 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Shop.Domain.CustomerAggregate.Repository;
 
-namespace Shop.Application.Customers.Use_Cases.ActivateAddress;
+namespace Shop.Application.Customers.UseCases.ActivateAddress;
 
 public record ActivateCustomerAddressCommand(long CustomerId, long AddressId) : IBaseCommand;
 

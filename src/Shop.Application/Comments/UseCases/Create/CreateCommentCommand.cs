@@ -1,11 +1,11 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.CommentAggregate;
 using Shop.Domain.CommentAggregate.Repository;
 
-namespace Shop.Application.Comments.Use_Cases.Create;
+namespace Shop.Application.Comments.UseCases.Create;
 
 public record CreateCommentCommand(long ProductId, long CustomerId, string Title, string Description,
     List<string> PositivePoints, List<string> NegativePoints,

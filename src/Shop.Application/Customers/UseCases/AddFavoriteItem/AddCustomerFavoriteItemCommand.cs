@@ -1,9 +1,9 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Shop.Domain.CustomerAggregate;
 using Shop.Domain.CustomerAggregate.Repository;
 
-namespace Shop.Application.Customers.Use_Cases.AddFavoriteItem;
+namespace Shop.Application.Customers.UseCases.AddFavoriteItem;
 
 public record AddCustomerFavoriteItemCommand(long CustomerId, long ProductId) : IBaseCommand;
 

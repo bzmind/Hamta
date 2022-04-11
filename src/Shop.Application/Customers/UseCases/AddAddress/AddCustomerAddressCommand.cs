@@ -1,11 +1,11 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using Common.Application.Validation.CustomFluentValidations;
 using FluentValidation;
 using Shop.Domain.CustomerAggregate.Repository;
 
-namespace Shop.Application.Customers.Use_Cases.AddAddress;
+namespace Shop.Application.Customers.UseCases.AddAddress;
 
 public record AddCustomerAddressCommand(long CustomerId, string FullName, string PhoneNumber,
     string Province, string City, string FullAddress, string PostalCode) : IBaseCommand;

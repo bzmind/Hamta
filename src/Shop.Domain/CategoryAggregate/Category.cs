@@ -1,5 +1,5 @@
 ﻿using System.Collections.ObjectModel;
-using Common.Domain.Base_Classes;
+using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Shop.Domain.CategoryAggregate.Services;
 

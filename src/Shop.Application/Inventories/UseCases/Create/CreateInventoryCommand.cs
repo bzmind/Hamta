@@ -1,11 +1,11 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.InventoryAggregate;
 using Shop.Domain.InventoryAggregate.Repository;
 
-namespace Shop.Application.Inventories.Use_Cases.Create;
+namespace Shop.Application.Inventories.UseCases.Create;
 
 public record CreateInventoryCommand(long ProductId, int Quantity, int Price, long ColorId) : IBaseCommand;
 

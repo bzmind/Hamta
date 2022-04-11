@@ -1,7 +1,7 @@
 ﻿using Common.Domain.Exceptions;
-using Common.Domain.Value_Objects;
+using Common.Domain.ValueObjects;
 
-namespace Common.Domain.Base_Classes;
+namespace Common.Domain.BaseClasses;
 
 public abstract class Address : BaseEntity
 {

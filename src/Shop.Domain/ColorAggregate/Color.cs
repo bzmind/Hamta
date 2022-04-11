@@ -1,18 +1,23 @@
-﻿using Common.Domain.Base_Classes;
+﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 
 namespace Shop.Domain.ColorAggregate;
 
-public class Color : BaseEntity
+public class Color : BaseAggregateRoot
 {
-    public long GroupId { get; private set; }
     public string Name { get; private set; }
     public string Code { get; private set; }
 
-    public Color(long groupId, string name, string code)
+    public Color(string name, string code)
     {
         Guard(name, code);
-        GroupId = groupId;
+        Name = name;
+        Code = code;
+    }
+
+    public void Edit(string name, string code)
+    {
+        Guard(name, code);
         Name = name;
         Code = code;
     }

@@ -1,10 +1,10 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.InventoryAggregate.Repository;
 
-namespace Shop.Application.Inventories.Use_Cases.DiscountByPercentage;
+namespace Shop.Application.Inventories.UseCases.DiscountByPercentage;
 
 public record DiscountByPercentageCommand(long InventoryId, int DiscountPercentage) : IBaseCommand;
 

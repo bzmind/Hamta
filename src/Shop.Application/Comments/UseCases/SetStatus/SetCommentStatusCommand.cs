@@ -1,11 +1,11 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.CommentAggregate;
 using Shop.Domain.CommentAggregate.Repository;
 
-namespace Shop.Application.Comments.Use_Cases.SetStatus;
+namespace Shop.Application.Comments.UseCases.SetStatus;
 
 public record SetCommentStatusCommand(long CommentId, Comment.CommentStatus Status) : IBaseCommand;
 

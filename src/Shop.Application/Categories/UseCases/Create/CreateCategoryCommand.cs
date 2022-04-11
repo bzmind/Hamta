@@ -1,12 +1,12 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Services;
 
-namespace Shop.Application.Categories.Use_Cases.Create;
+namespace Shop.Application.Categories.UseCases.Create;
 
 public record CreateCategoryCommand(long? ParentId, string Title, string Slug,
     List<Category> SubCategories, List<CategorySpecification> Specifications) : IBaseCommand;

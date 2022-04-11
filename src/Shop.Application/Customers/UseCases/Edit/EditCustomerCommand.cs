@@ -1,11 +1,11 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using Common.Application.Validation.CustomFluentValidations;
 using FluentValidation;
 using Shop.Domain.CustomerAggregate.Repository;
 
-namespace Shop.Application.Customers.Use_Cases.Edit;
+namespace Shop.Application.Customers.UseCases.Edit;
 
 public record EditCustomerCommand(long CustomerId, string FullName, string Email,
     string PhoneNumber) : IBaseCommand;

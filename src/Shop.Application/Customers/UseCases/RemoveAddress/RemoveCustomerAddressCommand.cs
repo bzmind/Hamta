@@ -1,8 +1,8 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Shop.Domain.CustomerAggregate.Repository;
 
-namespace Shop.Application.Customers.Use_Cases.RemoveAddress;
+namespace Shop.Application.Customers.UseCases.RemoveAddress;
 
 public record RemoveCustomerAddressCommand(long CustomerId, long AddressId) : IBaseCommand;
 

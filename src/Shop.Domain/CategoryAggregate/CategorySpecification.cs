@@ -1,4 +1,4 @@
-﻿using Common.Domain.Base_Classes;
+﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 
 namespace Shop.Domain.CategoryAggregate;

@@ -1,8 +1,8 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Shop.Domain.CommentAggregate.Repository;
 
-namespace Shop.Application.Comments.Use_Cases.SetLikes;
+namespace Shop.Application.Comments.UseCases.SetLikes;
 
 public record SetCommentLikesCommand(long CommentId, long CustomerId) : IBaseCommand;
 

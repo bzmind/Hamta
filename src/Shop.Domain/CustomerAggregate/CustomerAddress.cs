@@ -1,5 +1,5 @@
-﻿using Common.Domain.Base_Classes;
-using Common.Domain.Value_Objects;
+﻿using Common.Domain.BaseClasses;
+using Common.Domain.ValueObjects;
 
 namespace Shop.Domain.CustomerAggregate;
 

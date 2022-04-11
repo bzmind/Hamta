@@ -1,5 +1,5 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Security;
 using Common.Application.Validation;
 using Common.Application.Validation.CustomFluentValidations;
@@ -7,7 +7,7 @@ using FluentValidation;
 using Shop.Domain.CustomerAggregate;
 using Shop.Domain.CustomerAggregate.Repository;
 
-namespace Shop.Application.Customers.Use_Cases.Create;
+namespace Shop.Application.Customers.UseCases.Create;
 
 public record CreateCustomerCommand(string FullName, string Email, string Password,
     string PhoneNumber) : IBaseCommand;

@@ -1,10 +1,10 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.CustomerAggregate.Repository;
 
-namespace Shop.Application.Customers.Use_Cases.SetAvatar;
+namespace Shop.Application.Customers.UseCases.SetAvatar;
 
 public record SetCustomerAvatarCommand(long CustomerId, string AvatarName) : IBaseCommand;
 

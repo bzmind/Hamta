@@ -1,6 +1,6 @@
 ﻿using Common.Domain.Exceptions;
 
-namespace Common.Domain.Value_Objects;
+namespace Common.Domain.ValueObjects;
 
 public class Money : BaseValueObject
 {

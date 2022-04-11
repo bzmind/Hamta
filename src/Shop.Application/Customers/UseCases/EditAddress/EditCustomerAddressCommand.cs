@@ -1,11 +1,11 @@
 ﻿using Common.Application;
-using Common.Application.Base_Classes;
+using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using Common.Application.Validation.CustomFluentValidations;
 using FluentValidation;
 using Shop.Domain.CustomerAggregate.Repository;
 
-namespace Shop.Application.Customers.Use_Cases.EditAddress;
+namespace Shop.Application.Customers.UseCases.EditAddress;
 
 public record EditCustomerAddressCommand(long CustomerId, long AddressId, string FullName, string PhoneNumber,
     string Province, string City, string FullAddress, string PostalCode) : IBaseCommand;
