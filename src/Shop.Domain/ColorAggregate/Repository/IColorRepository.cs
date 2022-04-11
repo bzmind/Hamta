@@ -2,7 +2,7 @@
 
 namespace Shop.Domain.ColorAggregate.Repository;
 
-public interface IColorRepository : IBaseRepository<ColorGroup>
+public interface IColorRepository : IBaseRepository<Color>
 {
     
 }

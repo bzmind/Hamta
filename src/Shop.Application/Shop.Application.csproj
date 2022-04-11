@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Colors\UseCases\Edit\" />
+    <Folder Include="Colors\UseCases\Remove\" />
     <Folder Include="Inventories\UseCases\Edit\" />
     <Folder Include="Inventories\UseCases\" />
     <Folder Include="Inventories\UseCases\RemoveDiscount\" />

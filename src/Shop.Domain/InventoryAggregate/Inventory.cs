@@ -26,10 +26,11 @@ public class Inventory : BaseAggregateRoot
         IsAvailable = true;
     }
 
-    public void Edit(int count, int price, long colorId)
+    public void Edit(long productId, int quantity, int price, long colorId)
     {
-        Guard(count);
-        Quantity = count;
+        Guard(quantity);
+        ProductId = productId;
+        Quantity = quantity;
         Price = new Money(price);
         ColorId = colorId;
     }
