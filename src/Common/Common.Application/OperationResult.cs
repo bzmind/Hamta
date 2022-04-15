@@ -18,13 +18,28 @@ public class OperationResult
         return new OperationResult(SuccessMessage);
     }
 
+    public static OperationResult Success(string successMessage)
+    {
+        return new OperationResult(successMessage);
+    }
+
     public static OperationResult Error()
     {
         return new OperationResult(ErrorMessage);
     }
 
+    public static OperationResult Error(string errorMessage)
+    {
+        return new OperationResult(errorMessage);
+    }
+
     public static OperationResult NotFound()
     {
         return new OperationResult(NotFoundMessage);
+    }
+
+    public static OperationResult NotFound(string notFoundMessage)
+    {
+        return new OperationResult(notFoundMessage);
     }
 }

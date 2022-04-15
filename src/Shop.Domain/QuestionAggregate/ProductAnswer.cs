@@ -1,7 +1,7 @@
 ﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 
-namespace Shop.Domain.ProductAggregate;
+namespace Shop.Domain.QuestionAggregate;
 
 public class ProductAnswer : BaseEntity
 {

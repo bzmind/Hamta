@@ -3,6 +3,7 @@ using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Shop.Domain.ProductAggregate.Services;
 using Shop.Domain.ProductAggregate.Value_Objects;
+using Shop.Domain.QuestionAggregate;
 
 namespace Shop.Domain.ProductAggregate;
 
@@ -13,10 +14,11 @@ public class Product : BaseAggregateRoot
     public string? EnglishName { get; private set; }
     public string Slug { get; private set; }
     public string Description { get; private set; }
-    public Score Score { get; private set; } = new(0);
+    public Score Score { get; private set; }
+    public ProductImage MainImage { get; private set; }
 
-    private List<ProductImage> _images;
-    public ReadOnlyCollection<ProductImage> Images => _images.AsReadOnly();
+    private List<ProductImage> _galleryImages = new List<ProductImage>();
+    public ReadOnlyCollection<ProductImage> GalleryImages => _galleryImages.AsReadOnly();
 
     private List<ProductSpecification> _customSpecifications = new List<ProductSpecification>();
     public ReadOnlyCollection<ProductSpecification> CustomSpecifications => _customSpecifications.AsReadOnly();
@@ -24,45 +26,53 @@ public class Product : BaseAggregateRoot
     private List<ProductExtraDescription> _extraDescriptions = new List<ProductExtraDescription>();
     public ReadOnlyCollection<ProductExtraDescription> ExtraDescriptions => _extraDescriptions.AsReadOnly();
 
-    private readonly List<ProductQuestion> _questions = new List<ProductQuestion>();
-    public ReadOnlyCollection<ProductQuestion> Questions => _questions.AsReadOnly();
-
-    public Product(long categoryId, string name, string slug, string description, List<ProductImage> images,
+    public Product(long categoryId, string name, string? englishName, string slug, string description,
         IProductDomainService productService)
     {
         Guard(name, slug, description, productService);
         CategoryId = categoryId;
         Name = name;
+        EnglishName = englishName;
         Description = description;
         Slug = slug;
-        _images = images;
+        Score = new(0);
     }
 
-    public void Edit(long categoryId, string name, string slug, string description, List<ProductImage> images,
-        IProductDomainService productService)
+    public void Edit(long categoryId, string name, string slug, string description, ProductImage mainImage,
+        List<ProductImage> images, IProductDomainService productService)
     {
         Guard(name, slug, description, productService);
         CategoryId = categoryId;
         Name = name;
         Slug = slug;
         Description = description;
-        _images = images;
+        MainImage = mainImage;
+        _galleryImages = images;
     }
 
-    public void AddImage(string imageName)
+    public void AddMainImage(string mainImage)
     {
-        NullOrEmptyDataDomainException.CheckString(imageName, nameof(imageName));
-        _images.Add(new ProductImage(Id, imageName));
+        NullOrEmptyDataDomainException.CheckString(mainImage, nameof(mainImage));
+        MainImage = new ProductImage(Id, mainImage);
+    }
+
+    public void AddGalleryImages(List<string> galleryImages)
+    {
+        galleryImages.ForEach(galleryImage =>
+        {
+            NullOrEmptyDataDomainException.CheckString(galleryImage, nameof(galleryImage));
+            _galleryImages.Add(new ProductImage(Id, galleryImage));
+        });
     }
 
     public void RemoveImage(string imageName)
     {
-        var image = Images.FirstOrDefault(i => i.Name == imageName);
+        var image = GalleryImages.FirstOrDefault(i => i.Name == imageName);
 
         if (image == null)
-            throw new InvalidDataDomainException($"No image was found with the provided name: {imageName}");
+            throw new InvalidDataDomainException("Image not found for this product");
 
-        _images.Remove(image);
+        _galleryImages.Remove(image);
     }
 
     public void SetCustomSpecifications(List<ProductSpecification> customSpecifications)
@@ -84,42 +94,6 @@ public class Product : BaseAggregateRoot
     {
         NullOrEmptyDataDomainException.CheckString(englishName, nameof(englishName));
         EnglishName = englishName;
-    }
-
-
-    public void AddQuestion(ProductQuestion question)
-    {
-        _questions.Add(question);
-    }
-
-    public void RemoveQuestion(long questionId)
-    {
-        var question = Questions.FirstOrDefault(q => q.Id == questionId);
-
-        if (question == null)
-            throw new NullOrEmptyDataDomainException("No such answer was found for this question");
-
-        _questions.Remove(question);
-    }
-    
-    public void AddAnswer(long questionId, ProductAnswer answer)
-    {
-        var question = Questions.FirstOrDefault(q => q.Id == questionId);
-
-        if (question == null)
-            throw new NullOrEmptyDataDomainException("No such question was found");
-
-        question.AddAnswer(answer);
-    }
-
-    public void RemoveAnswer(long answerParentId, long answerId)
-    {
-        var question = Questions.FirstOrDefault(q => q.Id == answerParentId);
-
-        if (question == null)
-            throw new NullOrEmptyDataDomainException("No such question was found for this product");
-        
-        question.RemoveAnswer(answerId);
     }
 
     private void Guard(string name, string slug, string description, IProductDomainService productService)

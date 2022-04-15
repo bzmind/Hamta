@@ -12,13 +12,9 @@
     <Folder Include="Inventories\UseCases\Edit\" />
     <Folder Include="Inventories\UseCases\" />
     <Folder Include="Inventories\UseCases\RemoveDiscount\" />
-    <Folder Include="Orders\UseCases\AddOrderItem\" />
+    <Folder Include="Orders\UseCases\AddItem\" />
     <Folder Include="Orders\UseCases\Checkout\" />
-    <Folder Include="Orders\UseCases\Create\" />
-    <Folder Include="Orders\UseCases\DecreaseItemCount\" />
-    <Folder Include="Orders\UseCases\IncreaseItemCount\" />
-    <Folder Include="Orders\UseCases\" />
-    <Folder Include="Orders\UseCases\RemoveOrderItem\" />
+    <Folder Include="Orders\UseCases\RemoveItem\" />
     <Folder Include="Orders\UseCases\SetStatus\" />
     <Folder Include="Products\UseCases\AddAnswer\" />
     <Folder Include="Products\UseCases\AddImage\" />

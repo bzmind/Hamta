@@ -2,9 +2,9 @@
 using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 
-namespace Shop.Domain.ProductAggregate;
+namespace Shop.Domain.QuestionAggregate;
 
-public class ProductQuestion : BaseEntity
+public class ProductQuestion : BaseAggregateRoot
 {
     public long ProductId { get; private set; }
     public long CustomerId { get; private set; }
@@ -31,7 +31,7 @@ public class ProductQuestion : BaseEntity
         var answer = Answers.FirstOrDefault(a => a.Id == answerId);
 
         if (answer == null)
-            throw new NullOrEmptyDataDomainException("No such answer was found for this question");
+            throw new NullOrEmptyDataDomainException("Answer was not found for this question");
 
         _answers.Remove(answer);
     }

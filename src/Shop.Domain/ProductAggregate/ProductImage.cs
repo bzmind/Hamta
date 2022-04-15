@@ -10,6 +10,7 @@ public class ProductImage : BaseEntity
 
     public ProductImage(long productId, string name)
     {
+        Guard(name);
         ProductId = productId;
         Name = name;
     }

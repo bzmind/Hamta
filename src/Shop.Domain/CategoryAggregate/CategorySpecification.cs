@@ -9,10 +9,9 @@ public class CategorySpecification : BaseEntity
     public string Title { get; private set; }
     public string Description { get; private set; }
 
-    public CategorySpecification(long categoryId, string title, string description)
+    public CategorySpecification(string title, string description)
     {
         Guard(title, description);
-        CategoryId = categoryId;
         Title = title;
         Description = description;
     }
