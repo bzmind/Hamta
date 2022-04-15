@@ -11,7 +11,7 @@ public class Order : BaseAggregateRoot
     public OrderStatus Status { get; private set; }
     public OrderAddress? Address { get; private set; }
 
-    private readonly List<OrderItem> _items;
+    private readonly List<OrderItem> _items = new List<OrderItem>();
     public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
     public OrderShippingMethod ShippingMethod { get; private set; }
 
@@ -43,11 +43,10 @@ public class Order : BaseAggregateRoot
     private const int FastShippingCost = 20000;
     private const int NormalShippingCost = 0;
 
-    public Order(long customerId, List<OrderItem> items)
+    public Order(long customerId)
     {
         CustomerId = customerId;
         Status = OrderStatus.Pending;
-        _items = items;
     }
 
     public void AddOrderItem(OrderItem orderItem)
@@ -70,7 +69,7 @@ public class Order : BaseAggregateRoot
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
-            throw new InvalidDataDomainException($"No orderItem was found with this ID: {orderItemId}");
+            throw new InvalidDataDomainException("Order item not found in this order");
 
         _items.Remove(orderItem);
     }
@@ -81,7 +80,7 @@ public class Order : BaseAggregateRoot
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
-            throw new InvalidDataDomainException($"No orderItem was found with this ID: {orderItemId}");
+            throw new InvalidDataDomainException("Order item not found in this order");
 
         orderItem.IncreaseCount();
     }
@@ -92,7 +91,7 @@ public class Order : BaseAggregateRoot
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
-            throw new InvalidDataDomainException($"No orderItem was found with this ID: {orderItemId}");
+            throw new InvalidDataDomainException("Order item not found in this order");
 
         orderItem.DecreaseCount();
     }

@@ -1,5 +1,6 @@
 ﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
+using Common.Domain.ValueObjects;
 
 namespace Shop.Domain.OrderAggregate;
 
@@ -7,33 +8,32 @@ public class OrderItem : BaseEntity
 {
     public long OrderId { get; private set; }
     public long InventoryId { get; private set; }
-    public int Count { get; private set; }
-    public int Price { get; private set; }
-    public int TotalPrice { get => Price * Count; private set { } }
+    public int Quantity { get; private set; }
+    public Money Price { get; private set; }
+    public int TotalPrice { get => Price.Value * Quantity; private set { } }
 
-    public OrderItem(long orderId, long inventoryId, int count, int price)
+    public OrderItem(long inventoryId, int quantity, Money price)
     {
-        ValidateCount(count);
-        ValidatePrice(price);
-        OrderId = orderId;
+        ValidateCount(quantity);
+        ValidatePrice(price.Value);
         InventoryId = inventoryId;
-        Count = count;
+        Quantity = quantity;
         Price = price;
     }
 
-    public void IncreaseCount() => Count++;
+    public void IncreaseCount() => Quantity++;
 
     public void DecreaseCount()
     {
-        if (Count == 1)
+        if (Quantity == 1)
             throw new OperationNotAllowedDomainException("Order item quantity cannot be less than zero");
 
-        Count--;
+        Quantity--;
     }
 
-    public void SetPrice(int price)
+    public void SetPrice(Money price)
     {
-        ValidatePrice(price);
+        ValidatePrice(price.Value);
         Price = price;
     }
 

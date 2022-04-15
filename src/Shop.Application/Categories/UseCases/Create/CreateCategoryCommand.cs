@@ -9,7 +9,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.UseCases.Create;
 
 public record CreateCategoryCommand(long? ParentId, string Title, string Slug,
-    List<Category> SubCategories, List<CategorySpecification> Specifications) : IBaseCommand;
+    Dictionary<string, string> Specifications) : IBaseCommand;
 
 public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand>
 {
@@ -30,21 +30,11 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
         if (request.Specifications.Count > 0)
         {
             var specifications = new List<CategorySpecification>();
-            request.Specifications.ForEach(specification =>
-                specifications.Add(new CategorySpecification(specification.CategoryId, specification.Title,
-                    specification.Description)));
+            request.Specifications.ToList().ForEach(specification =>
+                specifications.Add(new CategorySpecification(specification.Key, specification.Value)));
             category.SetSpecifications(specifications);
         }
-
-        if (request.SubCategories.Count > 0)
-        {
-            var subCategories = new List<Category>();
-            request.SubCategories.ForEach(subCategory =>
-                subCategories.Add(new Category(subCategory.ParentId, subCategory.Title, subCategory.Slug,
-                    _categoryDomainService)));
-            category.SetSubCategories(subCategories);
-        }
-
+        
         await _categoryRepository.AddAsync(category);
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();
@@ -62,25 +52,14 @@ internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategory
         RuleFor(c => c.Slug)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
-
-        RuleForEach(c => c.SubCategories).ChildRules(subCategory =>
-        {
-            subCategory.RuleFor(sc => sc.Title)
-                .NotNull()
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
-
-            subCategory.RuleFor(sc => sc.Slug)
-                .NotNull()
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
-        });
-
+        
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
-            specification.RuleFor(spec => spec.Title)
+            specification.RuleFor(spec => spec.Key)
                 .NotNull()
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
-            specification.RuleFor(spec => spec.Description)
+            specification.RuleFor(spec => spec.Value)
                 .NotNull()
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
         });
