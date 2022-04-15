@@ -12,22 +12,13 @@
     <Folder Include="Inventories\UseCases\Edit\" />
     <Folder Include="Inventories\UseCases\" />
     <Folder Include="Inventories\UseCases\RemoveDiscount\" />
+    <Folder Include="Questions\" />
     <Folder Include="Orders\UseCases\AddItem\" />
     <Folder Include="Orders\UseCases\Checkout\" />
     <Folder Include="Orders\UseCases\RemoveItem\" />
     <Folder Include="Orders\UseCases\SetStatus\" />
-    <Folder Include="Products\UseCases\AddAnswer\" />
-    <Folder Include="Products\UseCases\AddImage\" />
-    <Folder Include="Products\UseCases\AddQuestion\" />
     <Folder Include="Products\UseCases\Create\" />
     <Folder Include="Products\UseCases\Edit\" />
-    <Folder Include="Products\UseCases\" />
-    <Folder Include="Products\UseCases\RemoveAnswer\" />
-    <Folder Include="Products\UseCases\RemoveImage\" />
-    <Folder Include="Products\UseCases\RemoveQuestion\" />
-    <Folder Include="Products\UseCases\SetCustomSpecifications\" />
-    <Folder Include="Products\UseCases\SetEnglishName\" />
-    <Folder Include="Products\UseCases\SetExtraDescriptions\" />
     <Folder Include="Products\UseCases\SetScore\" />
   </ItemGroup>
 

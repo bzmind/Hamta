@@ -14,10 +14,12 @@ public class Product : BaseAggregateRoot
     public string? EnglishName { get; private set; }
     public string Slug { get; private set; }
     public string Description { get; private set; }
-    public Score Score { get; private set; }
+
+    private readonly List<Score> _scores = new List<Score>();
+    public ReadOnlyCollection<Score> Scores => _scores.AsReadOnly();
     public ProductImage MainImage { get; private set; }
 
-    private List<ProductImage> _galleryImages = new List<ProductImage>();
+    private readonly List<ProductImage> _galleryImages = new List<ProductImage>();
     public ReadOnlyCollection<ProductImage> GalleryImages => _galleryImages.AsReadOnly();
 
     private List<ProductSpecification> _customSpecifications = new List<ProductSpecification>();
@@ -35,39 +37,35 @@ public class Product : BaseAggregateRoot
         EnglishName = englishName;
         Description = description;
         Slug = slug;
-        Score = new(0);
     }
 
-    public void Edit(long categoryId, string name, string slug, string description, ProductImage mainImage,
-        List<ProductImage> images, IProductDomainService productService)
+    public void Edit(long categoryId, string name, string? englishName, string slug, string description,
+        IProductDomainService productService)
     {
         Guard(name, slug, description, productService);
         CategoryId = categoryId;
         Name = name;
+        EnglishName = englishName;
         Slug = slug;
         Description = description;
-        MainImage = mainImage;
-        _galleryImages = images;
     }
 
-    public void AddMainImage(string mainImage)
+    public void SetMainImage(string mainImage)
     {
-        NullOrEmptyDataDomainException.CheckString(mainImage, nameof(mainImage));
         MainImage = new ProductImage(Id, mainImage);
     }
 
-    public void AddGalleryImages(List<string> galleryImages)
+    public void SetGalleryImages(List<string> galleryImages)
     {
         galleryImages.ForEach(galleryImage =>
         {
-            NullOrEmptyDataDomainException.CheckString(galleryImage, nameof(galleryImage));
             _galleryImages.Add(new ProductImage(Id, galleryImage));
         });
     }
-
-    public void RemoveImage(string imageName)
+    
+    public void RemoveGalleryImage(long imageId)
     {
-        var image = GalleryImages.FirstOrDefault(i => i.Name == imageName);
+        var image = GalleryImages.FirstOrDefault(i => i.Id == imageId);
 
         if (image == null)
             throw new InvalidDataDomainException("Image not found for this product");
@@ -85,17 +83,11 @@ public class Product : BaseAggregateRoot
         _extraDescriptions = extraDescriptions;
     }
 
-    public void SetScore(Score score)
+    public void AddScore(int scoreAmount)
     {
-        Score = score;
+        _scores.Add(new Score(scoreAmount));
     }
-
-    public void SetEnglishName(string englishName)
-    {
-        NullOrEmptyDataDomainException.CheckString(englishName, nameof(englishName));
-        EnglishName = englishName;
-    }
-
+    
     private void Guard(string name, string slug, string description, IProductDomainService productService)
     {
         NullOrEmptyDataDomainException.CheckString(name, nameof(name));

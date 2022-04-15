@@ -36,6 +36,7 @@ public interface IFileService
     /// <returns></returns>
     Task<List<string>> SaveMultipleFilesAndGenerateNames(List<IFormFile> files, string directoryPath);
     void DeleteFile(string path, string fileName);
+    void DeleteMultipleFiles(string path, List<string> fileNames);
     void DeleteFile(string filePath);
     void DeleteDirectory(string directoryPath);
 }

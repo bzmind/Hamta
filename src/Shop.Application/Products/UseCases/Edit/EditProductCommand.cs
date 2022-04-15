@@ -8,20 +8,20 @@ using Shop.Domain.ProductAggregate;
 using Shop.Domain.ProductAggregate.Repository;
 using Shop.Domain.ProductAggregate.Services;
 
-namespace Shop.Application.Products.UseCases.Create;
+namespace Shop.Application.Products.UseCases.Edit;
 
-public record CreateProductCommand(long CategoryId, string Name, string? EnglishName, string Slug,
-    string Description, IFormFile MainImage, List<IFormFile> GalleryImages,
+public record EditProductCommand(long ProductId, long CategoryId, string Name, string? EnglishName,
+    string Slug, string Description, IFormFile? MainImage, List<IFormFile>? GalleryImages,
     Dictionary<string, string>? CustomSpecifications, List<bool>? ImportantFeatures,
     Dictionary<string, string>? ExtraDescriptions) : IBaseCommand;
 
-public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductCommand>
+public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
 {
     private readonly IProductRepository _productRepository;
     private readonly IProductDomainService _productDomainService;
     private readonly IFileService _fileService;
 
-    public CreateProductCommandHandler(IProductRepository productRepository,
+    public EditProductCommandHandler(IProductRepository productRepository,
         IProductDomainService productDomainService, IFileService fileService)
     {
         _productRepository = productRepository;
@@ -29,21 +29,40 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
         _fileService = fileService;
     }
 
-    public async Task<OperationResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(EditProductCommand request, CancellationToken cancellationToken)
     {
-        var product = new Product(request.CategoryId, request.Name, request.EnglishName, request.Slug,
-            request.Description, _productDomainService);
+        var product = await _productRepository.GetAsTrackingAsync(request.ProductId);
 
-        await _productRepository.AddAsync(product);
+        if (product == null)
+            return OperationResult.NotFound();
 
-        var mainImage = await _fileService.SaveFileAndGenerateName(request.MainImage,
-            Directories.ProductMainImages);
-        product.SetMainImage(mainImage);
+        product.Edit(request.CategoryId, request.Name, request.EnglishName, request.Slug, request.Description,
+            _productDomainService);
 
-        var galleryImages =
-            await _fileService.SaveMultipleFilesAndGenerateNames(request.GalleryImages,
-                Directories.ProductGalleryImages);
-        product.SetGalleryImages(galleryImages);
+        var oldImage = product.MainImage;
+
+        if (request.MainImage != null)
+        {
+            _fileService.DeleteFile(Directories.ProductMainImages, oldImage.Name);
+
+            var newMainImage =
+                await _fileService.SaveFileAndGenerateName(request.MainImage, Directories.ProductMainImages);
+
+            product.SetMainImage(newMainImage);
+        }
+
+        var oldGalleryImages = product.GalleryImages.Select(img => img.Name).ToList();
+
+        if (request.GalleryImages != null)
+        {
+            _fileService.DeleteMultipleFiles(Directories.ProductGalleryImages, oldGalleryImages);
+
+            var newGalleryImages =
+                await _fileService.SaveMultipleFilesAndGenerateNames(request.GalleryImages,
+                    Directories.ProductGalleryImages);
+
+            product.SetGalleryImages(newGalleryImages);
+        }
 
         if (request.CustomSpecifications != null)
         {
@@ -77,9 +96,9 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
     }
 }
 
-internal class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+internal class EditProductCommandValidator : AbstractValidator<EditProductCommand>
 {
-    public CreateProductCommandValidator()
+    public EditProductCommandValidator()
     {
         RuleFor(p => p.Name)
             .NotNull()
@@ -92,13 +111,5 @@ internal class CreateProductCommandValidator : AbstractValidator<CreateProductCo
         RuleFor(p => p.Description)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
-
-        RuleFor(p => p.MainImage)
-            .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"));
-
-        RuleFor(p => p.GalleryImages)
-            .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"));
     }
 }

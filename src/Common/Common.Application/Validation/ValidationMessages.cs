@@ -21,6 +21,23 @@ public static class ValidationMessages
     /// <param name="field"></param>
     public static string FieldInvalid(string field) => $"{field} وارد شده نا معتبر است";
 
+
+    /// <summary>
+    /// <example>Example: نام} باید کمتر از {3} باشد}</example>
+    /// </summary>
+    /// <param name="field"></param>
+    /// <param name="maxLength"></param>
+    public static string FieldMaxLength(string field, int maxLength)
+        => $"{field} باید کمتر از {maxLength} باشد";
+
+    /// <summary>
+    /// <example>Example: نام} باید بیشتر از {3} باشد}</example>
+    /// </summary>
+    /// <param name="field"></param>
+    /// <param name="minLength"></param>
+    public static string FieldMinLength(string field, int minLength)
+        => $"{field} باید بیشتر از {minLength} باشد";
+
     /// <summary>
     /// <example>Example: نام} باید {3} کاراکتر باشد}</example>
     /// </summary>
