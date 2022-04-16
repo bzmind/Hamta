@@ -7,7 +7,7 @@ using Shop.Domain.CommentAggregate.Repository;
 
 namespace Shop.Application.Comments.UseCases.SetStatus;
 
-public record SetCommentStatusCommand(long CommentId, Comment.CommentStatus Status) : IBaseCommand;
+public record SetCommentStatusCommand(long CommentId, int StatusId) : IBaseCommand;
 
 public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStatusCommand>
 {
@@ -25,7 +25,9 @@ public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStat
         if (comment == null)
             return OperationResult.NotFound();
 
-        comment.SetCommentStatus(request.Status);
+        var status = (Comment.CommentStatus) request.StatusId;
+        comment.SetCommentStatus(status);
+
         await _commentRepository.SaveAsync();
         return OperationResult.Success();
     }
@@ -35,7 +37,7 @@ internal class SetCommentStatusCommandValidator : AbstractValidator<SetCommentSt
 {
     public SetCommentStatusCommandValidator()
     {
-        RuleFor(c => c.Status)
+        RuleFor(c => c.StatusId)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.Required);
     }

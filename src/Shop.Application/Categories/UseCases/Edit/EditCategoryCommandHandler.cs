@@ -9,7 +9,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.UseCases.Edit;
 
 public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
-    List<Category> SubCategories, List<CategorySpecification> Specifications) : IBaseCommand;
+    List<Category> SubCategories, Dictionary<string, string> Specifications) : IBaseCommand;
 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
@@ -31,9 +31,8 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
             return OperationResult.NotFound();
         
         var specifications = new List<CategorySpecification>();
-        request.Specifications.ForEach(specification =>
-            specifications.Add(new CategorySpecification(specification.CategoryId, specification.Title,
-                specification.Description)));
+        request.Specifications.ToList().ForEach(specification =>
+            specifications.Add(new CategorySpecification(specification.Key, specification.Value)));
         category.SetSpecifications(specifications);
 
         var subCategories = new List<Category>();
@@ -72,11 +71,11 @@ internal class EditCategoryCommandValidator : AbstractValidator<EditCategoryComm
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
-            specification.RuleFor(spec => spec.Title)
+            specification.RuleFor(spec => spec.Key)
                 .NotNull()
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
-            specification.RuleFor(spec => spec.Description)
+            specification.RuleFor(spec => spec.Value)
                 .NotNull()
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
         });

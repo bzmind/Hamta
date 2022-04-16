@@ -7,8 +7,8 @@ using Shop.Domain.CustomerAggregate.Repository;
 
 namespace Shop.Application.Customers.UseCases.Edit;
 
-public record EditCustomerCommand(long CustomerId, string FullName, string Email,
-    string PhoneNumber) : IBaseCommand;
+public record EditCustomerCommand(long CustomerId, string FullName, string Email, string PhoneNumber)
+    : IBaseCommand;
 
 public class EditCustomerCommandHandler : IBaseCommandHandler<EditCustomerCommand>
 {

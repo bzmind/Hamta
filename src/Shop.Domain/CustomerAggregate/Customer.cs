@@ -20,7 +20,7 @@ public class Customer : BaseAggregateRoot
     private readonly List<CustomerFavoriteItem> _favoriteItems = new List<CustomerFavoriteItem>();
     public ReadOnlyCollection<CustomerFavoriteItem> FavoriteItems => _favoriteItems.AsReadOnly();
 
-    private const string DefaultAvatarName = "default-avatar.png";
+    public const string DefaultAvatarName = "avatar.png";
 
     public Customer(string fullName, string email, string password, string phoneNumber)
     {
