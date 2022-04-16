@@ -9,7 +9,7 @@ namespace Shop.Application.Comments.UseCases.Create;
 
 public record CreateCommentCommand(long ProductId, long CustomerId, string Title, string Description,
     List<string> PositivePoints, List<string> NegativePoints,
-    Comment.CommentRecommendation Recommendation) : IBaseCommand;
+    int RecommendationId) : IBaseCommand;
 
 public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentCommand>
 {
@@ -22,8 +22,10 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
 
     public async Task<OperationResult> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
+        var recommendation = (Comment.CommentRecommendation) request.RecommendationId;
+
         var comment = new Comment(request.ProductId, request.CustomerId, request.Title, request.Description,
-            request.Recommendation);
+            recommendation);
 
         if (request.PositivePoints.Count > 0)
         {
@@ -57,7 +59,7 @@ internal class CreateCommentCommandValidator : AbstractValidator<CreateCommentCo
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
 
-        RuleFor(c => c.Recommendation)
+        RuleFor(c => c.RecommendationId)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.Required);
 

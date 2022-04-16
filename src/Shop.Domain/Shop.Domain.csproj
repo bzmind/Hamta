@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <Folder Include="ColorAggregate\Repository\" />
+    <Folder Include="QuestionAggregate\Repository\" />
   </ItemGroup>
 
 </Project>

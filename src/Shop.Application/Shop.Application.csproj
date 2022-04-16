@@ -12,7 +12,6 @@
     <Folder Include="Inventories\UseCases\Edit\" />
     <Folder Include="Inventories\UseCases\" />
     <Folder Include="Inventories\UseCases\RemoveDiscount\" />
-    <Folder Include="Questions\" />
     <Folder Include="Orders\UseCases\AddItem\" />
     <Folder Include="Orders\UseCases\Checkout\" />
     <Folder Include="Orders\UseCases\RemoveItem\" />
@@ -20,6 +19,9 @@
     <Folder Include="Products\UseCases\Create\" />
     <Folder Include="Products\UseCases\Edit\" />
     <Folder Include="Products\UseCases\SetScore\" />
+    <Folder Include="Questions\UseCases\RemoveAnswer\" />
+    <Folder Include="Questions\UseCases\Create\" />
+    <Folder Include="Questions\UseCases\AddAnswer\" />
   </ItemGroup>
 
   <ItemGroup>

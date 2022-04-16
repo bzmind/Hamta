@@ -4,24 +4,27 @@ using Common.Domain.Exceptions;
 
 namespace Shop.Domain.QuestionAggregate;
 
-public class ProductQuestion : BaseAggregateRoot
+public class Question : BaseAggregateRoot
 {
     public long ProductId { get; private set; }
     public long CustomerId { get; private set; }
     public string Description { get; private set; }
 
-    private readonly List<ProductAnswer> _answers = new List<ProductAnswer>();
-    public ReadOnlyCollection<ProductAnswer> Answers => _answers.AsReadOnly();
+    private readonly List<Answer> _answers = new List<Answer>();
+    public ReadOnlyCollection<Answer> Answers => _answers.AsReadOnly();
+    public QuestionStatus Status { get; private set; }
+    public enum QuestionStatus { Pending, Accepted, Rejected }
 
-    public ProductQuestion(long productId, long customerId, string description)
+    public Question(long productId, long customerId, string description)
     {
         Guard(description);
         ProductId = productId;
         CustomerId = customerId;
         Description = description;
+        Status = QuestionStatus.Pending;
     }
 
-    public void AddAnswer(ProductAnswer answer)
+    public void AddAnswer(Answer answer)
     {
         _answers.Add(answer);
     }
@@ -34,6 +37,21 @@ public class ProductQuestion : BaseAggregateRoot
             throw new NullOrEmptyDataDomainException("Answer was not found for this question");
 
         _answers.Remove(answer);
+    }
+
+    public void SetQuestionStatus(QuestionStatus status)
+    {
+        Status = status;
+    }
+
+    public void SetAnswerStatus(long answerId, Answer.AnswerStatus answerStatus)
+    {
+        var answer = Answers.FirstOrDefault(a => a.Id == answerId);
+
+        if (answer == null)
+            throw new NullOrEmptyDataDomainException("Answer was not found for this question");
+
+        answer.SetStatus(answerStatus);
     }
 
     private void Guard(string description)

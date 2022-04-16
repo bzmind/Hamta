@@ -20,11 +20,12 @@ public class Comment : BaseAggregateRoot
     public CommentRecommendation Recommendation { get; private set; }
     public int Likes { get => UsersWhoLiked.Count; private set {} }
     public int Dislikes { get => UsersWhoDisliked.Count; private set {} }
-    private List<long> UsersWhoLiked { get; set; }
-    private List<long> UsersWhoDisliked { get; set; }
 
     public enum CommentRecommendation { Neutral, Positive, Negative }
     public enum CommentStatus { Pending, Accepted, Rejected }
+
+    private List<long> UsersWhoLiked { get; set; }
+    private List<long> UsersWhoDisliked { get; set; }
 
     public Comment(long productId, long customerId, string title, string description,
         CommentRecommendation recommendation)
