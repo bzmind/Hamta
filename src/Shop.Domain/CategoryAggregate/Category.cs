@@ -11,7 +11,7 @@ public class Category : BaseAggregateRoot
     public string Title { get; private set; }
     public string Slug { get; private set; }
 
-    private List<Category> _subCategories = new List<Category>();
+    private readonly List<Category> _subCategories = new List<Category>();
     public ReadOnlyCollection<Category> SubCategories => _subCategories.AsReadOnly();
 
     private List<CategorySpecification> _specifications = new List<CategorySpecification>();
