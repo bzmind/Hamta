@@ -2,7 +2,7 @@
 
 namespace Shop.Infrastructure.Persistence.EF;
 
-public class DatabaseContext : DbContext
+public class ShopContext : DbContext
 {
     
 }
