@@ -3,7 +3,6 @@ using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Shop.Domain.ProductAggregate.Services;
 using Shop.Domain.ProductAggregate.Value_Objects;
-using Shop.Domain.QuestionAggregate;
 
 namespace Shop.Domain.ProductAggregate;
 

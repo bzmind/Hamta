@@ -22,6 +22,7 @@ public class Category : BaseAggregateRoot
         Guard(title, slug, categoryDomainService);
         Title = title;
         Slug = slug;
+        ParentId = parentId;
     }
 
     public void Edit(long? parentId, string title, string slug, ICategoryDomainService categoryDomainService)
@@ -29,16 +30,22 @@ public class Category : BaseAggregateRoot
         Guard(title, slug, categoryDomainService);
         Title = title;
         Slug = slug;
+        ParentId = parentId;
     }
 
-    public void SetSubCategories(List<Category> subCategories)
+    public void AddSubCategory(Category subCategory)
     {
-        subCategories.ForEach(subCategory =>
-        {
-            subCategory.ParentId = Id;
-        });
+        _subCategories.Add(subCategory);
+    }
 
-        _subCategories = subCategories;
+    public void RemoveSubCategory(long subCategoryId)
+    {
+        var subCategory = _subCategories.FirstOrDefault(sc => sc.Id == subCategoryId);
+
+        if (subCategory == null)
+            throw new NullOrEmptyDataDomainException("Sub category doesn't exists in this category");
+
+        _subCategories.Remove(subCategory);
     }
 
     public void SetSpecifications(List<CategorySpecification> specifications)

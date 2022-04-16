@@ -6,26 +6,31 @@ using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Services;
 
-namespace Shop.Application.Categories.UseCases.Create;
+namespace Shop.Application.Categories.UseCases.AddSubCategory;
 
-public record CreateCategoryCommand(string Title, string Slug, Dictionary<string, string>? Specifications)
-    : IBaseCommand;
+public record AddSubCategoryCommand(long ParentId, string Title, string Slug,
+    Dictionary<string, string>? Specifications) : IBaseCommand;
 
-public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand>
+public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCommand>
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICategoryDomainService _categoryDomainService;
 
-    public CreateCategoryCommandHandler(ICategoryRepository categoryRepository,
+    public AddSubCategoryCommandHandler(ICategoryRepository categoryRepository,
         ICategoryDomainService categoryDomainService)
     {
         _categoryRepository = categoryRepository;
         _categoryDomainService = categoryDomainService;
     }
 
-    public async Task<OperationResult> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(AddSubCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = new Category(null, request.Title, request.Slug, _categoryDomainService);
+        var parentCategory = await _categoryRepository.GetAsTrackingAsync(request.ParentId);
+
+        if (parentCategory == null)
+            return OperationResult.NotFound();
+
+        var newSubCategory = new Category(request.ParentId, request.Title, request.Slug, _categoryDomainService);
 
         if (request.Specifications != null && request.Specifications.Any())
         {
@@ -34,18 +39,19 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
             request.Specifications.ToList().ForEach(specification =>
                 specifications.Add(new CategorySpecification(specification.Key, specification.Value)));
 
-            category.SetSpecifications(specifications);
+            newSubCategory.SetSpecifications(specifications);
         }
-        
-        await _categoryRepository.AddAsync(category);
+
+        parentCategory.AddSubCategory(newSubCategory);
+
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();
     }
 }
 
-internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
+internal class AddSubCategoryCommandValidator : AbstractValidator<AddSubCategoryCommand>
 {
-    public CreateCategoryCommandValidator()
+    public AddSubCategoryCommandValidator()
     {
         RuleFor(c => c.Title)
             .NotNull()
@@ -54,7 +60,7 @@ internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategory
         RuleFor(c => c.Slug)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
-        
+
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Key)

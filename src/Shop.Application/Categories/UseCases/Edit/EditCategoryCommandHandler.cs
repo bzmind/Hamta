@@ -9,7 +9,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.UseCases.Edit;
 
 public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
-    List<Category> SubCategories, Dictionary<string, string> Specifications) : IBaseCommand;
+    Dictionary<string, string>? Specifications) : IBaseCommand;
 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
@@ -29,18 +29,15 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
 
         if (category == null)
             return OperationResult.NotFound();
+
+        if (request.Specifications != null && request.Specifications.Any())
+        {
+            var specifications = new List<CategorySpecification>();
+            request.Specifications.ToList().ForEach(specification =>
+                specifications.Add(new CategorySpecification(specification.Key, specification.Value)));
+            category.SetSpecifications(specifications);
+        }
         
-        var specifications = new List<CategorySpecification>();
-        request.Specifications.ToList().ForEach(specification =>
-            specifications.Add(new CategorySpecification(specification.Key, specification.Value)));
-        category.SetSpecifications(specifications);
-
-        var subCategories = new List<Category>();
-        request.SubCategories.ForEach(subCategory =>
-            subCategories.Add(new Category(subCategory.ParentId, subCategory.Title, subCategory.Slug,
-                _categoryDomainService)));
-        category.SetSubCategories(subCategories);
-
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();
     }
@@ -57,17 +54,6 @@ internal class EditCategoryCommandValidator : AbstractValidator<EditCategoryComm
         RuleFor(c => c.Slug)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
-
-        RuleForEach(c => c.SubCategories).ChildRules(subCategory =>
-        {
-            subCategory.RuleFor(sc => sc.Title)
-                .NotNull()
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
-
-            subCategory.RuleFor(sc => sc.Slug)
-                .NotNull()
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
-        });
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {

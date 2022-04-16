@@ -1,6 +1,5 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
-using FluentValidation;
 using Shop.Domain.ProductAggregate.Repository;
 
 namespace Shop.Application.Products.UseCases.RemoveGalleryImage;
