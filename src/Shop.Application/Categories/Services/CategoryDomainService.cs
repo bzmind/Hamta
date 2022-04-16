@@ -48,7 +48,7 @@ public class CategoryDomainService : ICategoryDomainService
         var parentCategory = _categoryRepository.Get(category.ParentId.Value);
 
         if (parentCategory == null)
-            throw new DataNotFoundInDatabaseDomainException("No such parent category was found");
+            throw new DataNotFoundInDatabaseDomainException("Parent category not found");
 
         return parentCategory;
     }
