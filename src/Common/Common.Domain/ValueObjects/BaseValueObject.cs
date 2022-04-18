@@ -12,7 +12,7 @@ public abstract class BaseValueObject : IEquatable<BaseValueObject>
     private List<PropertyInfo> properties;
     private List<FieldInfo> fields;
 
-    public static bool operator ==(BaseValueObject obj1, BaseValueObject obj2)
+    public static bool operator ==(BaseValueObject? obj1, BaseValueObject? obj2)
     {
         if (object.Equals(obj1, null))
         {
@@ -25,12 +25,12 @@ public abstract class BaseValueObject : IEquatable<BaseValueObject>
         return obj1.Equals(obj2);
     }
 
-    public static bool operator !=(BaseValueObject obj1, BaseValueObject obj2)
+    public static bool operator !=(BaseValueObject? obj1, BaseValueObject? obj2)
     {
         return !(obj1 == obj2);
     }
 
-    public bool Equals(BaseValueObject obj)
+    public bool Equals(BaseValueObject? obj)
     {
         return Equals(obj as object);
     }

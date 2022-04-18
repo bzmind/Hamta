@@ -14,13 +14,10 @@ public record EditCategoryCommand(long Id, long? ParentId, string Title, string 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
     private readonly ICategoryRepository _categoryRepository;
-    private readonly ICategoryDomainService _categoryDomainService;
 
-    public EditCategoryCommandHandler(ICategoryRepository categoryRepository,
-        ICategoryDomainService categoryDomainService)
+    public EditCategoryCommandHandler(ICategoryRepository categoryRepository)
     {
         _categoryRepository = categoryRepository;
-        _categoryDomainService = categoryDomainService;
     }
 
     public async Task<OperationResult> Handle(EditCategoryCommand request, CancellationToken cancellationToken)

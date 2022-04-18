@@ -2,6 +2,8 @@
 using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Common.Domain.ValueObjects;
+using Shop.Domain.OrderAggregate.Services;
+using Shop.Domain.ShippingMethodAggregate;
 
 namespace Shop.Domain.OrderAggregate;
 
@@ -13,35 +15,23 @@ public class Order : BaseAggregateRoot
 
     private readonly List<OrderItem> _items = new List<OrderItem>();
     public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
-    public OrderShippingMethod ShippingMethod { get; private set; }
-
-    public Money ShippingCost
+    public string? ShippingMethod { get; private set; }
+    public Money? ShippingCost { get; private set; }
+    
+    public int? TotalPrice
     {
         get
         {
-            if (ShippingMethod == OrderShippingMethod.Fast)
-                return new Money(FastShippingCost);
+            var itemsPrice = Items.Sum(orderItem => orderItem.TotalPrice);
 
-            return new Money(NormalShippingCost);
-        }
-        private set { }
-    }
+            if (ShippingCost != null)
+                return itemsPrice + ShippingCost.Value;
 
-    public int TotalPrice
-    {
-        get
-        {
-            var price = Items.Sum(orderItem => orderItem.TotalPrice);
-            return price + ShippingCost.Value;
+            return itemsPrice;
         }
-        private set { }
     }
 
     public enum OrderStatus { Pending, Preparing, Sending, Received }
-    public enum OrderShippingMethod { Normal, Fast }
-
-    private const int FastShippingCost = 20000;
-    private const int NormalShippingCost = 0;
 
     public Order(long customerId)
     {
@@ -101,17 +91,20 @@ public class Order : BaseAggregateRoot
         Status = orderStatus;
     }
 
-    public void Checkout(OrderAddress address, OrderShippingMethod shippingMethod)
+    public void Checkout(OrderAddress address, long shippingMethodId, IOrderDomainService orderDomainService)
     {
         CheckOrderStatus();
         Address = address;
-        ShippingMethod = shippingMethod;
         Status = OrderStatus.Preparing;
+
+        var shipping = orderDomainService.GetShippingInfo(shippingMethodId);
+        ShippingMethod = shipping.ShippingMethod.ToString();
+        ShippingCost = shipping.ShippingCost;
     }
 
     private void CheckOrderStatus()
     {
         if (Status != OrderStatus.Pending)
-            throw new OperationNotAllowedDomainException("Cannot edit order details, order is already sent");
+            throw new OperationNotAllowedDomainException("Cannot edit order, order is already sent");
     }
 }

@@ -6,19 +6,22 @@ using Common.Domain.ValueObjects;
 using FluentValidation;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.OrderAggregate.Repository;
+using Shop.Domain.OrderAggregate.Services;
 
 namespace Shop.Application.Orders.UseCases.Checkout;
 
 public record CheckoutOrderCommand(long UserId, string FullName, string PhoneNumber, string Province,
-    string City, string FullAddress, string PostalCode, string ShippingMethod) : IBaseCommand;
+    string City, string FullAddress, string PostalCode, int ShippingMethodId) : IBaseCommand;
 
 public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderCommand>
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IOrderDomainService _orderDomainService;
 
-    public CheckoutOrderCommandHandler(IOrderRepository orderRepository)
+    public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IOrderDomainService orderDomainService)
     {
         _orderRepository = orderRepository;
+        _orderDomainService = orderDomainService;
     }
 
     public async Task<OperationResult> Handle(CheckoutOrderCommand request, CancellationToken cancellationToken)
@@ -31,11 +34,7 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
         var address = new OrderAddress(order.Id, request.FullName, new PhoneNumber(request.PhoneNumber),
             request.Province, request.City, request.FullAddress, request.PostalCode);
 
-        Order.OrderShippingMethod shippingMethod;
-        if (Enum.TryParse(request.ShippingMethod, out shippingMethod) == false)
-            return OperationResult.Error("روش ارسال نامعتبر است");
-
-        order.Checkout(address, shippingMethod);
+        order.Checkout(address, request.ShippingMethodId, _orderDomainService);
 
         await _orderRepository.SaveAsync();
         return OperationResult.Success();
@@ -67,9 +66,5 @@ internal class CheckoutOrderCommandValidator : AbstractValidator<CheckoutOrderCo
         RuleFor(o => o.PostalCode)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("کد پستی"));
-
-        RuleFor(o => o.ShippingMethod)
-            .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("روش ارسال"));
     }
 }
