@@ -1,5 +1,6 @@
 ﻿using Common.Domain.BaseClasses;
 using Common.Domain.Repository;
+using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
 
 namespace Shop.Infrastructure.BaseClasses;
@@ -15,32 +16,37 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public TEntity? Get(long id)
     {
-        _shopContext
+        return _shopContext.Set<TEntity>().FirstOrDefault(t => t.Id == id);
     }
 
-    public Task<TEntity?> GetAsync(long id)
+    public async Task<TEntity?> GetAsync(long id)
     {
-        throw new NotImplementedException();
+        return await _shopContext.Set<TEntity>().FirstOrDefaultAsync(t => t.Id == id);
     }
 
-    public Task<TEntity?> GetAsTrackingAsync(long id)
+    public async Task<TEntity?> GetAsTrackingAsync(long id)
     {
-        throw new NotImplementedException();
+        return await _shopContext.Set<TEntity>().AsTracking().FirstOrDefaultAsync(t => t.Id == id);
     }
 
-    public Task AddAsync(TEntity entity)
+    public void Add(TEntity entity)
     {
-        throw new NotImplementedException();
+        _shopContext.Add(entity);
     }
 
-    public Task UpdateAsync(TEntity entity)
+    public async Task AddAsync(TEntity entity)
     {
-        throw new NotImplementedException();
+        await _shopContext.AddAsync(entity);
     }
 
-    public Task DeleteAsync(TEntity entity)
+    public void Update(TEntity entity)
     {
-        throw new NotImplementedException();
+        _shopContext.Update(entity);
+    }
+
+    public void Delete(TEntity entity)
+    {
+        _shopContext.Remove(entity);
     }
 
     public bool Exists(Func<TEntity, bool> predicate)
@@ -48,12 +54,12 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         throw new NotImplementedException();
     }
 
-    public Task<bool> ExistsAsync(Func<TEntity, bool> predicate)
+    public async Task<bool> ExistsAsync(Func<TEntity, bool> predicate)
     {
         throw new NotImplementedException();
     }
 
-    public Task SaveAsync()
+    public async Task SaveAsync()
     {
         throw new NotImplementedException();
     }

@@ -22,7 +22,7 @@ public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCo
     {
         var shipping = new Shipping(request.ShippingMethod, request.ShippingCost);
 
-        await _shippingRepository.AddAsync(shipping);
+        _shippingRepository.Add(shipping);
         await _shippingRepository.SaveAsync();
         return OperationResult.Success();
     }

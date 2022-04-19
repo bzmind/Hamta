@@ -22,7 +22,7 @@ public class AddColorCommandHandler : IBaseCommandHandler<CreateColorCommand>
     {
         var color = new Color(request.Name, request.Code);
 
-        await _colorRepository.AddAsync(color);
+        _colorRepository.Add(color);
         await _colorRepository.SaveAsync();
         return OperationResult.Success();
     }

@@ -22,7 +22,7 @@ public class CreateProductQuestionCommandHandler : IBaseCommandHandler<CreatePro
     {
         var question = new Question(request.ProductId, request.CustomerId, request.Description);
 
-        await _questionRepository.AddAsync(question);
+        _questionRepository.Add(question);
         await _questionRepository.SaveAsync();
         return OperationResult.Success();
     }

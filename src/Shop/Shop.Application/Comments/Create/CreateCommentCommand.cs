@@ -41,7 +41,7 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
             comment.SetNegativePoints(negativePoints);
         }
 
-        await _commentRepository.AddAsync(comment);
+        _commentRepository.Add(comment);
         await _commentRepository.SaveAsync();
         return OperationResult.Success();
     }

@@ -37,7 +37,7 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
             category.SetSpecifications(specifications);
         }
         
-        await _categoryRepository.AddAsync(category);
+        _categoryRepository.Add(category);
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();
     }

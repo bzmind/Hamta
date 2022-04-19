@@ -22,7 +22,7 @@ public class CreateInventoryCommandHandler : IBaseCommandHandler<CreateInventory
     {
         var inventory = new Inventory(request.ProductId, request.Quantity, request.Price, request.ColorId);
 
-        await _inventoryRepository.AddAsync(inventory);
+        _inventoryRepository.Add(inventory);
         await _inventoryRepository.SaveAsync();
         return OperationResult.Success();
     }

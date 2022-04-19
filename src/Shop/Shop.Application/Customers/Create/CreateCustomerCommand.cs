@@ -26,7 +26,7 @@ public class CreateCustomerCommandHandler : IBaseCommandHandler<CreateCustomerCo
         var customer = new Customer(request.FullName, request.Email, request.Password.ToSHA256(),
             request.PhoneNumber);
 
-        await _customerRepository.AddAsync(customer);
+        _customerRepository.Add(customer);
         await _customerRepository.SaveAsync();
         return OperationResult.Success();
     }
