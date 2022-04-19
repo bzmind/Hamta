@@ -7,23 +7,25 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Categories\UseCases\RemoveSubCategory\" />
-    <Folder Include="Categories\UseCases\AddSubCategory\" />
-    <Folder Include="Colors\UseCases\Edit\" />
-    <Folder Include="Colors\UseCases\Remove\" />
-    <Folder Include="Inventories\UseCases\Edit\" />
-    <Folder Include="Inventories\UseCases\" />
-    <Folder Include="Inventories\UseCases\RemoveDiscount\" />
-    <Folder Include="Orders\UseCases\AddItem\" />
-    <Folder Include="Orders\UseCases\Checkout\" />
-    <Folder Include="Orders\UseCases\RemoveItem\" />
-    <Folder Include="Orders\UseCases\SetStatus\" />
-    <Folder Include="Products\UseCases\Create\" />
-    <Folder Include="Products\UseCases\Edit\" />
-    <Folder Include="Products\UseCases\SetScore\" />
-    <Folder Include="Questions\UseCases\RemoveAnswer\" />
-    <Folder Include="Questions\UseCases\Create\" />
-    <Folder Include="Questions\UseCases\AddAnswer\" />
+    <Folder Include="Categories\RemoveSubCategory\" />
+    <Folder Include="Categories\AddSubCategory\" />
+    <Folder Include="Colors\Edit\" />
+    <Folder Include="Colors\Remove\" />
+    <Folder Include="Inventories\Edit\" />
+    <Folder Include="Inventories\RemoveDiscount\" />
+    <Folder Include="Orders\AddItem\" />
+    <Folder Include="Orders\Checkout\" />
+    <Folder Include="Orders\RemoveItem\" />
+    <Folder Include="Orders\SetStatus\" />
+    <Folder Include="Products\Create\" />
+    <Folder Include="Products\Edit\" />
+    <Folder Include="Products\SetScore\" />
+    <Folder Include="Questions\RemoveAnswer\" />
+    <Folder Include="Questions\Create\" />
+    <Folder Include="Questions\AddAnswer\" />
+    <Folder Include="Shippings\Remove\" />
+    <Folder Include="Shippings\Edit\" />
+    <Folder Include="Shippings\Create\" />
   </ItemGroup>
 
   <ItemGroup>
