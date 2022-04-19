@@ -2,7 +2,7 @@
 using Common.Domain.Exceptions;
 using Common.Domain.ValueObjects;
 
-namespace Shop.Domain.ShippingMethodAggregate;
+namespace Shop.Domain.ShippingAggregate;
 
 public class Shipping : BaseAggregateRoot
 {

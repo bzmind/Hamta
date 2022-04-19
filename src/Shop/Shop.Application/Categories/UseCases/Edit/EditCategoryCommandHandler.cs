@@ -4,7 +4,6 @@ using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
-using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories.UseCases.Edit;
 

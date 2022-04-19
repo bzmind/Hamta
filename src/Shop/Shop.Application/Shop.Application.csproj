@@ -14,7 +14,6 @@
     <Folder Include="Inventories\UseCases\Edit\" />
     <Folder Include="Inventories\UseCases\" />
     <Folder Include="Inventories\UseCases\RemoveDiscount\" />
-    <Folder Include="Orders\Services\" />
     <Folder Include="Orders\UseCases\AddItem\" />
     <Folder Include="Orders\UseCases\Checkout\" />
     <Folder Include="Orders\UseCases\RemoveItem\" />

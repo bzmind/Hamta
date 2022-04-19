@@ -6,22 +6,19 @@ using Common.Domain.ValueObjects;
 using FluentValidation;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.OrderAggregate.Repository;
-using Shop.Domain.OrderAggregate.Services;
 
 namespace Shop.Application.Orders.UseCases.Checkout;
 
 public record CheckoutOrderCommand(long UserId, string FullName, string PhoneNumber, string Province,
-    string City, string FullAddress, string PostalCode, int ShippingMethodId) : IBaseCommand;
+    string City, string FullAddress, string PostalCode, string ShippingMethod, int ShippingCost) : IBaseCommand;
 
 public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderCommand>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IOrderDomainService _orderDomainService;
 
-    public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IOrderDomainService orderDomainService)
+    public CheckoutOrderCommandHandler(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
-        _orderDomainService = orderDomainService;
     }
 
     public async Task<OperationResult> Handle(CheckoutOrderCommand request, CancellationToken cancellationToken)
@@ -34,7 +31,7 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
         var address = new OrderAddress(order.Id, request.FullName, new PhoneNumber(request.PhoneNumber),
             request.Province, request.City, request.FullAddress, request.PostalCode);
 
-        order.Checkout(address, request.ShippingMethodId, _orderDomainService);
+        order.Checkout(address, request.ShippingMethod, request.ShippingCost);
 
         await _orderRepository.SaveAsync();
         return OperationResult.Success();

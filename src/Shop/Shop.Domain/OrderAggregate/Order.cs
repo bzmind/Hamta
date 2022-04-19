@@ -2,8 +2,7 @@
 using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Common.Domain.ValueObjects;
-using Shop.Domain.OrderAggregate.Services;
-using Shop.Domain.ShippingMethodAggregate;
+using Shop.Domain.OrderAggregate.ValueObjects;
 
 namespace Shop.Domain.OrderAggregate;
 
@@ -12,20 +11,19 @@ public class Order : BaseAggregateRoot
     public long CustomerId { get; private set; }
     public OrderStatus Status { get; private set; }
     public OrderAddress? Address { get; private set; }
+    public ShippingInfo? ShippingInfo { get; private set; }
 
     private readonly List<OrderItem> _items = new List<OrderItem>();
     public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
-    public string? ShippingMethod { get; private set; }
-    public Money? ShippingCost { get; private set; }
-    
+
     public int? TotalPrice
     {
         get
         {
             var itemsPrice = Items.Sum(orderItem => orderItem.TotalPrice);
 
-            if (ShippingCost != null)
-                return itemsPrice + ShippingCost.Value;
+            if (ShippingInfo != null)
+                return itemsPrice + ShippingInfo.ShippingCost.Value;
 
             return itemsPrice;
         }
@@ -91,15 +89,12 @@ public class Order : BaseAggregateRoot
         Status = orderStatus;
     }
 
-    public void Checkout(OrderAddress address, long shippingMethodId, IOrderDomainService orderDomainService)
+    public void Checkout(OrderAddress address, string shippingMethod, int shippingCost)
     {
         CheckOrderStatus();
         Address = address;
         Status = OrderStatus.Preparing;
-
-        var shipping = orderDomainService.GetShippingInfo(shippingMethodId);
-        ShippingMethod = shipping.ShippingMethod.ToString();
-        ShippingCost = shipping.ShippingCost;
+        ShippingInfo = new ShippingInfo(shippingMethod, new Money(shippingCost));
     }
 
     private void CheckOrderStatus()
