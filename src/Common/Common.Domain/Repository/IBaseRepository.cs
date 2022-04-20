@@ -1,4 +1,5 @@
-﻿using Common.Domain.BaseClasses;
+﻿using System.Linq.Expressions;
+using Common.Domain.BaseClasses;
 
 namespace Common.Domain.Repository;
 
@@ -11,7 +12,7 @@ public interface IBaseRepository<T> where T : BaseAggregateRoot
     Task AddAsync(T entity);
     void Update(T entity);
     void Delete(T entity);
-    bool Exists(Func<T, bool> predicate);
-    Task<bool> ExistsAsync(Func<T, bool> predicate);
+    bool Exists(Expression<Func<T, bool>> expression);
+    Task<bool> ExistsAsync(Expression<Func<T, bool>> expression);
     Task SaveAsync();
 }

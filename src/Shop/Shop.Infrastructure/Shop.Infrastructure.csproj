@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="BaseClasses\" />
     <Folder Include="Persistence.EF\Colors\" />
+    <Folder Include="Persistence.EF\Shippings\" />
     <Folder Include="Persistence.EF\Questions\" />
     <Folder Include="Persistence.EF\Products\" />
     <Folder Include="Persistence.EF\Orders\" />

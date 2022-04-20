@@ -23,9 +23,6 @@
     <Folder Include="Questions\RemoveAnswer\" />
     <Folder Include="Questions\Create\" />
     <Folder Include="Questions\AddAnswer\" />
-    <Folder Include="Shippings\Remove\" />
-    <Folder Include="Shippings\Edit\" />
-    <Folder Include="Shippings\Create\" />
   </ItemGroup>
 
   <ItemGroup>

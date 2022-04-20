@@ -22,7 +22,7 @@ public class RemoveColorCommandHandler : IBaseCommandHandler<RemoveColorCommand>
         if (color == null)
             return OperationResult.NotFound();
 
-        await _colorRepository.DeleteAsync(color);
+        _colorRepository.Delete(color);
         return OperationResult.Success();
     }
 }

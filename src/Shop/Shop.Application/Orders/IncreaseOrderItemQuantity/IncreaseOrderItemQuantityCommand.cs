@@ -17,7 +17,7 @@ public class IncreaseOrderItemQuantityCommandHandler : IBaseCommandHandler<Incre
 
     public async Task<OperationResult> Handle(IncreaseOrderItemQuantityCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
+        var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.UserId);
 
         if (order == null)
             return OperationResult.NotFound();

@@ -4,5 +4,5 @@ namespace Shop.Domain.OrderAggregate.Repository;
 
 public interface IOrderRepository : IBaseRepository<Order>
 {
-    Task<Order?> GetOrderByUserIdAsTracking(long userId);
+    Task<Order?> GetOrderByCustomerIdAsTracking(long customerId);
 }

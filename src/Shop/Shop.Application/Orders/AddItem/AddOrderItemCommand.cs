@@ -31,7 +31,7 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
         if (inventory.Quantity < request.Quantity)
             return OperationResult.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
 
-        var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
+        var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.UserId);
 
         if (order == null)
             order = new Order(request.UserId);

@@ -1,4 +1,5 @@
-﻿using Common.Domain.BaseClasses;
+﻿using System.Linq.Expressions;
+using Common.Domain.BaseClasses;
 using Common.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
@@ -7,60 +8,60 @@ namespace Shop.Infrastructure.BaseClasses;
 
 public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseAggregateRoot
 {
-    private readonly ShopContext _shopContext;
+    protected readonly ShopContext Context;
 
-    public BaseRepository(ShopContext shopContext)
+    public BaseRepository(ShopContext context)
     {
-        _shopContext = shopContext;
+        Context = context;
     }
 
     public TEntity? Get(long id)
     {
-        return _shopContext.Set<TEntity>().FirstOrDefault(t => t.Id == id);
+        return Context.Set<TEntity>().FirstOrDefault(t => t.Id == id);
     }
 
     public async Task<TEntity?> GetAsync(long id)
     {
-        return await _shopContext.Set<TEntity>().FirstOrDefaultAsync(t => t.Id == id);
+        return await Context.Set<TEntity>().FirstOrDefaultAsync(t => t.Id == id);
     }
 
     public async Task<TEntity?> GetAsTrackingAsync(long id)
     {
-        return await _shopContext.Set<TEntity>().AsTracking().FirstOrDefaultAsync(t => t.Id == id);
+        return await Context.Set<TEntity>().AsTracking().FirstOrDefaultAsync(t => t.Id == id);
     }
 
     public void Add(TEntity entity)
     {
-        _shopContext.Add(entity);
+        Context.Add(entity);
     }
 
     public async Task AddAsync(TEntity entity)
     {
-        await _shopContext.AddAsync(entity);
+        await Context.AddAsync(entity);
     }
 
     public void Update(TEntity entity)
     {
-        _shopContext.Update(entity);
+        Context.Update(entity);
     }
 
     public void Delete(TEntity entity)
     {
-        _shopContext.Remove(entity);
+        Context.Remove(entity);
     }
 
-    public bool Exists(Func<TEntity, bool> predicate)
+    public bool Exists(Expression<Func<TEntity, bool>> expression)
     {
-        throw new NotImplementedException();
+        return Context.Set<TEntity>().Any(expression);
     }
 
-    public async Task<bool> ExistsAsync(Func<TEntity, bool> predicate)
+    public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> expression)
     {
-        throw new NotImplementedException();
+        return await Context.Set<TEntity>().AnyAsync(expression);
     }
 
     public async Task SaveAsync()
     {
-        throw new NotImplementedException();
+        await Context.SaveChangesAsync();
     }
 }

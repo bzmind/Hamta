@@ -20,7 +20,7 @@ public class SetOrderStatusCommandHandler : IBaseCommandHandler<SetOrderStatusCo
 
     public async Task<OperationResult> Handle(SetOrderStatusCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
+        var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.UserId);
 
         if (order == null)
             return OperationResult.NotFound();

@@ -19,7 +19,10 @@ public class RemoveShippingCommandHandler : IBaseCommandHandler<RemoveShippingCo
     {
         var shipping = await _shippingRepository.GetAsync(request.ShippingId);
 
-        await _shippingRepository.DeleteAsync(shipping);
+        if (shipping == null)
+            return OperationResult.NotFound();
+
+        _shippingRepository.Delete(shipping);
         await _shippingRepository.SaveAsync();
         return OperationResult.Success();
     }
