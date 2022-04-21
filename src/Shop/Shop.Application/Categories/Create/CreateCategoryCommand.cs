@@ -27,17 +27,18 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
     {
         var category = new Category(null, request.Title, request.Slug, _categoryDomainService);
 
+        await _categoryRepository.AddAsync(category);
+
         if (request.Specifications != null && request.Specifications.Any())
         {
             var specifications = new List<CategorySpecification>();
 
             request.Specifications.ToList().ForEach(specification =>
-                specifications.Add(new CategorySpecification(specification.Key, specification.Value)));
+                specifications.Add(new CategorySpecification(category.Id, specification.Key, specification.Value)));
 
             category.SetSpecifications(specifications);
         }
         
-        _categoryRepository.Add(category);
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();
     }

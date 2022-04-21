@@ -16,6 +16,8 @@ public class Order : BaseAggregateRoot
     private readonly List<OrderItem> _items = new List<OrderItem>();
     public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
 
+    public enum OrderStatus { Pending, Preparing, Sending, Received }
+
     public int? TotalPrice
     {
         get
@@ -28,9 +30,7 @@ public class Order : BaseAggregateRoot
             return itemsPrice;
         }
     }
-
-    public enum OrderStatus { Pending, Preparing, Sending, Received }
-
+    
     public Order(long customerId)
     {
         CustomerId = customerId;
@@ -39,7 +39,7 @@ public class Order : BaseAggregateRoot
 
     public void AddOrderItem(OrderItem orderItem)
     {
-        CheckOrderStatus();
+        OrderEditGuard();
         var item = Items.FirstOrDefault(oi => oi.InventoryId == orderItem.InventoryId);
 
         if (item == null)
@@ -53,7 +53,7 @@ public class Order : BaseAggregateRoot
 
     public void RemoveOrderItem(long orderItemId)
     {
-        CheckOrderStatus();
+        OrderEditGuard();
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
@@ -64,7 +64,7 @@ public class Order : BaseAggregateRoot
 
     public void IncreaseItemCount(long orderItemId)
     {
-        CheckOrderStatus();
+        OrderEditGuard();
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
@@ -75,7 +75,7 @@ public class Order : BaseAggregateRoot
 
     public void DecreaseItemCount(long orderItemId)
     {
-        CheckOrderStatus();
+        OrderEditGuard();
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
@@ -91,13 +91,13 @@ public class Order : BaseAggregateRoot
 
     public void Checkout(OrderAddress address, string shippingMethod, int shippingCost)
     {
-        CheckOrderStatus();
+        OrderEditGuard();
         Address = address;
         Status = OrderStatus.Preparing;
         ShippingInfo = new ShippingInfo(shippingMethod, new Money(shippingCost));
     }
 
-    private void CheckOrderStatus()
+    private void OrderEditGuard()
     {
         if (Status != OrderStatus.Pending)
             throw new OperationNotAllowedDomainException("Cannot edit order, order is already sent");

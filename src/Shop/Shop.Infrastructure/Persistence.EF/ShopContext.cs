@@ -35,6 +35,19 @@ public class ShopContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(ShopContext).Assembly);
+
+        modelBuilder.HasSequence<long>("ProductHiLoSequence")
+            .StartsAt(1)
+            .IncrementsBy(1);
+
+        modelBuilder.HasSequence<long>("OrderHiLoSequence")
+            .StartsAt(1)
+            .IncrementsBy(1);
+
+        modelBuilder.HasSequence<long>("CategoryHiLoSequence")
+            .StartsAt(1)
+            .IncrementsBy(1);
+
         base.OnModelCreating(modelBuilder);
     }
 }

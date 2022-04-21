@@ -11,7 +11,7 @@ public abstract class Address : BaseEntity
     public string City { get; protected set; }
     public string FullAddress { get; protected set; }
     public string PostalCode { get; protected set; }
-
+    
     public void Edit(string fullName, PhoneNumber phoneNumber, string province, string city,
         string fullAddress, string postalCode)
     {

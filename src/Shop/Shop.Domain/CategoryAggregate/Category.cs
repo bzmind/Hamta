@@ -50,11 +50,6 @@ public class Category : BaseAggregateRoot
 
     public void SetSpecifications(List<CategorySpecification> specifications)
     {
-        specifications.ForEach(specification =>
-        {
-            specification.CategoryId = Id;
-        });
-
         _specifications = specifications;
     }
 

@@ -5,13 +5,14 @@ namespace Shop.Domain.CategoryAggregate;
 
 public class CategorySpecification : BaseEntity
 {
-    public long CategoryId { get; internal set; }
+    public long CategoryId { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
 
-    public CategorySpecification(string title, string description)
+    public CategorySpecification(long categoryId, string title, string description)
     {
         Guard(title, description);
+        CategoryId = categoryId;
         Title = title;
         Description = description;
     }

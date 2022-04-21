@@ -63,7 +63,7 @@ public static class ValidationMessages
         => $"{field} باید بیشتر از {minLength} کاراکتر باشد";
 
     /// <summary>
-    /// <example>Example: شماره تلفن} باید {12} رقم باشد}</example>
+    /// <example>Example: شماره تلفن} باید {11} رقم باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="staticLength"></param>

@@ -13,6 +13,7 @@ public class Question : BaseAggregateRoot
     private readonly List<Answer> _answers = new List<Answer>();
     public ReadOnlyCollection<Answer> Answers => _answers.AsReadOnly();
     public QuestionStatus Status { get; private set; }
+
     public enum QuestionStatus { Pending, Accepted, Rejected }
 
     public Question(long productId, long customerId, string description)

@@ -8,7 +8,9 @@ public class Answer : BaseEntity
     public long ParentId { get; private set; }
     public string Description { get; private set; }
     public AnswerStatus Status { get; private set; }
+
     public enum AnswerStatus { Pending, Accepted, Rejected }
+
     public Answer(long parentId, string description)
     {
         Guard(description);

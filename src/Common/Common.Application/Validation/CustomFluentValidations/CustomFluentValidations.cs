@@ -12,7 +12,7 @@ public static class CustomFluentValidations
             if (string.IsNullOrWhiteSpace(phoneNumber))
                 context.AddFailure(ValidationMessages.FieldRequired("شماره تلفن"));
 
-            if (phoneNumber.Length is > 11 or <11)
+            if (phoneNumber.Length != 11)
                 context.AddFailure(ValidationMessages.FieldDigitsStaticNumber("شماره تلفن", 11));
         });
     }

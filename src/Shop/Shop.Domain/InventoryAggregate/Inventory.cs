@@ -7,9 +7,9 @@ namespace Shop.Domain.InventoryAggregate;
 public class Inventory : BaseAggregateRoot
 {
     public long ProductId { get; private set; }
+    public long ColorId { get; private set; }
     public int Quantity { get; private set; }
     public Money Price { get; private set; }
-    public long ColorId { get; private set; }
     public bool IsAvailable { get => Quantity != 0; private set { } }
     public int DiscountPercentage { get; private set; }
     public bool IsDiscounted { get; private set; }

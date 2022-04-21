@@ -36,8 +36,11 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
         if (order == null)
             order = new Order(request.UserId);
 
-        order.AddOrderItem(new OrderItem(request.InventoryId, request.Quantity, inventory.Price));
-        if (order.Items.FirstOrDefault(i => i.InventoryId == inventory.Id).Quantity < inventory.Quantity)
+        await _orderRepository.AddAsync(order);
+
+        order.AddOrderItem(new OrderItem(order.Id, request.InventoryId, request.Quantity, inventory.Price));
+
+        if (order.Items.First(i => i.InventoryId == inventory.Id).Quantity > inventory.Quantity)
             return OperationResult.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
 
         await _orderRepository.SaveAsync();

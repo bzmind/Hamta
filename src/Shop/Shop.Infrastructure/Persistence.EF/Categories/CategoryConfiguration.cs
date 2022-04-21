@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shop.Domain.CategoryAggregate;
-using Shop.Domain.ProductAggregate;
 
 namespace Shop.Infrastructure.Persistence.EF.Categories;
 
@@ -10,6 +9,8 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     public void Configure(EntityTypeBuilder<Category> builder)
     {
         builder.ToTable("Categories", "category");
+
+        builder.Property(category => category.Id).UseHiLo("CategoryHiLoSequence");
 
         builder.Property(category => category.Title)
             .IsRequired()

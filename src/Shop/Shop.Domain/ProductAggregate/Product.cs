@@ -12,7 +12,7 @@ public class Product : BaseAggregateRoot
     public string Name { get; private set; }
     public string? EnglishName { get; private set; }
     public string Slug { get; private set; }
-    public string Description { get; private set; }
+    public string? Description { get; private set; }
 
     private readonly List<Score> _scores = new List<Score>();
     public ReadOnlyCollection<Score> Scores => _scores.AsReadOnly();
@@ -27,10 +27,26 @@ public class Product : BaseAggregateRoot
     private List<ProductExtraDescription> _extraDescriptions = new List<ProductExtraDescription>();
     public ReadOnlyCollection<ProductExtraDescription> ExtraDescriptions => _extraDescriptions.AsReadOnly();
 
-    public Product(long categoryId, string name, string? englishName, string slug, string description,
+    public double AverageScore
+    {
+        get
+        {
+            double values = 0;
+
+            foreach (var score in _scores)
+                values += score.Value;
+
+            double result;
+            double.TryParse($"{values / _scores.Count:0.#}", out result);
+
+            return result;
+        }
+    }
+
+    public Product(long categoryId, string name, string? englishName, string slug, string? description,
         IProductDomainService productService)
     {
-        Guard(name, slug, description, productService);
+        Guard(name, slug, productService);
         CategoryId = categoryId;
         Name = name;
         EnglishName = englishName;
@@ -38,10 +54,10 @@ public class Product : BaseAggregateRoot
         Slug = slug;
     }
 
-    public void Edit(long categoryId, string name, string? englishName, string slug, string description,
+    public void Edit(long categoryId, string name, string? englishName, string slug, string? description,
         IProductDomainService productService)
     {
-        Guard(name, slug, description, productService);
+        Guard(name, slug, productService);
         CategoryId = categoryId;
         Name = name;
         EnglishName = englishName;
@@ -87,11 +103,10 @@ public class Product : BaseAggregateRoot
         _scores.Add(new Score(scoreAmount));
     }
     
-    private void Guard(string name, string slug, string description, IProductDomainService productService)
+    private void Guard(string name, string slug, IProductDomainService productService)
     {
         NullOrEmptyDataDomainException.CheckString(name, nameof(name));
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));
-        NullOrEmptyDataDomainException.CheckString(description, nameof(description));
 
         if (productService.IsDuplicateSlug(slug))
             throw new SlugAlreadyExistsDomainException("Slug is already used, cannot use duplicated slug");

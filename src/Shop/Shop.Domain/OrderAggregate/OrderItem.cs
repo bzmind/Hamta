@@ -10,12 +10,13 @@ public class OrderItem : BaseEntity
     public long InventoryId { get; private set; }
     public int Quantity { get; private set; }
     public Money Price { get; private set; }
-    public int TotalPrice { get => Price.Value * Quantity; private set { } }
+    public int TotalPrice => Price.Value * Quantity;
 
-    public OrderItem(long inventoryId, int quantity, Money price)
+    public OrderItem(long orderId, long inventoryId, int quantity, Money price)
     {
         ValidateCount(quantity);
         ValidatePrice(price.Value);
+        OrderId = orderId;
         InventoryId = inventoryId;
         Quantity = quantity;
         Price = price;
