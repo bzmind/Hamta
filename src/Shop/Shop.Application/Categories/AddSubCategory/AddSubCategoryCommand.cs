@@ -25,22 +25,25 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
 
     public async Task<OperationResult> Handle(AddSubCategoryCommand request, CancellationToken cancellationToken)
     {
-        var parentCategory = await _categoryRepository.GetAsTrackingAsync(request.ParentId);
-
-        if (parentCategory == null)
-            return OperationResult.NotFound();
-
         var newSubCategory = new Category(request.ParentId, request.Title, request.Slug, _categoryDomainService);
+
+        await _categoryRepository.AddAsync(newSubCategory);
 
         if (request.Specifications != null && request.Specifications.Any())
         {
             var specifications = new List<CategorySpecification>();
 
-            request.Specifications.ToList().ForEach(specification =>
-                specifications.Add(new CategorySpecification(specification.Key, specification.Value)));
+            request.Specifications.ToList().ForEach(specification => 
+                specifications.Add(new CategorySpecification(newSubCategory.Id, specification.Key,
+                    specification.Value)));
 
             newSubCategory.SetSpecifications(specifications);
         }
+
+        var parentCategory = await _categoryRepository.GetAsTrackingAsync(request.ParentId);
+
+        if (parentCategory == null)
+            return OperationResult.NotFound();
 
         parentCategory.AddSubCategory(newSubCategory);
 

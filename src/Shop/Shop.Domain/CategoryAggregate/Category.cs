@@ -43,7 +43,7 @@ public class Category : BaseAggregateRoot
         var subCategory = _subCategories.FirstOrDefault(sc => sc.Id == subCategoryId);
 
         if (subCategory == null)
-            throw new NullOrEmptyDataDomainException("Sub category doesn't exists in this category");
+            throw new NullOrEmptyDataDomainException("Sub category doesn't exist in this category");
 
         _subCategories.Remove(subCategory);
     }
@@ -59,6 +59,6 @@ public class Category : BaseAggregateRoot
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));
 
         if (categoryDomainService.IsDuplicateSlug(slug))
-            throw new SlugAlreadyExistsDomainException("Slug is already used, cannot use duplicated slug");
+            throw new SlugAlreadyExistsDomainException("Slug is already used");
     }
 }
