@@ -30,7 +30,7 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
         {
             var specifications = new List<CategorySpecification>();
             request.Specifications.ToList().ForEach(specification =>
-                specifications.Add(new CategorySpecification(specification.Key, specification.Value)));
+                specifications.Add(new CategorySpecification(category.Id, specification.Key, specification.Value)));
             category.SetSpecifications(specifications);
         }
         

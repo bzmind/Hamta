@@ -1,9 +1,29 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Categories\_DTOs\" />
+    <Folder Include="Categories\GetByParentId\" />
+    <Folder Include="Categories\GetList\" />
+    <Folder Include="Categories\GetById\" />
+    <Folder Include="Shippings\" />
+    <Folder Include="Questions\" />
+    <Folder Include="Products\" />
+    <Folder Include="Orders\" />
+    <Folder Include="Inventories\" />
+    <Folder Include="Customers\" />
+    <Folder Include="Comments\" />
+    <Folder Include="Colors\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Common\Common.Query\Common.Query.csproj" />
+    <ProjectReference Include="..\Shop.Infrastructure\Shop.Infrastructure.csproj" />
+  </ItemGroup>
 
 </Project>
