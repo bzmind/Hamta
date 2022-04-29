@@ -1,15 +1,14 @@
-﻿using Common.Application;
+﻿using FluentValidation;
+using Common.Application;
 using Common.Application.BaseClasses;
 using Common.Application.Validation;
-using FluentValidation;
 using Shop.Domain.CommentAggregate;
 using Shop.Domain.CommentAggregate.Repository;
 
 namespace Shop.Application.Comments.Create;
 
 public record CreateCommentCommand(long ProductId, long CustomerId, string Title, string Description,
-    List<string> PositivePoints, List<string> NegativePoints,
-    int RecommendationId) : IBaseCommand;
+    List<string> PositivePoints, List<string> NegativePoints, int RecommendationId) : IBaseCommand;
 
 public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentCommand>
 {
@@ -27,19 +26,13 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
         var comment = new Comment(request.ProductId, request.CustomerId, request.Title, request.Description,
             recommendation);
 
+        await _commentRepository.AddAsync(comment);
+
         if (request.PositivePoints.Count > 0)
-        {
-            var positivePoints = new List<string>();
-            request.PositivePoints.ForEach(point => positivePoints.Add(point));
-            comment.SetPositivePoints(positivePoints);
-        }
+            comment.SetPositivePoints(request.PositivePoints);
 
         if (request.NegativePoints.Count > 0)
-        {
-            var negativePoints = new List<string>();
-            request.NegativePoints.ForEach(point => negativePoints.Add(point));
-            comment.SetNegativePoints(negativePoints);
-        }
+            comment.SetNegativePoints(request.NegativePoints);
 
         _commentRepository.Add(comment);
         await _commentRepository.SaveAsync();
@@ -63,18 +56,24 @@ internal class CreateCommentCommandValidator : AbstractValidator<CreateCommentCo
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.Required);
 
+        RuleForEach(c => c.NegativePoints)
+            .MaximumLength(10);
+
+        RuleForEach(c => c.PositivePoints)
+            .MaximumLength(10);
+
         RuleForEach(c => c.PositivePoints).ChildRules(point =>
         {
             point.RuleFor(p => p)
                 .NotNull()
-                .MinimumLength(1).WithMessage(ValidationMessages.MinLength);
+                .MinimumLength(3).WithMessage(ValidationMessages.MinLength);
         });
-
+        
         RuleForEach(c => c.NegativePoints).ChildRules(point =>
         {
             point.RuleFor(p => p)
                 .NotNull()
-                .MinimumLength(1).WithMessage(ValidationMessages.MinLength);
+                .MinimumLength(3).WithMessage(ValidationMessages.MinLength);
         });
     }
 }

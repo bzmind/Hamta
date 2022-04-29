@@ -11,14 +11,37 @@
     <Folder Include="Categories\GetByParentId\" />
     <Folder Include="Categories\GetList\" />
     <Folder Include="Categories\GetById\" />
-    <Folder Include="Shippings\" />
-    <Folder Include="Questions\" />
-    <Folder Include="Products\" />
-    <Folder Include="Orders\" />
-    <Folder Include="Inventories\" />
-    <Folder Include="Customers\" />
-    <Folder Include="Comments\" />
-    <Folder Include="Colors\" />
+    <Folder Include="Colors\GetByFilter\" />
+    <Folder Include="Colors\GetById\" />
+    <Folder Include="Colors\_Mappers\" />
+    <Folder Include="Colors\_DTOs\" />
+    <Folder Include="Comments\GetById\" />
+    <Folder Include="Comments\_Mappers\" />
+    <Folder Include="Customers\GetById\" />
+    <Folder Include="Customers\GetByPhoneNumber\" />
+    <Folder Include="Customers\GetByFilter\" />
+    <Folder Include="Customers\_DTOs\" />
+    <Folder Include="Inventories\GetByFilter\" />
+    <Folder Include="Inventories\_DTOs\" />
+    <Folder Include="Inventories\_Mappers\" />
+    <Folder Include="Orders\GetById\" />
+    <Folder Include="Orders\GetByFilter\" />
+    <Folder Include="Orders\_DTOs\" />
+    <Folder Include="Orders\_Mappers\" />
+    <Folder Include="Products\GetList\" />
+    <Folder Include="Products\GetById\" />
+    <Folder Include="Products\GetByFilter\" />
+    <Folder Include="Products\_DTOs\" />
+    <Folder Include="Questions\GetById\" />
+    <Folder Include="Questions\GetByFilter\" />
+    <Folder Include="Questions\_DTOs\" />
+    <Folder Include="Shippings\GetList\" />
+    <Folder Include="Shippings\_DTOs\" />
+    <Folder Include="Shippings\_Mappers\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Dapper" Version="2.0.123" />
   </ItemGroup>
 
   <ItemGroup>

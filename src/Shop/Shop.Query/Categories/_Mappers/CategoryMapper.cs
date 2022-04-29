@@ -1,7 +1,7 @@
 ﻿using Shop.Domain.CategoryAggregate;
-using Shop.Query.Categories.DTOs;
+using Shop.Query.Categories._DTOs;
 
-namespace Shop.Query.Categories.Mappers;
+namespace Shop.Query.Categories._Mappers;
 
 internal static class CategoryMapper
 {
@@ -12,6 +12,8 @@ internal static class CategoryMapper
 
         return new CategoryDto
         {
+            Id = category.Id,
+            CreationDate = category.CreationDate,
             ParentId = category.ParentId,
             Title = category.Title,
             Slug = category.Slug,
@@ -22,12 +24,14 @@ internal static class CategoryMapper
     
     public static List<CategoryDto> MapToCategoryDto(this List<Category> categories)
     {
-        var model = new List<CategoryDto>();
+        var dtoCategories = new List<CategoryDto>();
 
         categories.ForEach(category =>
         {
-            model.Add(new CategoryDto
+            dtoCategories.Add(new CategoryDto
             {
+                Id = category.Id,
+                CreationDate = category.CreationDate,
                 ParentId = category.ParentId,
                 Title = category.Title,
                 Slug = category.Slug,
@@ -36,6 +40,6 @@ internal static class CategoryMapper
             });
         });
 
-        return model;
+        return dtoCategories;
     }
 }

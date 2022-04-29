@@ -60,7 +60,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.OwnsMany(order => order.Items, option =>
         {
-            option.Property(item => item.Quantity)
+            option.Property(item => item.Count)
                 .IsRequired();
 
             option.OwnsOne(item => item.Price, config =>

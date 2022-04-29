@@ -1,5 +1,4 @@
-﻿using Microsoft.Data.SqlClient;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Shop.Domain.CommentAggregate;
 
@@ -11,6 +10,8 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
         builder.ToTable("Comments", "comment");
 
+        builder.Property(c => c.Id).UseHiLo("CommentHiLoSequence");
+
         builder.Property(comment => comment.Title)
             .IsRequired()
             .HasMaxLength(100);
@@ -19,15 +20,14 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .IsRequired()
             .HasMaxLength(1500);
 
-        builder.OwnsMany(comment => comment.PositivePoints, option =>
+        builder.OwnsMany(comment => comment.CommentHints, option =>
         {
-            option.Property(positivePoint => positivePoint)
-                .HasMaxLength(200);
-        });
+            option.ToTable("CommentHints", "comment");
 
-        builder.OwnsMany(comment => comment.NegativePoints, option =>
-        {
-            option.Property(negativePoint => negativePoint)
+            option.Property(hint => hint.Status)
+                .HasMaxLength(10);
+
+            option.Property(hint => hint.Hint)
                 .HasMaxLength(200);
         });
 

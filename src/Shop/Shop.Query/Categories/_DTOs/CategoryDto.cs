@@ -1,8 +1,6 @@
-﻿using System.Collections.ObjectModel;
-using Common.Query.BaseClasses;
-using Shop.Domain.CategoryAggregate;
+﻿using Common.Query.BaseClasses;
 
-namespace Shop.Query.Categories.DTOs;
+namespace Shop.Query.Categories._DTOs;
 
 public class CategoryDto : BaseDto
 {

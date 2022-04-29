@@ -1,6 +1,6 @@
 ﻿using Common.Query.BaseClasses;
 
-namespace Shop.Query.Categories.DTOs;
+namespace Shop.Query.Categories._DTOs;
 
 public class CategorySpecificationDto : BaseDto
 {

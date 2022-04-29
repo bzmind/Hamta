@@ -1,8 +1,8 @@
 ﻿using Common.Query.BaseClasses;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
-using Shop.Query.Categories.DTOs;
-using Shop.Query.Categories.Mappers;
+using Shop.Query.Categories._DTOs;
+using Shop.Query.Categories._Mappers;
 
 namespace Shop.Query.Categories.GetList;
 
@@ -19,13 +19,12 @@ public class GetCategoryListQueryHandler : IBaseQueryHandler<GetCategoryListQuer
 
     public async Task<List<CategoryDto>> Handle(GetCategoryListQuery request, CancellationToken cancellationToken)
     {
-        var model = await _shopContext.Categories
+        return await _shopContext.Categories
             .Where(c => c.ParentId == null)
+            .Select(c => c.MapToCategoryDto())
             .Include(c => c.SubCategories)
             .ThenInclude(c => c.SubCategories)
             .OrderByDescending(c => c.Id)
             .ToListAsync(cancellationToken);
-
-        return model.MapToCategoryDto();
     }
 }

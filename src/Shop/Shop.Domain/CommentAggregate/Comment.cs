@@ -11,11 +11,8 @@ public class Comment : BaseAggregateRoot
     public string Title { get; private set; }
     public string Description { get; private set; }
 
-    private List<string> _positivePoints = new List<string>();
-    public ReadOnlyCollection<string> PositivePoints => _positivePoints.AsReadOnly();
-
-    private List<string> _negativePoints = new List<string>();
-    public ReadOnlyCollection<string> NegativePoints => _negativePoints.AsReadOnly();
+    private readonly List<CommentHint> _commentHints = new List<CommentHint>();
+    public ReadOnlyCollection<CommentHint> CommentHints => _commentHints.AsReadOnly();
     public CommentStatus Status { get; private set; }
     public CommentRecommendation Recommendation { get; private set; }
     public int Likes { get => UsersWhoLiked.Count; private set {} }
@@ -43,16 +40,34 @@ public class Comment : BaseAggregateRoot
         UsersWhoDisliked = new List<long>();
     }
 
-    public void SetPositivePoints(List<string> positivePoints)
+    public void SetPositivePoints(List<string> positiveHints)
     {
-        ValidateCommentPoints(positivePoints, nameof(positivePoints));
-        _positivePoints = positivePoints;
+        ValidateCommentPoints(positiveHints, nameof(positiveHints));
+
+        var commentHints = new List<CommentHint>();
+        positiveHints.ForEach(positiveHint =>
+        {
+            commentHints.Add(new CommentHint(Id, CommentHint.HintStatus.Positive, positiveHint));
+        });
+        _commentHints.AddRange(commentHints);
+
+        if (_commentHints.Count > 20)
+            throw new OperationNotAllowedDomainException("Comment hints can't be more than 20");
     }
 
-    public void SetNegativePoints(List<string> negativePoints)
+    public void SetNegativePoints(List<string> negativeHints)
     {
-        ValidateCommentPoints(negativePoints, nameof(negativePoints));
-        _negativePoints = negativePoints;
+        ValidateCommentPoints(negativeHints, nameof(negativeHints));
+
+        var commentHints = new List<CommentHint>();
+        negativeHints.ForEach(negativeHint =>
+        {
+            commentHints.Add(new CommentHint(Id, CommentHint.HintStatus.Negative, negativeHint));
+        });
+        _commentHints.AddRange(commentHints);
+
+        if (_commentHints.Count > 20)
+            throw new OperationNotAllowedDomainException("Comment hints can't be more than 20");
     }
 
     public void SetCommentStatus(CommentStatus status)
@@ -104,7 +119,7 @@ public class Comment : BaseAggregateRoot
             NullOrEmptyDataDomainException.CheckString(point, nameof(point));
         }
 
-        if (points.Count > 5)
+        if (points.Count > 10)
             throw new OutOfRangeValueDomainException($"{fieldName} count is more than limit");
     }
 }

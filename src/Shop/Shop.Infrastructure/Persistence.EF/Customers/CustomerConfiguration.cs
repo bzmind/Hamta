@@ -69,6 +69,15 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .IsRequired()
             .HasColumnType("bit");
 
-        builder.OwnsMany(customer => customer.FavoriteItems);
+        builder.OwnsMany(customer => customer.FavoriteItems, option =>
+        {
+            option.ToTable("FavoriteItems", "customer");
+
+            option.Property(favoriteItem => favoriteItem.CustomerId)
+                .IsRequired();
+
+            option.Property(favoriteItem => favoriteItem.ProductId)
+                .IsRequired();
+        });
     }
 }

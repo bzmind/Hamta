@@ -2,6 +2,6 @@
 
 public class BaseDto
 {
-    public long Id { get; private set; }
-    public DateTime CreationDate { get; private set; }
+    public long Id { get; set; }
+    public DateTime CreationDate { get; set; }
 }
