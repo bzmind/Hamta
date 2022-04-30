@@ -22,8 +22,6 @@ public class GetCategoryListQueryHandler : IBaseQueryHandler<GetCategoryListQuer
         return await _shopContext.Categories
             .Where(c => c.ParentId == null)
             .Select(c => c.MapToCategoryDto())
-            .Include(c => c.SubCategories)
-            .ThenInclude(c => c.SubCategories)
             .OrderByDescending(c => c.Id)
             .ToListAsync(cancellationToken);
     }

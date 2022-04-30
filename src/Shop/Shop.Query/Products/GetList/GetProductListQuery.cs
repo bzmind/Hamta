@@ -1,5 +1,6 @@
 ﻿using Common.Query.BaseClasses;
 using Dapper;
+using Shop.Domain.ColorAggregate;
 using Shop.Query.Products._DTOs;
 
 namespace Shop.Query.Products.GetList;
@@ -19,23 +20,20 @@ public class GetProductListQueryHandler : IBaseQueryHandler<GetProductListQuery,
     {
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"SELECT
-                        p.Name,
-                        i.Price,
-                        AVG(p.Scores),
-                        i.Quantity,
-                        c.Code
+                        p.Id, p.CreationDate, p.CategoryId, p.Name, p.EnglishName, p.Slug, i.Price,
+                        AVG(p.Scores) AS AverageScore, i.Quantity, c.Name, c.Code
                     FROM {_dapperContext.Products} p
                     INNER JOIN {_dapperContext.Inventories} i
                         ON i.ProductId = p.Id
                     INNER JOIN {_dapperContext.Colors} c
                         ON i.ColorId = c.Id";
 
-        var result = await connection.QueryAsync<ProductListDto, string, ProductListDto>(sql,
+        var result = await connection.QueryAsync<ProductListDto, Color, ProductListDto>(sql,
             (productListDto, colorCode) =>
             {
-                productListDto.ColorCodes.Add(colorCode);
+                productListDto.Colors.Add(colorCode);
                 return productListDto;
-            }, splitOn: "Code");
+            }, splitOn: "Name");
 
         return result.ToList();
     }

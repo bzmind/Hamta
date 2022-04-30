@@ -21,10 +21,16 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
 
     public async Task<ProductDto?> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
-        var product =
-            await _shopContext.Products.FirstOrDefaultAsync(p => p.Id == request.ProductId, cancellationToken);
+        var productDto =
+            await _shopContext.Products
+                .Join(
+                    _shopContext.Categories,
+                    p => p.CategoryId,
+                    c => c.Id,
+                    (product, category) => product.MapToProductDto(category)
+                    )
+                .FirstOrDefaultAsync(p => p.Id == request.ProductId, cancellationToken);
 
-        var productDto = product.MapToProductDto();
         productDto.ProductInventories = await productDto.GetProductInventoriesAsDto(_dapperContext);
         return productDto;
     }

@@ -5,6 +5,8 @@ namespace Shop.Query;
 
 public class DapperContext
 {
+    public string Categories => "[category].Categories";
+    public string CategorySpecifications => "[category].Specifications";
     public string Inventories => "[inventory].Inventories";
     public string Customers => "[customer].Customers";
     public string CustomerAddresses => "[customer].Addresses";
