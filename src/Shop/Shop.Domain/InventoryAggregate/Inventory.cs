@@ -16,6 +16,11 @@ public class Inventory : BaseAggregateRoot
 
     private int _discountAmount;
 
+    private Inventory()
+    {
+
+    }
+
     public Inventory(long productId, int quantity, int price, long colorId)
     {
         Guard(quantity);

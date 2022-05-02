@@ -3,23 +3,23 @@ using Common.Domain.Exceptions;
 
 namespace Shop.Domain.QuestionAggregate;
 
-public class Answer : BaseEntity
+public class Reply : BaseEntity
 {
     public long ParentId { get; private set; }
     public string Description { get; private set; }
-    public AnswerStatus Status { get; private set; }
+    public ReplyStatus Status { get; private set; }
 
-    public enum AnswerStatus { Pending, Accepted, Rejected }
+    public enum ReplyStatus { Pending, Accepted, Rejected }
 
-    public Answer(long parentId, string description)
+    public Reply(long parentId, string description)
     {
         Guard(description);
         ParentId = parentId;
         Description = description;
-        Status = AnswerStatus.Pending;
+        Status = ReplyStatus.Pending;
     }
 
-    public void SetStatus(AnswerStatus status)
+    public void SetStatus(ReplyStatus status)
     {
         Status = status;
     }

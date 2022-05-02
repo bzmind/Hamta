@@ -10,8 +10,8 @@ public class Question : BaseAggregateRoot
     public long CustomerId { get; private set; }
     public string Description { get; private set; }
 
-    private readonly List<Answer> _answers = new List<Answer>();
-    public ReadOnlyCollection<Answer> Answers => _answers.AsReadOnly();
+    private readonly List<Reply> _replies = new List<Reply>();
+    public ReadOnlyCollection<Reply> Replies => _replies.AsReadOnly();
     public QuestionStatus Status { get; private set; }
 
     public enum QuestionStatus { Pending, Accepted, Rejected }
@@ -25,19 +25,19 @@ public class Question : BaseAggregateRoot
         Status = QuestionStatus.Pending;
     }
 
-    public void AddAnswer(Answer answer)
+    public void AddReply(Reply reply)
     {
-        _answers.Add(answer);
+        _replies.Add(reply);
     }
 
-    public void RemoveAnswer(long answerId)
+    public void RemoveReply(long replyId)
     {
-        var answer = Answers.FirstOrDefault(a => a.Id == answerId);
+        var reply = Replies.FirstOrDefault(a => a.Id == replyId);
 
-        if (answer == null)
-            throw new NullOrEmptyDataDomainException("Answer was not found for this question");
+        if (reply == null)
+            throw new NullOrEmptyDataDomainException("Reply was not found for this question");
 
-        _answers.Remove(answer);
+        _replies.Remove(reply);
     }
 
     public void SetQuestionStatus(QuestionStatus status)
@@ -45,14 +45,14 @@ public class Question : BaseAggregateRoot
         Status = status;
     }
 
-    public void SetAnswerStatus(long answerId, Answer.AnswerStatus answerStatus)
+    public void SetReplyStatus(long replyId, Reply.ReplyStatus replyStatus)
     {
-        var answer = Answers.FirstOrDefault(a => a.Id == answerId);
+        var reply = Replies.FirstOrDefault(a => a.Id == replyId);
 
-        if (answer == null)
-            throw new NullOrEmptyDataDomainException("Answer was not found for this question");
+        if (reply == null)
+            throw new NullOrEmptyDataDomainException("Reply was not found for this question");
 
-        answer.SetStatus(answerStatus);
+        reply.SetStatus(replyStatus);
     }
 
     private void Guard(string description)

@@ -6,6 +6,11 @@ public class PhoneNumber : BaseValueObject
 {
     public string Value { get; private set; }
 
+    private PhoneNumber()
+    {
+
+    }
+
     public PhoneNumber(string phoneNumber)
     {
         Guard(phoneNumber);

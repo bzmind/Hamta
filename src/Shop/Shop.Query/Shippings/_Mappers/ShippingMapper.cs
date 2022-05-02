@@ -14,8 +14,8 @@ internal static class ShippingMapper
         {
             Id = shipping.Id,
             CreationDate = shipping.CreationDate,
-            ShippingMethod = shipping.ShippingMethod,
-            ShippingCost = shipping.ShippingCost.Value
+            ShippingMethod = shipping.Method,
+            ShippingCost = shipping.Cost.Value
         };
     }
 
@@ -29,8 +29,8 @@ internal static class ShippingMapper
             {
                 Id = shipping.Id,
                 CreationDate = shipping.CreationDate,
-                ShippingMethod = shipping.ShippingMethod,
-                ShippingCost = shipping.ShippingCost.Value
+                ShippingMethod = shipping.Method,
+                ShippingCost = shipping.Cost.Value
             });
         });
 

@@ -24,10 +24,6 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .WithOne()
             .HasForeignKey(childCategory => childCategory.ParentId);
 
-        builder.HasMany(category => category.Specifications)
-            .WithOne()
-            .HasForeignKey(spec => spec.CategoryId);
-
         builder.OwnsMany(category => category.Specifications, option =>
         {
             option.ToTable("Specifications", "category");

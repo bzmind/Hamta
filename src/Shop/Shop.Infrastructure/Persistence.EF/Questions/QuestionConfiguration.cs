@@ -14,15 +14,15 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
             .IsRequired()
             .HasMaxLength(300);
 
-        builder.OwnsMany(question => question.Answers, option =>
+        builder.OwnsMany(question => question.Replies, option =>
         {
-            option.ToTable("Answers", "question");
+            option.ToTable("Replies", "question");
 
-            option.Property(answer => answer.Description)
+            option.Property(reply => reply.Description)
                 .IsRequired()
                 .HasMaxLength(300);
 
-            option.Property(answer => answer.Status)
+            option.Property(reply => reply.Status)
                 .IsRequired()
                 .HasMaxLength(20);
         });

@@ -10,13 +10,15 @@ public class ShippingConfiguration : IEntityTypeConfiguration<Shipping>
     {
         builder.ToTable("Shippings", "shipping");
 
-        builder.Property(shipping => shipping.ShippingMethod)
+        builder.Property(shipping => shipping.Method)
+            .HasColumnName("Method")
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.OwnsOne(shipping => shipping.ShippingCost, option =>
+        builder.OwnsOne(shipping => shipping.Cost, option =>
         {
             option.Property(cost => cost.Value)
+                .HasColumnName("Cost")
                 .IsRequired();
         });
     }

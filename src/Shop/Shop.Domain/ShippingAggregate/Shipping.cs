@@ -6,21 +6,26 @@ namespace Shop.Domain.ShippingAggregate;
 
 public class Shipping : BaseAggregateRoot
 {
-    public string ShippingMethod { get; private set; }
-    public Money ShippingCost { get; private set; }
+    public string Method { get; private set; }
+    public Money Cost { get; private set; }
 
-    public Shipping(string shippingMethod, int shippingCost)
+    private Shipping()
     {
-        Guard(shippingMethod, shippingCost);
-        ShippingMethod = shippingMethod;
-        ShippingCost = new Money(shippingCost);
+
+    }
+
+    public Shipping(string method, int shippingCost)
+    {
+        Guard(method, shippingCost);
+        Method = method;
+        Cost = new Money(shippingCost);
     }
 
     public void Edit(string shippingMethod, int shippingCost)
     {
         Guard(shippingMethod, shippingCost);
-        ShippingMethod = shippingMethod;
-        ShippingCost = new Money(shippingCost);
+        Method = shippingMethod;
+        Cost = new Money(shippingCost);
     }
 
     private void Guard(string shippingMethod, int shippingCost)

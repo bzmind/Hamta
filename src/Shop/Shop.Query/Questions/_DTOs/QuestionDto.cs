@@ -9,6 +9,6 @@ public class QuestionDto : BaseDto
     public long CustomerId { get; set; }
     public string CustomerFullName { get; set; }
     public string Description { get; set; }
-    public List<AnswerDto> Answers { get; set; }
+    public List<ReplyDto> Replies { get; set; }
     public Question.QuestionStatus Status { get; set; }
 }

@@ -8,6 +8,11 @@ public class CustomerAddress : Address
     public long CustomerId { get; private set; }
     public bool IsActive { get; private set; }
 
+    private CustomerAddress()
+    {
+
+    }
+
     public CustomerAddress(long customerId, string fullName, PhoneNumber phoneNumber, string province,
         string city, string fullAddress, string postalCode)
     {

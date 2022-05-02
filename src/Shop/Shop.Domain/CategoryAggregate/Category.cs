@@ -17,6 +17,11 @@ public class Category : BaseAggregateRoot
     private List<CategorySpecification> _specifications = new List<CategorySpecification>();
     public ReadOnlyCollection<CategorySpecification> Specifications => _specifications.AsReadOnly();
 
+    private Category()
+    {
+
+    }
+
     public Category(long? parentId, string title, string slug, ICategoryDomainService categoryDomainService)
     {
         Guard(title, slug, categoryDomainService);

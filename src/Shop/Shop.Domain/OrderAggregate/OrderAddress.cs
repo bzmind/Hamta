@@ -7,6 +7,11 @@ public class OrderAddress : Address
 {
     public long OrderId { get; private set; }
 
+    private OrderAddress()
+    {
+
+    }
+
     public OrderAddress(long orderId, string fullName, PhoneNumber phoneNumber, string province,
         string city, string fullAddress, string postalCode)
     {

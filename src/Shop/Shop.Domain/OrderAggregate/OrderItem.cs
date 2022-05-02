@@ -13,6 +13,11 @@ public class OrderItem : BaseEntity
 
     public int TotalPrice => Price.Value * Count;
 
+    private OrderItem()
+    {
+
+    }
+
     public OrderItem(long orderId, long inventoryId, int count, Money price)
     {
         ValidateCount(count);

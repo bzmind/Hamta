@@ -5,36 +5,36 @@ using FluentValidation;
 using Shop.Domain.QuestionAggregate;
 using Shop.Domain.QuestionAggregate.Repository;
 
-namespace Shop.Application.Questions.AddAnswer;
+namespace Shop.Application.Questions.AddReply;
 
-public record AddAnswerCommand(long QuestionId, string Description) : IBaseCommand;
+public record AddReplyCommand(long QuestionId, string Description) : IBaseCommand;
 
-public class AddAnswerCommandHandler : IBaseCommandHandler<AddAnswerCommand>
+public class AddReplyCommandHandler : IBaseCommandHandler<AddReplyCommand>
 {
     private readonly IQuestionRepository _questionRepository;
 
-    public AddAnswerCommandHandler(IQuestionRepository questionRepository)
+    public AddReplyCommandHandler(IQuestionRepository questionRepository)
     {
         _questionRepository = questionRepository;
     }
 
-    public async Task<OperationResult> Handle(AddAnswerCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(AddReplyCommand request, CancellationToken cancellationToken)
     {
         var question = await _questionRepository.GetAsTrackingAsync(request.QuestionId);
 
         if (question == null)
             return OperationResult.NotFound();
 
-        question.AddAnswer(new Answer(request.QuestionId, request.Description));
+        question.AddReply(new Reply(request.QuestionId, request.Description));
 
         await _questionRepository.SaveAsync();
         return OperationResult.Success();
     }
 }
 
-internal class AddAnswerCommandValidator : AbstractValidator<AddAnswerCommand>
+internal class AddReplyCommandValidator : AbstractValidator<AddReplyCommand>
 {
-    public AddAnswerCommandValidator()
+    public AddReplyCommandValidator()
     {
         RuleFor(a => a.Description)
             .NotNull()

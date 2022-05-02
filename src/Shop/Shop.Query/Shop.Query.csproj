@@ -33,7 +33,6 @@
     <Folder Include="Products\_DTOs\" />
     <Folder Include="Questions\GetById\" />
     <Folder Include="Questions\GetByFilter\" />
-    <Folder Include="Questions\_DTOs\" />
     <Folder Include="Shippings\GetList\" />
     <Folder Include="Shippings\_DTOs\" />
     <Folder Include="Shippings\_Mappers\" />

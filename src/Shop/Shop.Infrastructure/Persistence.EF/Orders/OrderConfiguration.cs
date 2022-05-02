@@ -27,6 +27,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             option.OwnsOne(address => address.PhoneNumber, config =>
             {
                 config.Property(phoneNumber => phoneNumber.Value)
+                    .HasColumnName("PhoneNumber")
                     .IsRequired()
                     .HasMaxLength(11);
             });
@@ -51,21 +52,29 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.OwnsOne(order => order.ShippingInfo, option =>
         {
             option.Property(shippingInfo => shippingInfo.ShippingMethod)
+                .HasColumnName("ShippingMethod")
                 .IsRequired()
                 .HasMaxLength(50);
 
-            option.Property(shippingInfo => shippingInfo.ShippingCost)
-                .IsRequired();
+            option.OwnsOne(shippingInfo => shippingInfo.ShippingCost, config =>
+            {
+                config.Property(shippingCost => shippingCost.Value)
+                    .HasColumnName("ShippingCost")
+                    .IsRequired();
+            });
         });
 
         builder.OwnsMany(order => order.Items, option =>
         {
+            option.ToTable("Items", "order");
+            
             option.Property(item => item.Count)
                 .IsRequired();
 
             option.OwnsOne(item => item.Price, config =>
             {
                 config.Property(price => price.Value)
+                    .HasColumnName("Price")
                     .IsRequired();
             });
         });

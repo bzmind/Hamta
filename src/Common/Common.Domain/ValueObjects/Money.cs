@@ -6,6 +6,11 @@ public class Money : BaseValueObject
 {
     public int Value { get; private set; }
 
+    private Money()
+    {
+
+    }
+
     public Money(int toomanPrice)
     {
         Guard(toomanPrice);

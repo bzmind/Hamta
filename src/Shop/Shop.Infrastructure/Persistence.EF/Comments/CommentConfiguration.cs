@@ -22,7 +22,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
 
         builder.OwnsMany(comment => comment.CommentHints, option =>
         {
-            option.ToTable("CommentHints", "comment");
+            option.ToTable("Hints", "comment");
 
             option.Property(hint => hint.Status)
                 .HasMaxLength(10);

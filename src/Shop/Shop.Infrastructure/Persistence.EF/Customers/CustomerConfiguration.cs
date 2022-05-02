@@ -33,6 +33,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             option.OwnsOne(address => address.PhoneNumber, config =>
             {
                 config.Property(phoneNumber => phoneNumber.Value)
+                    .HasColumnName("PhoneNumber")
                     .IsRequired()
                     .HasMaxLength(11);
             });
@@ -57,6 +58,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.OwnsOne(customer => customer.PhoneNumber, config =>
         {
             config.Property(phoneNumber => phoneNumber.Value)
+                .HasColumnName("PhoneNumber")
                 .IsRequired()
                 .HasMaxLength(11);
         });

@@ -22,6 +22,11 @@ public class Customer : BaseAggregateRoot
 
     public const string DefaultAvatarName = "avatar.png";
 
+    private Customer()
+    {
+
+    }
+
     public Customer(string fullName, string email, string password, string phoneNumber)
     {
         Guard(fullName, email);

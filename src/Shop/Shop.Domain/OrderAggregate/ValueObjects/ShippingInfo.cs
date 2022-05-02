@@ -8,6 +8,11 @@ public class ShippingInfo : BaseValueObject
     public string ShippingMethod { get; private set; }
     public Money ShippingCost { get; private set; }
 
+    private ShippingInfo()
+    {
+
+    }
+
     public ShippingInfo(string shippingMethod, Money shippingCost)
     {
         Guard(shippingMethod);

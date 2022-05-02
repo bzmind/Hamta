@@ -28,6 +28,8 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.OwnsMany(product => product.Scores, option =>
         {
+            option.ToTable("Scores", "product");
+
             option.Property(score => score.Value)
                 .IsRequired()
                 .HasMaxLength(5);

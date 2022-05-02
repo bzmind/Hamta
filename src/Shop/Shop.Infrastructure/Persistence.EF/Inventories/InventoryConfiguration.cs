@@ -16,6 +16,7 @@ public class InventoryConfiguration : IEntityTypeConfiguration<Inventory>
         builder.OwnsOne(inventory => inventory.Price, option =>
         {
             option.Property(price => price.Value)
+                .HasColumnName("Price")
                 .IsRequired();
         });
 

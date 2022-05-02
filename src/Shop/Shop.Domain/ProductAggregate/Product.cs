@@ -43,6 +43,11 @@ public class Product : BaseAggregateRoot
         }
     }
 
+    private Product()
+    {
+
+    }
+
     public Product(long categoryId, string name, string? englishName, string slug, string? description,
         IProductDomainService productService)
     {
