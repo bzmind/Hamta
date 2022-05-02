@@ -5,7 +5,7 @@ namespace Shop.Query.Questions._Mappers;
 
 internal static class QuestionMapper
 {
-    public static QuestionDto MapToQuestionDto(this Question? question)
+    public static QuestionDto MapToQuestionDto(this Question? question, string customerFullName)
     {
         if (question == null)
             return null;
@@ -16,13 +16,14 @@ internal static class QuestionMapper
             CreationDate = question.CreationDate,
             ProductId = question.ProductId,
             CustomerId = question.CustomerId,
+            CustomerFullName = customerFullName,
             Description = question.Description,
             Answers = question.Answers.ToList().MapToAnswerDto(),
             Status = question.Status
         };
     }
 
-    public static List<QuestionDto> MapToQuestionDto(this List<Question> questions)
+    public static List<QuestionDto> MapToQuestionDto(this List<Question> questions, string customerFullName)
     {
         var dtoQuestions = new List<QuestionDto>();
 
@@ -34,6 +35,7 @@ internal static class QuestionMapper
                 CreationDate = question.CreationDate,
                 ProductId = question.ProductId,
                 CustomerId = question.CustomerId,
+                CustomerFullName = customerFullName,
                 Description = question.Description,
                 Answers = question.Answers.ToList().MapToAnswerDto(),
                 Status = question.Status

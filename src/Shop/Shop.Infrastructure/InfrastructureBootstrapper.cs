@@ -24,7 +24,7 @@ namespace Shop.Infrastructure;
 
 public class InfrastructureBootstrapper
 {
-    public static void RegisterInfrastructureDependencies(IServiceCollection services, string connectionString)
+    public static void RegisterDependencies(IServiceCollection services, string connectionString)
     {
         services.AddTransient<ICategoryRepository, CategoryRepository>();
         services.AddTransient<IColorRepository, ColorRepository>();

@@ -11,6 +11,7 @@ public class DapperContext
     public string Customers => "[customer].Customers";
     public string CustomerAddresses => "[customer].Addresses";
     public string CustomerFavoriteItems => "[customer].FavoriteItems";
+    public string Orders => "[order].Orders";
     public string OrderItems => "[order].Items";
     public string Products => "[product].Products";
     public string Colors => "[color].Colors";

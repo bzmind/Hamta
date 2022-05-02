@@ -27,7 +27,19 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
     {
         var @params = request.FilterParams;
 
-        var query = _shopContext.Products.OrderByDescending(p => p.CreationDate).AsQueryable();
+        var query = _shopContext.Products
+            .OrderByDescending(p => p.CreationDate)
+            .Join(
+                _shopContext.Inventories,
+                p => p.Id,
+                i => i.ProductId,
+                (product, inventory) => product.MapToProductListDto(inventory))
+            .Join(
+                _shopContext.Colors,
+                p => p.ColorId,
+                c => c.Id,
+                (productListDto, color) => productListDto.SetProductListDtoColors(color))
+            .AsQueryable();
 
         if (@params.CategoryId != null)
             query = query.Where(p => p.CategoryId == @params.CategoryId);
@@ -42,18 +54,25 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             query = query.Where(p => p.Slug.Contains(@params.Slug));
 
         if (@params.AverageScore != null)
-            query = query.Where(p => p.Scores.Average(s => s.Value) >= @params.AverageScore);
+            query = query.Where(p => p.AverageScore >= @params.AverageScore);
 
         var skip = (@params.PageId - 1) * @params.Take;
 
-        return new ProductFilterResult()
-        {
-            Data = await query
-                .Skip(skip)
-                .Take(@params.Take)
-                .Select(p => p.MapToProductDto())
-                .ToListAsync(cancellationToken),
+        var finalQuery = await query
+            .Skip(skip)
+            .Take(@params.Take)
+            .ToListAsync(cancellationToken);
 
+        var groupedQueryResult = finalQuery.GroupBy(p => p.Id).Select(productGroup =>
+        {
+            var firstItem = productGroup.First();
+            firstItem.Colors = productGroup.Select(p => p.Colors.Single()).ToList();
+            return firstItem;
+        }).ToList();
+
+        return new ProductFilterResult
+        {
+            Data = groupedQueryResult,
             FilterParam = @params
         };
     }

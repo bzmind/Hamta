@@ -6,9 +6,9 @@ using Shop.Query.Questions._Mappers;
 
 namespace Shop.Query.Questions.GetById;
 
-public record GetQuestionByIdQuery(long QuestionId) : IBaseQuery<QuestionDto>;
+public record GetQuestionByIdQuery(long QuestionId) : IBaseQuery<QuestionDto?>;
 
-public class GetQuestionByIdQueryHandler : IBaseQueryHandler<GetQuestionByIdQuery, QuestionDto>
+public class GetQuestionByIdQueryHandler : IBaseQueryHandler<GetQuestionByIdQuery, QuestionDto?>
 {
     private readonly ShopContext _shopContext;
 
@@ -17,11 +17,17 @@ public class GetQuestionByIdQueryHandler : IBaseQueryHandler<GetQuestionByIdQuer
         _shopContext = shopContext;
     }
 
-    public async Task<QuestionDto> Handle(GetQuestionByIdQuery request, CancellationToken cancellationToken)
+    public async Task<QuestionDto?> Handle(GetQuestionByIdQuery request, CancellationToken cancellationToken)
     {
-        var question = await _shopContext.Questions
-            .FirstOrDefaultAsync(q => q.Id == request.QuestionId, cancellationToken);
+        var questionDto = await _shopContext.Questions
+            .Where(q => q.Id == request.QuestionId)
+            .Join(
+                _shopContext.Customers,
+                q => q.CustomerId,
+                c => c.Id,
+                (question, customer) => question.MapToQuestionDto(customer.FullName))
+            .FirstOrDefaultAsync(cancellationToken);
 
-        return question.MapToQuestionDto();
+        return questionDto;
     }
 }

@@ -1,14 +1,13 @@
 ﻿using Shop.Domain.CommentAggregate;
-using Shop.Domain.CustomerAggregate;
 using Shop.Query.Comments._DTOs;
 
 namespace Shop.Query.Comments._Mappers;
 
 internal static class CommentMapper
 { 
-    public static CommentDto MapToCommentDto(this Comment? comment, Customer? customer)
+    public static CommentDto MapToCommentDto(this Comment? comment, string customerFullName)
     {
-        if (comment == null || customer == null)
+        if (comment == null)
             return null;
 
         return new CommentDto
@@ -17,7 +16,7 @@ internal static class CommentMapper
             CreationDate = comment.CreationDate,
             CustomerId = comment.CustomerId,
             ProductId = comment.ProductId,
-            CustomerFullName = customer.FullName,
+            CustomerFullName = customerFullName,
             Title = comment.Title,
             Description = comment.Description,
             CommentHints = comment.CommentHints.ToList().MapToHintDto(),

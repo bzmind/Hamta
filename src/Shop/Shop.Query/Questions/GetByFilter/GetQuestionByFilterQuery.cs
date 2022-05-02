@@ -27,7 +27,13 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
     {
         var @params = request.FilterParams;
 
-        var query = _shopContext.Questions.OrderByDescending(q => q.CreationDate).AsQueryable();
+        var query = _shopContext.Questions.OrderByDescending(q => q.CreationDate)
+            .Join(
+                _shopContext.Customers,
+                q => q.CustomerId,
+                c => c.Id,
+                (question, customer) => question.MapToQuestionDto(customer.FullName))
+            .AsQueryable();
 
         if (@params.ProductId != null)
             query = query.Where(q => q.ProductId == @params.ProductId);
@@ -40,12 +46,11 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
 
         var skip = (@params.PageId - 1) * @params.Take;
 
-        return new QuestionFilterResult()
+        return new QuestionFilterResult
         {
             Data = await query
                 .Skip(skip)
                 .Take(@params.Take)
-                .Select(q => q.MapToQuestionDto())
                 .ToListAsync(cancellationToken),
 
             FilterParam = @params

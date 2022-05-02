@@ -39,7 +39,7 @@ public class GetCommentByIdQueryHandler : IBaseQueryHandler<GetCommentByIdQuery,
         var groupedByCommentDto = commentDtos.GroupBy(c => c.Id).Select(commentDto =>
         {
             var firstCommentDto = commentDto.First();
-            firstCommentDto.CommentHints = commentDto.Select(c => c.CommentHints.First()).ToList();
+            firstCommentDto.CommentHints = commentDto.Select(c => c.CommentHints.Single()).ToList();
             return firstCommentDto;
         });
 

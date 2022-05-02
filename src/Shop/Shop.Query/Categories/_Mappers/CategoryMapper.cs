@@ -18,7 +18,7 @@ internal static class CategoryMapper
             Title = category.Title,
             Slug = category.Slug,
             SubCategories = category.SubCategories.ToList().MapToCategoryDto(),
-            Specifications = category.Specifications.ToList().MapToSpecificationDto()
+            Specifications = category.Specifications.ToList().MapToCategorySpecificationDto()
         };
     }
     
@@ -36,7 +36,7 @@ internal static class CategoryMapper
                 Title = category.Title,
                 Slug = category.Slug,
                 SubCategories = category.SubCategories.ToList().MapToCategoryDto(),
-                Specifications = category.Specifications.ToList().MapToSpecificationDto()
+                Specifications = category.Specifications.ToList().MapToCategorySpecificationDto()
             });
         });
 

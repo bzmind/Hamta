@@ -28,7 +28,6 @@
     <Folder Include="Orders\GetByFilter\" />
     <Folder Include="Orders\_DTOs\" />
     <Folder Include="Orders\_Mappers\" />
-    <Folder Include="Products\GetList\" />
     <Folder Include="Products\GetById\" />
     <Folder Include="Products\GetByFilter\" />
     <Folder Include="Products\_DTOs\" />

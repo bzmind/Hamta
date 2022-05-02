@@ -5,7 +5,7 @@ namespace Shop.Query.Categories._Mappers;
 
 internal static class CategorySpecificationMapper
 {
-    public static CategorySpecificationDto MapToSpecificationDto(this CategorySpecification? specification)
+    public static CategorySpecificationDto MapToCategorySpecificationDto(this CategorySpecification? specification)
     {
         if (specification == null)
             return null;
@@ -20,7 +20,7 @@ internal static class CategorySpecificationMapper
         };
     }
 
-    public static List<CategorySpecificationDto> MapToSpecificationDto(this List<CategorySpecification> specifications)
+    public static List<CategorySpecificationDto> MapToCategorySpecificationDto(this List<CategorySpecification> specifications)
     {
         var dtoSpecifications = new List<CategorySpecificationDto>();
 

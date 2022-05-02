@@ -28,7 +28,13 @@ public class GetCommentListQueryHandler : IBaseQueryHandler<GetCommentByFilterQu
         var @params = request.FilterParams;
 
         var query = _shopContext.Comments
-            .Include(c => c.CommentHints).OrderByDescending(c => c.CreationDate).AsQueryable();
+            .OrderByDescending(c => c.CreationDate)
+            .Join(
+                _shopContext.Customers,
+                comment => comment.CustomerId,
+                customer => customer.Id,
+                (comment, customer) => comment.MapToCommentDto(customer.FullName))
+            .AsQueryable();
 
         if (@params.CustomerId != null)
             query = query.Where(c => c.CustomerId == @params.CustomerId);
@@ -41,18 +47,21 @@ public class GetCommentListQueryHandler : IBaseQueryHandler<GetCommentByFilterQu
 
         var skip = (@params.PageId - 1) * @params.Take;
 
+        var finalQuery = await query
+            .Skip(skip)
+            .Take(@params.Take)
+            .ToListAsync(cancellationToken);
+
+        var groupedQueryResult = finalQuery.GroupBy(c => c.Id).Select(commentGroup =>
+        {
+            var firstItem = commentGroup.First();
+            firstItem.CommentHints = commentGroup.Select(c => c.CommentHints.Single()).ToList();
+            return firstItem;
+        }).ToList();
+
         return new CommentFilterResult
         {
-            Data = await query
-                .Skip(skip)
-                .Take(@params.Take)
-                .Join(
-                    _shopContext.Customers,
-                    comment => comment.CustomerId,
-                    customer => customer.Id,
-                    (comment, customer) => comment.MapToCommentDto(customer))
-                .ToListAsync(cancellationToken),
-
+            Data = groupedQueryResult,
             FilterParam = @params
         };
     }

@@ -26,6 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="10.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.Application\Common.Application.csproj" />
     <ProjectReference Include="..\Shop.Domain\Shop.Domain.csproj" />
   </ItemGroup>

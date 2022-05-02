@@ -5,7 +5,7 @@ namespace Shop.Query.Products._Mappers;
 
 internal static class ProductSpecificationMapper
 {
-    public static ProductSpecificationDto MapToSpecificationDto(this ProductSpecification? specification)
+    public static ProductSpecificationDto MapToProductSpecificationDto(this ProductSpecification? specification)
     {
         if (specification == null)
             return null;
@@ -21,7 +21,7 @@ internal static class ProductSpecificationMapper
         };
     }
 
-    public static List<ProductSpecificationDto> MapToSpecificationDto(this List<ProductSpecification> specifications)
+    public static List<ProductSpecificationDto> MapToProductSpecificationDto(this List<ProductSpecification> specifications)
     {
         var dtoSpecifications = new List<ProductSpecificationDto>();
 
