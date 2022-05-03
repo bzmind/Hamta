@@ -2,6 +2,7 @@
 using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Common.Domain.ValueObjects;
+using Shop.Domain.CustomerAggregate.Services;
 
 namespace Shop.Domain.CustomerAggregate;
 
@@ -27,9 +28,10 @@ public class Customer : BaseAggregateRoot
 
     }
 
-    public Customer(string fullName, string email, string password, string phoneNumber)
+    public Customer(string fullName, string email, string password, string phoneNumber,
+        ICustomerDomainService customerDomainService)
     {
-        Guard(fullName, email);
+        Guard(fullName, phoneNumber, email, customerDomainService);
         NullOrEmptyDataDomainException.CheckString(password, nameof(password));
         FullName = fullName;
         Email = email;
@@ -38,9 +40,10 @@ public class Customer : BaseAggregateRoot
         IsSubscribedToNews = false;
     }
 
-    public void Edit(string fullName, string email, string phoneNumber)
+    public void Edit(string fullName, string email, string phoneNumber,
+        ICustomerDomainService customerDomainService)
     {
-        Guard(fullName, email);
+        Guard(fullName, phoneNumber, email, customerDomainService);
         FullName = fullName;
         Email = email;
         PhoneNumber = new PhoneNumber(phoneNumber);
@@ -91,10 +94,10 @@ public class Customer : BaseAggregateRoot
     {
         if (string.IsNullOrEmpty(avatarName))
             AvatarName = DefaultAvatarName;
-        
+
         AvatarName = avatarName;
     }
-    
+
     public void SetSubscriptionToNews(bool subscription)
     {
         IsSubscribedToNews = subscription;
@@ -115,9 +118,13 @@ public class Customer : BaseAggregateRoot
         _favoriteItems.Remove(favoriteItem);
     }
 
-    private void Guard(string fullName, string email)
+    private void Guard(string fullName, string phoneNumber, string email,
+        ICustomerDomainService customerDomainService)
     {
         NullOrEmptyDataDomainException.CheckString(fullName, nameof(fullName));
+        NullOrEmptyDataDomainException.CheckString(phoneNumber, nameof(phoneNumber));
+        customerDomainService.IsPhoneNumberDuplicate(phoneNumber);
         NullOrEmptyDataDomainException.CheckString(email, nameof(email));
+        customerDomainService.IsEmailDuplicate(email);
     }
 }

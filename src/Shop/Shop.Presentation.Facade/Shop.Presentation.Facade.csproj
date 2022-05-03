@@ -7,12 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Customers\Addresses\" />
     <Folder Include="Shippings\" />
     <Folder Include="Questions\" />
     <Folder Include="Colors\" />
     <Folder Include="Categories\" />
     <Folder Include="Comments\" />
-    <Folder Include="Customers\" />
     <Folder Include="Inventories\" />
     <Folder Include="Orders\" />
     <Folder Include="Products\" />
