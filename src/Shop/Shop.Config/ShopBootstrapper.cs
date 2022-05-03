@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Shop.Application;
 using Shop.Infrastructure;
+using Shop.Presentation.Facade;
 using Shop.Query;
 
 namespace Shop.Config
@@ -12,6 +13,7 @@ namespace Shop.Config
             ApplicationBootstrapper.RegisterDependencies(services);
             InfrastructureBootstrapper.RegisterDependencies(services, connectionString);
             QueryBootstrapper.RegisterDependencies(services, connectionString);
+            FacadeBootstrapper.RegisterDependencies(services);
         }
     }
 }
