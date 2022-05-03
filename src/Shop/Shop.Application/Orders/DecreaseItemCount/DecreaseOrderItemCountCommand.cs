@@ -2,20 +2,20 @@
 using Common.Application.BaseClasses;
 using Shop.Domain.OrderAggregate.Repository;
 
-namespace Shop.Application.Orders.DecreaseItemQuantity;
+namespace Shop.Application.Orders.DecreaseItemCount;
 
-public record DecreaseOrderItemQuantityCommand(long UserId, long OrderItemId) : IBaseCommand;
+public record DecreaseOrderItemCountCommand(long UserId, long OrderItemId) : IBaseCommand;
 
-public class DecreaseOrderItemQuantityCommandHandler : IBaseCommandHandler<DecreaseOrderItemQuantityCommand>
+public class DecreaseOrderItemCountCommandHandler : IBaseCommandHandler<DecreaseOrderItemCountCommand>
 {
     private readonly IOrderRepository _orderRepository;
 
-    public DecreaseOrderItemQuantityCommandHandler(IOrderRepository orderRepository)
+    public DecreaseOrderItemCountCommandHandler(IOrderRepository orderRepository)
     {
         _orderRepository = orderRepository;
     }
 
-    public async Task<OperationResult> Handle(DecreaseOrderItemQuantityCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(DecreaseOrderItemCountCommand request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.UserId);
 

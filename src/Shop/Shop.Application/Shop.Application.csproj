@@ -21,7 +21,6 @@
     <Folder Include="Products\Edit\" />
     <Folder Include="Products\_Services\" />
     <Folder Include="Products\SetScore\" />
-    <Folder Include="Questions\Create\" />
   </ItemGroup>
 
   <ItemGroup>

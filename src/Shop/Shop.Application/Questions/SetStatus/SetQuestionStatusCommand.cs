@@ -3,7 +3,7 @@ using Common.Application.BaseClasses;
 using Shop.Domain.QuestionAggregate;
 using Shop.Domain.QuestionAggregate.Repository;
 
-namespace Shop.Application.Questions.SetQuestionStatus;
+namespace Shop.Application.Questions.SetStatus;
 
 public record SetQuestionStatusCommand(long QuestionId, int QuestionStatusId) : IBaseCommand;
 

@@ -7,18 +7,18 @@ using Shop.Domain.QuestionAggregate.Repository;
 
 namespace Shop.Application.Questions.Create;
 
-public record CreateProductQuestionCommand(long ProductId, long CustomerId, string Description) : IBaseCommand;
+public record CreateQuestionCommand(long ProductId, long CustomerId, string Description) : IBaseCommand;
 
-public class CreateProductQuestionCommandHandler : IBaseCommandHandler<CreateProductQuestionCommand>
+public class CreateQuestionCommandHandler : IBaseCommandHandler<CreateQuestionCommand>
 {
     private readonly IQuestionRepository _questionRepository;
 
-    public CreateProductQuestionCommandHandler(IQuestionRepository questionRepository)
+    public CreateQuestionCommandHandler(IQuestionRepository questionRepository)
     {
         _questionRepository = questionRepository;
     }
 
-    public async Task<OperationResult> Handle(CreateProductQuestionCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
     {
         var question = new Question(request.ProductId, request.CustomerId, request.Description);
 
@@ -28,9 +28,9 @@ public class CreateProductQuestionCommandHandler : IBaseCommandHandler<CreatePro
     }
 }
 
-internal class CreateProductQuestionCommandValidator : AbstractValidator<CreateProductQuestionCommand>
+internal class CreateQuestionCommandValidator : AbstractValidator<CreateQuestionCommand>
 {
-    public CreateProductQuestionCommandValidator()
+    public CreateQuestionCommandValidator()
     {
         RuleFor(q => q.Description)
             .NotNull()
