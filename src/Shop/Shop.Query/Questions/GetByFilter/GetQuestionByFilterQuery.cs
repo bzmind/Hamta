@@ -27,7 +27,8 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
     {
         var @params = request.FilterParams;
 
-        var query = _shopContext.Questions.OrderByDescending(q => q.CreationDate)
+        var query = _shopContext.Questions
+            .OrderByDescending(q => q.CreationDate)
             .Join(
                 _shopContext.Customers,
                 q => q.CustomerId,

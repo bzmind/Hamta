@@ -18,7 +18,6 @@ internal static class QuestionMapper
             CustomerId = question.CustomerId,
             CustomerFullName = customerFullName,
             Description = question.Description,
-            Replies = question.Replies.ToList().MapToReplyDto(),
             Status = question.Status
         };
     }
@@ -37,7 +36,6 @@ internal static class QuestionMapper
                 CustomerId = question.CustomerId,
                 CustomerFullName = customerFullName,
                 Description = question.Description,
-                Replies = question.Replies.ToList().MapToReplyDto(),
                 Status = question.Status
             });
         });

@@ -12,7 +12,7 @@ using Shop.Infrastructure.Persistence.EF;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20220502173656_Initial")]
+    [Migration("20220503153634_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -287,6 +287,9 @@ namespace Shop.Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
+                    b.Property<long?>("ParentQuestionId")
+                        .HasColumnType("bigint");
+
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
@@ -310,10 +313,11 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("ShippingMethod")
+                    b.Property<string>("Method")
                         .IsRequired()
                         .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
+                        .HasColumnType("nvarchar(100)")
+                        .HasColumnName("Method");
 
                     b.HasKey("Id");
 
@@ -388,7 +392,7 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.HasKey("CommentId", "Id");
 
-                            b1.ToTable("CommentHints", "comment");
+                            b1.ToTable("Hints", "comment");
 
                             b1.WithOwner()
                                 .HasForeignKey("CommentId");
@@ -407,7 +411,8 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<string>("Value")
                                 .IsRequired()
                                 .HasMaxLength(11)
-                                .HasColumnType("nvarchar(11)");
+                                .HasColumnType("nvarchar(11)")
+                                .HasColumnName("PhoneNumber");
 
                             b1.HasKey("CustomerId");
 
@@ -477,7 +482,8 @@ namespace Shop.Infrastructure.Migrations
                                     b2.Property<string>("Value")
                                         .IsRequired()
                                         .HasMaxLength(11)
-                                        .HasColumnType("nvarchar(11)");
+                                        .HasColumnType("nvarchar(11)")
+                                        .HasColumnName("PhoneNumber");
 
                                     b2.HasKey("CustomerAddressCustomerId", "CustomerAddressId");
 
@@ -532,7 +538,8 @@ namespace Shop.Infrastructure.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<int>("Value")
-                                .HasColumnType("int");
+                                .HasColumnType("int")
+                                .HasColumnName("Price");
 
                             b1.HasKey("InventoryId");
 
@@ -599,7 +606,8 @@ namespace Shop.Infrastructure.Migrations
                                     b2.Property<string>("Value")
                                         .IsRequired()
                                         .HasMaxLength(11)
-                                        .HasColumnType("nvarchar(11)");
+                                        .HasColumnType("nvarchar(11)")
+                                        .HasColumnName("PhoneNumber");
 
                                     b2.HasKey("OrderAddressOrderId");
 
@@ -635,7 +643,7 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.HasKey("OrderId", "Id");
 
-                            b1.ToTable("OrderItem", "order");
+                            b1.ToTable("Items", "order");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -649,11 +657,12 @@ namespace Shop.Infrastructure.Migrations
                                         .HasColumnType("bigint");
 
                                     b2.Property<int>("Value")
-                                        .HasColumnType("int");
+                                        .HasColumnType("int")
+                                        .HasColumnName("Price");
 
                                     b2.HasKey("OrderItemOrderId", "OrderItemId");
 
-                                    b2.ToTable("OrderItem", "order");
+                                    b2.ToTable("Items", "order");
 
                                     b2.WithOwner()
                                         .HasForeignKey("OrderItemOrderId", "OrderItemId");
@@ -671,7 +680,8 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<string>("ShippingMethod")
                                 .IsRequired()
                                 .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)");
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("ShippingMethod");
 
                             b1.HasKey("OrderId");
 
@@ -686,7 +696,8 @@ namespace Shop.Infrastructure.Migrations
                                         .HasColumnType("bigint");
 
                                     b2.Property<int>("Value")
-                                        .HasColumnType("int");
+                                        .HasColumnType("int")
+                                        .HasColumnName("ShippingCost");
 
                                     b2.HasKey("ShippingInfoOrderId");
 
@@ -846,7 +857,7 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.HasKey("ProductId", "Id");
 
-                            b1.ToTable("Score", "product");
+                            b1.ToTable("Scores", "product");
 
                             b1.WithOwner()
                                 .HasForeignKey("ProductId");
@@ -864,54 +875,16 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("Scores");
                 });
 
-            modelBuilder.Entity("Shop.Domain.QuestionAggregate.Question", b =>
-                {
-                    b.OwnsMany("Shop.Domain.QuestionAggregate.Answer", "Answers", b1 =>
-                        {
-                            b1.Property<long>("QuestionId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
-
-                            b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("Description")
-                                .IsRequired()
-                                .HasMaxLength(300)
-                                .HasColumnType("nvarchar(300)");
-
-                            b1.Property<long>("ParentId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<int>("Status")
-                                .HasMaxLength(20)
-                                .HasColumnType("int");
-
-                            b1.HasKey("QuestionId", "Id");
-
-                            b1.ToTable("Answers", "question");
-
-                            b1.WithOwner()
-                                .HasForeignKey("QuestionId");
-                        });
-
-                    b.Navigation("Answers");
-                });
-
             modelBuilder.Entity("Shop.Domain.ShippingAggregate.Shipping", b =>
                 {
-                    b.OwnsOne("Common.Domain.ValueObjects.Money", "ShippingCost", b1 =>
+                    b.OwnsOne("Common.Domain.ValueObjects.Money", "Cost", b1 =>
                         {
                             b1.Property<long>("ShippingId")
                                 .HasColumnType("bigint");
 
                             b1.Property<int>("Value")
-                                .HasColumnType("int");
+                                .HasColumnType("int")
+                                .HasColumnName("Cost");
 
                             b1.HasKey("ShippingId");
 
@@ -921,7 +894,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasForeignKey("ShippingId");
                         });
 
-                    b.Navigation("ShippingCost")
+                    b.Navigation("Cost")
                         .IsRequired();
                 });
 

@@ -24,7 +24,7 @@ public class SetQuestionStatusCommandHandler : IBaseCommandHandler<SetQuestionSt
             return OperationResult.NotFound();
 
         var status = (Question.QuestionStatus) request.QuestionStatusId;
-        question.SetQuestionStatus(status);
+        question.SetStatus(status);
 
         await _questionRepository.SaveAsync();
         return OperationResult.Success();

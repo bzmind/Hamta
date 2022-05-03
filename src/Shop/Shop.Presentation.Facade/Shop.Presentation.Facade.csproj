@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Shippings\" />
+    <Folder Include="Questions\" />
+    <Folder Include="Colors\" />
     <Folder Include="Categories\" />
     <Folder Include="Comments\" />
     <Folder Include="Customers\" />

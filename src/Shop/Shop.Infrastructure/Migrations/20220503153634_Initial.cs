@@ -16,9 +16,6 @@ namespace Shop.Infrastructure.Migrations
                 name: "order");
 
             migrationBuilder.EnsureSchema(
-                name: "question");
-
-            migrationBuilder.EnsureSchema(
                 name: "category");
 
             migrationBuilder.EnsureSchema(
@@ -32,6 +29,9 @@ namespace Shop.Infrastructure.Migrations
 
             migrationBuilder.EnsureSchema(
                 name: "inventory");
+
+            migrationBuilder.EnsureSchema(
+                name: "question");
 
             migrationBuilder.EnsureSchema(
                 name: "shipping");
@@ -117,7 +117,7 @@ namespace Shop.Infrastructure.Migrations
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Email = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
                     Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PhoneNumber_Value = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     AvatarName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     IsSubscribedToNews = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -137,7 +137,7 @@ namespace Shop.Infrastructure.Migrations
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     ColorId = table.Column<long>(type: "bigint", nullable: false),
                     Quantity = table.Column<int>(type: "int", nullable: false),
-                    Price_Value = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
                     IsAvailable = table.Column<bool>(type: "bit", nullable: false),
                     DiscountPercentage = table.Column<int>(type: "int", nullable: false),
                     IsDiscounted = table.Column<bool>(type: "bit", nullable: false),
@@ -156,8 +156,8 @@ namespace Shop.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false),
                     CustomerId = table.Column<long>(type: "bigint", nullable: false),
                     Status = table.Column<int>(type: "int", maxLength: 20, nullable: false),
-                    ShippingInfo_ShippingMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    ShippingInfo_ShippingCost_Value = table.Column<int>(type: "int", nullable: true),
+                    ShippingMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    ShippingCost = table.Column<int>(type: "int", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -190,6 +190,7 @@ namespace Shop.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    ParentQuestionId = table.Column<long>(type: "bigint", nullable: true),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     CustomerId = table.Column<long>(type: "bigint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
@@ -208,8 +209,8 @@ namespace Shop.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ShippingMethod = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    ShippingCost_Value = table.Column<int>(type: "int", nullable: false),
+                    Method = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Cost = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -242,7 +243,7 @@ namespace Shop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "CommentHints",
+                name: "Hints",
                 schema: "comment",
                 columns: table => new
                 {
@@ -255,9 +256,9 @@ namespace Shop.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CommentHints", x => new { x.CommentId, x.Id });
+                    table.PrimaryKey("PK_Hints", x => new { x.CommentId, x.Id });
                     table.ForeignKey(
-                        name: "FK_CommentHints_Comments_CommentId",
+                        name: "FK_Hints_Comments_CommentId",
                         column: x => x.CommentId,
                         principalSchema: "comment",
                         principalTable: "Comments",
@@ -276,7 +277,7 @@ namespace Shop.Infrastructure.Migrations
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PhoneNumber_Value = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     Province = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FullAddress = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
@@ -326,7 +327,7 @@ namespace Shop.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PhoneNumber_Value = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
                     Province = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     FullAddress = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
@@ -345,7 +346,7 @@ namespace Shop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "OrderItem",
+                name: "Items",
                 schema: "order",
                 columns: table => new
                 {
@@ -354,14 +355,14 @@ namespace Shop.Infrastructure.Migrations
                     OrderId = table.Column<long>(type: "bigint", nullable: false),
                     InventoryId = table.Column<long>(type: "bigint", nullable: false),
                     Count = table.Column<int>(type: "int", nullable: false),
-                    Price_Value = table.Column<int>(type: "int", nullable: false),
+                    Price = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_OrderItem", x => new { x.OrderId, x.Id });
+                    table.PrimaryKey("PK_Items", x => new { x.OrderId, x.Id });
                     table.ForeignKey(
-                        name: "FK_OrderItem_Orders_OrderId",
+                        name: "FK_Items_Orders_OrderId",
                         column: x => x.OrderId,
                         principalSchema: "order",
                         principalTable: "Orders",
@@ -464,7 +465,7 @@ namespace Shop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Score",
+                name: "Scores",
                 schema: "product",
                 columns: table => new
                 {
@@ -475,37 +476,12 @@ namespace Shop.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Score", x => new { x.ProductId, x.Id });
+                    table.PrimaryKey("PK_Scores", x => new { x.ProductId, x.Id });
                     table.ForeignKey(
-                        name: "FK_Score_Products_ProductId",
+                        name: "FK_Scores_Products_ProductId",
                         column: x => x.ProductId,
                         principalSchema: "product",
                         principalTable: "Products",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Answers",
-                schema: "question",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    QuestionId = table.Column<long>(type: "bigint", nullable: false),
-                    ParentId = table.Column<long>(type: "bigint", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    Status = table.Column<int>(type: "int", maxLength: 20, nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Answers", x => new { x.QuestionId, x.Id });
-                    table.ForeignKey(
-                        name: "FK_Answers_Questions_QuestionId",
-                        column: x => x.QuestionId,
-                        principalSchema: "question",
-                        principalTable: "Questions",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -528,16 +504,8 @@ namespace Shop.Infrastructure.Migrations
                 schema: "order");
 
             migrationBuilder.DropTable(
-                name: "Answers",
-                schema: "question");
-
-            migrationBuilder.DropTable(
                 name: "Colors",
                 schema: "color");
-
-            migrationBuilder.DropTable(
-                name: "CommentHints",
-                schema: "comment");
 
             migrationBuilder.DropTable(
                 name: "CustomSpecifications",
@@ -556,6 +524,10 @@ namespace Shop.Infrastructure.Migrations
                 schema: "product");
 
             migrationBuilder.DropTable(
+                name: "Hints",
+                schema: "comment");
+
+            migrationBuilder.DropTable(
                 name: "Images",
                 schema: "product");
 
@@ -564,11 +536,15 @@ namespace Shop.Infrastructure.Migrations
                 schema: "inventory");
 
             migrationBuilder.DropTable(
-                name: "OrderItem",
+                name: "Items",
                 schema: "order");
 
             migrationBuilder.DropTable(
-                name: "Score",
+                name: "Questions",
+                schema: "question");
+
+            migrationBuilder.DropTable(
+                name: "Scores",
                 schema: "product");
 
             migrationBuilder.DropTable(
@@ -580,16 +556,12 @@ namespace Shop.Infrastructure.Migrations
                 schema: "category");
 
             migrationBuilder.DropTable(
-                name: "Questions",
-                schema: "question");
+                name: "Customers",
+                schema: "customer");
 
             migrationBuilder.DropTable(
                 name: "Comments",
                 schema: "comment");
-
-            migrationBuilder.DropTable(
-                name: "Customers",
-                schema: "customer");
 
             migrationBuilder.DropTable(
                 name: "Orders",
