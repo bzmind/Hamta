@@ -10,6 +10,9 @@ public class InventoryConfiguration : IEntityTypeConfiguration<Inventory>
     {
         builder.ToTable("Inventories", "inventory");
 
+        builder.Property(inventory => inventory.Id)
+            .UseIdentityColumn(1);
+
         builder.Property(inventory => inventory.Quantity)
             .IsRequired();
 

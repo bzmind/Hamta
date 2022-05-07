@@ -10,6 +10,9 @@ public class ColorConfiguration : IEntityTypeConfiguration<Color>
     {
         builder.ToTable("Colors", "color");
 
+        builder.Property(color => color.Id)
+            .UseIdentityColumn(1);
+
         builder.Property(color => color.Name)
             .IsRequired()
             .HasMaxLength(50);

@@ -4,6 +4,7 @@ using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
+using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories.Edit;
 
@@ -13,10 +14,12 @@ public record EditCategoryCommand(long Id, long? ParentId, string Title, string 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
     private readonly ICategoryRepository _categoryRepository;
+    private readonly ICategoryDomainService _categoryDomainService;
 
-    public EditCategoryCommandHandler(ICategoryRepository categoryRepository)
+    public EditCategoryCommandHandler(ICategoryRepository categoryRepository, ICategoryDomainService categoryDomainService)
     {
         _categoryRepository = categoryRepository;
+        _categoryDomainService = categoryDomainService;
     }
 
     public async Task<OperationResult> Handle(EditCategoryCommand request, CancellationToken cancellationToken)
@@ -25,6 +28,8 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
 
         if (category == null)
             return OperationResult.NotFound();
+
+        category.Edit(request.ParentId, request.Title, request.Slug, _categoryDomainService);
 
         if (request.Specifications != null && request.Specifications.Any())
         {

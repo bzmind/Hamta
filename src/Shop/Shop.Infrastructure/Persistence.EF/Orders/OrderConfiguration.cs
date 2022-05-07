@@ -10,7 +10,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
     {
         builder.ToTable("Orders", "order");
 
-        builder.Property(order => order.Id).UseHiLo("OrderHiLoSequence");
+        builder.Property(order => order.Id)
+            .UseHiLo("OrderHiLoSequence");
+
+        builder.Property(order => order.Id)
+            .UseIdentityColumn(1);
 
         builder.Property(order => order.Status)
             .IsRequired()

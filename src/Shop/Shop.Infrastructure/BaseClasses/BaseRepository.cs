@@ -32,22 +32,22 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
 
     public void Add(TEntity entity)
     {
-        Context.Add(entity);
+        Context.Set<TEntity>().Add(entity);
     }
 
     public async Task AddAsync(TEntity entity)
     {
-        await Context.AddAsync(entity);
+        await Context.Set<TEntity>().AddAsync(entity);
     }
 
     public void Update(TEntity entity)
     {
-        Context.Update(entity);
+        Context.Set<TEntity>().Update(entity);
     }
 
     public void Delete(TEntity entity)
     {
-        Context.Remove(entity);
+        Context.Set<TEntity>().Remove(entity);
     }
 
     public bool Exists(Expression<Func<TEntity, bool>> expression)

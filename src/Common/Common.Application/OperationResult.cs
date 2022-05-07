@@ -3,43 +3,40 @@
 public class OperationResult
 {
     public string Message { get; set; }
+    public OperationStatusCode StatusCode { get; set; }
 
     private const string SuccessMessage = "عملیات با موفقیت انجام شد";
     private const string ErrorMessage = "خطایی در عملیات رخ داده است";
     private const string NotFoundMessage = "اطلاعات یافت نشد";
 
-    public OperationResult(string message)
+    public OperationResult(string message, OperationStatusCode statusCode)
     {
         Message = message;
+        StatusCode = statusCode;
     }
 
     public static OperationResult Success()
-    {
-        return new OperationResult(SuccessMessage);
-    }
+        => new (SuccessMessage, OperationStatusCode.Success);
 
     public static OperationResult Success(string successMessage)
-    {
-        return new OperationResult(successMessage);
-    }
+        => new (successMessage, OperationStatusCode.Success);
 
     public static OperationResult Error()
-    {
-        return new OperationResult(ErrorMessage);
-    }
+        => new (ErrorMessage, OperationStatusCode.Error);
 
     public static OperationResult Error(string errorMessage)
-    {
-        return new OperationResult(errorMessage);
-    }
+        => new (errorMessage, OperationStatusCode.Error);
 
     public static OperationResult NotFound()
-    {
-        return new OperationResult(NotFoundMessage);
-    }
+        => new (NotFoundMessage, OperationStatusCode.NotFound);
 
     public static OperationResult NotFound(string notFoundMessage)
-    {
-        return new OperationResult(notFoundMessage);
-    }
+        => new (notFoundMessage, OperationStatusCode.NotFound);
+}
+
+public enum OperationStatusCode
+{
+    Success = 200,
+    Error = 10,
+    NotFound = 404
 }

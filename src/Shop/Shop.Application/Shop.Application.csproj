@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Categories\RemoveSubCategory\" />
     <Folder Include="Categories\AddSubCategory\" />
     <Folder Include="Colors\Edit\" />
     <Folder Include="Colors\Remove\" />

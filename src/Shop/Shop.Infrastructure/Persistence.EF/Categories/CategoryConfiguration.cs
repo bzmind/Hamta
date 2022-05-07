@@ -10,7 +10,11 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
     {
         builder.ToTable("Categories", "category");
 
-        builder.Property(category => category.Id).UseHiLo("CategoryHiLoSequence");
+        builder.Property(category => category.Id)
+            .UseHiLo("CategoryHiLoSequence");
+
+        builder.Property(category => category.Id)
+            .UseIdentityColumn(1);
 
         builder.Property(category => category.Title)
             .IsRequired()

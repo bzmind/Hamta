@@ -1,6 +1,7 @@
 ﻿using Common.Query.BaseClasses;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
+using Shop.Infrastructure.Utility;
 using Shop.Query.Categories._DTOs;
 using Shop.Query.Categories._Mappers;
 
@@ -20,9 +21,18 @@ public class GetCategoryByParentIdQueryHandler : IBaseQueryHandler<GetCategoryBy
     public async Task<List<CategoryDto>> Handle(GetCategoryByParentIdQuery request, CancellationToken cancellationToken)
     {
         var categories = await _shopContext.Categories
-            .Where(c => c.ParentId == request.ParentCategoryId)
+            .Where(c => c.Id >= request.ParentCategoryId)
+            .OrderBy(c => c.Id)
             .ToListAsync(cancellationToken);
 
-        return categories.MapToCategoryDto();
+        var parentCategory = categories.First();
+
+        if (parentCategory.Id == request.ParentCategoryId)
+        {
+            parentCategory.FillSubCategories(categories);
+            return parentCategory.SubCategories.ToList().MapToCategoryDto();
+        }
+
+        return new List<CategoryDto>();
     }
 }

@@ -17,7 +17,11 @@ var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(settings =>
+    {
+        settings.DisplayRequestDuration();
+        settings.EnableTryItOutByDefault();
+    });
 }
 
 app.UseHttpsRedirection();

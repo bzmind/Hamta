@@ -1,8 +1,13 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Common.Application.Validation;
+using FluentValidation;
+using MediatR;
+using Microsoft.Extensions.DependencyInjection;
 using Shop.Application;
+using Shop.Application.Categories.Create;
 using Shop.Infrastructure;
 using Shop.Presentation.Facade;
 using Shop.Query;
+using Shop.Query.Categories.GetList;
 
 namespace Shop.Config
 {
@@ -14,6 +19,11 @@ namespace Shop.Config
             InfrastructureBootstrapper.RegisterDependencies(services, connectionString);
             QueryBootstrapper.RegisterDependencies(services, connectionString);
             FacadeBootstrapper.RegisterDependencies(services);
+
+            services.AddValidatorsFromAssembly(typeof(CreateCategoryCommand).Assembly);
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(CommandValidationBehavior<,>));
+            services.AddMediatR(typeof(CreateCategoryCommand).Assembly);
+            services.AddMediatR(typeof(GetCategoryListQuery).Assembly);
         }
     }
 }

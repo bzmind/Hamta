@@ -10,7 +10,11 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
     {
         builder.ToTable("Comments", "comment");
 
-        builder.Property(c => c.Id).UseHiLo("CommentHiLoSequence");
+        builder.Property(comment => comment.Id)
+            .UseHiLo("CommentHiLoSequence");
+
+        builder.Property(comment => comment.Id)
+            .UseIdentityColumn(1);
 
         builder.Property(comment => comment.Title)
             .IsRequired()

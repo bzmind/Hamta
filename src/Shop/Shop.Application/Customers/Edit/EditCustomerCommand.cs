@@ -4,6 +4,7 @@ using Common.Application.Validation;
 using Common.Application.Validation.CustomFluentValidations;
 using FluentValidation;
 using Shop.Domain.CustomerAggregate.Repository;
+using Shop.Domain.CustomerAggregate.Services;
 
 namespace Shop.Application.Customers.Edit;
 
@@ -13,10 +14,12 @@ public record EditCustomerCommand(long CustomerId, string FullName, string Email
 public class EditCustomerCommandHandler : IBaseCommandHandler<EditCustomerCommand>
 {
     private readonly ICustomerRepository _customerRepository;
+    private readonly ICustomerDomainService _customerDomainService;
 
-    public EditCustomerCommandHandler(ICustomerRepository customerRepository)
+    public EditCustomerCommandHandler(ICustomerRepository customerRepository, ICustomerDomainService customerDomainService)
     {
         _customerRepository = customerRepository;
+        _customerDomainService = customerDomainService;
     }
 
     public async Task<OperationResult> Handle(EditCustomerCommand request, CancellationToken cancellationToken)
@@ -26,7 +29,7 @@ public class EditCustomerCommandHandler : IBaseCommandHandler<EditCustomerComman
         if (customer == null)
             return OperationResult.NotFound();
 
-        customer.Edit(request.FullName, request.Email, request.PhoneNumber);
+        customer.Edit(request.FullName, request.Email, request.PhoneNumber, _customerDomainService);
 
         await _customerRepository.SaveAsync();
         return OperationResult.Success();

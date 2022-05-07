@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure.Persistence.EF;
 
@@ -11,9 +12,10 @@ using Shop.Infrastructure.Persistence.EF;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20220505214120_SetCategoryDeleteBehaviorToClientCascade")]
+    partial class SetCategoryDeleteBehaviorToClientCascade
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -36,7 +38,7 @@ namespace Shop.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<long>("Id"), "CategoryHiLoSequence");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -93,7 +95,7 @@ namespace Shop.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<long>("Id"), "CommentHiLoSequence");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -212,7 +214,7 @@ namespace Shop.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<long>("Id"), "OrderHiLoSequence");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
@@ -235,7 +237,7 @@ namespace Shop.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+                    SqlServerPropertyBuilderExtensions.UseHiLo(b.Property<long>("Id"), "ProductHiLoSequence");
 
                     b.Property<long>("CategoryId")
                         .HasColumnType("bigint");
@@ -326,7 +328,8 @@ namespace Shop.Infrastructure.Migrations
                 {
                     b.HasOne("Shop.Domain.CategoryAggregate.Category", null)
                         .WithMany("SubCategories")
-                        .HasForeignKey("ParentId");
+                        .HasForeignKey("ParentId")
+                        .OnDelete(DeleteBehavior.ClientCascade);
 
                     b.OwnsMany("Shop.Domain.CategoryAggregate.CategorySpecification", "Specifications", b1 =>
                         {

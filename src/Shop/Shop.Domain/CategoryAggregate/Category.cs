@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Common.Domain.BaseClasses;
+﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Shop.Domain.CategoryAggregate.Services;
 
@@ -12,10 +11,10 @@ public class Category : BaseAggregateRoot
     public string Slug { get; private set; }
 
     private readonly List<Category> _subCategories = new List<Category>();
-    public ReadOnlyCollection<Category> SubCategories => _subCategories.AsReadOnly();
+    public IEnumerable<Category> SubCategories => _subCategories.ToList();
 
     private List<CategorySpecification> _specifications = new List<CategorySpecification>();
-    public ReadOnlyCollection<CategorySpecification> Specifications => _specifications.AsReadOnly();
+    public IEnumerable<CategorySpecification> Specifications => _specifications.ToList();
 
     private Category()
     {
@@ -41,16 +40,6 @@ public class Category : BaseAggregateRoot
     public void AddSubCategory(Category subCategory)
     {
         _subCategories.Add(subCategory);
-    }
-
-    public void RemoveSubCategory(long subCategoryId)
-    {
-        var subCategory = _subCategories.FirstOrDefault(sc => sc.Id == subCategoryId);
-
-        if (subCategory == null)
-            throw new NullOrEmptyDataDomainException("Sub category doesn't exist in this category");
-
-        _subCategories.Remove(subCategory);
     }
 
     public void SetSpecifications(List<CategorySpecification> specifications)

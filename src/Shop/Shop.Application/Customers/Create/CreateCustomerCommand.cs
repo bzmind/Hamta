@@ -6,6 +6,7 @@ using Common.Application.Validation.CustomFluentValidations;
 using FluentValidation;
 using Shop.Domain.CustomerAggregate;
 using Shop.Domain.CustomerAggregate.Repository;
+using Shop.Domain.CustomerAggregate.Services;
 
 namespace Shop.Application.Customers.Create;
 
@@ -15,16 +16,18 @@ public record CreateCustomerCommand(string FullName, string Email, string Passwo
 public class CreateCustomerCommandHandler : IBaseCommandHandler<CreateCustomerCommand>
 {
     private readonly ICustomerRepository _customerRepository;
+    private readonly ICustomerDomainService _customerDomainService;
 
-    public CreateCustomerCommandHandler(ICustomerRepository customerRepository)
+    public CreateCustomerCommandHandler(ICustomerRepository customerRepository, ICustomerDomainService customerDomainService)
     {
         _customerRepository = customerRepository;
+        _customerDomainService = customerDomainService;
     }
 
     public async Task<OperationResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var customer = new Customer(request.FullName, request.Email, request.Password.ToSHA256(),
-            request.PhoneNumber);
+            request.PhoneNumber, _customerDomainService);
 
         _customerRepository.Add(customer);
         await _customerRepository.SaveAsync();

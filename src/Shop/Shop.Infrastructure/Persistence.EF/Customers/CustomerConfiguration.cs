@@ -10,6 +10,9 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     {
         builder.ToTable("Customers", "customer");
 
+        builder.Property(customer => customer.Id)
+            .UseIdentityColumn(1);
+
         builder.Property(customer => customer.FullName)
             .IsRequired()
             .HasMaxLength(100);

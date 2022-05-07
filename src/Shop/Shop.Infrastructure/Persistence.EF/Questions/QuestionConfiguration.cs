@@ -10,6 +10,9 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
     {
         builder.ToTable("Questions", "question");
 
+        builder.Property(question => question.Id)
+            .UseIdentityColumn(1);
+
         builder.Property(question => question.Description)
             .IsRequired()
             .HasMaxLength(300);

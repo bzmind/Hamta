@@ -35,9 +35,9 @@ internal class CategoryFacade : ICategoryFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> RemoveSubCategory(RemoveSubCategoryCommand command)
+    public async Task<OperationResult> RemoveSubCategory(long subCategoryId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new RemoveCategoryCommand(subCategoryId));
     }
 
     public async Task<CategoryDto?> GetCategoryById(long id)
