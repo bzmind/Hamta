@@ -12,8 +12,8 @@ using Shop.Infrastructure.Persistence.EF;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20220506154620_SetIdentityColumnsForEntities")]
-    partial class SetIdentityColumnsForEntities
+    [Migration("20220507121432_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

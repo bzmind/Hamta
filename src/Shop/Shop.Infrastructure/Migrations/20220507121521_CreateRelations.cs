@@ -4,7 +4,7 @@
 
 namespace Shop.Infrastructure.Migrations
 {
-    public partial class CreatedRelations : Migration
+    public partial class CreateRelations : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
