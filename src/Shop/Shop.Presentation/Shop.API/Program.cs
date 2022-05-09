@@ -1,3 +1,4 @@
+using Common.Api.Middleware;
 using Shop.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,19 +15,18 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+app.UseSwagger();
+app.UseSwaggerUI(settings =>
 {
-    app.UseSwagger();
-    app.UseSwaggerUI(settings =>
-    {
-        settings.DisplayRequestDuration();
-        settings.EnableTryItOutByDefault();
-    });
-}
+    settings.DisplayRequestDuration();
+    settings.EnableTryItOutByDefault();
+});
 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseApiCustomExceptionHandler();
 
 app.MapControllers();
 

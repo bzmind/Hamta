@@ -58,7 +58,7 @@ public class GetInventoryByFilterQueryHandler : IBaseQueryHandler<GetInventoryBy
 
         var skip = (@params.PageId - 1) * @params.Take;
 
-        return new InventoryFilterResult()
+        return new InventoryFilterResult
         {
             Data = await query
                 .Skip(skip)

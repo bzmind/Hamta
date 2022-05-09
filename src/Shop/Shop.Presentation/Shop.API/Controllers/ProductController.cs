@@ -1,12 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Common.Api;
+using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Products.Create;
 using Shop.Presentation.Facade.Products;
 
 namespace Shop.API.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class ProductController : ControllerBase
+    public class ProductController : BaseApiController
     {
         private readonly IProductFacade _productFacade;
 
