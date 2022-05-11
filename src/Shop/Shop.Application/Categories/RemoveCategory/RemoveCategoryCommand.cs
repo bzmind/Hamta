@@ -2,7 +2,7 @@
 using Common.Application.BaseClasses;
 using Shop.Domain.CategoryAggregate.Repository;
 
-namespace Shop.Application.Categories.RemoveSubCategory;
+namespace Shop.Application.Categories.RemoveCategory;
 
 public record RemoveCategoryCommand(long SubCategoryId) : IBaseCommand;
 

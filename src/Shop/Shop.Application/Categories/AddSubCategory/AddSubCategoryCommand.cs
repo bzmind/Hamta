@@ -9,9 +9,9 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.AddSubCategory;
 
 public record AddSubCategoryCommand(long ParentId, string Title, string Slug,
-    Dictionary<string, string>? Specifications) : IBaseCommand;
+    Dictionary<string, string>? Specifications) : IBaseCommand<long>;
 
-public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCommand>
+public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCommand, long>
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICategoryDomainService _categoryDomainService;
@@ -23,7 +23,7 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
         _categoryDomainService = categoryDomainService;
     }
 
-    public async Task<OperationResult> Handle(AddSubCategoryCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(AddSubCategoryCommand request, CancellationToken cancellationToken)
     {
         var newSubCategory = new Category(request.ParentId, request.Title, request.Slug, _categoryDomainService);
 
@@ -43,12 +43,12 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
         var parentCategory = await _categoryRepository.GetAsTrackingAsync(request.ParentId);
 
         if (parentCategory == null)
-            return OperationResult.NotFound();
+            return OperationResult<long>.NotFound();
 
         parentCategory.AddSubCategory(newSubCategory);
 
         await _categoryRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(newSubCategory.Id);
     }
 }
 
