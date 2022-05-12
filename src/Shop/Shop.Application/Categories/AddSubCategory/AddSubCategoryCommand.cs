@@ -2,7 +2,6 @@
 using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
-using Shop.Application.Categories.Create;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Services;

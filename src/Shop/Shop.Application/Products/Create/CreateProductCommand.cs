@@ -12,7 +12,7 @@ namespace Shop.Application.Products.Create;
 
 public record CreateProductCommand(long CategoryId, string Name, string? EnglishName, string Slug,
     string Description, IFormFile MainImage, List<IFormFile> GalleryImages,
-    Dictionary<string, string>? CustomSpecifications, List<bool>? ImportantFeatures,
+    Dictionary<string, SpecificationDetails>? CustomSpecifications,
     Dictionary<string, string>? ExtraDescriptions) : IBaseCommand;
 
 public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductCommand>
@@ -49,12 +49,9 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
         {
             var customSpecifications = new List<ProductSpecification>();
 
-            for (var i = 0; i < request.CustomSpecifications.Count; i++)
-            {
-                customSpecifications.Add(new ProductSpecification(product.Id,
-                    request.CustomSpecifications.Keys.ElementAt(i),
-                    request.CustomSpecifications.Values.ElementAt(i), request.ImportantFeatures[i]));
-            }
+            request.CustomSpecifications.ToList().ForEach(specification =>
+                customSpecifications.Add(new ProductSpecification(product.Id, specification.Key,
+                    specification.Value.Description, specification.Value.IsImportantFeature)));
 
             product.SetCustomSpecifications(customSpecifications);
         }

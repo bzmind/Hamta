@@ -1,4 +1,4 @@
-﻿namespace Shop.Application.Categories;
+﻿namespace Common.Application;
 
 public class SpecificationDetails
 {
