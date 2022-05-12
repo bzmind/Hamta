@@ -3,7 +3,7 @@ using Common.Domain.ValueObjects;
 
 namespace Shop.Domain.CustomerAggregate;
 
-public class CustomerAddress : Address
+public class CustomerAddress : BaseAddress
 {
     public long CustomerId { get; private set; }
     public bool IsActive { get; private set; }

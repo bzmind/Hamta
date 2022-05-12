@@ -8,8 +8,8 @@ using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories.Create;
 
-public record CreateCategoryCommand(string Title, string Slug, Dictionary<string, string>? Specifications)
-    : IBaseCommand<long>;
+public record CreateCategoryCommand(string Title, string Slug,
+        Dictionary<string, SpecificationDetails>? Specifications) : IBaseCommand<long>;
 
 public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand, long>
 {
@@ -34,11 +34,12 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
             var specifications = new List<CategorySpecification>();
 
             request.Specifications.ToList().ForEach(specification =>
-                specifications.Add(new CategorySpecification(category.Id, specification.Key, specification.Value)));
+                specifications.Add(new CategorySpecification(category.Id, specification.Key,
+                    specification.Value.Description, specification.Value.IsImportantFeature)));
 
             category.SetSpecifications(specifications);
         }
-        
+
         await _categoryRepository.SaveAsync();
         return OperationResult<long>.Success(category.Id);
     }
@@ -55,14 +56,14 @@ internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategory
         RuleFor(c => c.Slug)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
-        
+
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Key)
                 .NotNull()
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
-            specification.RuleFor(spec => spec.Value)
+            specification.RuleFor(spec => spec.Value.Description)
                 .NotNull()
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
         });

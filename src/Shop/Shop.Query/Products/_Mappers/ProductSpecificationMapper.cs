@@ -15,8 +15,8 @@ internal static class ProductSpecificationMapper
             Id = specification.Id,
             CreationDate = specification.CreationDate,
             ProductId = specification.ProductId,
-            Key = specification.Key,
-            Value = specification.Value,
+            Key = specification.Title,
+            Value = specification.Description,
             IsImportantFeature = specification.IsImportantFeature
         };
     }
@@ -32,8 +32,8 @@ internal static class ProductSpecificationMapper
                 Id = specification.Id,
                 CreationDate = specification.CreationDate,
                 ProductId = specification.ProductId,
-                Key = specification.Key,
-                Value = specification.Value,
+                Key = specification.Title,
+                Value = specification.Description,
                 IsImportantFeature = specification.IsImportantFeature
             });
         });

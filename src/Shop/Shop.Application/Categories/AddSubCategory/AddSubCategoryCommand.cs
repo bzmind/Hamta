@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
+using Shop.Application.Categories.Create;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Services;
@@ -9,7 +10,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.AddSubCategory;
 
 public record AddSubCategoryCommand(long ParentId, string Title, string Slug,
-    Dictionary<string, string>? Specifications) : IBaseCommand<long>;
+    Dictionary<string, SpecificationDetails>? Specifications) : IBaseCommand<long>;
 
 public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCommand, long>
 {
@@ -35,7 +36,7 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
 
             request.Specifications.ToList().ForEach(specification => 
                 specifications.Add(new CategorySpecification(newSubCategory.Id, specification.Key,
-                    specification.Value)));
+                    specification.Value.Description, specification.Value.IsImportantFeature)));
 
             newSubCategory.SetSpecifications(specifications);
         }

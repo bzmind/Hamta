@@ -61,11 +61,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         {
             option.ToTable("CustomSpecifications", "product");
 
-            option.Property(customSpec => customSpec.Key)
+            option.Property(customSpec => customSpec.Title)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            option.Property(customSpec => customSpec.Value)
+            option.Property(customSpec => customSpec.Description)
                 .IsRequired()
                 .HasMaxLength(300);
 

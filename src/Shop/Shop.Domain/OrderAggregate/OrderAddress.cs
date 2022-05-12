@@ -3,7 +3,7 @@ using Common.Domain.ValueObjects;
 
 namespace Shop.Domain.OrderAggregate;
 
-public class OrderAddress : Address
+public class OrderAddress : BaseAddress
 {
     public long OrderId { get; private set; }
 

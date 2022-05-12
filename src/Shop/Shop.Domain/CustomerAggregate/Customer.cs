@@ -54,7 +54,7 @@ public class Customer : BaseAggregateRoot
         var address = Addresses.FirstOrDefault(a => a.Id == addressId);
 
         if (address == null)
-            throw new InvalidDataDomainException("Address was not found");
+            throw new InvalidDataDomainException("BaseAddress was not found");
 
         if (address.IsActive)
             return;
@@ -75,7 +75,7 @@ public class Customer : BaseAggregateRoot
         var address = Addresses.FirstOrDefault(a => a.Id == addressId);
 
         if (address == null)
-            throw new NullOrEmptyDataDomainException("Address was not found");
+            throw new NullOrEmptyDataDomainException("BaseAddress was not found");
 
         address.Edit(fullName, new PhoneNumber(phoneNumber), province, city, fullAddress, postalCode);
     }
@@ -85,7 +85,7 @@ public class Customer : BaseAggregateRoot
         var address = Addresses.FirstOrDefault(a => a.Id == addressId);
 
         if (address == null)
-            throw new NullOrEmptyDataDomainException("Address was not found");
+            throw new NullOrEmptyDataDomainException("BaseAddress was not found");
 
         _addresses.Remove(address);
     }

@@ -16,38 +16,4 @@ public class CategoryDomainService : ICategoryDomainService
     {
         return _categoryRepository.Exists(c => c.Slug == slug);
     }
-
-    //public bool IsThirdCategory(long categoryId)
-    //{
-    //    var category = _categoryRepository.Get(categoryId);
-
-    //    if (category == null)
-    //        throw new DataNotFoundInDatabaseDomainException("No such category was found");
-
-    //    if (category.SubCategories.Any())
-    //        return false;
-
-    //    var firstParentCategory = GetCategoryParent(category);
-    //    if (firstParentCategory == null)
-    //        return false;
-
-    //    var secondParentCategory = GetCategoryParent(firstParentCategory);
-    //    if (secondParentCategory == null)
-    //        return false;
-
-    //    return true;
-    //}
-
-    //private Category? GetCategoryParent(Category category)
-    //{
-    //    if (category.ParentId == null)
-    //        return null;
-
-    //    var parentCategory = _categoryRepository.Get(category.ParentId.Value);
-
-    //    if (parentCategory == null)
-    //        throw new DataNotFoundInDatabaseDomainException("Parent category not found");
-
-    //    return parentCategory;
-    //}
 }

@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using FluentValidation;
+using Shop.Application.Categories.Create;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Services;
@@ -9,7 +10,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.Edit;
 
 public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
-    Dictionary<string, string>? Specifications) : IBaseCommand;
+    Dictionary<string, SpecificationDetails>? Specifications) : IBaseCommand;
 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
@@ -35,7 +36,8 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
         {
             var specifications = new List<CategorySpecification>();
             request.Specifications.ToList().ForEach(specification =>
-                specifications.Add(new CategorySpecification(category.Id, specification.Key, specification.Value)));
+                specifications.Add(new CategorySpecification(category.Id, specification.Key,
+                    specification.Value.Description, specification.Value.IsImportantFeature)));
             category.SetSpecifications(specifications);
         }
         

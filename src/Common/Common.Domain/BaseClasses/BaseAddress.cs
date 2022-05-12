@@ -3,7 +3,7 @@ using Common.Domain.ValueObjects;
 
 namespace Common.Domain.BaseClasses;
 
-public abstract class Address : BaseEntity
+public abstract class BaseAddress : BaseEntity
 {
     public string FullName { get; protected set; }
     public PhoneNumber PhoneNumber { get; protected set; }
