@@ -1,5 +1,4 @@
-﻿using System.Collections.ObjectModel;
-using Common.Domain.BaseClasses;
+﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 
 namespace Shop.Domain.CommentAggregate;

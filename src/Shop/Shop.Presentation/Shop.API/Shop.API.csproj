@@ -23,4 +23,8 @@
     <ProjectReference Include="..\..\Shop.Config\Shop.Config.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\images\products\gallery\" />
+  </ItemGroup>
+
 </Project>
