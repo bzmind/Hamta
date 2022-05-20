@@ -9,7 +9,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.Edit;
 
 public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
-    Dictionary<string, SpecificationDetails>? Specifications) : IBaseCommand;
+    List<Specification>? Specifications) : IBaseCommand;
 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
@@ -35,8 +35,8 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
         {
             var specifications = new List<CategorySpecification>();
             request.Specifications.ToList().ForEach(specification =>
-                specifications.Add(new CategorySpecification(category.Id, specification.Key,
-                    specification.Value.Description, specification.Value.IsImportantFeature)));
+                specifications.Add(new CategorySpecification(category.Id, specification.Title,
+                    specification.Description, specification.IsImportantFeature)));
             category.SetSpecifications(specifications);
         }
         
@@ -59,11 +59,11 @@ internal class EditCategoryCommandValidator : AbstractValidator<EditCategoryComm
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
-            specification.RuleFor(spec => spec.Key)
+            specification.RuleFor(spec => spec.Title)
                 .NotNull()
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
-            specification.RuleFor(spec => spec.Value)
+            specification.RuleFor(spec => spec.Description)
                 .NotNull()
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
         });

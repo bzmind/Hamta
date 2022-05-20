@@ -15,17 +15,17 @@ public class Product : BaseAggregateRoot
     public string? Description { get; private set; }
 
     private readonly List<Score> _scores = new List<Score>();
-    public ReadOnlyCollection<Score> Scores => _scores.AsReadOnly();
+    public IEnumerable<Score> Scores => _scores.ToList();
     public ProductImage MainImage { get; private set; }
 
     private readonly List<ProductImage> _galleryImages = new List<ProductImage>();
-    public ReadOnlyCollection<ProductImage> GalleryImages => _galleryImages.AsReadOnly();
+    public IEnumerable<ProductImage> GalleryImages => _galleryImages.ToList();
 
     private List<ProductSpecification> _customSpecifications = new List<ProductSpecification>();
-    public ReadOnlyCollection<ProductSpecification> CustomSpecifications => _customSpecifications.AsReadOnly();
+    public IEnumerable<ProductSpecification> CustomSpecifications => _customSpecifications.ToList();
 
     private List<ProductExtraDescription> _extraDescriptions = new List<ProductExtraDescription>();
-    public ReadOnlyCollection<ProductExtraDescription> ExtraDescriptions => _extraDescriptions.AsReadOnly();
+    public IEnumerable<ProductExtraDescription> ExtraDescriptions => _extraDescriptions.ToList();
 
     public double AverageScore
     {

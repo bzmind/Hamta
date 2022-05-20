@@ -20,7 +20,6 @@
     <Folder Include="Products\Create\" />
     <Folder Include="Products\Edit\" />
     <Folder Include="Products\_Services\" />
-    <Folder Include="Products\SetScore\" />
   </ItemGroup>
 
   <ItemGroup>

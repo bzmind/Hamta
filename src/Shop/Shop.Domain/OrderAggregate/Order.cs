@@ -14,7 +14,7 @@ public class Order : BaseAggregateRoot
     public ShippingInfo? ShippingInfo { get; private set; }
 
     private readonly List<OrderItem> _items = new List<OrderItem>();
-    public ReadOnlyCollection<OrderItem> Items => _items.AsReadOnly();
+    public IEnumerable<OrderItem> Items => _items.ToList();
 
     public enum OrderStatus { Pending, Preparing, Sending, Received }
 

@@ -6,18 +6,18 @@ using Shop.Domain.ProductAggregate.Repository;
 
 namespace Shop.Application.Products.SetScore;
 
-public record SetScoreCommand(long ProductId, int ScoreAmount) : IBaseCommand;
+public record AddScoreCommand(long ProductId, int ScoreAmount) : IBaseCommand;
 
-public class SetScoreCommandHandler : IBaseCommandHandler<SetScoreCommand>
+public class AddScoreCommandHandler : IBaseCommandHandler<AddScoreCommand>
 {
     private readonly IProductRepository _productRepository;
 
-    public SetScoreCommandHandler(IProductRepository productRepository)
+    public AddScoreCommandHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
     }
 
-    public async Task<OperationResult> Handle(SetScoreCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(AddScoreCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetAsTrackingAsync(request.ProductId);
 
@@ -31,9 +31,9 @@ public class SetScoreCommandHandler : IBaseCommandHandler<SetScoreCommand>
     }
 }
 
-public class SetScoreCommandValidator : AbstractValidator<SetScoreCommand>
+public class AddScoreCommandValidator : AbstractValidator<AddScoreCommand>
 {
-    public SetScoreCommandValidator()
+    public AddScoreCommandValidator()
     {
         RuleFor(p => p.ScoreAmount)
             .NotNull()

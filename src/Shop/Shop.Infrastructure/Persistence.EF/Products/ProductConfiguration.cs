@@ -68,11 +68,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             option.Property(customSpec => customSpec.Description)
                 .IsRequired()
                 .HasMaxLength(300);
-
-            option.Property(customSpec => customSpec.IsImportantFeature)
-                .IsRequired()
-                .HasColumnType("bit")
-                .HasDefaultValue(false);
         });
 
         builder.OwnsMany(product => product.ExtraDescriptions, option =>

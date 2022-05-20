@@ -12,7 +12,7 @@ namespace Shop.Application.Products.Edit;
 
 public record EditProductCommand(long ProductId, long CategoryId, string Name, string? EnglishName,
     string Slug, string Description, IFormFile? MainImage, List<IFormFile>? GalleryImages,
-    Dictionary<string, SpecificationDetails>? CustomSpecifications, List<bool>? ImportantFeatures,
+    List<Specification>? CustomSpecifications, List<bool>? ImportantFeatures,
     Dictionary<string, string>? ExtraDescriptions) : IBaseCommand;
 
 public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
@@ -69,8 +69,8 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
             var customSpecifications = new List<ProductSpecification>();
 
             request.CustomSpecifications.ToList().ForEach(specification =>
-                customSpecifications.Add(new ProductSpecification(product.Id, specification.Key,
-                    specification.Value.Description, specification.Value.IsImportantFeature)));
+                customSpecifications.Add(new ProductSpecification(product.Id, specification.Title,
+                    specification.Description, specification.IsImportantFeature)));
 
             product.SetCustomSpecifications(customSpecifications);
         }

@@ -12,10 +12,10 @@ namespace Shop.Application.Products.Create;
 
 public record CreateProductCommand(long CategoryId, string Name, string? EnglishName, string Slug,
     string Description, IFormFile MainImage, List<IFormFile> GalleryImages,
-    Dictionary<string, SpecificationDetails>? CustomSpecifications,
-    Dictionary<string, string>? ExtraDescriptions) : IBaseCommand;
+    List<Specification>? CustomSpecifications,
+    Dictionary<string, string>? ExtraDescriptions) : IBaseCommand<long>;
 
-public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductCommand>
+public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductCommand, long>
 {
     private readonly IProductRepository _productRepository;
     private readonly IProductDomainService _productDomainService;
@@ -29,7 +29,7 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
         _fileService = fileService;
     }
 
-    public async Task<OperationResult> Handle(CreateProductCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(CreateProductCommand request, CancellationToken cancellationToken)
     {
         var product = new Product(request.CategoryId, request.Name, request.EnglishName, request.Slug,
             request.Description, _productDomainService);
@@ -50,8 +50,8 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
             var customSpecifications = new List<ProductSpecification>();
 
             request.CustomSpecifications.ToList().ForEach(specification =>
-                customSpecifications.Add(new ProductSpecification(product.Id, specification.Key,
-                    specification.Value.Description, specification.Value.IsImportantFeature)));
+                customSpecifications.Add(new ProductSpecification(product.Id, specification.Title,
+                    specification.Description, specification.IsImportantFeature)));
 
             product.SetCustomSpecifications(customSpecifications);
         }
@@ -70,7 +70,7 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
         }
 
         await _productRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(product.Id);
     }
 }
 

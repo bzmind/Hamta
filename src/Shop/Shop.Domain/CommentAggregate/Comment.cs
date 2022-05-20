@@ -12,7 +12,7 @@ public class Comment : BaseAggregateRoot
     public string Description { get; private set; }
 
     private readonly List<CommentHint> _commentHints = new List<CommentHint>();
-    public ReadOnlyCollection<CommentHint> CommentHints => _commentHints.AsReadOnly();
+    public IEnumerable<CommentHint> CommentHints => _commentHints.ToList();
     public CommentStatus Status { get; private set; }
     public CommentRecommendation Recommendation { get; private set; }
     public int Likes { get => UsersWhoLiked.Count; private set {} }

@@ -6,7 +6,7 @@ public abstract class BaseSpecification : BaseEntity
 {
     public string Title { get; protected set; }
     public string Description { get; protected set; }
-    public bool IsImportantFeature { get; protected set; }
+    public bool IsImportantFeature { get; protected set; } = false;
 
     protected void Guard(string title, string description)
     {

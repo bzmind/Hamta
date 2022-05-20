@@ -1,6 +1,7 @@
 ﻿using Common.Application;
 using MediatR;
 using Shop.Application.Products.Create;
+using Shop.Application.Products.Edit;
 using Shop.Application.Products.RemoveGalleryImage;
 using Shop.Application.Products.SetScore;
 using Shop.Query.Products._DTOs;
@@ -18,12 +19,12 @@ internal class ProductFacade : IProductFacade
         _mediator = mediator;
     }
 
-    public async Task<OperationResult> Create(CreateProductCommand command)
+    public async Task<OperationResult<long>> Create(CreateProductCommand command)
     {
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> Edit(CreateProductCommand command)
+    public async Task<OperationResult> Edit(EditProductCommand command)
     {
         return await _mediator.Send(command);
     }
@@ -33,7 +34,7 @@ internal class ProductFacade : IProductFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> SetScore(SetScoreCommand command)
+    public async Task<OperationResult> AddScore(AddScoreCommand command)
     {
         return await _mediator.Send(command);
     }

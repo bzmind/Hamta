@@ -13,13 +13,13 @@ public class Customer : BaseAggregateRoot
     public string Password { get; private set; }
 
     private readonly List<CustomerAddress> _addresses = new List<CustomerAddress>();
-    public ReadOnlyCollection<CustomerAddress> Addresses => _addresses.AsReadOnly();
+    public IEnumerable<CustomerAddress> Addresses => _addresses.ToList();
     public PhoneNumber PhoneNumber { get; private set; }
     public string AvatarName { get; private set; } = DefaultAvatarName;
     public bool IsSubscribedToNews { get; private set; }
 
     private readonly List<CustomerFavoriteItem> _favoriteItems = new List<CustomerFavoriteItem>();
-    public ReadOnlyCollection<CustomerFavoriteItem> FavoriteItems => _favoriteItems.AsReadOnly();
+    public IEnumerable<CustomerFavoriteItem> FavoriteItems => _favoriteItems.ToList();
 
     public const string DefaultAvatarName = "avatar.png";
 
