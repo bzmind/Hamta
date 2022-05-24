@@ -6,7 +6,7 @@ using Shop.Domain.ProductAggregate.Repository;
 
 namespace Shop.Application.Products.SetScore;
 
-public record AddScoreCommand(long ProductId, int ScoreAmount) : IBaseCommand;
+public record AddScoreCommand(long ProductId, float ScoreAmount) : IBaseCommand;
 
 public class AddScoreCommandHandler : IBaseCommandHandler<AddScoreCommand>
 {
@@ -38,7 +38,7 @@ public class AddScoreCommandValidator : AbstractValidator<AddScoreCommand>
         RuleFor(p => p.ScoreAmount)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("امتیاز"))
-            .GreaterThan(0).WithMessage(ValidationMessages.FieldMinLength("امتیاز", 0))
-            .LessThan(6).WithMessage(ValidationMessages.FieldMaxLength("امتیاز", 6));
+            .GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.FieldGreaterThanOrEqualTo("امتیاز", 0))
+            .LessThanOrEqualTo(5).WithMessage(ValidationMessages.FieldLessThanOrEqualTo("امتیاز", 5));
     }
 }

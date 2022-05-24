@@ -52,7 +52,7 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
     }
 }
 
-internal class AddSubCategoryCommandValidator : AbstractValidator<AddSubCategoryCommand>
+public class AddSubCategoryCommandValidator : AbstractValidator<AddSubCategoryCommand>
 {
     public AddSubCategoryCommandValidator()
     {
@@ -62,7 +62,7 @@ internal class AddSubCategoryCommandValidator : AbstractValidator<AddSubCategory
 
         RuleFor(c => c.Slug)
             .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {

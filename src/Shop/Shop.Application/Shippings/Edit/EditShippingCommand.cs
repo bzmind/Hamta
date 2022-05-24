@@ -31,7 +31,7 @@ public class EditShippingCommandHandler : IBaseCommandHandler<EditShippingComman
     }
 }
 
-internal class EditShippingCommandValidator : AbstractValidator<EditShippingCommand>
+public class EditShippingCommandValidator : AbstractValidator<EditShippingCommand>
 {
     public EditShippingCommandValidator()
     {

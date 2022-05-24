@@ -35,7 +35,7 @@ public class CreateCustomerCommandHandler : IBaseCommandHandler<CreateCustomerCo
     }
 }
 
-internal class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCommand>
+public class CreateCustomerCommandValidator : AbstractValidator<CreateCustomerCommand>
 {
     public CreateCustomerCommandValidator()
     {

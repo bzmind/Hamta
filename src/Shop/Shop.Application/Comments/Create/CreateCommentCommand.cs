@@ -40,7 +40,7 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
     }
 }
 
-internal class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
+public class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
 {
     public CreateCommentCommandValidator()
     {

@@ -37,8 +37,8 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
                     i => i.ProductId,
                     (tables, inventory) => new
                     {
-                        Product = tables.Product,
-                        Category = tables.Category,
+                        tables.Product,
+                        tables.Category,
                         Inventory = inventory
                     })
                 .Join(
@@ -82,12 +82,12 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
         var groupedProduct = productDtos.GroupBy(p => p.Id).Select(productGroup =>
         {
             var firstItem = productGroup.First();
-            firstItem.Scores = productGroup.Select(p => p.Scores.Single()).ToList();
-            firstItem.GalleryImages = productGroup.Select(p => p.GalleryImages.Single()).ToList();
-            firstItem.CustomSpecifications = productGroup.Select(p => p.CustomSpecifications.Single()).ToList();
-            firstItem.CategorySpecifications = productGroup.Select(p => p.CategorySpecifications.Single()).ToList();
-            firstItem.ExtraDescriptions = productGroup.Select(p => p.ExtraDescriptions.Single()).ToList();
-            firstItem.ProductInventories = productGroup.Select(p => p.ProductInventories.Single()).ToList();
+            firstItem.Scores = productGroup.SelectMany(p => p.Scores).ToList();
+            firstItem.GalleryImages = productGroup.SelectMany(p => p.GalleryImages).ToList();
+            firstItem.CustomSpecifications = productGroup.SelectMany(p => p.CustomSpecifications).ToList();
+            firstItem.CategorySpecifications = productGroup.SelectMany(p => p.CategorySpecifications).ToList();
+            firstItem.ExtraDescriptions = productGroup.SelectMany(p => p.ExtraDescriptions).ToList();
+            firstItem.ProductInventories = productGroup.SelectMany(p => p.ProductInventories).ToList();
             return firstItem;
         }).Single();
 

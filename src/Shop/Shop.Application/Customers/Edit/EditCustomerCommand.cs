@@ -36,7 +36,7 @@ public class EditCustomerCommandHandler : IBaseCommandHandler<EditCustomerComman
     }
 }
 
-internal class EditCustomerCommandValidator : AbstractValidator<EditCustomerCommand>
+public class EditCustomerCommandValidator : AbstractValidator<EditCustomerCommand>
 {
     public EditCustomerCommandValidator()
     {

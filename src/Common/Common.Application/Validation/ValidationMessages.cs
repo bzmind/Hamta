@@ -27,6 +27,22 @@ public static class ValidationMessages
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxLength"></param>
+    public static string FieldGreaterThanOrEqualTo(string field, int maxLength)
+        => $"{field} باید بیشتر یا مساوی {maxLength} باشد";
+
+    /// <summary>
+    /// <example>Example: نام} باید کمتر از {3} باشد}</example>
+    /// </summary>
+    /// <param name="field"></param>
+    /// <param name="maxLength"></param>
+    public static string FieldLessThanOrEqualTo(string field, int maxLength)
+        => $"{field} باید کمتر یا مساوی {maxLength} باشد";
+
+    /// <summary>
+    /// <example>Example: نام} باید کمتر از {3} باشد}</example>
+    /// </summary>
+    /// <param name="field"></param>
+    /// <param name="maxLength"></param>
     public static string FieldMaxLength(string field, int maxLength)
         => $"{field} باید کمتر از {maxLength} باشد";
 

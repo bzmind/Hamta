@@ -26,17 +26,17 @@ public class Product : BaseAggregateRoot
     private List<ProductExtraDescription> _extraDescriptions = new List<ProductExtraDescription>();
     public IEnumerable<ProductExtraDescription> ExtraDescriptions => _extraDescriptions.ToList();
 
-    public double AverageScore
+    public float AverageScore
     {
         get
         {
-            double values = 0;
+            float values = 0;
 
             foreach (var score in _scores)
                 values += score.Value;
 
-            double result;
-            double.TryParse($"{values / _scores.Count:0.#}", out result);
+            float result;
+            float.TryParse($"{values / _scores.Count:0.#}", out result);
 
             return result;
         }
@@ -102,7 +102,7 @@ public class Product : BaseAggregateRoot
         _extraDescriptions = extraDescriptions;
     }
 
-    public void AddScore(int scoreAmount)
+    public void AddScore(float scoreAmount)
     {
         _scores.Add(new Score(scoreAmount));
     }

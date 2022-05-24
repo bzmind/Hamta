@@ -17,12 +17,13 @@ public class RemoveColorCommandHandler : IBaseCommandHandler<RemoveColorCommand>
 
     public async Task<OperationResult> Handle(RemoveColorCommand request, CancellationToken cancellationToken)
     {
-        var color = await _colorRepository.GetAsTrackingAsync(request.ColorId);
+        var color = await _colorRepository.GetAsync(request.ColorId);
 
         if (color == null)
             return OperationResult.NotFound();
 
         _colorRepository.Delete(color);
+        await _colorRepository.SaveAsync();
         return OperationResult.Success();
     }
 }

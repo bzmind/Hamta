@@ -31,7 +31,7 @@ public class EditColorCommandHandler : IBaseCommandHandler<EditColorCommand>
     }
 }
 
-internal class EditColorCommandValidator : AbstractValidator<EditColorCommand>
+public class EditColorCommandValidator : AbstractValidator<EditColorCommand>
 {
     public EditColorCommandValidator()
     {

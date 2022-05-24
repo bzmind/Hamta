@@ -38,7 +38,7 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
     }
 }
 
-internal class CheckoutOrderCommandValidator : AbstractValidator<CheckoutOrderCommand>
+public class CheckoutOrderCommandValidator : AbstractValidator<CheckoutOrderCommand>
 {
     public CheckoutOrderCommandValidator()
     {

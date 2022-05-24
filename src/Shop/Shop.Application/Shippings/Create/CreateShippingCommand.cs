@@ -28,7 +28,7 @@ public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCo
     }
 }
 
-internal class CreateShippingCommandValidator : AbstractValidator<CreateShippingCommand>
+public class CreateShippingCommandValidator : AbstractValidator<CreateShippingCommand>
 {
     public CreateShippingCommandValidator()
     {

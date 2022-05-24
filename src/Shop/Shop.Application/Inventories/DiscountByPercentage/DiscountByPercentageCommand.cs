@@ -30,7 +30,7 @@ public class DiscountByPercentageCommandHandler : IBaseCommandHandler<DiscountBy
     }
 }
 
-internal class DiscountByPercentageCommandValidator : AbstractValidator<DiscountByPercentageCommand>
+public class DiscountByPercentageCommandValidator : AbstractValidator<DiscountByPercentageCommand>
 {
     public DiscountByPercentageCommandValidator()
     {

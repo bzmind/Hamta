@@ -11,7 +11,7 @@ public class ProductListDto : BaseDto
     public string? EnglishName { get; set; }
     public string Slug { get; set; }
     public int Price { get; set; }
-    public double AverageScore { get; set; }
+    public float AverageScore { get; set; }
     public int Quantity { get; set; }
     public List<Color> Colors { get; set; }
 }

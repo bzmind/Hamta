@@ -32,7 +32,7 @@ public class EditInventoryCommandHandler : IBaseCommandHandler<EditInventoryComm
     }
 }
 
-internal class EditInventoryCommandValidator : AbstractValidator<CreateInventoryCommand>
+public class EditInventoryCommandValidator : AbstractValidator<CreateInventoryCommand>
 {
     public EditInventoryCommandValidator()
     {

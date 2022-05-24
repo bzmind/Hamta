@@ -19,6 +19,8 @@
     <Folder Include="Orders\SetStatus\" />
     <Folder Include="Products\Create\" />
     <Folder Include="Products\Edit\" />
+    <Folder Include="Products\Remove\" />
+    <Folder Include="Products\ReplaceMainImage\" />
     <Folder Include="Products\_Services\" />
   </ItemGroup>
 

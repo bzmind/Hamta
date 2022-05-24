@@ -28,7 +28,7 @@ public class CreateInventoryCommandHandler : IBaseCommandHandler<CreateInventory
     }
 }
 
-internal class CreateInventoryCommandValidator : AbstractValidator<CreateInventoryCommand>
+public class CreateInventoryCommandValidator : AbstractValidator<CreateInventoryCommand>
 {
     public CreateInventoryCommandValidator()
     {

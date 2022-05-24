@@ -45,7 +45,7 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
     }
 }
 
-internal class EditCategoryCommandValidator : AbstractValidator<EditCategoryCommand>
+public class EditCategoryCommandValidator : AbstractValidator<EditCategoryCommand>
 {
     public EditCategoryCommandValidator()
     {
@@ -55,7 +55,7 @@ internal class EditCategoryCommandValidator : AbstractValidator<EditCategoryComm
 
         RuleFor(c => c.Slug)
             .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {

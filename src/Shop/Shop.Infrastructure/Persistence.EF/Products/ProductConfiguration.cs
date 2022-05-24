@@ -36,7 +36,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
             option.Property(score => score.Value)
                 .IsRequired()
-                .HasMaxLength(5);
+                .HasColumnType("float(2,1)");
         });
 
         builder.OwnsOne(product => product.MainImage, option =>

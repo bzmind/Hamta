@@ -41,7 +41,7 @@ public class SetCustomerAvatarCommandHandler : IBaseCommandHandler<SetCustomerAv
     }
 }
 
-internal class SetCustomerAvatarCommandValidator : AbstractValidator<SetCustomerAvatarCommand>
+public class SetCustomerAvatarCommandValidator : AbstractValidator<SetCustomerAvatarCommand>
 {
     public SetCustomerAvatarCommandValidator()
     {

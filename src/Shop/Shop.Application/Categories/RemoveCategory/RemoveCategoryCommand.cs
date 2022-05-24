@@ -19,12 +19,10 @@ public class RemoveCategoryCommandHandler : IBaseCommandHandler<RemoveCategoryCo
     {
         var category = await _categoryRepository.RemoveCategory(request.SubCategoryId);
 
-        if (category)
-        {
-            await _categoryRepository.SaveAsync();
-            return OperationResult.Success();
-        }
+        if (!category)
+            return OperationResult.Error("امکان حذف این دسته بندی وجود ندارد");
 
-        return OperationResult.Error("امکان حذف این دسته بندی وجود ندارد");
+        await _categoryRepository.SaveAsync();
+        return OperationResult.Success();
     }
 }

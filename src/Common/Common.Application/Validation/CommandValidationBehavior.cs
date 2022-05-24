@@ -29,7 +29,7 @@ public class CommandValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             var stringBuilder = new StringBuilder();
             foreach (var error in errors)
             {
-                stringBuilder.Append(error.ErrorMessage);
+                stringBuilder.Append(error.ErrorMessage + "\n");
             }
             
             throw new InvalidCommandException(stringBuilder.ToString());

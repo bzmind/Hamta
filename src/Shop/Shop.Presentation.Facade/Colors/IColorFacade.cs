@@ -8,7 +8,7 @@ namespace Shop.Presentation.Facade.Colors;
 
 public interface IColorFacade
 {
-    Task<OperationResult> Create(CreateColorCommand command);
+    Task<OperationResult<long>> Create(CreateColorCommand command);
     Task<OperationResult> Edit(EditColorCommand command);
     Task<OperationResult> Remove(RemoveColorCommand command);
 

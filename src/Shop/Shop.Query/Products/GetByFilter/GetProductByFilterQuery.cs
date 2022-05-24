@@ -33,28 +33,34 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
                 _shopContext.Inventories,
                 p => p.Id,
                 i => i.ProductId,
-                (product, inventory) => product.MapToProductListDto(inventory))
+                (product, inventory) => new { product, inventory })
             .Join(
                 _shopContext.Colors,
-                p => p.ColorId,
+                t => t.inventory.ColorId,
                 c => c.Id,
-                (productListDto, color) => productListDto.SetProductListDtoColors(color))
+                (tables, color) => new
+                {
+                    tables.product,
+                    tables.inventory,
+                    color
+                })
             .AsQueryable();
 
         if (@params.CategoryId != null)
-            query = query.Where(p => p.CategoryId == @params.CategoryId);
+            query = query.Where(tables => tables.product.CategoryId == @params.CategoryId);
 
         if (!string.IsNullOrWhiteSpace(@params.Name))
-            query = query.Where(p => p.Name.Contains(@params.Name));
+            query = query.Where(tables => tables.product.Name.Contains(@params.Name));
 
         if (!string.IsNullOrWhiteSpace(@params.EnglishName))
-            query = query.Where(p => p.EnglishName != null && p.EnglishName.Contains(@params.EnglishName));
+            query = query.Where(tables => tables.product.EnglishName != null &&
+                                          tables.product.EnglishName.Contains(@params.EnglishName));
 
         if (!string.IsNullOrWhiteSpace(@params.Slug))
-            query = query.Where(p => p.Slug.Contains(@params.Slug));
+            query = query.Where(tables => tables.product.Slug.Contains(@params.Slug));
 
         if (@params.AverageScore != null)
-            query = query.Where(p => p.AverageScore >= @params.AverageScore);
+            query = query.Where(tables => tables.product.AverageScore >= @params.AverageScore);
 
         var skip = (@params.PageId - 1) * @params.Take;
 
@@ -63,7 +69,10 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             .Take(@params.Take)
             .ToListAsync(cancellationToken);
 
-        var groupedQueryResult = finalQuery.GroupBy(p => p.Id).Select(productGroup =>
+        var productListDtos = finalQuery
+            .Select(t => t.product.MapToProductListDto(t.inventory).SetProductListDtoColors(t.color));
+
+        var groupedQueryResult = productListDtos.GroupBy(p => p.Id).Select(productGroup =>
         {
             var firstItem = productGroup.First();
             firstItem.Colors = productGroup.Select(p => p.Colors.Single()).ToList();

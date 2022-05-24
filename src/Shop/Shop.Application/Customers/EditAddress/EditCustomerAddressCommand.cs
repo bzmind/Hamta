@@ -34,7 +34,7 @@ public class EditCustomerAddressCommandHandler : IBaseCommandHandler<EditCustome
     }
 }
 
-internal class EditCustomerAddressCommandValidator : AbstractValidator<EditCustomerAddressCommand>
+public class EditCustomerAddressCommandValidator : AbstractValidator<EditCustomerAddressCommand>
 {
     public EditCustomerAddressCommandValidator()
     {

@@ -18,7 +18,7 @@ internal class ColorFacade : IColorFacade
         _mediator = mediator;
     }
 
-    public async Task<OperationResult> Create(CreateColorCommand command)
+    public async Task<OperationResult<long>> Create(CreateColorCommand command)
     {
         return await _mediator.Send(command);
     }

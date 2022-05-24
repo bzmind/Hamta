@@ -37,7 +37,7 @@ public class SetOrderStatusCommandHandler : IBaseCommandHandler<SetOrderStatusCo
     }
 }
 
-internal class SetOrderStatusCommandValidator : AbstractValidator<SetOrderStatusCommand>
+public class SetOrderStatusCommandValidator : AbstractValidator<SetOrderStatusCommand>
 {
     public SetOrderStatusCommandValidator()
     {

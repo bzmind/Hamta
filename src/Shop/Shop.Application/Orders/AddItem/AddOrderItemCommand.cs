@@ -48,7 +48,7 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
     }
 }
 
-internal class AddOrderItemCommandValidator : AbstractValidator<AddOrderItemCommand>
+public class AddOrderItemCommandValidator : AbstractValidator<AddOrderItemCommand>
 {
     public AddOrderItemCommandValidator()
     {

@@ -12,8 +12,7 @@ namespace Shop.Application.Products.Edit;
 
 public record EditProductCommand(long ProductId, long CategoryId, string Name, string? EnglishName,
     string Slug, string Description, IFormFile? MainImage, List<IFormFile>? GalleryImages,
-    List<Specification>? CustomSpecifications, List<bool>? ImportantFeatures,
-    Dictionary<string, string>? ExtraDescriptions) : IBaseCommand;
+    List<Specification>? CustomSpecifications, Dictionary<string, string>? ExtraDescriptions) : IBaseCommand;
 
 public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
 {
@@ -93,7 +92,7 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
     }
 }
 
-internal class EditProductCommandValidator : AbstractValidator<EditProductCommand>
+public class EditProductCommandValidator : AbstractValidator<EditProductCommand>
 {
     public EditProductCommandValidator()
     {
@@ -103,10 +102,14 @@ internal class EditProductCommandValidator : AbstractValidator<EditProductComman
 
         RuleFor(p => p.Slug)
             .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
 
-        RuleFor(p => p.Description)
+        RuleFor(p => p.MainImage)
             .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"));
+
+        RuleFor(p => p.GalleryImages)
+            .NotNull()
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"));
     }
 }

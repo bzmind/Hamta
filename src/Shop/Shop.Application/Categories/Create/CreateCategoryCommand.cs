@@ -45,7 +45,7 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
     }
 }
 
-internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
+public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCommand>
 {
     public CreateCategoryCommandValidator()
     {
@@ -55,17 +55,17 @@ internal class CreateCategoryCommandValidator : AbstractValidator<CreateCategory
 
         RuleFor(c => c.Slug)
             .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Title)
                 .NotNull()
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
+                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان مشخصات"));
 
             specification.RuleFor(spec => spec.Description)
                 .NotNull()
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
+                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات مشخصات"));
         });
     }
 }

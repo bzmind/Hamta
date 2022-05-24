@@ -34,7 +34,7 @@ public class AddCustomerAddressCommandHandler : IBaseCommandHandler<AddCustomerA
     }
 }
 
-internal class AddCustomerAddressCommandValidator : AbstractValidator<AddCustomerAddressCommand>
+public class AddCustomerAddressCommandValidator : AbstractValidator<AddCustomerAddressCommand>
 {
     public AddCustomerAddressCommandValidator()
     {

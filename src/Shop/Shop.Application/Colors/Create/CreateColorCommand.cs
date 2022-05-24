@@ -7,9 +7,9 @@ using Shop.Domain.ColorAggregate.Repository;
 
 namespace Shop.Application.Colors.Create;
 
-public record CreateColorCommand(string Name, string Code) : IBaseCommand;
+public record CreateColorCommand(string Name, string Code) : IBaseCommand<long>;
 
-public class AddColorCommandHandler : IBaseCommandHandler<CreateColorCommand>
+public class AddColorCommandHandler : IBaseCommandHandler<CreateColorCommand, long>
 {
     private readonly IColorRepository _colorRepository;
 
@@ -18,17 +18,17 @@ public class AddColorCommandHandler : IBaseCommandHandler<CreateColorCommand>
         _colorRepository = colorRepository;
     }
 
-    public async Task<OperationResult> Handle(CreateColorCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(CreateColorCommand request, CancellationToken cancellationToken)
     {
         var color = new Color(request.Name, request.Code);
 
         _colorRepository.Add(color);
         await _colorRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(color.Id);
     }
 }
 
-internal class AddColorCommandValidator : AbstractValidator<CreateColorCommand>
+public class AddColorCommandValidator : AbstractValidator<CreateColorCommand>
 {
     public AddColorCommandValidator()
     {

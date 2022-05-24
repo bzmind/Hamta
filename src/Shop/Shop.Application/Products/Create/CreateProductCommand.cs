@@ -11,7 +11,7 @@ using Shop.Domain.ProductAggregate.Services;
 namespace Shop.Application.Products.Create;
 
 public record CreateProductCommand(long CategoryId, string Name, string? EnglishName, string Slug,
-    string Description, IFormFile MainImage, List<IFormFile> GalleryImages,
+    string? Description, IFormFile MainImage, List<IFormFile> GalleryImages,
     List<Specification>? CustomSpecifications,
     Dictionary<string, string>? ExtraDescriptions) : IBaseCommand<long>;
 
@@ -74,7 +74,7 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
     }
 }
 
-internal class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
+public class CreateProductCommandValidator : AbstractValidator<CreateProductCommand>
 {
     public CreateProductCommandValidator()
     {
@@ -84,12 +84,8 @@ internal class CreateProductCommandValidator : AbstractValidator<CreateProductCo
 
         RuleFor(p => p.Slug)
             .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("Slug"));
-
-        RuleFor(p => p.Description)
-            .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
-
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
+        
         RuleFor(p => p.MainImage)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"));

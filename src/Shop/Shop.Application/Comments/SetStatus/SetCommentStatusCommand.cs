@@ -33,7 +33,7 @@ public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStat
     }
 }
 
-internal class SetCommentStatusCommandValidator : AbstractValidator<SetCommentStatusCommand>
+public class SetCommentStatusCommandValidator : AbstractValidator<SetCommentStatusCommand>
 {
     public SetCommentStatusCommandValidator()
     {

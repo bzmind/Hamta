@@ -28,7 +28,7 @@ public class CreateQuestionCommandHandler : IBaseCommandHandler<CreateQuestionCo
     }
 }
 
-internal class CreateQuestionCommandValidator : AbstractValidator<CreateQuestionCommand>
+public class CreateQuestionCommandValidator : AbstractValidator<CreateQuestionCommand>
 {
     public CreateQuestionCommandValidator()
     {
