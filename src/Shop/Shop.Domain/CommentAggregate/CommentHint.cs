@@ -6,7 +6,7 @@ namespace Shop.Domain.CommentAggregate;
 public class CommentHint : BaseEntity
 {
     public long CommentId { get; private set; }
-    public HintStatus Status { get; private set; }
+    public string Status { get; private set; }
     public string Hint { get; private set; }
 
     public enum HintStatus
@@ -15,11 +15,16 @@ public class CommentHint : BaseEntity
         Negative
     }
 
+    private CommentHint()
+    {
+        
+    }
+
     public CommentHint(long commentId, HintStatus status, string hint)
     {
         Guard(hint);
         CommentId = commentId;
-        Status = status;
+        Status = status.ToString();
         Hint = hint;
     }
 

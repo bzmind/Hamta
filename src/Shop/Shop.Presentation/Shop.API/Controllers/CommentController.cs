@@ -7,6 +7,8 @@ using Shop.Application.Comments.SetDislikes;
 using Shop.Application.Comments.SetLikes;
 using Shop.Application.Comments.SetStatus;
 using Shop.Presentation.Facade.Comments;
+using Shop.Query.Comments._DTOs;
+using Shop.Query.Comments.GetById;
 
 namespace Shop.API.Controllers;
 
@@ -53,5 +55,19 @@ public class CommentController : BaseApiController
     {
         var result = await _commentFacade.Remove(command);
         return CommandResult(result);
+    }
+
+    [HttpGet("{commentId}")]
+    public async Task<ApiResult<CommentDto?>> GetCommentById(long commentId)
+    {
+        var result = await _commentFacade.GetCommentById(commentId);
+        return QueryResult(result);
+    }
+
+    [HttpGet]
+    public async Task<ApiResult<CommentFilterResult>> GetCommentByFilter(CommentFilterParams filterParams)
+    {
+        var result = await _commentFacade.GetCommentByFilter(filterParams);
+        return QueryResult(result);
     }
 }

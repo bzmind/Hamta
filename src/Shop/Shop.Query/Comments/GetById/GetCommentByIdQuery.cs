@@ -26,15 +26,15 @@ public class GetCommentByIdQueryHandler : IBaseQueryHandler<GetCommentByIdQuery,
                     INNER JOIN {_dapperContext.CommentHints} ch
                         ON c.Id = ch.CommentId
                     INNER JOIN {_dapperContext.Customers} cs
-                        ON c.CustomerId == cs.Id
-                    WHERE c.Id == @CommentId";
+                        ON c.CustomerId = cs.Id
+                    WHERE c.Id = @CommentId";
 
         var commentDtos = await connection.QueryAsync<CommentDto, CommentHintDto, CommentDto>(sql,
             (commentDto, hint) =>
             {
                 commentDto.CommentHints.Add(hint);
                 return commentDto;
-            }, new { CommentId = request.CommentId });
+            }, new { request.CommentId });
 
         var groupedByCommentDto = commentDtos.GroupBy(c => c.Id).Select(commentDto =>
         {

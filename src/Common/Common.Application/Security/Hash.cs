@@ -10,6 +10,6 @@ public static class Hash
         using var sha256 = SHA256.Create();
         var inputBytes = Encoding.Default.GetBytes(input);
         var hashedOutput = sha256.ComputeHash(inputBytes);
-        return hashedOutput.ToString();
+        return Convert.ToBase64String(hashedOutput);
     }
 }

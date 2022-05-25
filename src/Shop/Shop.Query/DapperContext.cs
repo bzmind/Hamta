@@ -16,7 +16,7 @@ public class DapperContext
     public string Products => "[product].Products";
     public string Colors => "[color].Colors";
     public string Comments => "[comment].Comments";
-    public string CommentHints => "[comment].CommentHints";
+    public string CommentHints => "[comment].Hints";
 
     private readonly string _connectionString;
 
