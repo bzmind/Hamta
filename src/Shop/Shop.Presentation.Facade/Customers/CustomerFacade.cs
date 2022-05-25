@@ -22,7 +22,7 @@ internal class CustomerFacade : ICustomerFacade
         _mediator = mediator;
     }
 
-    public async Task<OperationResult> Create(CreateCustomerCommand command)
+    public async Task<OperationResult<long>> Create(CreateCustomerCommand command)
     {
         return await _mediator.Send(command);
     }

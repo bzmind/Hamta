@@ -23,6 +23,7 @@ public class RemoveCustomerFavoriteItemCommandHandler : IBaseCommandHandler<Remo
             return OperationResult.NotFound();
 
         customer.RemoveFavoriteItem(request.FavoriteItemId);
+
         await _customerRepository.SaveAsync();
         return OperationResult.Success();
     }

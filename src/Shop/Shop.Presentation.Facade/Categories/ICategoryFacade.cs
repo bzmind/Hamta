@@ -13,7 +13,7 @@ public interface ICategoryFacade
     Task<OperationResult<long>> AddSubCategory(AddSubCategoryCommand command);
     Task<OperationResult> RemoveCategory(long subCategoryId);
 
+    Task<List<CategoryDto>> GetCategoryList();
     Task<CategoryDto?> GetCategoryById(long id);
     Task<List<CategoryDto>> GetCategoryByParentId(long parentId);
-    Task<List<CategoryDto>> GetCategoryList();
 }

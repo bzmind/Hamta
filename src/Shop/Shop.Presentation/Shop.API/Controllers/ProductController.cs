@@ -68,7 +68,7 @@ public class ProductController : BaseApiController
 
     [HttpGet]
     public async Task<ApiResult<ProductFilterResult>> GetProductByFilter
-        ([FromQuery]ProductFilterParam filterParam)
+        ([FromQuery] ProductFilterParam filterParam)
     {
         var result = await _productFacade.GetProductByFilter(filterParam);
         return QueryResult(result);

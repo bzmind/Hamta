@@ -8,7 +8,7 @@ using Shop.Domain.CommentAggregate.Repository;
 namespace Shop.Application.Comments.Create;
 
 public record CreateCommentCommand(long ProductId, long CustomerId, string Title, string Description,
-    List<string> PositivePoints, List<string> NegativePoints, int RecommendationId) : IBaseCommand<long>;
+    List<string> PositivePoints, List<string> NegativePoints, string Recommendation) : IBaseCommand<long>;
 
 public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentCommand, long>
 {
@@ -21,7 +21,7 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
 
     public async Task<OperationResult<long>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
-        var recommendation = (Comment.CommentRecommendation) request.RecommendationId;
+        Enum.TryParse(request.Recommendation, out Comment.CommentRecommendation recommendation);
 
         var comment = new Comment(request.ProductId, request.CustomerId, request.Title, request.Description,
             recommendation);
@@ -52,9 +52,11 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
 
-        RuleFor(c => c.RecommendationId)
+        RuleFor(c => c.Recommendation)
             .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.Required);
+            .IsEnumName(typeof(Comment.CommentRecommendation), false)
+            .WithMessage(ValidationMessages.FieldInvalid("نوع پیشنهاد"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نوع پیشنهاد"));
 
         RuleForEach(c => c.NegativePoints)
             .MaximumLength(10);

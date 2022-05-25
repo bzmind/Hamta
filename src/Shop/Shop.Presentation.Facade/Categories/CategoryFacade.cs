@@ -40,6 +40,11 @@ internal class CategoryFacade : ICategoryFacade
         return await _mediator.Send(new RemoveCategoryCommand(subCategoryId));
     }
 
+    public async Task<List<CategoryDto>> GetCategoryList()
+    {
+        return await _mediator.Send(new GetCategoryListQuery());
+    }
+
     public async Task<CategoryDto?> GetCategoryById(long id)
     {
         return await _mediator.Send(new GetCategoryByIdQuery(id));
@@ -48,10 +53,5 @@ internal class CategoryFacade : ICategoryFacade
     public async Task<List<CategoryDto>> GetCategoryByParentId(long parentId)
     {
         return await _mediator.Send(new GetCategoryByParentIdQuery(parentId));
-    }
-
-    public async Task<List<CategoryDto>> GetCategoryList()
-    {
-        return await _mediator.Send(new GetCategoryListQuery());
     }
 }

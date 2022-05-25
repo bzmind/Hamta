@@ -11,9 +11,9 @@ using Shop.Domain.CustomerAggregate.Services;
 namespace Shop.Application.Customers.Create;
 
 public record CreateCustomerCommand(string FullName, string Email, string Password,
-    string PhoneNumber) : IBaseCommand;
+    string PhoneNumber) : IBaseCommand<long>;
 
-public class CreateCustomerCommandHandler : IBaseCommandHandler<CreateCustomerCommand>
+public class CreateCustomerCommandHandler : IBaseCommandHandler<CreateCustomerCommand, long>
 {
     private readonly ICustomerRepository _customerRepository;
     private readonly ICustomerDomainService _customerDomainService;
@@ -24,14 +24,14 @@ public class CreateCustomerCommandHandler : IBaseCommandHandler<CreateCustomerCo
         _customerDomainService = customerDomainService;
     }
 
-    public async Task<OperationResult> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(CreateCustomerCommand request, CancellationToken cancellationToken)
     {
         var customer = new Customer(request.FullName, request.Email, request.Password.ToSHA256(),
             request.PhoneNumber, _customerDomainService);
 
         _customerRepository.Add(customer);
         await _customerRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(customer.Id);
     }
 }
 

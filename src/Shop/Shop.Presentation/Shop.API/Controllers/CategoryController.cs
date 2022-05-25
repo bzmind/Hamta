@@ -19,16 +19,16 @@ public class CategoryController : BaseApiController
     }
 
     [HttpPost]
-    public async Task<ApiResult<long>> CreateCategory(CreateCategoryCommand command)
+    public async Task<ApiResult<long>> Create(CreateCategoryCommand command)
     {
         var model = new CreateCategoryCommand(command.Title, command.Slug, command.Specifications);
         var result = await _categoryFacade.Create(model);
-        var resultUrl = Url.Action("CreateCategory", "Category", new { id = result.Data }, Request.Scheme);
+        var resultUrl = Url.Action("Create", "Category", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
     [HttpPut]
-    public async Task<ApiResult> EditCategory(EditCategoryCommand command)
+    public async Task<ApiResult> Edit(EditCategoryCommand command)
     {
         var result = await _categoryFacade.Edit(command);
         return CommandResult(result);
@@ -43,7 +43,7 @@ public class CategoryController : BaseApiController
     }
 
     [HttpDelete("{subCategoryId}")]
-    public async Task<ApiResult> RemoveCategory(long subCategoryId)
+    public async Task<ApiResult> Remove(long subCategoryId)
     {
         var result = await _categoryFacade.RemoveCategory(subCategoryId);
         return CommandResult(result);

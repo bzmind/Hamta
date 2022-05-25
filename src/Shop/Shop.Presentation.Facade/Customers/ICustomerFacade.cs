@@ -11,7 +11,7 @@ namespace Shop.Presentation.Facade.Customers;
 
 public interface ICustomerFacade
 {
-    Task<OperationResult> Create(CreateCustomerCommand command);
+    Task<OperationResult<long>> Create(CreateCustomerCommand command);
     Task<OperationResult> Edit(EditCustomerCommand command);
     Task<OperationResult> SetAvatar(SetCustomerAvatarCommand command);
     Task<OperationResult> SetSubscriptionToNews(SetCustomerSubscriptionToNewsCommand command);
