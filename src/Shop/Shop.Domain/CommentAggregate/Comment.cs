@@ -12,16 +12,21 @@ public class Comment : BaseAggregateRoot
 
     private readonly List<CommentHint> _commentHints = new List<CommentHint>();
     public IEnumerable<CommentHint> CommentHints => _commentHints.ToList();
-    public CommentStatus Status { get; private set; }
-    public CommentRecommendation Recommendation { get; private set; }
-    public int Likes { get => UsersWhoLiked.Count; private set {} }
-    public int Dislikes { get => UsersWhoDisliked.Count; private set {} }
+    public string Status { get; private set; }
+    public string Recommendation { get; private set; }
+    public int Likes { get; private set; }
+    public int Dislikes { get; private set; }
+
+    private readonly List<CommentReaction> _commentReactions = new List<CommentReaction>();
+    public IEnumerable<CommentReaction> CommentReactions => _commentReactions.ToList();
 
     public enum CommentRecommendation { Neutral, Positive, Negative }
     public enum CommentStatus { Pending, Accepted, Rejected }
 
-    private List<long> UsersWhoLiked { get; set; }
-    private List<long> UsersWhoDisliked { get; set; }
+    private Comment()
+    {
+
+    }
 
     public Comment(long productId, long customerId, string title, string description,
         CommentRecommendation recommendation)
@@ -31,12 +36,10 @@ public class Comment : BaseAggregateRoot
         CustomerId = customerId;
         Title = title;
         Description = description;
-        Status = CommentStatus.Pending;
-        Recommendation = recommendation;
+        Status = CommentStatus.Pending.ToString();
+        Recommendation = recommendation.ToString();
         Likes = 0;
         Dislikes = 0;
-        UsersWhoLiked = new List<long>();
-        UsersWhoDisliked = new List<long>();
     }
 
     public void SetPositivePoints(List<string> positiveHints)
@@ -71,34 +74,61 @@ public class Comment : BaseAggregateRoot
 
     public void SetCommentStatus(CommentStatus status)
     {
-        Status = status;
+        Status = status.ToString();
     }
 
     public void SetLikes(long customerId)
     {
-        var userExists = UsersWhoLiked.Any(u => u == customerId);
+        var customer = CommentReactions.FirstOrDefault(c => c.CustomerId == customerId);
 
-        if (userExists)
+        if (customer != null)
         {
-            UsersWhoLiked.Remove(customerId);
-            Likes--;
+            _commentReactions.Remove(customer);
+
+            if (customer.Reaction == CommentReaction.ReactionType.Like.ToString())
+            {
+                Likes--;
+            }
+            else
+            {
+                _commentReactions.Add(new CommentReaction(Id, customerId,
+                    CommentReaction.ReactionType.Like));
+                Dislikes--;
+                Likes++;
+            }
+
+            return;
         }
 
-        UsersWhoLiked.Add(customerId);
+        _commentReactions.Add(new CommentReaction(Id, customerId,
+            CommentReaction.ReactionType.Like));
         Likes++;
     }
 
     public void SetDislikes(long customerId)
     {
-        var userExists = UsersWhoDisliked.Any(u => u == customerId);
+        var customer = CommentReactions.FirstOrDefault(c => c.CustomerId == customerId);
 
-        if (userExists)
+        if (customer != null)
         {
-            UsersWhoDisliked.Remove(customerId);
-            Dislikes--;
+            _commentReactions.Remove(customer);
+
+            if (customer.Reaction == CommentReaction.ReactionType.Dislike.ToString())
+            {
+                Dislikes--;
+            }
+            else
+            {
+                _commentReactions.Add(new CommentReaction(Id, customerId,
+                    CommentReaction.ReactionType.Dislike));
+                Likes--;
+                Dislikes++;
+            }
+            return;
         }
 
-        UsersWhoDisliked.Add(customerId);
+        _commentReactions.Add(new CommentReaction(Id, customerId,
+            CommentReaction.ReactionType.Dislike));
         Dislikes++;
     }
 

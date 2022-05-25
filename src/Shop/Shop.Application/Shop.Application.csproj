@@ -10,6 +10,7 @@
     <Folder Include="Categories\AddSubCategory\" />
     <Folder Include="Colors\Edit\" />
     <Folder Include="Colors\Remove\" />
+    <Folder Include="Comments\Remove\" />
     <Folder Include="Customers\_Services\" />
     <Folder Include="Inventories\Edit\" />
     <Folder Include="Inventories\RemoveDiscount\" />

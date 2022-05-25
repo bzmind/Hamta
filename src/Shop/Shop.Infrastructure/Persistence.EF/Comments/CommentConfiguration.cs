@@ -24,14 +24,14 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .IsRequired()
             .HasMaxLength(1500);
 
-        builder.OwnsMany(comment => comment.CommentHints, option =>
+        builder.OwnsMany(comment => comment.CommentHints, options =>
         {
-            option.ToTable("Hints", "comment");
+            options.ToTable("Hints", "comment");
 
-            option.Property(hint => hint.Status)
+            options.Property(hint => hint.Status)
                 .HasMaxLength(10);
 
-            option.Property(hint => hint.Hint)
+            options.Property(hint => hint.Hint)
                 .HasMaxLength(200);
         });
 
@@ -48,5 +48,10 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
 
         builder.Property(comment => comment.Dislikes)
             .IsRequired();
+
+        builder.OwnsMany(comment => comment.CommentReactions, options =>
+        {
+            options.ToTable("Reactions", "comment");
+        });
     }
 }

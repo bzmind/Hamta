@@ -12,5 +12,5 @@ public class CommentFilterParams : BaseFilterParam
 {
     public long? CustomerId { get; set; }
     public long? ProductId { get; set; }
-    public Comment.CommentStatus? Status { get; set; }
+    public string? Status { get; set; }
 }

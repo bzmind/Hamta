@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure.Persistence.EF;
 
@@ -11,9 +12,10 @@ using Shop.Infrastructure.Persistence.EF;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20220525060915_ChangingEnumsToStrings")]
+    partial class ChangingEnumsToStrings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -424,7 +426,7 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.HasKey("CommentId", "Id");
 
-                            b1.ToTable("Reactions", "comment");
+                            b1.ToTable("ReactionType", "comment");
 
                             b1.WithOwner()
                                 .HasForeignKey("CommentId");

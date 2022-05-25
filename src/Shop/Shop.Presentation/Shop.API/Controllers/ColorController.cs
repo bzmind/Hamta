@@ -1,6 +1,5 @@
 ﻿using System.Net;
 using Common.Api;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Colors.Create;
 using Shop.Application.Colors.Edit;

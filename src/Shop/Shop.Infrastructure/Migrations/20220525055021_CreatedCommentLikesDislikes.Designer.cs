@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure.Persistence.EF;
 
@@ -11,9 +12,10 @@ using Shop.Infrastructure.Persistence.EF;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20220525055021_CreatedCommentLikesDislikes")]
+    partial class CreatedCommentLikesDislikes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -115,15 +117,13 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
-                    b.Property<string>("Recommendation")
-                        .IsRequired()
+                    b.Property<int>("Recommendation")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("int");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
+                    b.Property<int>("Status")
                         .HasMaxLength(20)
-                        .HasColumnType("nvarchar(20)");
+                        .HasColumnType("int");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -401,7 +401,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasForeignKey("CommentId");
                         });
 
-                    b.OwnsMany("Shop.Domain.CommentAggregate.CommentReaction", "CommentReactions", b1 =>
+                    b.OwnsMany("Shop.Domain.CommentAggregate.CommentLikesDislikes", "CommentLikesDislikes", b1 =>
                         {
                             b1.Property<long>("CommentId")
                                 .HasColumnType("bigint");
@@ -418,13 +418,12 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<long>("CustomerId")
                                 .HasColumnType("bigint");
 
-                            b1.Property<string>("Reaction")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                            b1.Property<int>("Reaction")
+                                .HasColumnType("int");
 
                             b1.HasKey("CommentId", "Id");
 
-                            b1.ToTable("Reactions", "comment");
+                            b1.ToTable("CommentLikesDislikes", "comment");
 
                             b1.WithOwner()
                                 .HasForeignKey("CommentId");
@@ -432,7 +431,7 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Navigation("CommentHints");
 
-                    b.Navigation("CommentReactions");
+                    b.Navigation("CommentLikesDislikes");
                 });
 
             modelBuilder.Entity("Shop.Domain.CustomerAggregate.Customer", b =>

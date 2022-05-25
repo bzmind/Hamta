@@ -1,6 +1,7 @@
 ﻿using Common.Application;
 using MediatR;
 using Shop.Application.Comments.Create;
+using Shop.Application.Comments.Remove;
 using Shop.Application.Comments.SetDislikes;
 using Shop.Application.Comments.SetLikes;
 using Shop.Application.Comments.SetStatus;
@@ -19,7 +20,7 @@ internal class CommentFacade : ICommentFacade
         _mediator = mediator;
     }
 
-    public async Task<OperationResult> Create(CreateCommentCommand command)
+    public async Task<OperationResult<long>> Create(CreateCommentCommand command)
     {
         return await _mediator.Send(command);
     }
@@ -35,6 +36,11 @@ internal class CommentFacade : ICommentFacade
     }
 
     public async Task<OperationResult> SetDislikes(SetCommentDislikesCommand command)
+    {
+        return await _mediator.Send(command);
+    }
+
+    public async Task<OperationResult> Remove(RemoveCommentCommand command)
     {
         return await _mediator.Send(command);
     }

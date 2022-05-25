@@ -16,10 +16,10 @@ public static class ValidationMessages
     public static string FieldRequired(string field) => $"وارد کردن {field} الزامی است";
 
     /// <summary>
-    /// <example>Example: نام} وارد شده نا معتبر است}</example>
+    /// <example>Example: نام} وارد شده نامعتبر است}</example>
     /// </summary>
     /// <param name="field"></param>
-    public static string FieldInvalid(string field) => $"{field} وارد شده نا معتبر است";
+    public static string FieldInvalid(string field) => $"{field} وارد شده نامعتبر است";
 
 
     /// <summary>

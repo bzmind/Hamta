@@ -49,7 +49,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         Context.Set<TEntity>().Remove(entity);
     }
-
+    
     public bool Exists(Expression<Func<TEntity, bool>> expression)
     {
         return Context.Set<TEntity>().Any(expression);

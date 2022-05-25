@@ -8,9 +8,9 @@ using Shop.Domain.CommentAggregate.Repository;
 namespace Shop.Application.Comments.Create;
 
 public record CreateCommentCommand(long ProductId, long CustomerId, string Title, string Description,
-    List<string> PositivePoints, List<string> NegativePoints, int RecommendationId) : IBaseCommand;
+    List<string> PositivePoints, List<string> NegativePoints, int RecommendationId) : IBaseCommand<long>;
 
-public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentCommand>
+public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentCommand, long>
 {
     private readonly ICommentRepository _commentRepository;
 
@@ -19,7 +19,7 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
         _commentRepository = commentRepository;
     }
 
-    public async Task<OperationResult> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
         var recommendation = (Comment.CommentRecommendation) request.RecommendationId;
 
@@ -36,7 +36,7 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
 
         _commentRepository.Add(comment);
         await _commentRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(comment.Id);
     }
 }
 

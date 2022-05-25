@@ -7,7 +7,7 @@ using Shop.Domain.CommentAggregate.Repository;
 
 namespace Shop.Application.Comments.SetStatus;
 
-public record SetCommentStatusCommand(long CommentId, int StatusId) : IBaseCommand;
+public record SetCommentStatusCommand(long CommentId, string Status) : IBaseCommand;
 
 public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStatusCommand>
 {
@@ -25,7 +25,7 @@ public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStat
         if (comment == null)
             return OperationResult.NotFound();
 
-        var status = (Comment.CommentStatus) request.StatusId;
+        Enum.TryParse(request.Status, out Comment.CommentStatus status);
         comment.SetCommentStatus(status);
 
         await _commentRepository.SaveAsync();
@@ -37,8 +37,14 @@ public class SetCommentStatusCommandValidator : AbstractValidator<SetCommentStat
 {
     public SetCommentStatusCommandValidator()
     {
-        RuleFor(c => c.StatusId)
+        RuleFor(c => c.CommentId)
             .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.Required);
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آیدی"));
+
+        RuleFor(c => c.Status)
+            .NotNull()
+            .IsEnumName(typeof(Comment.CommentStatus), false)
+            .WithMessage(ValidationMessages.FieldInvalid("وضعیت"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("وضعیت"));
     }
 }
