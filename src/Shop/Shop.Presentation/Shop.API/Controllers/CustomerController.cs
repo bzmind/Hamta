@@ -37,7 +37,7 @@ public class CustomerController : BaseApiController
     }
 
     [HttpPut("SetAvatar")]
-    public async Task<ApiResult> SetAvatar(SetCustomerAvatarCommand command)
+    public async Task<ApiResult> SetAvatar([FromForm] SetCustomerAvatarCommand command)
     {
         var result = await _customerFacade.SetAvatar(command);
         return CommandResult(result);
@@ -71,7 +71,7 @@ public class CustomerController : BaseApiController
         return QueryResult(result);
     }
 
-    [HttpGet("{phoneNumber}")]
+    [HttpGet("GetByPhoneNumber/{phoneNumber}")]
     public async Task<ApiResult<CustomerDto?>> GetCustomerByPhoneNumber(string phoneNumber)
     {
         var result = await _customerFacade.GetCustomerByPhoneNumber(phoneNumber);
@@ -79,7 +79,8 @@ public class CustomerController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ApiResult<CustomerFilterResult>> GetCustomerByFilter(CustomerFilterParam filterParam)
+    public async Task<ApiResult<CustomerFilterResult>> GetCustomerByFilter
+        ([FromQuery] CustomerFilterParam filterParam)
     {
         var result = await _customerFacade.GetCustomerByFilter(filterParam);
         return QueryResult(result);

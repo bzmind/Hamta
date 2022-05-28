@@ -26,8 +26,8 @@ public class CustomerAddress : BaseAddress
         PostalCode = postalCode;
     }
 
-    public void ActivateAddress()
+    public void SetAddressActivation(bool activate)
     {
-        IsActive = true;
+        IsActive = activate;
     }
 }

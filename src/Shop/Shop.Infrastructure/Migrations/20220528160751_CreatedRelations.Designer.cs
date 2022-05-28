@@ -12,8 +12,8 @@ using Shop.Infrastructure.Persistence.EF;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20220523163519_ChangedScoreToFloat")]
-    partial class ChangedScoreToFloat
+    [Migration("20220528160751_CreatedRelations")]
+    partial class CreatedRelations
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -117,13 +117,15 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Recommendation")
+                    b.Property<string>("Recommendation")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(20)");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(20)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -222,9 +224,10 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<long>("CustomerId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -332,14 +335,14 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsMany("Shop.Domain.CategoryAggregate.CategorySpecification", "Specifications", b1 =>
                         {
-                            b1.Property<long>("CategoryId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<long>("CategoryId")
+                                .HasColumnType("bigint");
 
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
@@ -357,7 +360,9 @@ namespace Shop.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.HasKey("CategoryId", "Id");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("CategoryId");
 
                             b1.ToTable("Specifications", "category");
 
@@ -372,14 +377,14 @@ namespace Shop.Infrastructure.Migrations
                 {
                     b.OwnsMany("Shop.Domain.CommentAggregate.CommentHint", "CommentHints", b1 =>
                         {
-                            b1.Property<long>("CommentId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
 
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<long>("CommentId")
+                                .HasColumnType("bigint");
 
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
@@ -389,11 +394,14 @@ namespace Shop.Infrastructure.Migrations
                                 .HasMaxLength(200)
                                 .HasColumnType("nvarchar(200)");
 
-                            b1.Property<int>("Status")
+                            b1.Property<string>("Status")
+                                .IsRequired()
                                 .HasMaxLength(10)
-                                .HasColumnType("int");
+                                .HasColumnType("nvarchar(10)");
 
-                            b1.HasKey("CommentId", "Id");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("CommentId");
 
                             b1.ToTable("Hints", "comment");
 
@@ -401,7 +409,41 @@ namespace Shop.Infrastructure.Migrations
                                 .HasForeignKey("CommentId");
                         });
 
+                    b.OwnsMany("Shop.Domain.CommentAggregate.CommentReaction", "CommentReactions", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<long>("CommentId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<long>("CustomerId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("Reaction")
+                                .IsRequired()
+                                .HasMaxLength(10)
+                                .HasColumnType("nvarchar(10)");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("CommentId");
+
+                            b1.ToTable("Reactions", "comment");
+
+                            b1.WithOwner()
+                                .HasForeignKey("CommentId");
+                        });
+
                     b.Navigation("CommentHints");
+
+                    b.Navigation("CommentReactions");
                 });
 
             modelBuilder.Entity("Shop.Domain.CustomerAggregate.Customer", b =>
@@ -427,9 +469,6 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsMany("Shop.Domain.CustomerAggregate.CustomerAddress", "Addresses", b1 =>
                         {
-                            b1.Property<long>("CustomerId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -443,6 +482,9 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
+
+                            b1.Property<long>("CustomerId")
+                                .HasColumnType("bigint");
 
                             b1.Property<string>("FullAddress")
                                 .IsRequired()
@@ -467,7 +509,9 @@ namespace Shop.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.HasKey("CustomerId", "Id");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("CustomerId");
 
                             b1.ToTable("Addresses", "customer");
 
@@ -476,9 +520,6 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.OwnsOne("Common.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b2 =>
                                 {
-                                    b2.Property<long>("CustomerAddressCustomerId")
-                                        .HasColumnType("bigint");
-
                                     b2.Property<long>("CustomerAddressId")
                                         .HasColumnType("bigint");
 
@@ -488,12 +529,12 @@ namespace Shop.Infrastructure.Migrations
                                         .HasColumnType("nvarchar(11)")
                                         .HasColumnName("PhoneNumber");
 
-                                    b2.HasKey("CustomerAddressCustomerId", "CustomerAddressId");
+                                    b2.HasKey("CustomerAddressId");
 
                                     b2.ToTable("Addresses", "customer");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("CustomerAddressCustomerId", "CustomerAddressId");
+                                        .HasForeignKey("CustomerAddressId");
                                 });
 
                             b1.Navigation("PhoneNumber")
@@ -502,9 +543,6 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsMany("Shop.Domain.CustomerAggregate.CustomerFavoriteItem", "FavoriteItems", b1 =>
                         {
-                            b1.Property<long>("CustomerId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -514,10 +552,15 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
 
+                            b1.Property<long>("CustomerId")
+                                .HasColumnType("bigint");
+
                             b1.Property<long>("ProductId")
                                 .HasColumnType("bigint");
 
-                            b1.HasKey("CustomerId", "Id");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("CustomerId");
 
                             b1.ToTable("FavoriteItems", "customer");
 
@@ -560,8 +603,11 @@ namespace Shop.Infrastructure.Migrations
                 {
                     b.OwnsOne("Shop.Domain.OrderAggregate.OrderAddress", "Address", b1 =>
                         {
-                            b1.Property<long>("OrderId")
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<string>("City")
                                 .IsRequired()
@@ -581,7 +627,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.Property<long>("Id")
+                            b1.Property<long>("OrderId")
                                 .HasColumnType("bigint");
 
                             b1.Property<string>("PostalCode")
@@ -594,7 +640,10 @@ namespace Shop.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.HasKey("OrderId");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("OrderId")
+                                .IsUnique();
 
                             b1.ToTable("Addresses", "order");
 
@@ -603,7 +652,7 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.OwnsOne("Common.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b2 =>
                                 {
-                                    b2.Property<long>("OrderAddressOrderId")
+                                    b2.Property<long>("OrderAddressId")
                                         .HasColumnType("bigint");
 
                                     b2.Property<string>("Value")
@@ -612,12 +661,12 @@ namespace Shop.Infrastructure.Migrations
                                         .HasColumnType("nvarchar(11)")
                                         .HasColumnName("PhoneNumber");
 
-                                    b2.HasKey("OrderAddressOrderId");
+                                    b2.HasKey("OrderAddressId");
 
                                     b2.ToTable("Addresses", "order");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("OrderAddressOrderId");
+                                        .HasForeignKey("OrderAddressId");
                                 });
 
                             b1.Navigation("PhoneNumber")
@@ -626,9 +675,6 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsMany("Shop.Domain.OrderAggregate.OrderItem", "Items", b1 =>
                         {
-                            b1.Property<long>("OrderId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -644,7 +690,12 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<long>("InventoryId")
                                 .HasColumnType("bigint");
 
-                            b1.HasKey("OrderId", "Id");
+                            b1.Property<long>("OrderId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("OrderId");
 
                             b1.ToTable("Items", "order");
 
@@ -653,9 +704,6 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.OwnsOne("Common.Domain.ValueObjects.Money", "Price", b2 =>
                                 {
-                                    b2.Property<long>("OrderItemOrderId")
-                                        .HasColumnType("bigint");
-
                                     b2.Property<long>("OrderItemId")
                                         .HasColumnType("bigint");
 
@@ -663,12 +711,12 @@ namespace Shop.Infrastructure.Migrations
                                         .HasColumnType("int")
                                         .HasColumnName("Price");
 
-                                    b2.HasKey("OrderItemOrderId", "OrderItemId");
+                                    b2.HasKey("OrderItemId");
 
                                     b2.ToTable("Items", "order");
 
                                     b2.WithOwner()
-                                        .HasForeignKey("OrderItemOrderId", "OrderItemId");
+                                        .HasForeignKey("OrderItemId");
                                 });
 
                             b1.Navigation("Price")
@@ -725,9 +773,6 @@ namespace Shop.Infrastructure.Migrations
                 {
                     b.OwnsMany("Shop.Domain.ProductAggregate.ProductImage", "GalleryImages", b1 =>
                         {
-                            b1.Property<long>("ProductId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -742,7 +787,12 @@ namespace Shop.Infrastructure.Migrations
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.HasKey("ProductId", "Id");
+                            b1.Property<long>("ProductId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ProductId");
 
                             b1.ToTable("GalleryImages", "product");
 
@@ -752,21 +802,27 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsOne("Shop.Domain.ProductAggregate.ProductImage", "MainImage", b1 =>
                         {
-                            b1.Property<long>("ProductId")
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
-
-                            b1.Property<long>("Id")
-                                .HasColumnType("bigint");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.HasKey("ProductId");
+                            b1.Property<long>("ProductId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ProductId")
+                                .IsUnique();
 
                             b1.ToTable("Images", "product");
 
@@ -776,9 +832,6 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsMany("Shop.Domain.ProductAggregate.ProductExtraDescription", "ExtraDescriptions", b1 =>
                         {
-                            b1.Property<long>("ProductId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -793,12 +846,17 @@ namespace Shop.Infrastructure.Migrations
                                 .HasMaxLength(2000)
                                 .HasColumnType("nvarchar(2000)");
 
+                            b1.Property<long>("ProductId")
+                                .HasColumnType("bigint");
+
                             b1.Property<string>("Title")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
 
-                            b1.HasKey("ProductId", "Id");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ProductId");
 
                             b1.ToTable("ExtraDescriptions", "product");
 
@@ -808,9 +866,6 @@ namespace Shop.Infrastructure.Migrations
 
                     b.OwnsMany("Shop.Domain.ProductAggregate.ProductSpecification", "CustomSpecifications", b1 =>
                         {
-                            b1.Property<long>("ProductId")
-                                .HasColumnType("bigint");
-
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
                                 .HasColumnType("bigint");
@@ -828,12 +883,17 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<bool>("IsImportantFeature")
                                 .HasColumnType("bit");
 
+                            b1.Property<long>("ProductId")
+                                .HasColumnType("bigint");
+
                             b1.Property<string>("Title")
                                 .IsRequired()
                                 .HasMaxLength(50)
                                 .HasColumnType("nvarchar(50)");
 
-                            b1.HasKey("ProductId", "Id");
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ProductId");
 
                             b1.ToTable("CustomSpecifications", "product");
 

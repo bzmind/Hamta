@@ -4,6 +4,7 @@ using Common.Application.Validation;
 using Common.Application.Validation.CustomFluentValidations;
 using Common.Domain.ValueObjects;
 using FluentValidation;
+using Shop.Domain.InventoryAggregate.Repository;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.OrderAggregate.Repository;
 
@@ -15,10 +16,12 @@ public record CheckoutOrderCommand(long UserId, string FullName, string PhoneNum
 public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderCommand>
 {
     private readonly IOrderRepository _orderRepository;
+    private readonly IInventoryRepository _inventoryRepository;
 
-    public CheckoutOrderCommandHandler(IOrderRepository orderRepository)
+    public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IInventoryRepository inventoryRepository)
     {
         _orderRepository = orderRepository;
+        _inventoryRepository = inventoryRepository;
     }
 
     public async Task<OperationResult> Handle(CheckoutOrderCommand request, CancellationToken cancellationToken)
@@ -32,6 +35,14 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
             request.Province, request.City, request.FullAddress, request.PostalCode);
 
         order.Checkout(address, request.ShippingMethod, request.ShippingCost);
+
+        var inventories = await _inventoryRepository.GetInventoriesForOrderItems(order.Items.ToList());
+
+        order.Items.ToList().ForEach(orderItem =>
+        {
+            var inventory = inventories.First(i => i.Id == orderItem.InventoryId);
+            inventory.RemoveFromQuantity(orderItem.Count);
+        });
 
         await _orderRepository.SaveAsync();
         return OperationResult.Success();

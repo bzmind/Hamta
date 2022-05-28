@@ -1,5 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
+using Common.Application.Validation;
 using Shop.Domain.OrderAggregate.Repository;
 
 namespace Shop.Application.Orders.DecreaseItemCount;
@@ -21,6 +22,14 @@ public class DecreaseOrderItemCountCommandHandler : IBaseCommandHandler<Decrease
 
         if (order == null)
             return OperationResult.NotFound();
+
+        var item = order.Items.FirstOrDefault(oi => oi.Id == request.OrderItemId);
+
+        if (item == null)
+            return OperationResult.NotFound();
+
+        if (item.Count - 1 <= 0)
+            return OperationResult.Error(ValidationMessages.FieldQuantityMinNumber("آیتم های سفارش", 0));
 
         order.DecreaseItemCount(request.OrderItemId);
 

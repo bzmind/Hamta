@@ -22,7 +22,12 @@ public class ActivateCustomerAddressCommandHandler : IBaseCommandHandler<Activat
         if (customer == null)
             return OperationResult.NotFound();
 
-        customer.ActivateAddress(request.AddressId);
+        customer.Addresses.ToList().ForEach(address =>
+        {
+            customer.SetAddressActivation(address.Id, false);
+        });
+
+        customer.SetAddressActivation(request.AddressId, true);
 
         await _customerRepository.SaveAsync();
         return OperationResult.Success();

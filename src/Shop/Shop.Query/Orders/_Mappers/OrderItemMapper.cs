@@ -1,33 +1,31 @@
-﻿namespace Shop.Query.Orders._Mappers;
+﻿using Shop.Domain.OrderAggregate;
+using Shop.Query.Orders._DTOs;
+
+namespace Shop.Query.Orders._Mappers;
 
 internal static class OrderItemMapper
 {
-    //public static async Task<List<OrderItemDto>> GetOrderItemsAsDto(this OrderDto? orderDto,
-    //    DapperContext dapperContext)
-    //{
-    //    if (orderDto == null)
-    //        return null;
+    public static List<OrderItemDto> MapToOrderItemDto(this List<OrderItem> orderItems)
+    {
+        var dtoItems = new List<OrderItemDto>();
 
-    //    using var connection = dapperContext.CreateConnection();
-    //    var sql = $@"SELECT
-    //                    oi.OrderId,
-    //                    oi.InventoryId,
-    //                    oi.Count,
-    //                    oi.Price,
-    //                    i.Quantity AS InventoryQuantity,
-    //                    p.Name AS ProductName,
-    //                    c.Name AS ColorName,
-    //                    c.Code AS ColorCode,
-    //                FROM {dapperContext.OrderItems} oi
-    //                WHERE oi.OrderId == @OrderDtoId
-    //                INNER JOIN {dapperContext.Inventories} i
-    //                    ON oi.InventoryId == i.Id
-    //                INNER JOIN {dapperContext.Colors} c
-    //                    ON i.ColorId == c.Id
-    //                INNER JOIN {dapperContext.Products} p
-    //                    ON oi.ProductId == p.Id";
+        orderItems.ForEach(oi =>
+        {
+            dtoItems.Add(new OrderItemDto
+            {
+                Id = oi.Id,
+                CreationDate = oi.CreationDate,
+                OrderId = oi.OrderId,
+                InventoryId = oi.InventoryId,
+                ProductName = null,
+                Count = oi.Count,
+                Price = oi.Price.Value,
+                InventoryQuantity = null,
+                ColorName = null,
+                ColorCode = null
+            });
+        });
 
-    //    var result = await connection.QueryAsync<OrderItemDto>(sql, new { OrderDtoId = orderDto.Id });
-    //    return result.ToList();
-    //}
+        return dtoItems;
+    }
 }

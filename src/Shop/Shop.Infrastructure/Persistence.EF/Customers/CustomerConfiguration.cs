@@ -29,6 +29,11 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         {
             option.ToTable("Addresses", "customer");
 
+            option.HasKey(address => address.Id);
+
+            option.Property(address => address.Id)
+                .UseIdentityColumn(1);
+
             option.Property(address => address.FullName)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -77,6 +82,11 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         builder.OwnsMany(customer => customer.FavoriteItems, option =>
         {
             option.ToTable("FavoriteItems", "customer");
+
+            option.HasKey(favoriteItem => favoriteItem.Id);
+
+            option.Property(favoriteItem => favoriteItem.Id)
+                .UseIdentityColumn(1);
 
             option.Property(favoriteItem => favoriteItem.CustomerId)
                 .IsRequired();

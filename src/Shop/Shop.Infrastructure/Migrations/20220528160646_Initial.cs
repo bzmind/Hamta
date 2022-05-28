@@ -98,8 +98,8 @@ namespace Shop.Infrastructure.Migrations
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
-                    Status = table.Column<int>(type: "int", maxLength: 20, nullable: false),
-                    Recommendation = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Recommendation = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     Likes = table.Column<int>(type: "int", nullable: false),
                     Dislikes = table.Column<int>(type: "int", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -158,7 +158,7 @@ namespace Shop.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<long>(type: "bigint", nullable: false),
-                    Status = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     ShippingMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ShippingCost = table.Column<int>(type: "int", nullable: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
@@ -230,13 +230,14 @@ namespace Shop.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    IsImportantFeature = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Specifications", x => new { x.CategoryId, x.Id });
+                    table.PrimaryKey("PK_Specifications", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Specifications_Categories_CategoryId",
                         column: x => x.CategoryId,
@@ -254,15 +255,39 @@ namespace Shop.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CommentId = table.Column<long>(type: "bigint", nullable: false),
-                    Status = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     Hint = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Hints", x => new { x.CommentId, x.Id });
+                    table.PrimaryKey("PK_Hints", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Hints_Comments_CommentId",
+                        column: x => x.CommentId,
+                        principalSchema: "comment",
+                        principalTable: "Comments",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Reactions",
+                schema: "comment",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    CommentId = table.Column<long>(type: "bigint", nullable: false),
+                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
+                    Reaction = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Reactions", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Reactions_Comments_CommentId",
                         column: x => x.CommentId,
                         principalSchema: "comment",
                         principalTable: "Comments",
@@ -289,7 +314,7 @@ namespace Shop.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => new { x.CustomerId, x.Id });
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Addresses_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -312,7 +337,7 @@ namespace Shop.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_FavoriteItems", x => new { x.CustomerId, x.Id });
+                    table.PrimaryKey("PK_FavoriteItems", x => x.Id);
                     table.ForeignKey(
                         name: "FK_FavoriteItems_Customers_CustomerId",
                         column: x => x.CustomerId,
@@ -327,8 +352,9 @@ namespace Shop.Infrastructure.Migrations
                 schema: "order",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     OrderId = table.Column<long>(type: "bigint", nullable: false),
-                    Id = table.Column<long>(type: "bigint", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
@@ -339,7 +365,7 @@ namespace Shop.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.OrderId);
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Addresses_Orders_OrderId",
                         column: x => x.OrderId,
@@ -364,7 +390,7 @@ namespace Shop.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Items", x => new { x.OrderId, x.Id });
+                    table.PrimaryKey("PK_Items", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Items_Orders_OrderId",
                         column: x => x.OrderId,
@@ -382,14 +408,14 @@ namespace Shop.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
-                    Key = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    IsImportantFeature = table.Column<bool>(type: "bit", nullable: false, defaultValue: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    IsImportantFeature = table.Column<bool>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_CustomSpecifications", x => new { x.ProductId, x.Id });
+                    table.PrimaryKey("PK_CustomSpecifications", x => x.Id);
                     table.ForeignKey(
                         name: "FK_CustomSpecifications_Products_ProductId",
                         column: x => x.ProductId,
@@ -413,7 +439,7 @@ namespace Shop.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ExtraDescriptions", x => new { x.ProductId, x.Id });
+                    table.PrimaryKey("PK_ExtraDescriptions", x => x.Id);
                     table.ForeignKey(
                         name: "FK_ExtraDescriptions_Products_ProductId",
                         column: x => x.ProductId,
@@ -436,7 +462,7 @@ namespace Shop.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_GalleryImages", x => new { x.ProductId, x.Id });
+                    table.PrimaryKey("PK_GalleryImages", x => x.Id);
                     table.ForeignKey(
                         name: "FK_GalleryImages_Products_ProductId",
                         column: x => x.ProductId,
@@ -451,14 +477,15 @@ namespace Shop.Infrastructure.Migrations
                 schema: "product",
                 columns: table => new
                 {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Id = table.Column<long>(type: "bigint", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Images", x => x.ProductId);
+                    table.PrimaryKey("PK_Images", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Images_Products_ProductId",
                         column: x => x.ProductId,
@@ -476,7 +503,7 @@ namespace Shop.Infrastructure.Migrations
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<int>(type: "int", maxLength: 5, nullable: false)
+                    Value = table.Column<float>(type: "float(2)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -491,10 +518,78 @@ namespace Shop.Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Addresses_CustomerId",
+                schema: "customer",
+                table: "Addresses",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_OrderId",
+                schema: "order",
+                table: "Addresses",
+                column: "OrderId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Categories_ParentId",
                 schema: "category",
                 table: "Categories",
                 column: "ParentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_CustomSpecifications_ProductId",
+                schema: "product",
+                table: "CustomSpecifications",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ExtraDescriptions_ProductId",
+                schema: "product",
+                table: "ExtraDescriptions",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_FavoriteItems_CustomerId",
+                schema: "customer",
+                table: "FavoriteItems",
+                column: "CustomerId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_GalleryImages_ProductId",
+                schema: "product",
+                table: "GalleryImages",
+                column: "ProductId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Hints_CommentId",
+                schema: "comment",
+                table: "Hints",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Images_ProductId",
+                schema: "product",
+                table: "Images",
+                column: "ProductId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Items_OrderId",
+                schema: "order",
+                table: "Items",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Reactions_CommentId",
+                schema: "comment",
+                table: "Reactions",
+                column: "CommentId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Specifications_CategoryId",
+                schema: "category",
+                table: "Specifications",
+                column: "CategoryId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -548,6 +643,10 @@ namespace Shop.Infrastructure.Migrations
                 schema: "question");
 
             migrationBuilder.DropTable(
+                name: "Reactions",
+                schema: "comment");
+
+            migrationBuilder.DropTable(
                 name: "Scores",
                 schema: "product");
 
@@ -564,12 +663,12 @@ namespace Shop.Infrastructure.Migrations
                 schema: "customer");
 
             migrationBuilder.DropTable(
-                name: "Comments",
-                schema: "comment");
-
-            migrationBuilder.DropTable(
                 name: "Orders",
                 schema: "order");
+
+            migrationBuilder.DropTable(
+                name: "Comments",
+                schema: "comment");
 
             migrationBuilder.DropTable(
                 name: "Products",

@@ -3,6 +3,7 @@ using Shop.Presentation.Facade.Categories;
 using Shop.Presentation.Facade.Colors;
 using Shop.Presentation.Facade.Comments;
 using Shop.Presentation.Facade.Customers;
+using Shop.Presentation.Facade.Customers.Addresses;
 using Shop.Presentation.Facade.Inventories;
 using Shop.Presentation.Facade.Orders;
 using Shop.Presentation.Facade.Products;
@@ -19,6 +20,7 @@ public static class FacadeBootstrapper
         services.AddScoped<IColorFacade, ColorFacade>();
         services.AddScoped<ICommentFacade, CommentFacade>();
         services.AddScoped<ICustomerFacade, CustomerFacade>();
+        services.AddScoped<ICustomerAddressFacade, CustomerAddressFacade>();
         services.AddScoped<IInventoryFacade, InventoryFacade>();
         services.AddScoped<IOrderFacade, OrderFacade>();
         services.AddScoped<IProductFacade, ProductFacade>();

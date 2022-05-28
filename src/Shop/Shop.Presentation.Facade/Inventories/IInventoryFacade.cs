@@ -9,7 +9,7 @@ namespace Shop.Presentation.Facade.Inventories;
 
 public interface IInventoryFacade
 {
-    Task<OperationResult> Create(CreateInventoryCommand command);
+    Task<OperationResult<long>> Create(CreateInventoryCommand command);
     Task<OperationResult> Edit(EditInventoryCommand command);
     Task<OperationResult> DiscountByPercentage(DiscountByPercentageCommand command);
     Task<OperationResult> RemoveDiscount(RemoveInventoryDiscountCommand command);

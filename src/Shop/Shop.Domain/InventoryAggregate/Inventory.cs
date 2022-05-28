@@ -40,6 +40,16 @@ public class Inventory : BaseAggregateRoot
         ColorId = colorId;
     }
 
+    public void AddToQuantity(int amount) => Quantity += amount;
+
+    public void RemoveFromQuantity(int amount)
+    {
+        if (Quantity - amount < 0)
+            throw new OperationNotAllowedDomainException("تعداد موجودی انبار نمی‌تواند کمتر از صفر باشد");
+
+        Quantity -= amount;
+    }
+
     public void DiscountByPercentage(int discountPercentage)
     {
         if (discountPercentage is < 0 or > 100)

@@ -33,7 +33,7 @@ public class OrderItem : BaseEntity
     public void DecreaseCount()
     {
         if (Count == 1)
-            throw new OperationNotAllowedDomainException("Order item count cannot be less than zero");
+            throw new OperationNotAllowedDomainException("Order item count must be more than zero");
 
         Count--;
     }
@@ -47,12 +47,12 @@ public class OrderItem : BaseEntity
     private void ValidateCount(int count)
     {
         if (count <= 0)
-            throw new InvalidDataDomainException("Order item count cannot be zero or less than zero");
+            throw new InvalidDataDomainException("Order item count must be more than zero");
     }
 
     private void ValidatePrice(int price)
     {
         if (price <= 0)
-            throw new InvalidDataDomainException("Order item price cannot be zero or less than zero");
+            throw new InvalidDataDomainException("Order item count must be more than zero");
     }
 }

@@ -12,11 +12,15 @@ public class DapperContext
     public string CustomerAddresses => "[customer].Addresses";
     public string CustomerFavoriteItems => "[customer].FavoriteItems";
     public string Orders => "[order].Orders";
+    public string OrderAddresses => "[order].Addresses";
     public string OrderItems => "[order].Items";
     public string Products => "[product].Products";
+    public string ProductImages => "[product].Images";
+    public string ProductScores => "[product].Scores";
     public string Colors => "[color].Colors";
     public string Comments => "[comment].Comments";
     public string CommentHints => "[comment].Hints";
+    public string Shippings => "[shipping].Shippings";
 
     private readonly string _connectionString;
 

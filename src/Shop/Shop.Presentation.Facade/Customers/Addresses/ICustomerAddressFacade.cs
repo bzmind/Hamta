@@ -6,7 +6,7 @@ using Shop.Application.Customers.RemoveAddress;
 
 namespace Shop.Presentation.Facade.Customers.Addresses;
 
-public interface IAddressFacade
+public interface ICustomerAddressFacade
 {
     Task<OperationResult> ActivateAddress(ActivateCustomerAddressCommand command);
     Task<OperationResult> AddAddress(AddCustomerAddressCommand command);

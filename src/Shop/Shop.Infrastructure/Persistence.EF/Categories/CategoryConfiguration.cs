@@ -32,6 +32,11 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
         {
             option.ToTable("Specifications", "category");
 
+            option.HasKey(spec => spec.Id);
+
+            option.Property(spec => spec.Id)
+                .UseIdentityColumn(1);
+
             option.Property(spec => spec.Title)
                 .IsRequired()
                 .HasMaxLength(100);

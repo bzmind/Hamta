@@ -8,7 +8,6 @@ using Shop.Application.Comments.SetLikes;
 using Shop.Application.Comments.SetStatus;
 using Shop.Presentation.Facade.Comments;
 using Shop.Query.Comments._DTOs;
-using Shop.Query.Comments.GetById;
 
 namespace Shop.API.Controllers;
 

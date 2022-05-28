@@ -16,16 +16,27 @@ internal static class CustomerFavoriteItemMapper
                         fi.CustomerId,
                         fi.ProductId,
                         p.Name AS ProductName,
-                        p.MainImage AS ProductMainImage,
+                        pi.Name AS ProductMainImage,
                         i.Price AS ProductPrice,
-                        AVG(p.Scores) AS AverageScore,
+                        AVG(ps.Value) AS AverageScore,
                         i.IsAvailable
                     FROM {dapperContext.CustomerFavoriteItems} fi
-                    WHERE fi.CustomerId == @CustomerDtoId
-                    INNER JOIN {dapperContext.Products} p
-                        ON fi.ProductId == p.Id
-                    INNER JOIN {dapperContext.Inventories} i
-                        ON fi.ProductId == i.ProductId";
+                    LEFT JOIN {dapperContext.Products} p
+                        ON p.id = fi.ProductId
+                    LEFT JOIN {dapperContext.ProductImages} pi
+                        ON pi.ProductId = p.Id
+                    LEFT JOIN {dapperContext.ProductScores} ps
+                        ON ps.ProductId = p.Id
+                    LEFT JOIN {dapperContext.Inventories} i
+                        ON i.ProductId = fi.ProductId
+                    WHERE fi.CustomerId = @CustomerDtoId
+                    GROUP BY
+                        fi.CustomerId,
+                        fi.ProductId,
+                        p.Name,
+                        pi.Name,
+                        i.Price,
+                        i.IsAvailable";
 
         var result = await connection
             .QueryAsync<CustomerFavoriteItemDto>(sql, new { CustomerDtoId = customerDto.Id });

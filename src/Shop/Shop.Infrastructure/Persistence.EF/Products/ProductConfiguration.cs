@@ -43,6 +43,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         {
             option.ToTable("Images", "product");
 
+            option.HasKey(mainImage => mainImage.Id);
+
+            option.Property(mainImage => mainImage.Id)
+                .UseIdentityColumn(1);
+
             option.Property(mainImage => mainImage.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -52,6 +57,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         {
             option.ToTable("GalleryImages", "product");
 
+            option.HasKey(mainImage => mainImage.Id);
+
+            option.Property(mainImage => mainImage.Id)
+                .UseIdentityColumn(1);
+
             option.Property(mainImage => mainImage.Name)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -60,6 +70,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.OwnsMany(product => product.CustomSpecifications, option =>
         {
             option.ToTable("CustomSpecifications", "product");
+
+            option.HasKey(customSpec => customSpec.Id);
+
+            option.Property(customSpec => customSpec.Id)
+                .UseIdentityColumn(1);
 
             option.Property(customSpec => customSpec.Title)
                 .IsRequired()
@@ -73,6 +88,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.OwnsMany(product => product.ExtraDescriptions, option =>
         {
             option.ToTable("ExtraDescriptions", "product");
+
+            option.HasKey(extraDescription => extraDescription.Id);
+
+            option.Property(extraDescription => extraDescription.Id)
+                .UseIdentityColumn(1);
 
             option.Property(extraDescription => extraDescription.Title)
                 .IsRequired()

@@ -21,7 +21,7 @@ internal class OrderFacade : IOrderFacade
         _mediator = mediator;
     }
 
-    public async Task<OperationResult> AddItem(AddOrderItemCommand command)
+    public async Task<OperationResult<long>> AddItem(AddOrderItemCommand command)
     {
         return await _mediator.Send(command);
     }

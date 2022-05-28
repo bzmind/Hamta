@@ -24,6 +24,9 @@ public class RemoveOrderItemCommandHandler : IBaseCommandHandler<RemoveOrderItem
 
         order.RemoveOrderItem(request.OrderItemId);
 
+        if (!order.Items.Any())
+            _orderRepository.Delete(order);
+
         await _orderRepository.SaveAsync();
         return OperationResult.Success();
     }

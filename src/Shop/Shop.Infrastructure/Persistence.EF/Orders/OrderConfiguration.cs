@@ -24,6 +24,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         {
             option.ToTable("Addresses", "order");
 
+            option.HasKey(address => address.Id);
+
+            option.Property(address => address.Id)
+                .UseIdentityColumn(1);
+
             option.Property(address => address.FullName)
                 .IsRequired()
                 .HasMaxLength(100);
@@ -71,7 +76,12 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
         builder.OwnsMany(order => order.Items, option =>
         {
             option.ToTable("Items", "order");
-            
+
+            option.HasKey(item => item.Id);
+
+            option.Property(item => item.Id)
+                .UseIdentityColumn(1);
+
             option.Property(item => item.Count)
                 .IsRequired();
 

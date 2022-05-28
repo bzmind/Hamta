@@ -8,9 +8,9 @@ using Shop.Domain.OrderAggregate.Repository;
 
 namespace Shop.Application.Orders.AddItem;
 
-public record AddOrderItemCommand(long InventoryId, long UserId, int Quantity) : IBaseCommand;
+public record AddOrderItemCommand(long InventoryId, long UserId, int Quantity) : IBaseCommand<long>;
 
-public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemCommand>
+public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemCommand, long>
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IInventoryRepository _inventoryRepository;
@@ -21,30 +21,31 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
         _inventoryRepository = inventoryRepository;
     }
 
-    public async Task<OperationResult> Handle(AddOrderItemCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(AddOrderItemCommand request, CancellationToken cancellationToken)
     {
         var inventory = await _inventoryRepository.GetAsTrackingAsync(request.InventoryId);
 
         if (inventory == null)
-            return OperationResult.NotFound();
+            return OperationResult<long>.NotFound();
 
         if (inventory.Quantity < request.Quantity)
-            return OperationResult.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
+            return OperationResult<long>.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
 
         var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.UserId);
 
         if (order == null)
+        {
             order = new Order(request.UserId);
-
-        await _orderRepository.AddAsync(order);
+            await _orderRepository.AddAsync(order);
+        }
 
         order.AddOrderItem(new OrderItem(order.Id, request.InventoryId, request.Quantity, inventory.Price));
 
         if (order.Items.First(i => i.InventoryId == inventory.Id).Count > inventory.Quantity)
-            return OperationResult.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
+            return OperationResult<long>.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
 
         await _orderRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(order.Id);
     }
 }
 

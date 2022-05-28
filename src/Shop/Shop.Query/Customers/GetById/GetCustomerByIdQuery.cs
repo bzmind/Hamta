@@ -27,7 +27,8 @@ public class GetCustomerByIdQueryHandler : IBaseQueryHandler<GetCustomerByIdQuer
             return null;
 
         var customerDto = customer.MapToCustomerDto();
-        customerDto.FavoriteItems = await customerDto.GetFavoriteItemsAsDto(_dapperContext);
+        var favoriteItems = await customerDto.GetFavoriteItemsAsDto(_dapperContext);
+        customerDto.FavoriteItems = favoriteItems;
         return customerDto;
     }
 }

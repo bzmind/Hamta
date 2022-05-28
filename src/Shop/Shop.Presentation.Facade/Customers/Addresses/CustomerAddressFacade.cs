@@ -7,11 +7,11 @@ using Shop.Application.Customers.RemoveAddress;
 
 namespace Shop.Presentation.Facade.Customers.Addresses;
 
-internal class AddressFacade : IAddressFacade
+internal class CustomerAddressFacade : ICustomerAddressFacade
 {
     private readonly IMediator _mediator;
 
-    public AddressFacade(IMediator mediator)
+    public CustomerAddressFacade(IMediator mediator)
     {
         _mediator = mediator;
     }

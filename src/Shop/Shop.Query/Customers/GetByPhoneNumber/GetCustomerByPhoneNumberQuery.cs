@@ -23,7 +23,7 @@ public class GetCustomerByPhoneNumberQueryHandler : IBaseQueryHandler<GetCustome
         var phoneNumber = new PhoneNumber(request.PhoneNumber);
 
         var customer =
-            await _shopContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber == phoneNumber,
+            await _shopContext.Customers.FirstOrDefaultAsync(c => c.PhoneNumber.Value == phoneNumber.Value,
                 cancellationToken);
 
         return customer.MapToCustomerDto();

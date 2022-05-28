@@ -8,7 +8,7 @@ namespace Shop.Domain.OrderAggregate;
 public class Order : BaseAggregateRoot
 {
     public long CustomerId { get; private set; }
-    public OrderStatus Status { get; private set; }
+    public string Status { get; private set; }
     public OrderAddress? Address { get; private set; }
     public ShippingInfo? ShippingInfo { get; private set; }
 
@@ -33,12 +33,13 @@ public class Order : BaseAggregateRoot
     public Order(long customerId)
     {
         CustomerId = customerId;
-        Status = OrderStatus.Pending;
+        Status = OrderStatus.Pending.ToString();
     }
 
     public void AddOrderItem(OrderItem orderItem)
     {
         OrderEditGuard();
+
         var item = Items.FirstOrDefault(oi => oi.InventoryId == orderItem.InventoryId);
 
         if (item == null)
@@ -53,6 +54,7 @@ public class Order : BaseAggregateRoot
     public void RemoveOrderItem(long orderItemId)
     {
         OrderEditGuard();
+
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
@@ -64,6 +66,7 @@ public class Order : BaseAggregateRoot
     public void IncreaseItemCount(long orderItemId)
     {
         OrderEditGuard();
+
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
@@ -75,6 +78,7 @@ public class Order : BaseAggregateRoot
     public void DecreaseItemCount(long orderItemId)
     {
         OrderEditGuard();
+
         var orderItem = Items.FirstOrDefault(oi => oi.Id == orderItemId);
 
         if (orderItem == null)
@@ -85,20 +89,21 @@ public class Order : BaseAggregateRoot
 
     public void SetStatus(OrderStatus orderStatus)
     {
-        Status = orderStatus;
+        Status = orderStatus.ToString();
     }
 
     public void Checkout(OrderAddress address, string shippingMethod, int shippingCost)
     {
         OrderEditGuard();
+
         Address = address;
-        Status = OrderStatus.Preparing;
+        Status = OrderStatus.Preparing.ToString();
         ShippingInfo = new ShippingInfo(shippingMethod, new Money(shippingCost));
     }
 
     private void OrderEditGuard()
     {
-        if (Status != OrderStatus.Pending)
+        if (Status != OrderStatus.Pending.ToString())
             throw new OperationNotAllowedDomainException("Cannot edit order, order is already sent");
     }
 }

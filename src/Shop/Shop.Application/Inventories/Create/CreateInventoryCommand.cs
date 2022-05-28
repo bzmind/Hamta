@@ -7,9 +7,9 @@ using Shop.Domain.InventoryAggregate.Repository;
 
 namespace Shop.Application.Inventories.Create;
 
-public record CreateInventoryCommand(long ProductId, int Quantity, int Price, long ColorId) : IBaseCommand;
+public record CreateInventoryCommand(long ProductId, int Quantity, int Price, long ColorId) : IBaseCommand<long>;
 
-public class CreateInventoryCommandHandler : IBaseCommandHandler<CreateInventoryCommand>
+public class CreateInventoryCommandHandler : IBaseCommandHandler<CreateInventoryCommand, long>
 {
     private readonly IInventoryRepository _inventoryRepository;
 
@@ -18,13 +18,13 @@ public class CreateInventoryCommandHandler : IBaseCommandHandler<CreateInventory
         _inventoryRepository = inventoryRepository;
     }
 
-    public async Task<OperationResult> Handle(CreateInventoryCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(CreateInventoryCommand request, CancellationToken cancellationToken)
     {
         var inventory = new Inventory(request.ProductId, request.Quantity, request.Price, request.ColorId);
 
         _inventoryRepository.Add(inventory);
         await _inventoryRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(inventory.Id);
     }
 }
 

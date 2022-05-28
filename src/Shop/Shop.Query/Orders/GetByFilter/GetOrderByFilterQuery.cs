@@ -29,55 +29,17 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
 
         var query = _shopContext.Orders
             .OrderByDescending(o => o.CreationDate)
-            .Join(
-                _shopContext.Inventories,
-                o => o.Items.First().InventoryId, // This might not work! all line which use First() on the items, may not work.
-                i => i.Id,
-                (order, inventory) => new
-                {
-                    Order = order,
-                    Inventory = inventory
-                })
-            .Join(
-                _shopContext.Colors,
-                tables => tables.Inventory.ColorId,
-                c => c.Id,
-                (orderAndInventory, color) => new
-                {
-                    Order = orderAndInventory.Order,
-                    Inventory = orderAndInventory.Inventory,
-                    Color = color
-                })
-            .Join(
-                _shopContext.Products,
-                tables => tables.Inventory.ProductId,
-                p => p.Id,
-                (tables, product) => new OrderDto
-                {
-                    Id = tables.Order.Id,
-                    CreationDate = tables.Order.CreationDate,
-                    CustomerId = tables.Order.CustomerId,
-                    Status = tables.Order.Status,
-                    Address = tables.Order.Address.MapToOrderAddressDto(),
-                    ShippingInfo = tables.Order.ShippingInfo,
-                    Items = new List<OrderItemDto>
-                    {
-                        new OrderItemDto
-                        {
-                            Id = tables.Order.Items.First().Id,
-                            CreationDate = tables.Order.Items.First().CreationDate,
-                            OrderId = tables.Order.Id,
-                            InventoryId = tables.Inventory.Id,
-                            ProductName = product.Name,
-                            Count = tables.Order.Items.First().Count,
-                            Price = tables.Order.Items.First().Price.Value,
-                            InventoryQuantity = tables.Inventory.Quantity,
-                            ColorName = tables.Color.Name,
-                            ColorCode = tables.Color.Code
-                        }
-                    }
-                })
-            .AsQueryable();
+            .Select(o => new OrderDto
+            {
+                Id = o.Id,
+                CreationDate = o.CreationDate,
+                CustomerId = o.CustomerId,
+                Status = o.Status,
+                Address = o.Address.MapToOrderAddressDto(),
+                ShippingMethod = o.ShippingInfo.ShippingMethod,
+                ShippingCost = o.ShippingInfo.ShippingCost.Value,
+                Items = o.Items.ToList().MapToOrderItemDto()
+            }).AsQueryable();
 
         if (@params.CustomerId != null)
             query = query.Where(o => o.CustomerId == @params.CustomerId);
@@ -89,7 +51,7 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
             query = query.Where(o => o.CreationDate <= @params.EndDate);
 
         if (@params.Status != null)
-            query = query.Where(o => o.Status == @params.Status);
+            query = query.Where(o => o.Status == @params.Status.ToString());
 
         var skip = (@params.PageId - 1) * @params.Take;
 
@@ -98,16 +60,54 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
             .Take(@params.Take)
             .ToListAsync(cancellationToken);
 
-        var groupedResult = finalQuery.GroupBy(o => o.Id).Select(orderGroup =>
-        {
-            var firstItem = orderGroup.First();
-            firstItem.Items = orderGroup.Select(o => o.Items.First()).ToList();
-            return firstItem;
-        }).ToList();
+        var itemInventoryIds = new List<long>();
 
+        finalQuery.ForEach(orderDto =>
+        {
+            orderDto.Items.ForEach(orderItem =>
+            {
+                itemInventoryIds.Add(orderItem.InventoryId);
+            });
+        });
+
+        var inventoryDetails = await _shopContext.Inventories
+            .Where(i => itemInventoryIds.Contains(i.Id))
+            .Join(
+                _shopContext.Colors,
+                i => i.ColorId,
+                c => c.Id,
+                (inventory, color) => new
+                {
+                    inventory,
+                    color
+                })
+            .Join(
+                _shopContext.Products,
+                t => t.inventory.ProductId,
+                p => p.Id,
+                (tables, product) => new
+                {
+                    tables.inventory,
+                    tables.color,
+                    product
+                })
+            .ToListAsync(cancellationToken);
+
+        finalQuery.ForEach(orderDto =>
+        {
+            orderDto.Items.ForEach(orderItemDto =>
+            {
+                var item = inventoryDetails.First(t => t.inventory.Id == orderItemDto.InventoryId);
+                orderItemDto.ProductName = item.product.Name;
+                orderItemDto.InventoryQuantity = item.inventory.Quantity;
+                orderItemDto.ColorName = item.color.Name;
+                orderItemDto.ColorCode = item.color.Code;
+            });
+        });
+        
         return new OrderFilterResult
         {
-            Data = groupedResult,
+            Data = finalQuery,
             FilterParam = @params
         };
     }
