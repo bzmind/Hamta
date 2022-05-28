@@ -54,7 +54,7 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
                         EnglishName = tables.Product.EnglishName,
                         Slug = tables.Product.Slug,
                         Description = tables.Product.Description,
-                        Scores = tables.Product.Scores.ToList(),
+                        AverageScore = tables.Product.AverageScore,
                         MainImage = tables.Product.MainImage.Name,
                         GalleryImages = tables.Product.GalleryImages.ToList().MapToProductImageDto(),
                         CustomSpecifications = tables.Product.CustomSpecifications.ToList().MapToProductSpecificationDto(),
@@ -82,12 +82,11 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
         var groupedProduct = productDtos.GroupBy(p => p.Id).Select(productGroup =>
         {
             var firstItem = productGroup.First();
-            firstItem.Scores = productGroup.SelectMany(p => p.Scores).ToList();
-            firstItem.GalleryImages = productGroup.SelectMany(p => p.GalleryImages).ToList();
-            firstItem.CustomSpecifications = productGroup.SelectMany(p => p.CustomSpecifications).ToList();
-            firstItem.CategorySpecifications = productGroup.SelectMany(p => p.CategorySpecifications).ToList();
-            firstItem.ExtraDescriptions = productGroup.SelectMany(p => p.ExtraDescriptions).ToList();
-            firstItem.ProductInventories = productGroup.SelectMany(p => p.ProductInventories).ToList();
+            firstItem.GalleryImages = productGroup.Select(p => p.GalleryImages).First();
+            firstItem.CustomSpecifications = productGroup.Select(p => p.CustomSpecifications).First();
+            firstItem.CategorySpecifications = productGroup.Select(p => p.CategorySpecifications).First();
+            firstItem.ExtraDescriptions = productGroup.Select(p => p.ExtraDescriptions).First();
+            firstItem.ProductInventories = productGroup.Select(p => p.ProductInventories).First();
             return firstItem;
         }).Single();
 

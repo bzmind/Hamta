@@ -47,7 +47,7 @@ internal static class ProductListMapper
             Quantity = product.Quantity,
             Colors = new List<Color>
             {
-                new(color.Name, color.Code)
+                color
             }
         };
     }

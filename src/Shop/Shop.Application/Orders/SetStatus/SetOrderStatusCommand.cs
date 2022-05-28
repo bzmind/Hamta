@@ -25,9 +25,7 @@ public class SetOrderStatusCommandHandler : IBaseCommandHandler<SetOrderStatusCo
         if (order == null)
             return OperationResult.NotFound();
 
-        Order.OrderStatus status;
-        
-        if (Enum.TryParse(request.OrderStatus, out status))
+        if (Enum.TryParse(request.OrderStatus, out Order.OrderStatus status))
             return OperationResult.Error("وضعیت سفارش نامعتبر است");
 
         order.SetStatus(status);

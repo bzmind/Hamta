@@ -149,4 +149,11 @@ public static class ValidationMessages
     /// <param name="minAmount"></param>
     public static string PriceMinAmount(string field, int minAmount)
         => $"{field} باید بیشتر از {minAmount.ToString("C0")} درصد باشد";
+
+    /// <summary>
+    /// <example>Example: سفارش} یافت نشد}</example>
+    /// </summary>
+    /// <param name="field"></param>
+    public static string FieldNotFound(string field)
+        => $"{field} یافت نشد";
 }

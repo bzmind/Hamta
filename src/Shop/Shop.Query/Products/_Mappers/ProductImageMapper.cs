@@ -29,6 +29,7 @@ internal static class ProductImageMapper
             {
                 Id = productImage.Id,
                 CreationDate = productImage.CreationDate,
+                ProductId = productImage.ProductId,
                 Name = productImage.Name
             });
         });

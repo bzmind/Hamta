@@ -12,7 +12,7 @@ public class ProductDto : BaseDto
     public string Slug { get; set; }
     public string? Description { get; set; }
     public string MainImage { get; set; }
-    public List<Score> Scores { get; set; }
+    public float AverageScore { get; set; }
     public List<ProductImageDto> GalleryImages { get; set; }
     public List<ProductSpecificationDto> CustomSpecifications { get; set; }
     public List<CategorySpecificationDto> CategorySpecifications { get; set; }
