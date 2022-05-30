@@ -2,7 +2,6 @@
 using Common.Api;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Comments.Create;
-using Shop.Application.Comments.Remove;
 using Shop.Application.Comments.SetDislikes;
 using Shop.Application.Comments.SetLikes;
 using Shop.Application.Comments.SetStatus;
@@ -64,7 +63,7 @@ public class CommentController : BaseApiController
     }
 
     [HttpGet]
-    public async Task<ApiResult<CommentFilterResult>> GetByFilter(CommentFilterParams filterParams)
+    public async Task<ApiResult<CommentFilterResult>> GetByFilter([FromQuery] CommentFilterParams filterParams)
     {
         var result = await _commentFacade.GetByFilter(filterParams);
         return QueryResult(result);

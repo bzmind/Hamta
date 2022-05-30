@@ -1,6 +1,5 @@
 ﻿using Common.Application;
 using Shop.Application.Comments.Create;
-using Shop.Application.Comments.Remove;
 using Shop.Application.Comments.SetDislikes;
 using Shop.Application.Comments.SetLikes;
 using Shop.Application.Comments.SetStatus;

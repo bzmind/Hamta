@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.API.CustomModelBinders;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
-using Shop.Application.Products.Remove;
 using Shop.Application.Products.RemoveGalleryImage;
 using Shop.Application.Products.ReplaceMainImage;
 using Shop.Application.Products.SetScore;

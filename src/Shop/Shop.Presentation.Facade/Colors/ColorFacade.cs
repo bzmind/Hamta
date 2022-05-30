@@ -2,7 +2,6 @@
 using MediatR;
 using Shop.Application.Colors.Create;
 using Shop.Application.Colors.Edit;
-using Shop.Application.Colors.Remove;
 using Shop.Query.Colors._DTOs;
 using Shop.Query.Colors.GetByFilter;
 using Shop.Query.Colors.GetById;
@@ -26,11 +25,6 @@ internal class ColorFacade : IColorFacade
     public async Task<OperationResult> Edit(EditColorCommand command)
     {
         return await _mediator.Send(command);
-    }
-
-    public async Task<OperationResult> Remove(long colorId)
-    {
-        return await _mediator.Send(new RemoveColorCommand(colorId));
     }
 
     public async Task<ColorDto?> GetById(long id)

@@ -2,7 +2,6 @@
 using Shop.Application.Customers.AddFavoriteItem;
 using Shop.Application.Customers.Create;
 using Shop.Application.Customers.Edit;
-using Shop.Application.Customers.Remove;
 using Shop.Application.Customers.RemoveFavoriteItem;
 using Shop.Application.Customers.SetAvatar;
 using Shop.Application.Customers.SetSubscriptionToNews;

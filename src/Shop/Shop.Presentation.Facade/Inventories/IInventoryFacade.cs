@@ -2,7 +2,6 @@
 using Shop.Application.Inventories.Create;
 using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
-using Shop.Application.Inventories.Remove;
 using Shop.Application.Inventories.RemoveDiscount;
 using Shop.Query.Inventories._DTOs;
 

@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Categories\AddSubCategory\" />
     <Folder Include="Colors\Edit\" />
-    <Folder Include="Colors\Remove\" />
     <Folder Include="Comments\Remove\" />
     <Folder Include="Customers\Remove\" />
     <Folder Include="Customers\_Services\" />

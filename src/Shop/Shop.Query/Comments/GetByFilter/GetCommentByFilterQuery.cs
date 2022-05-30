@@ -55,7 +55,7 @@ public class GetCommentListQueryHandler : IBaseQueryHandler<GetCommentByFilterQu
         var groupedQueryResult = finalQuery.GroupBy(c => c.Id).Select(commentGroup =>
         {
             var firstItem = commentGroup.First();
-            firstItem.CommentHints = commentGroup.Select(c => c.CommentHints.Single()).ToList();
+            firstItem.CommentHints = commentGroup.Select(c => c.CommentHints).First();
             return firstItem;
         }).ToList();
 
