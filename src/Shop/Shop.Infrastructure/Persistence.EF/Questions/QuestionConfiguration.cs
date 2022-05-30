@@ -20,5 +20,12 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
         builder.Property(question => question.Status)
             .IsRequired()
             .HasMaxLength(20);
+
+        builder.OwnsMany(question => question.Replies, option =>
+        {
+            option.ToTable("Replies", "question");
+            option.HasKey(reply => reply.Id);
+            option.Property(reply => reply.Id).UseIdentityColumn();
+        });
     }
 }

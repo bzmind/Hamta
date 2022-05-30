@@ -40,17 +40,17 @@ internal class CommentFacade : ICommentFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> Remove(RemoveCommentCommand command)
+    public async Task<OperationResult> Remove(long commentId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new RemoveCommentCommand(commentId));
     }
 
-    public async Task<CommentDto?> GetCommentById(long id)
+    public async Task<CommentDto?> GetById(long id)
     {
         return await _mediator.Send(new GetCommentByIdQuery(id));
     }
 
-    public async Task<CommentFilterResult> GetCommentByFilter(CommentFilterParams filterParams)
+    public async Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams)
     {
         return await _mediator.Send(new GetCommentByFilterQuery(filterParams));
     }

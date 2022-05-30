@@ -14,8 +14,8 @@ public interface ICommentFacade
     Task<OperationResult> SetStatus(SetCommentStatusCommand command);
     Task<OperationResult> SetLikes(SetCommentLikesCommand command);
     Task<OperationResult> SetDislikes(SetCommentDislikesCommand command);
-    Task<OperationResult> Remove(RemoveCommentCommand command);
+    Task<OperationResult> Remove(long commentId);
 
-    Task<CommentDto?> GetCommentById(long id);
-    Task<CommentFilterResult> GetCommentByFilter(CommentFilterParams filterParams);
+    Task<CommentDto?> GetById(long id);
+    Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams);
 }

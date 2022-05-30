@@ -43,17 +43,39 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
             query = query.Where(q => q.CustomerId == @params.CustomerId);
 
         if (@params.Status != null)
-            query = query.Where(q => q.Status == @params.Status);
+            query = query.Where(q => q.Status == @params.Status.ToString());
 
         var skip = (@params.PageId - 1) * @params.Take;
 
+        var finalQuery = await query
+            .Skip(skip)
+            .Take(@params.Take)
+            .ToListAsync(cancellationToken);
+
+        var repliesCustomerIds = new List<long>();
+        finalQuery.ForEach(qDto =>
+        {
+            qDto.Replies.ForEach(rDto =>
+            {
+                repliesCustomerIds.Add(rDto.CustomerId);
+            });
+        });
+
+        var customers = await _shopContext.Customers
+            .Where(c => repliesCustomerIds.Contains(c.Id)).ToListAsync(cancellationToken);
+
+        finalQuery.ForEach(qDto =>
+        {
+            qDto.Replies.ForEach(rDto =>
+            {
+                var customer = customers.First(c => c.Id == rDto.CustomerId);
+                rDto.CustomerFullName = customer.FullName;
+            });
+        });
+
         return new QuestionFilterResult
         {
-            Data = await query
-                .Skip(skip)
-                .Take(@params.Take)
-                .ToListAsync(cancellationToken),
-
+            Data = finalQuery,
             FilterParam = @params
         };
     }

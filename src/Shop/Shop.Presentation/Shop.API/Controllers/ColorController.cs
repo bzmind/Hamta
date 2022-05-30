@@ -33,24 +33,24 @@ public class ColorController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpDelete]
-    public async Task<ApiResult> Remove(RemoveColorCommand command)
+    [HttpDelete("{colorId}")]
+    public async Task<ApiResult> Remove(long colorId)
     {
-        var result = await _colorFacade.Remove(command);
+        var result = await _colorFacade.Remove(colorId);
         return CommandResult(result);
     }
 
     [HttpGet("{colorId}")]
-    public async Task<ApiResult<ColorDto?>> GetColorById(long colorId)
+    public async Task<ApiResult<ColorDto?>> GetById(long colorId)
     {
-        var result = await _colorFacade.GetColorById(colorId);
+        var result = await _colorFacade.GetById(colorId);
         return QueryResult(result);
     }
 
     [HttpGet]
-    public async Task<ApiResult<ColorFilterResult>> GetColorByFilter([FromQuery] ColorFilterParam filterParams)
+    public async Task<ApiResult<ColorFilterResult>> GetByFilter([FromQuery] ColorFilterParam filterParams)
     {
-        var result = await _colorFacade.GetColorByFilter(filterParams);
+        var result = await _colorFacade.GetByFilter(filterParams);
         return QueryResult(result);
     }
 }

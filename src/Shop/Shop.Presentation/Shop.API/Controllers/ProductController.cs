@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.API.CustomModelBinders;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
+using Shop.Application.Products.Remove;
 using Shop.Application.Products.RemoveGalleryImage;
 using Shop.Application.Products.ReplaceMainImage;
 using Shop.Application.Products.SetScore;
@@ -65,19 +66,18 @@ public class ProductController : BaseApiController
         var result = await _productFacade.Remove(productId);
         return CommandResult(result);
     }
-
-    [HttpGet]
-    public async Task<ApiResult<ProductFilterResult>> GetProductByFilter
-        ([FromQuery] ProductFilterParam filterParam)
+    
+    [HttpGet("{id}")]
+    public async Task<ApiResult<ProductDto?>> GetById(long id)
     {
-        var result = await _productFacade.GetProductByFilter(filterParam);
+        var result = await _productFacade.GetById(id);
         return QueryResult(result);
     }
 
-    [HttpGet("{id}")]
-    public async Task<ApiResult<ProductDto?>> GetProductById(long id)
+    [HttpGet]
+    public async Task<ApiResult<ProductFilterResult>> GetByFilter([FromQuery] ProductFilterParam filterParam)
     {
-        var result = await _productFacade.GetProductById(id);
+        var result = await _productFacade.GetByFilter(filterParam);
         return QueryResult(result);
     }
 }

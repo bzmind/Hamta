@@ -3,6 +3,7 @@ using MediatR;
 using Shop.Application.Inventories.Create;
 using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
+using Shop.Application.Inventories.Remove;
 using Shop.Application.Inventories.RemoveDiscount;
 using Shop.Query.Inventories._DTOs;
 using Shop.Query.Inventories.GetByFilter;
@@ -39,12 +40,17 @@ internal class InventoryFacade : IInventoryFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<InventoryDto?> GetInventoryById(long id)
+    public async Task<OperationResult> Remove(long inventoryId)
+    {
+        return await _mediator.Send(new RemoveInventoryCommand(inventoryId));
+    }
+
+    public async Task<InventoryDto?> GetById(long id)
     {
         return await _mediator.Send(new GetInventoryByIdQuery(id));
     }
 
-    public async Task<InventoryFilterResult> GetInventoryByFilter(InventoryFilterParam filterParams)
+    public async Task<InventoryFilterResult> GetByFilter(InventoryFilterParam filterParams)
     {
         return await _mediator.Send(new GetInventoryByFilterQuery(filterParams));
     }

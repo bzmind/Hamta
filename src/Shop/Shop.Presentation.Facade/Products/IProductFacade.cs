@@ -1,6 +1,7 @@
 ﻿using Common.Application;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
+using Shop.Application.Products.Remove;
 using Shop.Application.Products.RemoveGalleryImage;
 using Shop.Application.Products.ReplaceMainImage;
 using Shop.Application.Products.SetScore;
@@ -17,6 +18,6 @@ public interface IProductFacade
     Task<OperationResult> AddScore(AddScoreCommand command);
     Task<OperationResult> Remove(long productId);
 
-    Task<ProductDto?> GetProductById(long id);
-    Task<ProductFilterResult> GetProductByFilter(ProductFilterParam filterParams);
+    Task<ProductDto?> GetById(long id);
+    Task<ProductFilterResult> GetByFilter(ProductFilterParam filterParams);
 }

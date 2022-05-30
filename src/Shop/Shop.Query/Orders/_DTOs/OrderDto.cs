@@ -9,5 +9,5 @@ public class OrderDto : BaseDto
     public OrderAddressDto? Address { get; set; }
     public string ShippingMethod { get; set; }
     public int ShippingCost { get; set; }
-    public List<OrderItemDto> Items { get; set; } = new List<OrderItemDto>();
+    public List<OrderItemDto> Items { get; set; } = new();
 }

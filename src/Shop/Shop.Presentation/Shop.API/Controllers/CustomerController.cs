@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Customers.AddFavoriteItem;
 using Shop.Application.Customers.Create;
 using Shop.Application.Customers.Edit;
+using Shop.Application.Customers.Remove;
 using Shop.Application.Customers.RemoveFavoriteItem;
 using Shop.Application.Customers.SetAvatar;
 using Shop.Application.Customers.SetSubscriptionToNews;
@@ -64,25 +65,31 @@ public class CustomerController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpGet("{customerId}")]
-    public async Task<ApiResult<CustomerDto?>> GetCustomerById(long customerId)
+    [HttpDelete("{customerId}")]
+    public async Task<ApiResult> Remove(long customerId)
     {
-        var result = await _customerFacade.GetCustomerById(customerId);
+        var result = await _customerFacade.Remove(customerId);
+        return CommandResult(result);
+    }
+
+    [HttpGet("{customerId}")]
+    public async Task<ApiResult<CustomerDto?>> GetById(long customerId)
+    {
+        var result = await _customerFacade.GetById(customerId);
         return QueryResult(result);
     }
 
     [HttpGet("GetByPhoneNumber/{phoneNumber}")]
-    public async Task<ApiResult<CustomerDto?>> GetCustomerByPhoneNumber(string phoneNumber)
+    public async Task<ApiResult<CustomerDto?>> GetByPhoneNumber(string phoneNumber)
     {
-        var result = await _customerFacade.GetCustomerByPhoneNumber(phoneNumber);
+        var result = await _customerFacade.GetByPhoneNumber(phoneNumber);
         return QueryResult(result);
     }
 
     [HttpGet]
-    public async Task<ApiResult<CustomerFilterResult>> GetCustomerByFilter
-        ([FromQuery] CustomerFilterParam filterParam)
+    public async Task<ApiResult<CustomerFilterResult>> GetByFilter([FromQuery] CustomerFilterParam filterParam)
     {
-        var result = await _customerFacade.GetCustomerByFilter(filterParam);
+        var result = await _customerFacade.GetByFilter(filterParam);
         return QueryResult(result);
     }
 }

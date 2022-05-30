@@ -6,9 +6,9 @@ public class CustomerFavoriteItemDto : BaseDto
 {
     public long CustomerId { get; set; }
     public long ProductId { get; set; }
-    public string ProductName { get; set; }
-    public string ProductMainImage { get; set; }
-    public int ProductPrice { get; set; }
-    public double AverageScore { get; set; }
-    public bool IsAvailable { get; set; }
+    public string? ProductName { get; set; }
+    public string? ProductMainImage { get; set; }
+    public int? ProductPrice { get; set; }
+    public float? AverageScore { get; set; }
+    public bool? IsAvailable { get; set; }
 }

@@ -21,7 +21,8 @@ public class GetCustomerByIdQueryHandler : IBaseQueryHandler<GetCustomerByIdQuer
 
     public async Task<CustomerDto?> Handle(GetCustomerByIdQuery request, CancellationToken cancellationToken)
     {
-        var customer = await _shopContext.Customers.FirstOrDefaultAsync(c => c.Id == request.CustomerId, cancellationToken);
+        var customer = await _shopContext.Customers
+            .FirstOrDefaultAsync(c => c.Id == request.CustomerId, cancellationToken);
         
         if (customer == null)
             return null;
@@ -29,6 +30,7 @@ public class GetCustomerByIdQueryHandler : IBaseQueryHandler<GetCustomerByIdQuer
         var customerDto = customer.MapToCustomerDto();
         var favoriteItems = await customerDto.GetFavoriteItemsAsDto(_dapperContext);
         customerDto.FavoriteItems = favoriteItems;
+
         return customerDto;
     }
 }

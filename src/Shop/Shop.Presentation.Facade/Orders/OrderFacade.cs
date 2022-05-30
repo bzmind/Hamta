@@ -51,12 +51,12 @@ internal class OrderFacade : IOrderFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OrderDto?> GetOrderById(long id)
+    public async Task<OrderDto?> GetById(long id)
     {
         return await _mediator.Send(new GetOrderByIdQuery(id));
     }
 
-    public async Task<OrderFilterResult> GetOrderByFilter(OrderFilterParam filterParams)
+    public async Task<OrderFilterResult> GetByFilter(OrderFilterParam filterParams)
     {
         return await _mediator.Send(new GetOrderByFilterQuery(filterParams));
     }

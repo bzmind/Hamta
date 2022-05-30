@@ -1,5 +1,4 @@
 ﻿using Common.Query.BaseClasses;
-using Shop.Domain.ProductAggregate.Value_Objects;
 using Shop.Query.Categories._DTOs;
 
 namespace Shop.Query.Products._DTOs;

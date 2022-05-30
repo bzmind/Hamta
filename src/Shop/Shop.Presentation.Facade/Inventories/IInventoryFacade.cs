@@ -2,6 +2,7 @@
 using Shop.Application.Inventories.Create;
 using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
+using Shop.Application.Inventories.Remove;
 using Shop.Application.Inventories.RemoveDiscount;
 using Shop.Query.Inventories._DTOs;
 
@@ -13,7 +14,8 @@ public interface IInventoryFacade
     Task<OperationResult> Edit(EditInventoryCommand command);
     Task<OperationResult> DiscountByPercentage(DiscountByPercentageCommand command);
     Task<OperationResult> RemoveDiscount(RemoveInventoryDiscountCommand command);
+    Task<OperationResult> Remove(long inventoryId);
 
-    Task<InventoryDto?> GetInventoryById(long id);
-    Task<InventoryFilterResult> GetInventoryByFilter(InventoryFilterParam filterParams);
+    Task<InventoryDto?> GetById(long id);
+    Task<InventoryFilterResult> GetByFilter(InventoryFilterParam filterParams);
 }

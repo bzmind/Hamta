@@ -1,11 +1,12 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
+using Common.Application.Validation;
 using Shop.Domain.QuestionAggregate;
 using Shop.Domain.QuestionAggregate.Repository;
 
 namespace Shop.Application.Questions.SetStatus;
 
-public record SetQuestionStatusCommand(long QuestionId, int QuestionStatusId) : IBaseCommand;
+public record SetQuestionStatusCommand(long QuestionId, string Status) : IBaseCommand;
 
 public class SetQuestionStatusCommandHandler : IBaseCommandHandler<SetQuestionStatusCommand>
 {
@@ -23,7 +24,9 @@ public class SetQuestionStatusCommandHandler : IBaseCommandHandler<SetQuestionSt
         if (question == null)
             return OperationResult.NotFound();
 
-        var status = (Question.QuestionStatus) request.QuestionStatusId;
+        if (!Enum.TryParse(request.Status, out Question.QuestionStatus status)) 
+            return OperationResult.Error(ValidationMessages.FieldInvalid("وضعیت سوال"));
+
         question.SetStatus(status);
 
         await _questionRepository.SaveAsync();

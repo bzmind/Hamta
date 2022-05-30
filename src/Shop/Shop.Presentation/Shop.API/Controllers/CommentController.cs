@@ -49,24 +49,24 @@ public class CommentController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpDelete]
-    public async Task<ApiResult> Remove(RemoveCommentCommand command)
+    [HttpDelete("{commentId}")]
+    public async Task<ApiResult> Remove(long commentId)
     {
-        var result = await _commentFacade.Remove(command);
+        var result = await _commentFacade.Remove(commentId);
         return CommandResult(result);
     }
 
     [HttpGet("{commentId}")]
-    public async Task<ApiResult<CommentDto?>> GetCommentById(long commentId)
+    public async Task<ApiResult<CommentDto?>> GetById(long commentId)
     {
-        var result = await _commentFacade.GetCommentById(commentId);
+        var result = await _commentFacade.GetById(commentId);
         return QueryResult(result);
     }
 
     [HttpGet]
-    public async Task<ApiResult<CommentFilterResult>> GetCommentByFilter(CommentFilterParams filterParams)
+    public async Task<ApiResult<CommentFilterResult>> GetByFilter(CommentFilterParams filterParams)
     {
-        var result = await _commentFacade.GetCommentByFilter(filterParams);
+        var result = await _commentFacade.GetByFilter(filterParams);
         return QueryResult(result);
     }
 }

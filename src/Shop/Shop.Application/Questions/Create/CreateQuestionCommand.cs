@@ -7,9 +7,9 @@ using Shop.Domain.QuestionAggregate.Repository;
 
 namespace Shop.Application.Questions.Create;
 
-public record CreateQuestionCommand(long ProductId, long CustomerId, string Description) : IBaseCommand;
+public record CreateQuestionCommand(long ProductId, long CustomerId, string Description) : IBaseCommand<long>;
 
-public class CreateQuestionCommandHandler : IBaseCommandHandler<CreateQuestionCommand>
+public class CreateQuestionCommandHandler : IBaseCommandHandler<CreateQuestionCommand, long>
 {
     private readonly IQuestionRepository _questionRepository;
 
@@ -18,13 +18,14 @@ public class CreateQuestionCommandHandler : IBaseCommandHandler<CreateQuestionCo
         _questionRepository = questionRepository;
     }
 
-    public async Task<OperationResult> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(CreateQuestionCommand request, CancellationToken cancellationToken)
     {
         var question = new Question(request.ProductId, request.CustomerId, request.Description);
 
         _questionRepository.Add(question);
+
         await _questionRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(question.Id);
     }
 }
 

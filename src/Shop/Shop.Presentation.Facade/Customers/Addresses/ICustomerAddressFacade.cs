@@ -8,8 +8,8 @@ namespace Shop.Presentation.Facade.Customers.Addresses;
 
 public interface ICustomerAddressFacade
 {
-    Task<OperationResult> ActivateAddress(ActivateCustomerAddressCommand command);
-    Task<OperationResult> AddAddress(AddCustomerAddressCommand command);
-    Task<OperationResult> EditAddress(EditCustomerAddressCommand command);
-    Task<OperationResult> RemoveAddress(RemoveCustomerAddressCommand command);
+    Task<OperationResult> Create(AddCustomerAddressCommand command);
+    Task<OperationResult> Edit(EditCustomerAddressCommand command);
+    Task<OperationResult> Activate(ActivateCustomerAddressCommand command);
+    Task<OperationResult> Remove(RemoveCustomerAddressCommand command);
 }

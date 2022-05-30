@@ -10,10 +10,10 @@ public class Category : BaseAggregateRoot
     public string Title { get; private set; }
     public string Slug { get; private set; }
 
-    private readonly List<Category> _subCategories = new List<Category>();
+    private readonly List<Category> _subCategories = new();
     public IEnumerable<Category> SubCategories => _subCategories.ToList();
 
-    private List<CategorySpecification> _specifications = new List<CategorySpecification>();
+    private List<CategorySpecification> _specifications = new();
     public IEnumerable<CategorySpecification> Specifications => _specifications.ToList();
 
     private Category()

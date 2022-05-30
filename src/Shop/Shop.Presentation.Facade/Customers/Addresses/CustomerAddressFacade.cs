@@ -16,22 +16,22 @@ internal class CustomerAddressFacade : ICustomerAddressFacade
         _mediator = mediator;
     }
 
-    public async Task<OperationResult> ActivateAddress(ActivateCustomerAddressCommand command)
+    public async Task<OperationResult> Activate(ActivateCustomerAddressCommand command)
     {
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> AddAddress(AddCustomerAddressCommand command)
+    public async Task<OperationResult> Create(AddCustomerAddressCommand command)
     {
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> EditAddress(EditCustomerAddressCommand command)
+    public async Task<OperationResult> Edit(EditCustomerAddressCommand command)
     {
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> RemoveAddress(RemoveCustomerAddressCommand command)
+    public async Task<OperationResult> Remove(RemoveCustomerAddressCommand command)
     {
         return await _mediator.Send(command);
     }

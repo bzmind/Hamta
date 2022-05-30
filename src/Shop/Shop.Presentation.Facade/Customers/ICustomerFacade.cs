@@ -2,6 +2,7 @@
 using Shop.Application.Customers.AddFavoriteItem;
 using Shop.Application.Customers.Create;
 using Shop.Application.Customers.Edit;
+using Shop.Application.Customers.Remove;
 using Shop.Application.Customers.RemoveFavoriteItem;
 using Shop.Application.Customers.SetAvatar;
 using Shop.Application.Customers.SetSubscriptionToNews;
@@ -17,8 +18,9 @@ public interface ICustomerFacade
     Task<OperationResult> SetSubscriptionToNews(SetCustomerSubscriptionToNewsCommand command);
     Task<OperationResult> AddFavoriteItem(AddCustomerFavoriteItemCommand command);
     Task<OperationResult> RemoveFavoriteItem(RemoveCustomerFavoriteItemCommand command);
+    Task<OperationResult> Remove(long customerId);
 
-    Task<CustomerDto?> GetCustomerById(long id);
-    Task<CustomerDto?> GetCustomerByPhoneNumber(string phoneNumber);
-    Task<CustomerFilterResult> GetCustomerByFilter(CustomerFilterParam filterParams);
+    Task<CustomerDto?> GetById(long id);
+    Task<CustomerDto?> GetByPhoneNumber(string phoneNumber);
+    Task<CustomerFilterResult> GetByFilter(CustomerFilterParam filterParams);
 }

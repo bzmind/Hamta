@@ -7,9 +7,9 @@ using Shop.Domain.ShippingAggregate.Repository;
 
 namespace Shop.Application.Shippings.Create;
 
-public record CreateShippingCommand(string ShippingMethod, int ShippingCost) : IBaseCommand;
+public record CreateShippingCommand(string ShippingMethod, int ShippingCost) : IBaseCommand<long>;
 
-public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCommand>
+public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCommand, long>
 {
     private readonly IShippingRepository _shippingRepository;
 
@@ -18,13 +18,13 @@ public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCo
         _shippingRepository = shippingRepository;
     }
 
-    public async Task<OperationResult> Handle(CreateShippingCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult<long>> Handle(CreateShippingCommand request, CancellationToken cancellationToken)
     {
         var shipping = new Shipping(request.ShippingMethod, request.ShippingCost);
 
         _shippingRepository.Add(shipping);
         await _shippingRepository.SaveAsync();
-        return OperationResult.Success();
+        return OperationResult<long>.Success(shipping.Id);
     }
 }
 

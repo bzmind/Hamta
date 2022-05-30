@@ -51,12 +51,12 @@ internal class ProductFacade : IProductFacade
         return await _mediator.Send(new RemoveProductCommand(productId));
     }
 
-    public async Task<ProductDto?> GetProductById(long id)
+    public async Task<ProductDto?> GetById(long id)
     {
         return await _mediator.Send(new GetProductByIdQuery(id));
     }
 
-    public async Task<ProductFilterResult> GetProductByFilter(ProductFilterParam filterParams)
+    public async Task<ProductFilterResult> GetByFilter(ProductFilterParam filterParams)
     {
         return await _mediator.Send(new GetProductByFilterQuery(filterParams));
     }

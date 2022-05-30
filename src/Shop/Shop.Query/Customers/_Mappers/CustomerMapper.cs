@@ -10,7 +10,7 @@ internal static class CustomerMapper
         if (customer == null)
             return null;
 
-        return new CustomerDto
+        var customerDto = new CustomerDto
         {
             Id = customer.Id,
             CreationDate = customer.CreationDate,
@@ -23,5 +23,23 @@ internal static class CustomerMapper
             IsSubscribedToNews = customer.IsSubscribedToNews,
             FavoriteItems = new List<CustomerFavoriteItemDto>()
         };
+
+        customer.FavoriteItems.ToList().ForEach(fi =>
+        {
+            customerDto.FavoriteItems.Add(new CustomerFavoriteItemDto()
+            {
+                Id = fi.Id,
+                CreationDate = fi.CreationDate,
+                CustomerId = fi.CustomerId,
+                ProductId = fi.ProductId,
+                ProductName = null,
+                ProductMainImage = null,
+                ProductPrice = null,
+                AverageScore = null,
+                IsAvailable = null
+            });
+        });
+
+        return customerDto;
     }
 }

@@ -288,15 +288,13 @@ namespace Shop.Infrastructure.Migrations
                         .HasMaxLength(300)
                         .HasColumnType("nvarchar(300)");
 
-                    b.Property<long?>("ParentQuestionId")
-                        .HasColumnType("bigint");
-
                     b.Property<long>("ProductId")
                         .HasColumnType("bigint");
 
-                    b.Property<int>("Status")
+                    b.Property<string>("Status")
+                        .IsRequired()
                         .HasMaxLength(20)
-                        .HasColumnType("int");
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
@@ -931,6 +929,49 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Scores");
+                });
+
+            modelBuilder.Entity("Shop.Domain.QuestionAggregate.Question", b =>
+                {
+                    b.OwnsMany("Shop.Domain.QuestionAggregate.Reply", "Replies", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<long>("CustomerId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<long>("ProductId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("QuestionId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("Status")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("QuestionId");
+
+                            b1.ToTable("Replies", "question");
+
+                            b1.WithOwner()
+                                .HasForeignKey("QuestionId");
+                        });
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("Shop.Domain.ShippingAggregate.Shipping", b =>

@@ -13,31 +13,28 @@ public class Product : BaseAggregateRoot
     public string Slug { get; private set; }
     public string? Description { get; private set; }
 
-    private readonly List<Score> _scores = new List<Score>();
+    private readonly List<Score> _scores = new();
     public IEnumerable<Score> Scores => _scores.ToList();
     public ProductImage MainImage { get; private set; }
 
-    private readonly List<ProductImage> _galleryImages = new List<ProductImage>();
+    private readonly List<ProductImage> _galleryImages = new();
     public IEnumerable<ProductImage> GalleryImages => _galleryImages.ToList();
 
-    private List<ProductSpecification> _customSpecifications = new List<ProductSpecification>();
+    private List<ProductSpecification> _customSpecifications = new();
     public IEnumerable<ProductSpecification> CustomSpecifications => _customSpecifications.ToList();
 
-    private List<ProductExtraDescription> _extraDescriptions = new List<ProductExtraDescription>();
+    private List<ProductExtraDescription> _extraDescriptions = new();
     public IEnumerable<ProductExtraDescription> ExtraDescriptions => _extraDescriptions.ToList();
 
     public float AverageScore
     {
         get
         {
-            float values = 0;
+            if (!_scores.Any())
+                return 0;
 
-            foreach (var score in _scores)
-                values += score.Value;
-
-            float result;
-            float.TryParse($"{values / _scores.Count:0.#}", out result);
-
+            var values = _scores.Sum(score => score.Value);
+            var result = (float)Math.Round(values / _scores.Count, 2);
             return result;
         }
     }
@@ -81,7 +78,7 @@ public class Product : BaseAggregateRoot
             _galleryImages.Add(new ProductImage(Id, galleryImage));
         });
     }
-    
+
     public void RemoveGalleryImage(long imageId)
     {
         var image = GalleryImages.FirstOrDefault(i => i.Id == imageId);
@@ -106,7 +103,7 @@ public class Product : BaseAggregateRoot
     {
         _scores.Add(new Score(scoreAmount));
     }
-    
+
     private void Guard(string name, string slug, IProductDomainService productService)
     {
         NullOrEmptyDataDomainException.CheckString(name, nameof(name));

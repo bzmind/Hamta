@@ -10,14 +10,14 @@ public class Comment : BaseAggregateRoot
     public string Title { get; private set; }
     public string Description { get; private set; }
 
-    private readonly List<CommentHint> _commentHints = new List<CommentHint>();
+    private readonly List<CommentHint> _commentHints = new();
     public IEnumerable<CommentHint> CommentHints => _commentHints.ToList();
     public string Status { get; private set; }
     public string Recommendation { get; private set; }
     public int Likes { get; private set; }
     public int Dislikes { get; private set; }
 
-    private readonly List<CommentReaction> _commentReactions = new List<CommentReaction>();
+    private readonly List<CommentReaction> _commentReactions = new();
     public IEnumerable<CommentReaction> CommentReactions => _commentReactions.ToList();
 
     public enum CommentRecommendation { Neutral, Positive, Negative }

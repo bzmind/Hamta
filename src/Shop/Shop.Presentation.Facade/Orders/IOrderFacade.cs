@@ -18,6 +18,6 @@ public interface IOrderFacade
     Task<OperationResult> SetStatus(SetOrderStatusCommand command);
     Task<OperationResult> Checkout(CheckoutOrderCommand command);
 
-    Task<OrderDto?> GetOrderById(long id);
-    Task<OrderFilterResult> GetOrderByFilter(OrderFilterParam filterParams);
+    Task<OrderDto?> GetById(long id);
+    Task<OrderFilterResult> GetByFilter(OrderFilterParam filterParams);
 }

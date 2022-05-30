@@ -10,7 +10,7 @@ internal static class QuestionMapper
         if (question == null)
             return null;
 
-        return new QuestionDto
+        var questionDto = new QuestionDto
         {
             Id = question.Id,
             CreationDate = question.CreationDate,
@@ -18,28 +18,22 @@ internal static class QuestionMapper
             CustomerId = question.CustomerId,
             CustomerFullName = customerFullName,
             Description = question.Description,
+            Replies = new List<ReplyDto>(),
             Status = question.Status
         };
-    }
 
-    public static List<QuestionDto> MapToQuestionDto(this List<Question> questions, string customerFullName)
-    {
-        var dtoQuestions = new List<QuestionDto>();
-
-        questions.ForEach(question =>
+        question.Replies.ToList().ForEach(r => questionDto.Replies.Add(new ReplyDto()
         {
-            dtoQuestions.Add(new QuestionDto
-            {
-                Id = question.Id,
-                CreationDate = question.CreationDate,
-                ProductId = question.ProductId,
-                CustomerId = question.CustomerId,
-                CustomerFullName = customerFullName,
-                Description = question.Description,
-                Status = question.Status
-            });
-        });
+            Id = r.Id,
+            CreationDate = r.CreationDate,
+            QuestionId = r.QuestionId,
+            ProductId = r.ProductId,
+            CustomerId = r.CustomerId,
+            CustomerFullName = null,
+            Description = r.Description,
+            Status = r.Status
+        }));
 
-        return dtoQuestions;
+        return questionDto;
     }
 }

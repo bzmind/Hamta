@@ -12,7 +12,7 @@ public class Order : BaseAggregateRoot
     public OrderAddress? Address { get; private set; }
     public ShippingInfo? ShippingInfo { get; private set; }
 
-    private readonly List<OrderItem> _items = new List<OrderItem>();
+    private readonly List<OrderItem> _items = new();
     public IEnumerable<OrderItem> Items => _items.ToList();
 
     public enum OrderStatus { Pending, Preparing, Sending, Received }

@@ -28,17 +28,17 @@ internal class ColorFacade : IColorFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> Remove(RemoveColorCommand command)
+    public async Task<OperationResult> Remove(long colorId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new RemoveColorCommand(colorId));
     }
 
-    public async Task<ColorDto?> GetColorById(long id)
+    public async Task<ColorDto?> GetById(long id)
     {
         return await _mediator.Send(new GetColorByIdQuery(id));
     }
 
-    public async Task<ColorFilterResult> GetColorByFilter(ColorFilterParam filterParams)
+    public async Task<ColorFilterResult> GetByFilter(ColorFilterParam filterParams)
     {
         return await _mediator.Send(new GetColorByFilterQuery(filterParams));
     }

@@ -10,8 +10,8 @@ public interface IColorFacade
 {
     Task<OperationResult<long>> Create(CreateColorCommand command);
     Task<OperationResult> Edit(EditColorCommand command);
-    Task<OperationResult> Remove(RemoveColorCommand command);
+    Task<OperationResult> Remove(long colorId);
 
-    Task<ColorDto?> GetColorById(long id);
-    Task<ColorFilterResult> GetColorByFilter(ColorFilterParam filterParams);
+    Task<ColorDto?> GetById(long id);
+    Task<ColorFilterResult> GetByFilter(ColorFilterParam filterParams);
 }

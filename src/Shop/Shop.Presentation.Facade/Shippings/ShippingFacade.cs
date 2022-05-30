@@ -18,7 +18,7 @@ internal class ShippingFacade : IShippingFacade
         _mediator = mediator;
     }
 
-    public async Task<OperationResult> Create(CreateShippingCommand command)
+    public async Task<OperationResult<long>> Create(CreateShippingCommand command)
     {
         return await _mediator.Send(command);
     }
@@ -28,17 +28,17 @@ internal class ShippingFacade : IShippingFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> Remove(RemoveShippingCommand command)
+    public async Task<OperationResult> Remove(long shippingId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new RemoveShippingCommand(shippingId));
     }
 
-    public async Task<ShippingDto?> GetShippingById(long id)
+    public async Task<ShippingDto?> GetById(long id)
     {
         return await _mediator.Send(new GetShippingByIdQuery(id));
     }
 
-    public async Task<List<ShippingDto>> GetShippingList()
+    public async Task<List<ShippingDto>> GetAll()
     {
         return await _mediator.Send(new GetShippingListQuery());
     }

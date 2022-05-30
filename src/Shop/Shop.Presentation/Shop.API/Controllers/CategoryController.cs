@@ -42,31 +42,31 @@ public class CategoryController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpDelete("{subCategoryId}")]
-    public async Task<ApiResult> Remove(long subCategoryId)
+    [HttpDelete("{categoryId}")]
+    public async Task<ApiResult> Remove(long categoryId)
     {
-        var result = await _categoryFacade.RemoveCategory(subCategoryId);
+        var result = await _categoryFacade.Remove(categoryId);
         return CommandResult(result);
     }
 
     [HttpGet]
-    public async Task<ApiResult<List<CategoryDto>>> GetCategories()
+    public async Task<ApiResult<List<CategoryDto>>> GetAll()
     {
-        var result = await _categoryFacade.GetCategoryList();
+        var result = await _categoryFacade.GetAll();
         return QueryResult(result);
     }
 
     [HttpGet("{id}")]
-    public async Task<ApiResult<CategoryDto?>> GetCategoryById(long id)
+    public async Task<ApiResult<CategoryDto?>> GetById(long id)
     {
-        var result = await _categoryFacade.GetCategoryById(id);
+        var result = await _categoryFacade.GetById(id);
         return QueryResult(result);
     }
 
-    [HttpGet("getSubCategories/{parentId}")]
-    public async Task<ApiResult<List<CategoryDto>>> GetCategoryByParentId(long parentId)
+    [HttpGet("GetSubCategories/{parentId}")]
+    public async Task<ApiResult<List<CategoryDto>>> GetByParentId(long parentId)
     {
-        var result = await _categoryFacade.GetCategoryByParentId(parentId);
+        var result = await _categoryFacade.GetByParentId(parentId);
         return QueryResult(result);
     }
 }

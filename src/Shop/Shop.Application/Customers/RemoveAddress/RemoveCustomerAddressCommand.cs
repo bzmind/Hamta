@@ -23,6 +23,7 @@ public class RemoveCustomerAddressCommandHandler : IBaseCommandHandler<RemoveCus
             return OperationResult.NotFound();
 
         customer.RemoveAddress(request.AddressId);
+
         await _customerRepository.SaveAsync();
         return OperationResult.Success();
     }

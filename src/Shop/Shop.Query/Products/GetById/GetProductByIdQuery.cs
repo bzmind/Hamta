@@ -21,7 +21,7 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
     public async Task<ProductDto?> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
         var productDtos =
-            await _shopContext.Products
+            await _shopContext.Products.Where(p => p.Id == request.ProductId)
                 .Join(
                     _shopContext.Categories,
                     p => p.CategoryId,
@@ -62,7 +62,7 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
                         ExtraDescriptions = tables.Product.ExtraDescriptions.ToList().MapToExtraDescriptionDto(),
                         ProductInventories = new List<ProductInventoryDto>
                         {
-                            new ProductInventoryDto
+                            new()
                             {
                                 Id = tables.Inventory.Id,
                                 CreationDate = tables.Inventory.CreationDate,
@@ -89,7 +89,7 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
             firstItem.ProductInventories = productGroup.Select(p => p.ProductInventories).First();
             return firstItem;
         }).Single();
-
+            
         return groupedProduct;
     }
 }

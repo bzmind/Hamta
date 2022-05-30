@@ -3,6 +3,7 @@ using MediatR;
 using Shop.Application.Customers.AddFavoriteItem;
 using Shop.Application.Customers.Create;
 using Shop.Application.Customers.Edit;
+using Shop.Application.Customers.Remove;
 using Shop.Application.Customers.RemoveFavoriteItem;
 using Shop.Application.Customers.SetAvatar;
 using Shop.Application.Customers.SetSubscriptionToNews;
@@ -52,17 +53,22 @@ internal class CustomerFacade : ICustomerFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<CustomerDto?> GetCustomerById(long id)
+    public async Task<OperationResult> Remove(long customerId)
+    {
+        return await _mediator.Send(new RemoveCustomerCommand(customerId));
+    }
+
+    public async Task<CustomerDto?> GetById(long id)
     {
         return await _mediator.Send(new GetCustomerByIdQuery(id));
     }
 
-    public async Task<CustomerDto?> GetCustomerByPhoneNumber(string phoneNumber)
+    public async Task<CustomerDto?> GetByPhoneNumber(string phoneNumber)
     {
         return await _mediator.Send(new GetCustomerByPhoneNumberQuery(phoneNumber));
     }
 
-    public async Task<CustomerFilterResult> GetCustomerByFilter(CustomerFilterParam filterParams)
+    public async Task<CustomerFilterResult> GetByFilter(CustomerFilterParam filterParams)
     {
         return await _mediator.Send(new GetCustomerByFilterQuery(filterParams));
     }

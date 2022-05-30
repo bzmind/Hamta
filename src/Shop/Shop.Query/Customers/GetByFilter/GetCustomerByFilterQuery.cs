@@ -40,14 +40,50 @@ public class GetCustomerByFilterQueryHandler : IBaseQueryHandler<GetCustomerByFi
 
         var skip = (@params.PageId - 1) * @params.Take;
 
+        var finalQuery = await query
+            .Skip(skip)
+            .Take(@params.Take)
+            .Select(c => c.MapToCustomerDto())
+            .ToListAsync(cancellationToken);
+
+        var favoriteItemProductIds = new List<long>();
+        finalQuery.ForEach(c =>
+        {
+            c.FavoriteItems.ForEach(fi =>
+            {
+                favoriteItemProductIds.Add(fi.ProductId);
+            });
+        });
+
+        var tables = await _shopContext.Products.Where(p => favoriteItemProductIds.Contains(p.Id))
+            .Join(
+                _shopContext.Inventories,
+                p => p.Id,
+                i => i.ProductId,
+                (product, inventory) => new
+                {
+                    product,
+                    inventory
+                })
+            .ToListAsync(cancellationToken);
+
+        finalQuery.ForEach(c =>
+        {
+            c.FavoriteItems.ForEach(fi =>
+            {
+                var product = tables.First(t => t.product.Id == fi.ProductId).product;
+                var inventory = tables.First(t => t.inventory.Id == product.Id).inventory;
+                fi.ProductName = product.Name;
+                fi.ProductMainImage = product.MainImage.Name;
+                fi.ProductPrice = inventory.Price.Value;
+                fi.AverageScore = product.AverageScore;
+                fi.IsAvailable = inventory.IsAvailable;
+            });
+        });
+
         return new CustomerFilterResult
         {
-            Data = await query
-                .Skip(skip)
-                .Take(@params.Take)
-                .Select(c => c.MapToCustomerDto())
-                .ToListAsync(cancellationToken),
-
+            Data = finalQuery,
             FilterParam = @params
         };
     }
