@@ -1,9 +1,11 @@
 ﻿using System.Net;
+using AutoMapper;
 using Common.Api;
+using Common.Api.Utility;
 using Microsoft.AspNetCore.Mvc;
+using Shop.API.ViewModels;
 using Shop.Application.Questions.AddReply;
 using Shop.Application.Questions.Create;
-using Shop.Application.Questions.Remove;
 using Shop.Application.Questions.RemoveReply;
 using Shop.Application.Questions.SetStatus;
 using Shop.Presentation.Facade.Questions;
@@ -14,15 +16,19 @@ namespace Shop.API.Controllers;
 public class QuestionController : BaseApiController
 {
     private readonly IQuestionFacade _questionFacade;
+    private readonly IMapper _mapper;
 
-    public QuestionController(IQuestionFacade questionFacade)
+    public QuestionController(IQuestionFacade questionFacade, IMapper mapper)
     {
         _questionFacade = questionFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateQuestionCommand command)
+    public async Task<ApiResult<long>> Create(CreateQuestionCommandViewModel viewModel)
     {
+        var command = _mapper.Map<CreateQuestionCommand>(viewModel);
+        command.UserId = User.GetUserId();
         var result = await _questionFacade.Create(command);
         var resultUrl = Url.Action("Create", "Question", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
@@ -36,8 +42,10 @@ public class QuestionController : BaseApiController
     }
 
     [HttpPut("AddReply")]
-    public async Task<ApiResult> AddReply(AddReplyCommand command)
+    public async Task<ApiResult> AddReply(AddReplyCommandViewModel viewModel)
     {
+        var command = _mapper.Map<AddReplyCommand>(viewModel);
+        command.UserId = User.GetUserId();
         var result = await _questionFacade.AddReply(command);
         return CommandResult(result);
     }

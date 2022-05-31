@@ -5,7 +5,19 @@ using Shop.Domain.OrderAggregate.Repository;
 
 namespace Shop.Application.Orders.IncreaseOrderItemCount;
 
-public record IncreaseOrderItemCountCommand(long UserId, long InventoryId, long OrderItemId) : IBaseCommand;
+public class IncreaseOrderItemCountCommand : IBaseCommand
+{
+    public long UserId { get; set; }
+    public long InventoryId { get; set; }
+    public long OrderItemId { get; set; }
+
+    public IncreaseOrderItemCountCommand(long userId, long inventoryId, long orderItemId)
+    {
+        UserId = userId;
+        InventoryId = inventoryId;
+        OrderItemId = orderItemId;
+    }
+}
 
 public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<IncreaseOrderItemCountCommand>
 {

@@ -7,8 +7,28 @@ using Shop.Domain.CommentAggregate.Repository;
 
 namespace Shop.Application.Comments.Create;
 
-public record CreateCommentCommand(long ProductId, long UserId, string Title, string Description,
-    List<string> PositivePoints, List<string> NegativePoints, string Recommendation) : IBaseCommand<long>;
+public class CreateCommentCommand : IBaseCommand<long>
+{
+    public long ProductId { get; set; }
+    public long UserId { get; set; }
+    public string Title { get; set; }
+    public string Description { get; set; }
+    public List<string> PositivePoints { get; set; }
+    public List<string> NegativePoints { get; set; }
+    public string Recommendation { get; set; }
+
+    public CreateCommentCommand(long productId, long userId, string title, string description,
+        List<string> positivePoints, List<string> negativePoints, string recommendation)
+    {
+        ProductId = productId;
+        UserId = userId;
+        Title = title;
+        Description = description;
+        PositivePoints = positivePoints;
+        NegativePoints = negativePoints;
+        Recommendation = recommendation;
+    }
+}
 
 public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentCommand, long>
 {

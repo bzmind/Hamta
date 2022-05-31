@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Shop.Application\Shop.Application.csproj" />
     <ProjectReference Include="..\Shop.Query\Shop.Query.csproj" />
   </ItemGroup>
 

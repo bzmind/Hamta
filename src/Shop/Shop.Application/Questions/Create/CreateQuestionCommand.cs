@@ -7,7 +7,19 @@ using Shop.Domain.QuestionAggregate.Repository;
 
 namespace Shop.Application.Questions.Create;
 
-public record CreateQuestionCommand(long ProductId, long UserId, string Description) : IBaseCommand<long>;
+public class CreateQuestionCommand : IBaseCommand<long>
+{
+    public long ProductId { get; set; }
+    public long UserId { get; set; }
+    public string Description { get; set; }
+
+    public CreateQuestionCommand(long productId, long userId, string description)
+    {
+        ProductId = productId;
+        UserId = userId;
+        Description = description;
+    }
+}
 
 public class CreateQuestionCommandHandler : IBaseCommandHandler<CreateQuestionCommand, long>
 {

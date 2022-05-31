@@ -45,7 +45,7 @@ public class Inventory : BaseAggregateRoot
     public void DecreaseQuantity(int amount)
     {
         if (Quantity - amount < 0)
-            throw new OperationNotAllowedDomainException("تعداد موجودی انبار نمی‌تواند کمتر از صفر باشد");
+            throw new OperationNotAllowedDomainException("Inventory quantity can't be less than zero");
 
         Quantity -= amount;
     }

@@ -17,6 +17,7 @@
 
   <ItemGroup>
     <Folder Include="Middleware\" />
+    <Folder Include="Utility\" />
   </ItemGroup>
 
 </Project>

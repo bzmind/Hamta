@@ -7,19 +7,39 @@ using Shop.Domain.UserAggregate.Repository;
 
 namespace Shop.Application.Users.AddAddress;
 
-public record AddUserAddressCommand(long UserId, string FullName, string PhoneNumber,
-    string Province, string City, string FullAddress, string PostalCode) : IBaseCommand;
+public class CreateUserAddressCommand : IBaseCommand
+{
+    public long UserId { get; set; }
+    public string FullName { get; set; }
+    public string PhoneNumber { get; set; }
+    public string Province { get; set; }
+    public string City { get; set; }
+    public string FullAddress { get; set; }
+    public string PostalCode { get; set; }
 
-public class AddUserAddressCommandHandler : IBaseCommandHandler<AddUserAddressCommand>
+    public CreateUserAddressCommand(long userId, string fullName, string phoneNumber,
+        string province, string city, string fullAddress, string postalCode)
+    {
+        UserId = userId;
+        FullName = fullName;
+        PhoneNumber = phoneNumber;
+        Province = province;
+        City = city;
+        FullAddress = fullAddress;
+        PostalCode = postalCode;
+    }
+}
+
+public class CreateUserAddressCommandHandler : IBaseCommandHandler<CreateUserAddressCommand>
 {
     private readonly IUserRepository _userRepository;
 
-    public AddUserAddressCommandHandler(IUserRepository userRepository)
+    public CreateUserAddressCommandHandler(IUserRepository userRepository)
     {
         _userRepository = userRepository;
     }
 
-    public async Task<OperationResult> Handle(AddUserAddressCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(CreateUserAddressCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetAsTrackingAsync(request.UserId);
 
@@ -34,9 +54,9 @@ public class AddUserAddressCommandHandler : IBaseCommandHandler<AddUserAddressCo
     }
 }
 
-public class AddUserAddressCommandValidator : AbstractValidator<AddUserAddressCommand>
+public class CreateUserAddressCommandValidator : AbstractValidator<CreateUserAddressCommand>
 {
-    public AddUserAddressCommandValidator()
+    public CreateUserAddressCommandValidator()
     {
         RuleFor(a => a.FullName)
             .NotNull()

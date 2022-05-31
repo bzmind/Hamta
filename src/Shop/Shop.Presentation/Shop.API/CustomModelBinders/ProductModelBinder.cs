@@ -8,7 +8,7 @@ using Shop.Application.Products.Edit;
 
 namespace Shop.API.CustomModelBinders;
 
-internal class ProductModel
+internal class TempProductModel
 {
     public long ProductId { get; set; }
     public long CategoryId { get; set; }
@@ -26,7 +26,7 @@ public class ProductModelBinder : IModelBinder
 {
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
-        var tempModel = new ProductModel();
+        var tempModel = new TempProductModel();
 
         Type type = tempModel.GetType();
         List<PropertyInfo> tempModelProperties = new List<PropertyInfo>(type.GetProperties());

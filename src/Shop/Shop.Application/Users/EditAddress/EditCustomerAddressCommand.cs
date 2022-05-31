@@ -7,8 +7,30 @@ using Shop.Domain.UserAggregate.Repository;
 
 namespace Shop.Application.Users.EditAddress;
 
-public record EditUserAddressCommand(long UserId, long AddressId, string FullName, string PhoneNumber,
-    string Province, string City, string FullAddress, string PostalCode) : IBaseCommand;
+public class EditUserAddressCommand : IBaseCommand
+{
+    public long UserId { get; set; }
+    public long AddressId { get; set; }
+    public string FullName { get; set; }
+    public string PhoneNumber { get; set; }
+    public string Province { get; set; }
+    public string City { get; set; }
+    public string FullAddress { get; set; }
+    public string PostalCode { get; set; }
+
+    public EditUserAddressCommand(long userId, long addressId, string fullName, string phoneNumber,
+        string province, string city, string fullAddress, string postalCode)
+    {
+        UserId = userId;
+        AddressId = addressId;
+        FullName = fullName;
+        PhoneNumber = phoneNumber;
+        Province = province;
+        City = city;
+        FullAddress = fullAddress;
+        PostalCode = postalCode;
+    }
+}
 
 public class EditUserAddressCommandHandler : IBaseCommandHandler<EditUserAddressCommand>
 {

@@ -8,7 +8,19 @@ using Shop.Domain.OrderAggregate.Repository;
 
 namespace Shop.Application.Orders.AddItem;
 
-public record AddOrderItemCommand(long InventoryId, long UserId, int Quantity) : IBaseCommand<long>;
+public class AddOrderItemCommand : IBaseCommand<long>
+{
+    public long InventoryId { get; set; }
+    public long UserId { get; set; }
+    public int Quantity { get; set; }
+
+    public AddOrderItemCommand(long inventoryId, long userId, int quantity)
+    {
+        InventoryId = inventoryId;
+        UserId = userId;
+        Quantity = quantity;
+    }
+}
 
 public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemCommand, long>
 {
