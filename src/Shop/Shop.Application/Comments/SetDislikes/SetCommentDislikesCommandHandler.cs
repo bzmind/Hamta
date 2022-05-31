@@ -4,7 +4,7 @@ using Shop.Domain.CommentAggregate.Repository;
 
 namespace Shop.Application.Comments.SetDislikes;
 
-public record SetCommentDislikesCommand(long CommentId, long CustomerId) : IBaseCommand;
+public record SetCommentDislikesCommand(long CommentId, long UserId) : IBaseCommand;
 
 public class SetCommentDislikesCommandHandler : IBaseCommandHandler<SetCommentDislikesCommand>
 {
@@ -22,7 +22,7 @@ public class SetCommentDislikesCommandHandler : IBaseCommandHandler<SetCommentDi
         if (comment == null)
             return OperationResult.NotFound();
 
-        comment.SetDislikes(request.CustomerId);
+        comment.SetDislikes(request.UserId);
 
         await _commentRepository.SaveAsync();
         return OperationResult.Success();

@@ -22,31 +22,31 @@ public class GetQuestionByIdQueryHandler : IBaseQueryHandler<GetQuestionByIdQuer
         var tables = await _shopContext.Questions
             .Where(q => q.Id == request.QuestionId)
             .Join(
-                _shopContext.Customers,
-                q => q.CustomerId,
+                _shopContext.Users,
+                q => q.UserId,
                 c => c.Id,
-                (question, customer) => new
+                (question, user) => new
                 {
                     question,
-                    customer
+                    user
                 })
             .FirstOrDefaultAsync(cancellationToken);
 
-        var repliesCustomerIds = new List<long>();
+        var repliesUserIds = new List<long>();
         tables?.question.Replies.ToList().ForEach(rDto =>
         {
-            repliesCustomerIds.Add(rDto.CustomerId);
+            repliesUserIds.Add(rDto.UserId);
         });
 
-        var customers = await _shopContext.Customers
-            .Where(c => repliesCustomerIds.Contains(c.Id)).ToListAsync(cancellationToken);
+        var users = await _shopContext.Users
+            .Where(c => repliesUserIds.Contains(c.Id)).ToListAsync(cancellationToken);
 
-        var questionDto = tables.question.MapToQuestionDto(tables.customer.FullName);
+        var questionDto = tables.question.MapToQuestionDto(tables.user.FullName);
 
         questionDto.Replies.ForEach(rDto =>
         {
-            var customer = customers.First(c => c.Id == rDto.CustomerId);
-            rDto.CustomerFullName = customer.FullName;
+            var user = users.First(c => c.Id == rDto.UserId);
+            rDto.UserFullName = user.FullName;
         });
 
         return questionDto;

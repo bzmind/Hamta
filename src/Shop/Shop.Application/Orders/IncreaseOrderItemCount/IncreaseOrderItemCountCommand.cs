@@ -5,7 +5,7 @@ using Shop.Domain.OrderAggregate.Repository;
 
 namespace Shop.Application.Orders.IncreaseOrderItemCount;
 
-public record IncreaseOrderItemCountCommand(long CustomerId, long InventoryId, long OrderItemId) : IBaseCommand;
+public record IncreaseOrderItemCountCommand(long UserId, long InventoryId, long OrderItemId) : IBaseCommand;
 
 public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<IncreaseOrderItemCountCommand>
 {
@@ -20,7 +20,7 @@ public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<Increase
 
     public async Task<OperationResult> Handle(IncreaseOrderItemCountCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.CustomerId);
+        var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
 
         if (order == null)
             return OperationResult.NotFound("سفارش یافت نشد");

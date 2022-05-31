@@ -5,7 +5,7 @@ namespace Shop.Query.Comments._Mappers;
 
 internal static class CommentMapper
 { 
-    public static CommentDto MapToCommentDto(this Comment? comment, string customerFullName)
+    public static CommentDto MapToCommentDto(this Comment? comment, string userFullName)
     {
         if (comment == null)
             return null;
@@ -14,9 +14,9 @@ internal static class CommentMapper
         {
             Id = comment.Id,
             CreationDate = comment.CreationDate,
-            CustomerId = comment.CustomerId,
+            UserId = comment.UserId,
             ProductId = comment.ProductId,
-            CustomerFullName = customerFullName,
+            UserFullName = userFullName,
             Title = comment.Title,
             Description = comment.Description,
             CommentHints = comment.CommentHints.ToList().MapToHintDto(),

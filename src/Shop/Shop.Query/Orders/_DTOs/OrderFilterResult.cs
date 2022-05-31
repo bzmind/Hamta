@@ -10,7 +10,7 @@ public class OrderFilterResult : BaseFilterResult<OrderDto, OrderFilterParam>
 
 public class OrderFilterParam : BaseFilterParam
 {
-    public long? CustomerId { get; set; }
+    public long? UserId { get; set; }
     public DateTime? StartDate { get; set; }
     public DateTime? EndDate { get; set; }
     public Order.OrderStatus? Status { get; set; }

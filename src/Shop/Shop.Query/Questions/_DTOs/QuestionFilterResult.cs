@@ -11,6 +11,6 @@ public class QuestionFilterResult : BaseFilterResult<QuestionDto, QuestionFilter
 public class QuestionFilterParam : BaseFilterParam
 {
     public long? ProductId { get; set; }
-    public long? CustomerId { get; set; }
+    public long? UserId { get; set; }
     public Question.QuestionStatus? Status { get; set; }
 }

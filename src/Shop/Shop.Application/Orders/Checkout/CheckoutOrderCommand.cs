@@ -2,7 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using Common.Domain.ValueObjects;
-using Shop.Domain.CustomerAggregate.Repository;
+using Shop.Domain.UserAggregate.Repository;
 using Shop.Domain.InventoryAggregate.Repository;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.OrderAggregate.Repository;
@@ -10,41 +10,41 @@ using Shop.Domain.ShippingAggregate.Repository;
 
 namespace Shop.Application.Orders.Checkout;
 
-public record CheckoutOrderCommand(long CustomerId, long CustomerAddressId, long ShippingMethodId) : IBaseCommand;
+public record CheckoutOrderCommand(long UserId, long UserAddressId, long ShippingMethodId) : IBaseCommand;
 
 public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderCommand>
 {
     private readonly IOrderRepository _orderRepository;
     private readonly IInventoryRepository _inventoryRepository;
-    private readonly ICustomerRepository _customerRepository;
+    private readonly IUserRepository _userRepository;
     private readonly IShippingRepository _shippingRepository; 
 
-    public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IInventoryRepository inventoryRepository, ICustomerRepository customerRepository, IShippingRepository shippingRepository)
+    public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IInventoryRepository inventoryRepository, IUserRepository userRepository, IShippingRepository shippingRepository)
     {
         _orderRepository = orderRepository;
         _inventoryRepository = inventoryRepository;
-        _customerRepository = customerRepository;
+        _userRepository = userRepository;
         _shippingRepository = shippingRepository;
     }
 
     public async Task<OperationResult> Handle(CheckoutOrderCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.CustomerId);
+        var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
 
         if (order == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("سفارش"));
 
         // TODO: Test it
 
-        var customer = await _customerRepository.GetAsync(request.CustomerId);
-        var customerAddress = customer.Addresses.FirstOrDefault(a => a.Id == request.CustomerAddressId);
+        var user = await _userRepository.GetAsync(request.UserId);
+        var userAddress = user.Addresses.FirstOrDefault(a => a.Id == request.UserAddressId);
 
-        if (customerAddress == null)
+        if (userAddress == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("آدرس کاربر"));
 
-        var address = new OrderAddress(order.Id, customerAddress.FullName,
-            new PhoneNumber(customerAddress.PhoneNumber.Value), customerAddress.Province, customerAddress.City,
-            customerAddress.FullAddress, customerAddress.PostalCode);
+        var address = new OrderAddress(order.Id, userAddress.FullName,
+            new PhoneNumber(userAddress.PhoneNumber.Value), userAddress.Province, userAddress.City,
+            userAddress.FullAddress, userAddress.PostalCode);
 
         var shipping = await _shippingRepository.GetAsync(request.ShippingMethodId);
 

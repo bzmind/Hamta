@@ -6,8 +6,8 @@ public class ReplyDto : BaseDto
 {
     public long QuestionId { get; set; }
     public long ProductId { get; set; }
-    public long CustomerId { get; set; }
-    public string? CustomerFullName { get; set; }
+    public long UserId { get; set; }
+    public string? UserFullName { get; set; }
     public string Description { get; set; }
     public string Status { get; set; }
 }

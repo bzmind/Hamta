@@ -1,47 +1,47 @@
 ﻿using Common.Api;
 using Microsoft.AspNetCore.Mvc;
-using Shop.Application.Customers.ActivateAddress;
-using Shop.Application.Customers.AddAddress;
-using Shop.Application.Customers.EditAddress;
-using Shop.Application.Customers.RemoveAddress;
-using Shop.Presentation.Facade.Customers.Addresses;
+using Shop.Application.Users.ActivateAddress;
+using Shop.Application.Users.AddAddress;
+using Shop.Application.Users.EditAddress;
+using Shop.Application.Users.RemoveAddress;
+using Shop.Presentation.Facade.Users.Addresses;
 
 namespace Shop.API.Controllers;
 
-public class CustomerAddressController : BaseApiController
+public class UserAddressController : BaseApiController
 {
-    private readonly ICustomerAddressFacade _customerAddressFacade;
+    private readonly IUserAddressFacade _userAddressFacade;
 
-    public CustomerAddressController(ICustomerAddressFacade customerAddressFacade)
+    public UserAddressController(IUserAddressFacade userAddressFacade)
     {
-        _customerAddressFacade = customerAddressFacade;
+        _userAddressFacade = userAddressFacade;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult> Create(AddCustomerAddressCommand command)
+    public async Task<ApiResult> Create(AddUserAddressCommand command)
     {
-        var result = await _customerAddressFacade.Create(command);
+        var result = await _userAddressFacade.Create(command);
         return CommandResult(result);
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditCustomerAddressCommand command)
+    public async Task<ApiResult> Edit(EditUserAddressCommand command)
     {
-        var result = await _customerAddressFacade.Edit(command);
+        var result = await _userAddressFacade.Edit(command);
         return CommandResult(result);
     }
 
     [HttpPut("Activate")]
-    public async Task<ApiResult> Activate(ActivateCustomerAddressCommand command)
+    public async Task<ApiResult> Activate(ActivateUserAddressCommand command)
     {
-        var result = await _customerAddressFacade.Activate(command);
+        var result = await _userAddressFacade.Activate(command);
         return CommandResult(result);
     }
 
     [HttpDelete("Remove")]
-    public async Task<ApiResult> Remove(RemoveCustomerAddressCommand command)
+    public async Task<ApiResult> Remove(RemoveUserAddressCommand command)
     {
-        var result = await _customerAddressFacade.Remove(command);
+        var result = await _userAddressFacade.Remove(command);
         return CommandResult(result);
     }
 }

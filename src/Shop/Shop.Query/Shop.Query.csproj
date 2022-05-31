@@ -17,10 +17,6 @@
     <Folder Include="Colors\_DTOs\" />
     <Folder Include="Comments\GetById\" />
     <Folder Include="Comments\_Mappers\" />
-    <Folder Include="Customers\GetById\" />
-    <Folder Include="Customers\GetByPhoneNumber\" />
-    <Folder Include="Customers\GetByFilter\" />
-    <Folder Include="Customers\_DTOs\" />
     <Folder Include="Inventories\GetByFilter\" />
     <Folder Include="Inventories\_DTOs\" />
     <Folder Include="Inventories\_Mappers\" />

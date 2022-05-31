@@ -5,7 +5,7 @@ namespace Shop.Domain.CommentAggregate;
 
 public class Comment : BaseAggregateRoot
 {
-    public long CustomerId { get; private set; }
+    public long UserId { get; private set; }
     public long ProductId { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
@@ -28,12 +28,12 @@ public class Comment : BaseAggregateRoot
 
     }
 
-    public Comment(long productId, long customerId, string title, string description,
+    public Comment(long productId, long userId, string title, string description,
         CommentRecommendation recommendation)
     {
         Guard(title, description);
         ProductId = productId;
-        CustomerId = customerId;
+        UserId = userId;
         Title = title;
         Description = description;
         Status = CommentStatus.Pending.ToString();
@@ -77,21 +77,21 @@ public class Comment : BaseAggregateRoot
         Status = status.ToString();
     }
 
-    public void SetLikes(long customerId)
+    public void SetLikes(long userId)
     {
-        var customer = CommentReactions.FirstOrDefault(c => c.CustomerId == customerId);
+        var user = CommentReactions.FirstOrDefault(c => c.UserId == userId);
 
-        if (customer != null)
+        if (user != null)
         {
-            _commentReactions.Remove(customer);
+            _commentReactions.Remove(user);
 
-            if (customer.Reaction == CommentReaction.ReactionType.Like.ToString())
+            if (user.Reaction == CommentReaction.ReactionType.Like.ToString())
             {
                 Likes--;
             }
             else
             {
-                _commentReactions.Add(new CommentReaction(Id, customerId,
+                _commentReactions.Add(new CommentReaction(Id, userId,
                     CommentReaction.ReactionType.Like));
                 Dislikes--;
                 Likes++;
@@ -100,26 +100,26 @@ public class Comment : BaseAggregateRoot
             return;
         }
 
-        _commentReactions.Add(new CommentReaction(Id, customerId,
+        _commentReactions.Add(new CommentReaction(Id, userId,
             CommentReaction.ReactionType.Like));
         Likes++;
     }
 
-    public void SetDislikes(long customerId)
+    public void SetDislikes(long userId)
     {
-        var customer = CommentReactions.FirstOrDefault(c => c.CustomerId == customerId);
+        var user = CommentReactions.FirstOrDefault(c => c.UserId == userId);
 
-        if (customer != null)
+        if (user != null)
         {
-            _commentReactions.Remove(customer);
+            _commentReactions.Remove(user);
 
-            if (customer.Reaction == CommentReaction.ReactionType.Dislike.ToString())
+            if (user.Reaction == CommentReaction.ReactionType.Dislike.ToString())
             {
                 Dislikes--;
             }
             else
             {
-                _commentReactions.Add(new CommentReaction(Id, customerId,
+                _commentReactions.Add(new CommentReaction(Id, userId,
                     CommentReaction.ReactionType.Dislike));
                 Likes--;
                 Dislikes++;
@@ -127,7 +127,7 @@ public class Comment : BaseAggregateRoot
             return;
         }
 
-        _commentReactions.Add(new CommentReaction(Id, customerId,
+        _commentReactions.Add(new CommentReaction(Id, userId,
             CommentReaction.ReactionType.Dislike));
         Dislikes++;
     }

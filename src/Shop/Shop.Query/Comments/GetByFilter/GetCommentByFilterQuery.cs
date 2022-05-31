@@ -30,14 +30,14 @@ public class GetCommentListQueryHandler : IBaseQueryHandler<GetCommentByFilterQu
         var query = _shopContext.Comments
             .OrderByDescending(c => c.CreationDate)
             .Join(
-                _shopContext.Customers,
-                comment => comment.CustomerId,
-                customer => customer.Id,
-                (comment, customer) => comment.MapToCommentDto(customer.FullName))
+                _shopContext.Users,
+                comment => comment.UserId,
+                user => user.Id,
+                (comment, user) => comment.MapToCommentDto(user.FullName))
             .AsQueryable();
 
-        if (@params.CustomerId != null)
-            query = query.Where(c => c.CustomerId == @params.CustomerId);
+        if (@params.UserId != null)
+            query = query.Where(c => c.UserId == @params.UserId);
 
         if (@params.ProductId != null)
             query = query.Where(c => c.ProductId == @params.ProductId);

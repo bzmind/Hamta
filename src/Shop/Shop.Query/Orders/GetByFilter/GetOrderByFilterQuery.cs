@@ -33,7 +33,7 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
             {
                 Id = o.Id,
                 CreationDate = o.CreationDate,
-                CustomerId = o.CustomerId,
+                UserId = o.UserId,
                 Status = o.Status,
                 Address = o.Address.MapToOrderAddressDto(),
                 ShippingMethod = o.ShippingInfo.ShippingMethod,
@@ -41,8 +41,8 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
                 Items = o.Items.ToList().MapToOrderItemDto()
             }).AsQueryable();
 
-        if (@params.CustomerId != null)
-            query = query.Where(o => o.CustomerId == @params.CustomerId);
+        if (@params.UserId != null)
+            query = query.Where(o => o.UserId == @params.UserId);
 
         if (@params.StartDate != null)
             query = query.Where(o => o.CreationDate >= @params.StartDate);

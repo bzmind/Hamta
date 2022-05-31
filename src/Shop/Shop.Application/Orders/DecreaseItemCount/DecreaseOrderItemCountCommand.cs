@@ -18,7 +18,7 @@ public class DecreaseOrderItemCountCommandHandler : IBaseCommandHandler<Decrease
 
     public async Task<OperationResult> Handle(DecreaseOrderItemCountCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.UserId);
+        var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
 
         if (order == null)
             return OperationResult.NotFound();

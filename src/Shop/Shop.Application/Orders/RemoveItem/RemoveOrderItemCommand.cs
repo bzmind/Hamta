@@ -17,7 +17,7 @@ public class RemoveOrderItemCommandHandler : IBaseCommandHandler<RemoveOrderItem
 
     public async Task<OperationResult> Handle(RemoveOrderItemCommand request, CancellationToken cancellationToken)
     {
-        var order = await _orderRepository.GetOrderByCustomerIdAsTracking(request.UserId);
+        var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
 
         if (order == null)
             return OperationResult.NotFound();

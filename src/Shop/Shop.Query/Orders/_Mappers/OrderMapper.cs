@@ -14,7 +14,7 @@ internal static class OrderMapper
         {
             Id = order.Id,
             CreationDate = order.CreationDate,
-            CustomerId = order.CustomerId,
+            UserId = order.UserId,
             Status = order.Status,
             Address = order.Address.MapToOrderAddressDto(),
             ShippingMethod = order.ShippingInfo.ShippingMethod,
@@ -33,7 +33,7 @@ internal static class OrderMapper
             {
                 Id = order.Id,
                 CreationDate = order.CreationDate,
-                CustomerId = order.CustomerId,
+                UserId = order.UserId,
                 Status = order.Status,
                 Address = order.Address.MapToOrderAddressDto(),
                 ShippingMethod = order.ShippingInfo.ShippingMethod,

@@ -7,18 +7,18 @@ public class Reply : BaseEntity
 {
     public long QuestionId { get; private set; }
     public long ProductId { get; private set; }
-    public long CustomerId { get; private set; }
+    public long UserId { get; private set; }
     public string Description { get; private set; }
     public string Status { get; private set; }
 
     public enum ReplyStatus { Pending, Accepted, Rejected }
 
-    public Reply(long questionId, long productId, long customerId, string description)
+    public Reply(long questionId, long productId, long userId, string description)
     {
         Guard(description);
         QuestionId = questionId;
         ProductId = productId;
-        CustomerId = customerId;
+        UserId = userId;
         Description = description;
         Status = ReplyStatus.Pending.ToString();
     }

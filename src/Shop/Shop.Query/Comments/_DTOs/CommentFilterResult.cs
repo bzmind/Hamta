@@ -9,7 +9,7 @@ public class CommentFilterResult : BaseFilterResult<CommentDto, CommentFilterPar
 
 public class CommentFilterParams : BaseFilterParam
 {
-    public long? CustomerId { get; set; }
+    public long? UserId { get; set; }
     public long? ProductId { get; set; }
     public string? Status { get; set; }
 }

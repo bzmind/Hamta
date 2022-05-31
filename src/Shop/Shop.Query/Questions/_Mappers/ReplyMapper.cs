@@ -5,7 +5,7 @@ namespace Shop.Query.Questions._Mappers;
 
 internal static class ReplyMapper
 {
-    public static ReplyDto MapToReplyDto(this Reply? reply, string customerFullName)
+    public static ReplyDto MapToReplyDto(this Reply? reply, string userFullName)
     {
         if (reply == null)
             return null;
@@ -16,8 +16,8 @@ internal static class ReplyMapper
             CreationDate = reply.CreationDate,
             QuestionId = reply.QuestionId,
             ProductId = reply.ProductId,
-            CustomerId = reply.CustomerId,
-            CustomerFullName = customerFullName,
+            UserId = reply.UserId,
+            UserFullName = userFullName,
             Description = reply.Description,
             Status = reply.Status
         };

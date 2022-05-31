@@ -7,7 +7,7 @@ namespace Shop.Domain.OrderAggregate;
 
 public class Order : BaseAggregateRoot
 {
-    public long CustomerId { get; private set; }
+    public long UserId { get; private set; }
     public string Status { get; private set; }
     public OrderAddress? Address { get; private set; }
     public ShippingInfo? ShippingInfo { get; private set; }
@@ -30,9 +30,9 @@ public class Order : BaseAggregateRoot
         }
     }
     
-    public Order(long customerId)
+    public Order(long userId)
     {
-        CustomerId = customerId;
+        UserId = userId;
         Status = OrderStatus.Pending.ToString();
     }
 

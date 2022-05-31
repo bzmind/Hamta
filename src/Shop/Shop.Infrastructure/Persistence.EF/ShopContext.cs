@@ -2,7 +2,7 @@
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.ColorAggregate;
 using Shop.Domain.CommentAggregate;
-using Shop.Domain.CustomerAggregate;
+using Shop.Domain.UserAggregate;
 using Shop.Domain.InventoryAggregate;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.ProductAggregate;
@@ -16,7 +16,7 @@ public class ShopContext : DbContext
     public DbSet<Category> Categories { get; set; }
     public DbSet<Color> Colors { get; set; }
     public DbSet<Comment> Comments { get; set; }
-    public DbSet<Customer> Customers { get; set; }
+    public DbSet<User> Users { get; set; }
     public DbSet<Inventory> Inventories { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Product> Products { get; set; }

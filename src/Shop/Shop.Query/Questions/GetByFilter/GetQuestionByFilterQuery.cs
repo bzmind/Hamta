@@ -30,17 +30,17 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
         var query = _shopContext.Questions
             .OrderByDescending(q => q.CreationDate)
             .Join(
-                _shopContext.Customers,
-                q => q.CustomerId,
+                _shopContext.Users,
+                q => q.UserId,
                 c => c.Id,
-                (question, customer) => question.MapToQuestionDto(customer.FullName))
+                (question, user) => question.MapToQuestionDto(user.FullName))
             .AsQueryable();
 
         if (@params.ProductId != null)
             query = query.Where(q => q.ProductId == @params.ProductId);
 
-        if (@params.CustomerId != null)
-            query = query.Where(q => q.CustomerId == @params.CustomerId);
+        if (@params.UserId != null)
+            query = query.Where(q => q.UserId == @params.UserId);
 
         if (@params.Status != null)
             query = query.Where(q => q.Status == @params.Status.ToString());
@@ -52,24 +52,24 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
             .Take(@params.Take)
             .ToListAsync(cancellationToken);
 
-        var repliesCustomerIds = new List<long>();
+        var repliesUserIds = new List<long>();
         finalQuery.ForEach(qDto =>
         {
             qDto.Replies.ForEach(rDto =>
             {
-                repliesCustomerIds.Add(rDto.CustomerId);
+                repliesUserIds.Add(rDto.UserId);
             });
         });
 
-        var customers = await _shopContext.Customers
-            .Where(c => repliesCustomerIds.Contains(c.Id)).ToListAsync(cancellationToken);
+        var users = await _shopContext.Users
+            .Where(c => repliesUserIds.Contains(c.Id)).ToListAsync(cancellationToken);
 
         finalQuery.ForEach(qDto =>
         {
             qDto.Replies.ForEach(rDto =>
             {
-                var customer = customers.First(c => c.Id == rDto.CustomerId);
-                rDto.CustomerFullName = customer.FullName;
+                var user = users.First(c => c.Id == rDto.UserId);
+                rDto.UserFullName = user.FullName;
             });
         });
 

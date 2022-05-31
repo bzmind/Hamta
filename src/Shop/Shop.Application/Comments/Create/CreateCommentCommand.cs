@@ -7,7 +7,7 @@ using Shop.Domain.CommentAggregate.Repository;
 
 namespace Shop.Application.Comments.Create;
 
-public record CreateCommentCommand(long ProductId, long CustomerId, string Title, string Description,
+public record CreateCommentCommand(long ProductId, long UserId, string Title, string Description,
     List<string> PositivePoints, List<string> NegativePoints, string Recommendation) : IBaseCommand<long>;
 
 public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentCommand, long>
@@ -23,7 +23,7 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
     {
         Enum.TryParse(request.Recommendation, out Comment.CommentRecommendation recommendation);
 
-        var comment = new Comment(request.ProductId, request.CustomerId, request.Title, request.Description,
+        var comment = new Comment(request.ProductId, request.UserId, request.Title, request.Description,
             recommendation);
 
         await _commentRepository.AddAsync(comment);

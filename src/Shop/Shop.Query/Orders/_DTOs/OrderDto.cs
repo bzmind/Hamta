@@ -4,7 +4,7 @@ namespace Shop.Query.Orders._DTOs;
 
 public class OrderDto : BaseDto
 {
-    public long CustomerId { get; set; }
+    public long UserId { get; set; }
     public string Status { get; set; }
     public OrderAddressDto? Address { get; set; }
     public string ShippingMethod { get; set; }

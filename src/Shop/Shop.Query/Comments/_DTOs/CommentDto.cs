@@ -4,9 +4,9 @@ namespace Shop.Query.Comments._DTOs;
 
 public class CommentDto : BaseDto
 {
-    public long CustomerId { get; set; }
+    public long UserId { get; set; }
     public long ProductId { get; set; }
-    public string CustomerFullName { get; set; }
+    public string UserFullName { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public List<CommentHintDto> CommentHints { get; set; }

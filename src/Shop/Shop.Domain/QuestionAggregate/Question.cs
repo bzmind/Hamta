@@ -6,7 +6,7 @@ namespace Shop.Domain.QuestionAggregate;
 public class Question : BaseAggregateRoot
 {
     public long ProductId { get; private set; }
-    public long CustomerId { get; private set; }
+    public long UserId { get; private set; }
     public string Description { get; private set; }
     public string Status { get; private set; }
 
@@ -15,11 +15,11 @@ public class Question : BaseAggregateRoot
 
     public enum QuestionStatus { Pending, Accepted, Rejected }
 
-    public Question(long productId, long customerId, string description)
+    public Question(long productId, long userId, string description)
     {
         Guard(description);
         ProductId = productId;
-        CustomerId = customerId;
+        UserId = userId;
         Description = description;
         Status = QuestionStatus.Pending.ToString();
     }

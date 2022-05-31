@@ -20,13 +20,13 @@ public class GetCommentByIdQueryHandler : IBaseQueryHandler<GetCommentByIdQuery,
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"SELECT
                         c.*,
-                        cs.FullName AS CustomerFullName,
+                        cs.FullName AS UserFullName,
                         ch.*
                     FROM {_dapperContext.Comments} c
                     INNER JOIN {_dapperContext.CommentHints} ch
                         ON c.Id = ch.CommentId
-                    INNER JOIN {_dapperContext.Customers} cs
-                        ON c.CustomerId = cs.Id
+                    INNER JOIN {_dapperContext.Users} cs
+                        ON c.UserId = cs.Id
                     WHERE c.Id = @CommentId";
 
         var commentDtos = await connection.QueryAsync<CommentDto, CommentHintDto, CommentDto>(sql,

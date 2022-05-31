@@ -8,9 +8,9 @@ public class DapperContext
     public string Categories => "[category].Categories";
     public string CategorySpecifications => "[category].Specifications";
     public string Inventories => "[inventory].Inventories";
-    public string Customers => "[customer].Customers";
-    public string CustomerAddresses => "[customer].Addresses";
-    public string CustomerFavoriteItems => "[customer].FavoriteItems";
+    public string Users => "[user].Users";
+    public string UserAddresses => "[user].Addresses";
+    public string UserFavoriteItems => "[user].FavoriteItems";
     public string Orders => "[order].Orders";
     public string OrderAddresses => "[order].Addresses";
     public string OrderItems => "[order].Items";

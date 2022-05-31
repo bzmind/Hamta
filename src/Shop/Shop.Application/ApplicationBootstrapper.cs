@@ -1,10 +1,10 @@
 ﻿using Common.Application.FileUtility;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Application.Categories._Services;
-using Shop.Application.Customers._Services;
+using Shop.Application.Users._Services;
 using Shop.Application.Products._Services;
 using Shop.Domain.CategoryAggregate.Services;
-using Shop.Domain.CustomerAggregate.Services;
+using Shop.Domain.UserAggregate.Services;
 using Shop.Domain.ProductAggregate.Services;
 
 namespace Shop.Application;
@@ -15,7 +15,7 @@ public class ApplicationBootstrapper
     {
         services.AddTransient<ICategoryDomainService, CategoryDomainService>();
         services.AddTransient<IProductDomainService, ProductDomainService>();
-        services.AddTransient<ICustomerDomainService, CustomerDomainService>();
+        services.AddTransient<IUserDomainService, UserDomainService>();
         services.AddTransient<IFileService, FileService>();
     }
 }

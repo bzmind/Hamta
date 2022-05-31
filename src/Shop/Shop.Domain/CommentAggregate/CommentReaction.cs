@@ -5,7 +5,7 @@ namespace Shop.Domain.CommentAggregate;
 public class CommentReaction : BaseEntity
 {
     public long CommentId { get; set; }
-    public long CustomerId { get; set; }
+    public long UserId { get; set; }
     public string Reaction { get; set; }
 
     public enum ReactionType
@@ -19,10 +19,10 @@ public class CommentReaction : BaseEntity
         
     }
 
-    public CommentReaction(long commentId, long customerId, ReactionType reactionType)
+    public CommentReaction(long commentId, long userId, ReactionType reactionType)
     {
         CommentId = commentId;
-        CustomerId = customerId;
+        UserId = userId;
         Reaction = reactionType.ToString();
     }
 }

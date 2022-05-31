@@ -11,8 +11,8 @@ public class OrderRepository : BaseRepository<Order>, IOrderRepository
     {
     }
 
-    public async Task<Order?> GetOrderByCustomerIdAsTracking(long customerId)
+    public async Task<Order?> GetOrderByUserIdAsTracking(long userId)
     {
-        return await Context.Set<Order>().AsTracking().FirstOrDefaultAsync(o => o.CustomerId == customerId);
+        return await Context.Set<Order>().AsTracking().FirstOrDefaultAsync(o => o.UserId == userId);
     }
 }
