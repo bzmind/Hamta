@@ -10,10 +10,10 @@ namespace Shop.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.EnsureSchema(
-                name: "customer");
+                name: "order");
 
             migrationBuilder.EnsureSchema(
-                name: "order");
+                name: "user");
 
             migrationBuilder.EnsureSchema(
                 name: "category");
@@ -94,7 +94,7 @@ namespace Shop.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
                     Title = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(1500)", maxLength: 1500, nullable: false),
@@ -107,26 +107,6 @@ namespace Shop.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Comments", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Customers",
-                schema: "customer",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    AvatarName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    IsSubscribedToNews = table.Column<bool>(type: "bit", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Customers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -157,7 +137,7 @@ namespace Shop.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     ShippingMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     ShippingCost = table.Column<int>(type: "int", nullable: true),
@@ -194,11 +174,10 @@ namespace Shop.Infrastructure.Migrations
                 {
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    ParentQuestionId = table.Column<long>(type: "bigint", nullable: true),
                     ProductId = table.Column<long>(type: "bigint", nullable: false),
-                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    Status = table.Column<int>(type: "int", maxLength: 20, nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
@@ -220,6 +199,26 @@ namespace Shop.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Shippings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                schema: "user",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(250)", maxLength: 250, nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    AvatarName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    IsSubscribedToNews = table.Column<bool>(type: "bit", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -279,7 +278,7 @@ namespace Shop.Infrastructure.Migrations
                     Id = table.Column<long>(type: "bigint", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CommentId = table.Column<long>(type: "bigint", nullable: false),
-                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
                     Reaction = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -291,58 +290,6 @@ namespace Shop.Infrastructure.Migrations
                         column: x => x.CommentId,
                         principalSchema: "comment",
                         principalTable: "Comments",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Addresses",
-                schema: "customer",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
-                    Province = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    FullAddress = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Addresses_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "customer",
-                        principalTable: "Customers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "FavoriteItems",
-                schema: "customer",
-                columns: table => new
-                {
-                    Id = table.Column<long>(type: "bigint", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    CustomerId = table.Column<long>(type: "bigint", nullable: false),
-                    ProductId = table.Column<long>(type: "bigint", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_FavoriteItems", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_FavoriteItems_Customers_CustomerId",
-                        column: x => x.CustomerId,
-                        principalSchema: "customer",
-                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -517,11 +464,83 @@ namespace Shop.Infrastructure.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Addresses_CustomerId",
-                schema: "customer",
-                table: "Addresses",
-                column: "CustomerId");
+            migrationBuilder.CreateTable(
+                name: "Replies",
+                schema: "question",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    QuestionId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Replies", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Replies_Questions_QuestionId",
+                        column: x => x.QuestionId,
+                        principalSchema: "question",
+                        principalTable: "Questions",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Addresses",
+                schema: "user",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(11)", maxLength: 11, nullable: false),
+                    Province = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    City = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
+                    FullAddress = table.Column<string>(type: "nvarchar(300)", maxLength: 300, nullable: false),
+                    PostalCode = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Addresses_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "user",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "FavoriteItems",
+                schema: "user",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<long>(type: "bigint", nullable: false),
+                    ProductId = table.Column<long>(type: "bigint", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavoriteItems", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_FavoriteItems_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "user",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Addresses_OrderId",
@@ -529,6 +548,12 @@ namespace Shop.Infrastructure.Migrations
                 table: "Addresses",
                 column: "OrderId",
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Addresses_UserId",
+                schema: "user",
+                table: "Addresses",
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Categories_ParentId",
@@ -549,10 +574,10 @@ namespace Shop.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_FavoriteItems_CustomerId",
-                schema: "customer",
+                name: "IX_FavoriteItems_UserId",
+                schema: "user",
                 table: "FavoriteItems",
-                column: "CustomerId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_GalleryImages_ProductId",
@@ -586,6 +611,12 @@ namespace Shop.Infrastructure.Migrations
                 column: "CommentId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Replies_QuestionId",
+                schema: "question",
+                table: "Replies",
+                column: "QuestionId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Specifications_CategoryId",
                 schema: "category",
                 table: "Specifications",
@@ -596,11 +627,11 @@ namespace Shop.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Addresses",
-                schema: "customer");
+                schema: "order");
 
             migrationBuilder.DropTable(
                 name: "Addresses",
-                schema: "order");
+                schema: "user");
 
             migrationBuilder.DropTable(
                 name: "Colors",
@@ -616,7 +647,7 @@ namespace Shop.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "FavoriteItems",
-                schema: "customer");
+                schema: "user");
 
             migrationBuilder.DropTable(
                 name: "GalleryImages",
@@ -639,12 +670,12 @@ namespace Shop.Infrastructure.Migrations
                 schema: "order");
 
             migrationBuilder.DropTable(
-                name: "Questions",
-                schema: "question");
-
-            migrationBuilder.DropTable(
                 name: "Reactions",
                 schema: "comment");
+
+            migrationBuilder.DropTable(
+                name: "Replies",
+                schema: "question");
 
             migrationBuilder.DropTable(
                 name: "Scores",
@@ -659,8 +690,8 @@ namespace Shop.Infrastructure.Migrations
                 schema: "category");
 
             migrationBuilder.DropTable(
-                name: "Customers",
-                schema: "customer");
+                name: "Users",
+                schema: "user");
 
             migrationBuilder.DropTable(
                 name: "Orders",
@@ -669,6 +700,10 @@ namespace Shop.Infrastructure.Migrations
             migrationBuilder.DropTable(
                 name: "Comments",
                 schema: "comment");
+
+            migrationBuilder.DropTable(
+                name: "Questions",
+                schema: "question");
 
             migrationBuilder.DropTable(
                 name: "Products",

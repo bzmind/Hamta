@@ -98,9 +98,6 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(1500)
@@ -130,48 +127,12 @@ namespace Shop.Infrastructure.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
                     b.HasKey("Id");
 
                     b.ToTable("Comments", "comment");
-                });
-
-            modelBuilder.Entity("Shop.Domain.CustomerAggregate.Customer", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<string>("AvatarName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.Property<string>("FullName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<bool>("IsSubscribedToNews")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Customers", "customer");
                 });
 
             modelBuilder.Entity("Shop.Domain.InventoryAggregate.Inventory", b =>
@@ -219,13 +180,13 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -280,9 +241,6 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<long>("CustomerId")
-                        .HasColumnType("bigint");
-
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(300)
@@ -295,6 +253,9 @@ namespace Shop.Infrastructure.Migrations
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
 
                     b.HasKey("Id");
 
@@ -321,6 +282,45 @@ namespace Shop.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Shippings", "shipping");
+                });
+
+            modelBuilder.Entity("Shop.Domain.UserAggregate.User", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<string>("AvatarName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
+                    b.Property<string>("FullName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<bool>("IsSubscribedToNews")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Users", "user");
                 });
 
             modelBuilder.Entity("Shop.Domain.CategoryAggregate.Category", b =>
@@ -419,13 +419,13 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
 
-                            b1.Property<long>("CustomerId")
-                                .HasColumnType("bigint");
-
                             b1.Property<string>("Reaction")
                                 .IsRequired()
                                 .HasMaxLength(10)
                                 .HasColumnType("nvarchar(10)");
+
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
 
                             b1.HasKey("Id");
 
@@ -440,136 +440,6 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("CommentHints");
 
                     b.Navigation("CommentReactions");
-                });
-
-            modelBuilder.Entity("Shop.Domain.CustomerAggregate.Customer", b =>
-                {
-                    b.OwnsOne("Common.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b1 =>
-                        {
-                            b1.Property<long>("CustomerId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<string>("Value")
-                                .IsRequired()
-                                .HasMaxLength(11)
-                                .HasColumnType("nvarchar(11)")
-                                .HasColumnName("PhoneNumber");
-
-                            b1.HasKey("CustomerId");
-
-                            b1.ToTable("Customers", "customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.OwnsMany("Shop.Domain.CustomerAggregate.CustomerAddress", "Addresses", b1 =>
-                        {
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
-
-                            b1.Property<string>("City")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<long>("CustomerId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<string>("FullAddress")
-                                .IsRequired()
-                                .HasMaxLength(300)
-                                .HasColumnType("nvarchar(300)");
-
-                            b1.Property<string>("FullName")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.Property<bool>("IsActive")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("PostalCode")
-                                .IsRequired()
-                                .HasMaxLength(10)
-                                .HasColumnType("nvarchar(10)");
-
-                            b1.Property<string>("Province")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("CustomerId");
-
-                            b1.ToTable("Addresses", "customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-
-                            b1.OwnsOne("Common.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b2 =>
-                                {
-                                    b2.Property<long>("CustomerAddressId")
-                                        .HasColumnType("bigint");
-
-                                    b2.Property<string>("Value")
-                                        .IsRequired()
-                                        .HasMaxLength(11)
-                                        .HasColumnType("nvarchar(11)")
-                                        .HasColumnName("PhoneNumber");
-
-                                    b2.HasKey("CustomerAddressId");
-
-                                    b2.ToTable("Addresses", "customer");
-
-                                    b2.WithOwner()
-                                        .HasForeignKey("CustomerAddressId");
-                                });
-
-                            b1.Navigation("PhoneNumber")
-                                .IsRequired();
-                        });
-
-                    b.OwnsMany("Shop.Domain.CustomerAggregate.CustomerFavoriteItem", "FavoriteItems", b1 =>
-                        {
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
-
-                            b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<long>("CustomerId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<long>("ProductId")
-                                .HasColumnType("bigint");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("CustomerId");
-
-                            b1.ToTable("FavoriteItems", "customer");
-
-                            b1.WithOwner()
-                                .HasForeignKey("CustomerId");
-                        });
-
-                    b.Navigation("Addresses");
-
-                    b.Navigation("FavoriteItems");
-
-                    b.Navigation("PhoneNumber")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shop.Domain.InventoryAggregate.Inventory", b =>
@@ -944,9 +814,6 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
 
-                            b1.Property<long>("CustomerId")
-                                .HasColumnType("bigint");
-
                             b1.Property<string>("Description")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
@@ -960,6 +827,9 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<string>("Status")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
+
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
 
                             b1.HasKey("Id");
 
@@ -994,6 +864,136 @@ namespace Shop.Infrastructure.Migrations
                         });
 
                     b.Navigation("Cost")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Shop.Domain.UserAggregate.User", b =>
+                {
+                    b.OwnsOne("Common.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b1 =>
+                        {
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(11)
+                                .HasColumnType("nvarchar(11)")
+                                .HasColumnName("PhoneNumber");
+
+                            b1.HasKey("UserId");
+
+                            b1.ToTable("Users", "user");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsMany("Shop.Domain.UserAggregate.UserAddress", "Addresses", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<string>("City")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("FullAddress")
+                                .IsRequired()
+                                .HasMaxLength(300)
+                                .HasColumnType("nvarchar(300)");
+
+                            b1.Property<string>("FullName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.Property<bool>("IsActive")
+                                .HasColumnType("bit");
+
+                            b1.Property<string>("PostalCode")
+                                .IsRequired()
+                                .HasMaxLength(10)
+                                .HasColumnType("nvarchar(10)");
+
+                            b1.Property<string>("Province")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("Addresses", "user");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+
+                            b1.OwnsOne("Common.Domain.ValueObjects.PhoneNumber", "PhoneNumber", b2 =>
+                                {
+                                    b2.Property<long>("UserAddressId")
+                                        .HasColumnType("bigint");
+
+                                    b2.Property<string>("Value")
+                                        .IsRequired()
+                                        .HasMaxLength(11)
+                                        .HasColumnType("nvarchar(11)")
+                                        .HasColumnName("PhoneNumber");
+
+                                    b2.HasKey("UserAddressId");
+
+                                    b2.ToTable("Addresses", "user");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("UserAddressId");
+                                });
+
+                            b1.Navigation("PhoneNumber")
+                                .IsRequired();
+                        });
+
+                    b.OwnsMany("Shop.Domain.UserAggregate.UserFavoriteItem", "FavoriteItems", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<long>("ProductId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("FavoriteItems", "user");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.Navigation("Addresses");
+
+                    b.Navigation("FavoriteItems");
+
+                    b.Navigation("PhoneNumber")
                         .IsRequired();
                 });
 

@@ -10,14 +10,14 @@ namespace Shop.Infrastructure.Migrations
         {
             migrationBuilder.Sql(@"
                 ALTER TABLE [comment].Comments
-                ADD CONSTRAINT FK_Comments_Customers_CustomerId
-                FOREIGN KEY (CustomerId) REFERENCES [customer].Customers(Id);
+                ADD CONSTRAINT FK_Comments_Users_UserId
+                FOREIGN KEY (UserId) REFERENCES [user].Users(Id);
                 ALTER TABLE [comment].Comments
                 ADD CONSTRAINT FK_Comments_Products_ProductId
                 FOREIGN KEY (ProductId) REFERENCES [product].Products(Id);");
 
             migrationBuilder.Sql(@"
-                ALTER TABLE [customer].FavoriteItems
+                ALTER TABLE [user].FavoriteItems
                 ADD CONSTRAINT FK_FavoriteItems_Products_ProductId
                 FOREIGN KEY (ProductId) REFERENCES [product].Products(Id);");
 
@@ -33,8 +33,8 @@ namespace Shop.Infrastructure.Migrations
 
             migrationBuilder.Sql(@"
                 ALTER TABLE [order].Orders
-                ADD CONSTRAINT FK_Orders_Customers_CustomerId
-                FOREIGN KEY (CustomerId) REFERENCES [customer].Customers(Id);");
+                ADD CONSTRAINT FK_Orders_Users_UserId
+                FOREIGN KEY (UserId) REFERENCES [user].Users(Id);");
 
             migrationBuilder.Sql(@"
                 ALTER TABLE [product].Products
@@ -46,8 +46,8 @@ namespace Shop.Infrastructure.Migrations
                 ADD CONSTRAINT FK_Questions_Products_ProductId
                 FOREIGN KEY (ProductId) REFERENCES [product].Products(Id);
                 ALTER TABLE [question].Questions
-                ADD CONSTRAINT FK_Questions_Customers_CustomerId
-                FOREIGN KEY (CustomerId) REFERENCES [customer].Customers(Id);");
+                ADD CONSTRAINT FK_Questions_Users_UserId
+                FOREIGN KEY (UserId) REFERENCES [user].Users(Id);");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
