@@ -21,7 +21,7 @@ public class ProductController : BaseApiController
         _productFacade = productFacade;
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<ApiResult<long>> Create
         ([FromForm][ModelBinder(typeof(ProductModelBinder))] CreateProductCommand command)
     {
@@ -30,7 +30,7 @@ public class ProductController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpPut]
+    [HttpPut("Edit")]
     public async Task<ApiResult> Edit
         ([FromForm][ModelBinder(typeof(ProductModelBinder))] EditProductCommand command)
     {
@@ -45,6 +45,13 @@ public class ProductController : BaseApiController
         return CommandResult(result);
     }
 
+    [HttpPut("AddScore")]
+    public async Task<ApiResult> AddScore(AddScoreCommand command)
+    {
+        var result = await _productFacade.AddScore(command);
+        return CommandResult(result);
+    }
+    
     [HttpDelete("RemoveGalleryImage")]
     public async Task<ApiResult> RemoveGalleryImages(RemoveGalleryImageCommand command)
     {
@@ -52,28 +59,21 @@ public class ProductController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpPut("AddScore")]
-    public async Task<ApiResult> AddScore(AddScoreCommand command)
-    {
-        var result = await _productFacade.AddScore(command);
-        return CommandResult(result);
-    }
-
-    [HttpDelete("{productId}")]
+    [HttpDelete("Remove/{productId}")]
     public async Task<ApiResult> Remove(long productId)
     {
         var result = await _productFacade.Remove(productId);
         return CommandResult(result);
     }
-    
-    [HttpGet("{id}")]
+
+    [HttpGet("GetById/{id}")]
     public async Task<ApiResult<ProductDto?>> GetById(long id)
     {
         var result = await _productFacade.GetById(id);
         return QueryResult(result);
     }
 
-    [HttpGet]
+    [HttpGet("GetByFilter")]
     public async Task<ApiResult<ProductFilterResult>> GetByFilter([FromQuery] ProductFilterParam filterParam)
     {
         var result = await _productFacade.GetByFilter(filterParam);

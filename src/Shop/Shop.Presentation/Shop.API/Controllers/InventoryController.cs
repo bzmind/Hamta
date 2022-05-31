@@ -2,8 +2,10 @@
 using Common.Api;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Inventories.Create;
+using Shop.Application.Inventories.DecreaseQuantity;
 using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
+using Shop.Application.Inventories.IncreaseQuantity;
 using Shop.Application.Inventories.RemoveDiscount;
 using Shop.Presentation.Facade.Inventories;
 using Shop.Query.Inventories._DTOs;
@@ -19,7 +21,7 @@ public class InventoryController : BaseApiController
         _inventoryFacade = inventoryFacade;
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateInventoryCommand command)
     {
         var result = await _inventoryFacade.Create(command);
@@ -27,10 +29,24 @@ public class InventoryController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpPut]
+    [HttpPut("Edit")]
     public async Task<ApiResult> Edit(EditInventoryCommand command)
     {
         var result = await _inventoryFacade.Edit(command);
+        return CommandResult(result);
+    }
+
+    [HttpPut("IncreaseQuantity")]
+    public async Task<ApiResult> IncreaseQuantity(IncreaseInventoryQuantityCommand command)
+    {
+        var result = await _inventoryFacade.IncreaseQuantity(command);
+        return CommandResult(result);
+    }
+
+    [HttpPut("DecreaseQuantity")]
+    public async Task<ApiResult> DecreaseQuantity(DecreaseInventoryQuantityCommand command)
+    {
+        var result = await _inventoryFacade.DecreaseQuantity(command);
         return CommandResult(result);
     }
 
@@ -48,23 +64,22 @@ public class InventoryController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("Remove")]
     public async Task<ApiResult> Remove(long inventoryId)
     {
         var result = await _inventoryFacade.Remove(inventoryId);
         return CommandResult(result);
     }
 
-    [HttpGet("{inventoryId}")]
+    [HttpGet("GetById/{inventoryId}")]
     public async Task<ApiResult<InventoryDto?>> GetById(long inventoryId)
     {
         var result = await _inventoryFacade.GetById(inventoryId);
         return QueryResult(result);
     }
 
-    [HttpGet]
-    public async Task<ApiResult<InventoryFilterResult>> GetByFilter
-        ([FromQuery] InventoryFilterParam filterParams)
+    [HttpGet("GetByFilter")]
+    public async Task<ApiResult<InventoryFilterResult>> GetByFilter([FromQuery] InventoryFilterParam filterParams)
     {
         var result = await _inventoryFacade.GetByFilter(filterParams);
         return QueryResult(result);

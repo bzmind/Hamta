@@ -23,7 +23,7 @@ public static class ValidationMessages
 
 
     /// <summary>
-    /// <example>Example: نام} باید کمتر از {3} باشد}</example>
+    /// <example>Example: نام} باید بیشتر یا مساوی {3} باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxLength"></param>
@@ -31,7 +31,7 @@ public static class ValidationMessages
         => $"{field} باید بیشتر یا مساوی {maxLength} باشد";
 
     /// <summary>
-    /// <example>Example: نام} باید کمتر از {3} باشد}</example>
+    /// <example>Example: نام} باید کمتر یا مساوی {3} باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxLength"></param>

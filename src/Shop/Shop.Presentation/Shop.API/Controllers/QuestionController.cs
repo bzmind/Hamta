@@ -3,6 +3,7 @@ using Common.Api;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Questions.AddReply;
 using Shop.Application.Questions.Create;
+using Shop.Application.Questions.Remove;
 using Shop.Application.Questions.RemoveReply;
 using Shop.Application.Questions.SetStatus;
 using Shop.Presentation.Facade.Questions;
@@ -19,12 +20,19 @@ public class QuestionController : BaseApiController
         _questionFacade = questionFacade;
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateQuestionCommand command)
     {
         var result = await _questionFacade.Create(command);
         var resultUrl = Url.Action("Create", "Question", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
+    }
+
+    [HttpPut("SetStatus")]
+    public async Task<ApiResult> SetStatus(SetQuestionStatusCommand command)
+    {
+        var result = await _questionFacade.SetStatus(command);
+        return CommandResult(result);
     }
 
     [HttpPut("AddReply")]
@@ -41,28 +49,21 @@ public class QuestionController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpPut]
-    public async Task<ApiResult> SetStatus(SetQuestionStatusCommand command)
+    [HttpDelete("Remove/{questionId}")]
+    public async Task<ApiResult> Remove(long questionId)
     {
-        var result = await _questionFacade.SetStatus(command);
+        var result = await _questionFacade.Remove(questionId);
         return CommandResult(result);
     }
 
-    [HttpDelete]
-    public async Task<ApiResult> Remove(RemoveReplyCommand command)
-    {
-        var result = await _questionFacade.Remove(command);
-        return CommandResult(result);
-    }
-
-    [HttpGet("{questionId}")]
+    [HttpGet("GetById/{questionId}")]
     public async Task<ApiResult<QuestionDto?>> GetById(long questionId)
     {
         var result = await _questionFacade.GetById(questionId);
         return QueryResult(result);
     }
 
-    [HttpGet]
+    [HttpGet("GetByFilter")]
     public async Task<ApiResult<QuestionFilterResult>> GetByFilter([FromQuery] QuestionFilterParam filterParams)
     {
         var result = await _questionFacade.GetByFilter(filterParams);

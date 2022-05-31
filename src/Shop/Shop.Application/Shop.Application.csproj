@@ -13,6 +13,8 @@
     <Folder Include="Customers\Remove\" />
     <Folder Include="Customers\_Services\" />
     <Folder Include="Inventories\Edit\" />
+    <Folder Include="Inventories\DecreaseQuantity\" />
+    <Folder Include="Inventories\IncreaseQuantity\" />
     <Folder Include="Inventories\Remove\" />
     <Folder Include="Inventories\RemoveDiscount\" />
     <Folder Include="Orders\AddItem\" />

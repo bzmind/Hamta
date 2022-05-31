@@ -2,6 +2,7 @@
 using MediatR;
 using Shop.Application.Questions.AddReply;
 using Shop.Application.Questions.Create;
+using Shop.Application.Questions.Remove;
 using Shop.Application.Questions.RemoveReply;
 using Shop.Application.Questions.SetStatus;
 using Shop.Query.Questions._DTOs;
@@ -39,9 +40,9 @@ internal class QuestionFacade : IQuestionFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> Remove(RemoveReplyCommand command)
+    public async Task<OperationResult> Remove(long questionId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new RemoveQuestionCommand(questionId));
     }
 
     public async Task<QuestionDto?> GetById(long id)

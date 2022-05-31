@@ -13,7 +13,7 @@ public interface IQuestionFacade
     Task<OperationResult> AddReply(AddReplyCommand command);
     Task<OperationResult> RemoveReply(RemoveReplyCommand command);
     Task<OperationResult> SetStatus(SetQuestionStatusCommand command);
-    Task<OperationResult> Remove(RemoveReplyCommand command);
+    Task<OperationResult> Remove(long questionId);
 
     Task<QuestionDto?> GetById(long id);
     Task<QuestionFilterResult> GetByFilter(QuestionFilterParam filterParams);

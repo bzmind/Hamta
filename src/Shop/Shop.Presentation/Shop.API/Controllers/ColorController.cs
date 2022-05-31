@@ -17,7 +17,7 @@ public class ColorController : BaseApiController
         _colorFacade = colorFacade;
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateColorCommand command)
     {
         var result = await _colorFacade.Create(command);
@@ -25,21 +25,21 @@ public class ColorController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpPut]
+    [HttpPut("Edit")]
     public async Task<ApiResult> Edit(EditColorCommand command)
     {
         var result = await _colorFacade.Edit(command);
         return CommandResult(result);
     }
 
-    [HttpGet("{colorId}")]
+    [HttpGet("GetById/{colorId}")]
     public async Task<ApiResult<ColorDto?>> GetById(long colorId)
     {
         var result = await _colorFacade.GetById(colorId);
         return QueryResult(result);
     }
 
-    [HttpGet]
+    [HttpGet("GetByFilter")]
     public async Task<ApiResult<ColorFilterResult>> GetByFilter([FromQuery] ColorFilterParam filterParams)
     {
         var result = await _colorFacade.GetByFilter(filterParams);

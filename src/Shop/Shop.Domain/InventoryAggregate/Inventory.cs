@@ -40,9 +40,9 @@ public class Inventory : BaseAggregateRoot
         ColorId = colorId;
     }
 
-    public void AddToQuantity(int amount) => Quantity += amount;
+    public void IncreaseQuantity(int amount) => Quantity += amount;
 
-    public void RemoveFromQuantity(int amount)
+    public void DecreaseQuantity(int amount)
     {
         if (Quantity - amount < 0)
             throw new OperationNotAllowedDomainException("تعداد موجودی انبار نمی‌تواند کمتر از صفر باشد");

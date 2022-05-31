@@ -21,7 +21,7 @@ public class CustomerController : BaseApiController
         _customerFacade = customerFacade;
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateCustomerCommand command)
     {
         var result = await _customerFacade.Create(command);
@@ -29,7 +29,7 @@ public class CustomerController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpPut]
+    [HttpPut("Edit")]
     public async Task<ApiResult> Edit(EditCustomerCommand command)
     {
         var result = await _customerFacade.Edit(command);
@@ -64,14 +64,14 @@ public class CustomerController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpDelete("{customerId}")]
+    [HttpDelete("Remove/{customerId}")]
     public async Task<ApiResult> Remove(long customerId)
     {
         var result = await _customerFacade.Remove(customerId);
         return CommandResult(result);
     }
 
-    [HttpGet("{customerId}")]
+    [HttpGet("GetById/{customerId}")]
     public async Task<ApiResult<CustomerDto?>> GetById(long customerId)
     {
         var result = await _customerFacade.GetById(customerId);
@@ -85,7 +85,7 @@ public class CustomerController : BaseApiController
         return QueryResult(result);
     }
 
-    [HttpGet]
+    [HttpGet("GetByFilter")]
     public async Task<ApiResult<CustomerFilterResult>> GetByFilter([FromQuery] CustomerFilterParam filterParam)
     {
         var result = await _customerFacade.GetByFilter(filterParam);

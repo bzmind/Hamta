@@ -17,7 +17,7 @@ public class ShippingController : BaseApiController
         _shippingFacade = shippingFacade;
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateShippingCommand command)
     {
         var result = await _shippingFacade.Create(command);
@@ -25,28 +25,28 @@ public class ShippingController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpPut]
+    [HttpPut("Edit")]
     public async Task<ApiResult> Edit(EditShippingCommand command)
     {
         var result = await _shippingFacade.Edit(command);
         return CommandResult(result);
     }
 
-    [HttpDelete("{shippingId}")]
+    [HttpDelete("Remove/{shippingId}")]
     public async Task<ApiResult> Remove(long shippingId)
     {
         var result = await _shippingFacade.Remove(shippingId);
         return CommandResult(result);
     }
 
-    [HttpGet("{shippingId}")]
+    [HttpGet("GetById/{shippingId}")]
     public async Task<ApiResult<ShippingDto?>> GetById(long shippingId)
     {
         var result = await _shippingFacade.GetById(shippingId);
         return QueryResult(result);
     }
 
-    [HttpGet]
+    [HttpGet("GetAll")]
     public async Task<ApiResult<List<ShippingDto>>> GetAll()
     {
         var result = await _shippingFacade.GetAll();

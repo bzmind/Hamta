@@ -1,8 +1,10 @@
 ﻿using Common.Application;
 using MediatR;
 using Shop.Application.Inventories.Create;
+using Shop.Application.Inventories.DecreaseQuantity;
 using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
+using Shop.Application.Inventories.IncreaseQuantity;
 using Shop.Application.Inventories.Remove;
 using Shop.Application.Inventories.RemoveDiscount;
 using Shop.Query.Inventories._DTOs;
@@ -26,6 +28,16 @@ internal class InventoryFacade : IInventoryFacade
     }
 
     public async Task<OperationResult> Edit(EditInventoryCommand command)
+    {
+        return await _mediator.Send(command);
+    }
+
+    public async Task<OperationResult> IncreaseQuantity(IncreaseInventoryQuantityCommand command)
+    {
+        return await _mediator.Send(command);
+    }
+
+    public async Task<OperationResult> DecreaseQuantity(DecreaseInventoryQuantityCommand command)
     {
         return await _mediator.Send(command);
     }

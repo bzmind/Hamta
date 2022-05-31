@@ -58,7 +58,7 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
         order.Items.ToList().ForEach(orderItem =>
         {
             var inventory = inventories.First(i => i.Id == orderItem.InventoryId);
-            inventory.RemoveFromQuantity(orderItem.Count);
+            inventory.DecreaseQuantity(orderItem.Count);
         });
 
         await _orderRepository.SaveAsync();

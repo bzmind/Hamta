@@ -17,14 +17,14 @@ public class CustomerAddressController : BaseApiController
         _customerAddressFacade = customerAddressFacade;
     }
 
-    [HttpPost]
+    [HttpPost("Create")]
     public async Task<ApiResult> Create(AddCustomerAddressCommand command)
     {
         var result = await _customerAddressFacade.Create(command);
         return CommandResult(result);
     }
 
-    [HttpPut]
+    [HttpPut("Edit")]
     public async Task<ApiResult> Edit(EditCustomerAddressCommand command)
     {
         var result = await _customerAddressFacade.Edit(command);
@@ -38,7 +38,7 @@ public class CustomerAddressController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpDelete]
+    [HttpDelete("Remove")]
     public async Task<ApiResult> Remove(RemoveCustomerAddressCommand command)
     {
         var result = await _customerAddressFacade.Remove(command);

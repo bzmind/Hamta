@@ -21,7 +21,7 @@ public class OrderController : BaseApiController
         _orderFacade = orderFacade;
     }
 
-    [HttpPost]
+    [HttpPost("AddItem")]
     public async Task<ApiResult<long>> AddItem(AddOrderItemCommand command)
     {
         var result = await _orderFacade.AddItem(command);
@@ -29,14 +29,7 @@ public class OrderController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpDelete]
-    public async Task<ApiResult> RemoveItem(RemoveOrderItemCommand command)
-    {
-        var result = await _orderFacade.RemoveItem(command);
-        return CommandResult(result);
-    }
-
-    [HttpPut]
+    [HttpPut("Checkout")]
     public async Task<ApiResult> Checkout(CheckoutOrderCommand command)
     {
         var result = await _orderFacade.Checkout(command);
@@ -64,14 +57,21 @@ public class OrderController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpGet("{orderId}")]
+    [HttpDelete("RemoveItem")]
+    public async Task<ApiResult> RemoveItem(RemoveOrderItemCommand command)
+    {
+        var result = await _orderFacade.RemoveItem(command);
+        return CommandResult(result);
+    }
+
+    [HttpGet("GetById/{orderId}")]
     public async Task<ApiResult<OrderDto?>> GetById(long orderId)
     {
         var result = await _orderFacade.GetById(orderId);
         return QueryResult(result);
     }
 
-    [HttpGet]
+    [HttpGet("GetByFilter")]
     public async Task<ApiResult<OrderFilterResult>> GetByFilter([FromQuery] OrderFilterParam filterParams)
     {
         var result = await _orderFacade.GetByFilter(filterParams);
