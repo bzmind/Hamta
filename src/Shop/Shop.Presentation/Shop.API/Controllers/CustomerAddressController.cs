@@ -2,9 +2,9 @@
 using Common.Api;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels;
+using Shop.API.ViewModels.Users;
 using Shop.Application.Users.ActivateAddress;
-using Shop.Application.Users.AddAddress;
+using Shop.Application.Users.CreateAddress;
 using Shop.Application.Users.EditAddress;
 using Shop.Application.Users.RemoveAddress;
 using Shop.Presentation.Facade.Users.Addresses;

@@ -3,7 +3,7 @@ using AutoMapper;
 using Common.Api;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels;
+using Shop.API.ViewModels.Orders;
 using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.DecreaseItemCount;

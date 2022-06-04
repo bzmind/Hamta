@@ -3,7 +3,7 @@ using AutoMapper;
 using Common.Api;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels;
+using Shop.API.ViewModels.Questions;
 using Shop.Application.Questions.AddReply;
 using Shop.Application.Questions.Create;
 using Shop.Application.Questions.RemoveReply;

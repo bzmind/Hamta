@@ -13,12 +13,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.Property(user => user.Id)
             .UseIdentityColumn(1);
 
+        builder.Property(user => user.CreationDate)
+            .HasColumnType("datetime2(0)");
+
         builder.Property(user => user.FullName)
             .IsRequired()
             .HasMaxLength(100);
 
         builder.Property(user => user.Email)
-            .IsRequired()
             .HasMaxLength(250);
 
         builder.Property(user => user.Password)
@@ -93,6 +95,28 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
             option.Property(favoriteItem => favoriteItem.ProductId)
                 .IsRequired();
+        });
+
+        builder.OwnsMany(user => user.Tokens, option =>
+        {
+            option.ToTable("Tokens", "user");
+
+            option.HasKey(token => token.Id);
+
+            option.Property(token => token.Id)
+                .UseIdentityColumn(1);
+
+            option.Property(t => t.JwtTokenHash)
+                .IsRequired()
+                .HasMaxLength(250);
+
+            option.Property(t => t.RefreshTokenHash)
+                .IsRequired()
+                .HasMaxLength(250);
+
+            option.Property(t => t.Device)
+                .IsRequired()
+                .HasMaxLength(100);
         });
     }
 }

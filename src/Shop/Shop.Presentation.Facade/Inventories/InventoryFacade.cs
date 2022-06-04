@@ -9,7 +9,7 @@ using Shop.Application.Inventories.Remove;
 using Shop.Application.Inventories.RemoveDiscount;
 using Shop.Query.Inventories._DTOs;
 using Shop.Query.Inventories.GetByFilter;
-using Shop.Query.Inventories.GetById;
+using Shop.Query.Inventories.GetByProductId;
 
 namespace Shop.Presentation.Facade.Inventories;
 

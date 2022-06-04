@@ -26,7 +26,7 @@ internal static class UserMapper
 
         user.FavoriteItems.ToList().ForEach(fi =>
         {
-            userDto.FavoriteItems.Add(new UserFavoriteItemDto()
+            userDto.FavoriteItems.Add(new UserFavoriteItemDto
             {
                 Id = fi.Id,
                 CreationDate = fi.CreationDate,

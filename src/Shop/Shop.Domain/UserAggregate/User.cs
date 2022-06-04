@@ -8,7 +8,7 @@ namespace Shop.Domain.UserAggregate;
 public class User : BaseAggregateRoot
 {
     public string FullName { get; private set; }
-    public string Email { get; private set; }
+    public string? Email { get; private set; }
     public string Password { get; private set; }
 
     private readonly List<UserAddress> _addresses = new();
@@ -20,7 +20,11 @@ public class User : BaseAggregateRoot
     private readonly List<UserFavoriteItem> _favoriteItems = new();
     public IEnumerable<UserFavoriteItem> FavoriteItems => _favoriteItems.ToList();
 
+    private readonly List<UserToken> _tokens = new();
+    public IEnumerable<UserToken> Tokens => _tokens.ToList();
+
     public const string DefaultAvatarName = "avatar.png";
+    private const int MaximumUsableDevices = 3;
 
     private User()
     {
@@ -31,7 +35,7 @@ public class User : BaseAggregateRoot
         IUserDomainService userDomainService)
     {
         Guard(fullName, phoneNumber, email, userDomainService);
-        NullOrEmptyDataDomainException.CheckString(password, nameof(password));
+        PasswordGuard(password);
         FullName = fullName;
         Email = email;
         Password = password;
@@ -39,8 +43,7 @@ public class User : BaseAggregateRoot
         IsSubscribedToNews = false;
     }
 
-    public void Edit(string fullName, string email, string phoneNumber,
-        IUserDomainService userDomainService)
+    public void Edit(string fullName, string email, string phoneNumber, IUserDomainService userDomainService)
     {
         Guard(fullName, phoneNumber, email, userDomainService);
         FullName = fullName;
@@ -48,14 +51,10 @@ public class User : BaseAggregateRoot
         PhoneNumber = new PhoneNumber(phoneNumber);
     }
 
-    public void SetAddressActivation(long addressId, bool activate)
+    public static User Register(string fullName, string phoneNumber, string password, string email,
+        IUserDomainService userDomainService)
     {
-        var address = Addresses.FirstOrDefault(a => a.Id == addressId);
-
-        if (address == null)
-            throw new InvalidDataDomainException("Address not found");
-
-        address.SetAddressActivation(activate);
+        return new User(fullName, email, password, phoneNumber, userDomainService);
     }
 
     public void AddAddress(long userId, string fullName, string phoneNumber, string province,
@@ -76,6 +75,16 @@ public class User : BaseAggregateRoot
         address.Edit(fullName, new PhoneNumber(phoneNumber), province, city, fullAddress, postalCode);
     }
 
+    public void SetAddressActivation(long addressId, bool activate)
+    {
+        var address = Addresses.FirstOrDefault(a => a.Id == addressId);
+
+        if (address == null)
+            throw new InvalidDataDomainException("Address not found");
+
+        address.SetAddressActivation(activate);
+    }
+
     public void RemoveAddress(long addressId)
     {
         var address = Addresses.FirstOrDefault(a => a.Id == addressId);
@@ -84,6 +93,12 @@ public class User : BaseAggregateRoot
             throw new NullOrEmptyDataDomainException("Address not found");
 
         _addresses.Remove(address);
+    }
+
+    public void ResetPassword(string password)
+    {
+        PasswordGuard(password);
+        Password = password;
     }
 
     public void SetAvatar(string avatarName)
@@ -114,13 +129,46 @@ public class User : BaseAggregateRoot
         _favoriteItems.Remove(favoriteItem);
     }
 
-    private void Guard(string fullName, string phoneNumber, string email,
-        IUserDomainService userDomainService)
+    public void AddToken(string jwtTokenHash, string refreshTokenHash, DateTime jwtTokenExpireDate,
+        DateTime refreshTokenExpireDate, string device)
+    {
+        var activeTokenCount = Tokens.Count(t => t.RefreshTokenExpireDate > DateTime.Now);
+
+        if (activeTokenCount == MaximumUsableDevices)
+            throw new OperationNotAllowedDomainException("You can't use more than 3 devices simultaneously");
+
+        var token = new UserToken(Id, jwtTokenHash, refreshTokenHash, jwtTokenExpireDate,
+            refreshTokenExpireDate, device);
+
+        _tokens.Add(token);
+    }
+
+    public void RemoveToken(long tokenId)
+    {
+        var token = Tokens.FirstOrDefault(t => t.Id == tokenId);
+
+        if (token == null)
+            throw new DataNotFoundDomainException("Token not found");
+
+        _tokens.Remove(token);
+    }
+
+    private void Guard(string fullName, string phoneNumber, string email, IUserDomainService userDomainService)
     {
         NullOrEmptyDataDomainException.CheckString(fullName, nameof(fullName));
         NullOrEmptyDataDomainException.CheckString(phoneNumber, nameof(phoneNumber));
+
         userDomainService.IsPhoneNumberDuplicate(phoneNumber);
-        NullOrEmptyDataDomainException.CheckString(email, nameof(email));
-        userDomainService.IsEmailDuplicate(email);
+
+        if (!string.IsNullOrWhiteSpace(email))
+            userDomainService.IsEmailDuplicate(email);
+    }
+
+    private void PasswordGuard(string password)
+    {
+        NullOrEmptyDataDomainException.CheckString(password, nameof(password));
+
+        if (password.Length < 8)
+            throw new InvalidDataDomainException("Password must have 8 or more characters");
     }
 }

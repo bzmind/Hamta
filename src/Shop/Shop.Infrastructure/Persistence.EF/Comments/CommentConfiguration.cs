@@ -11,10 +11,11 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         builder.ToTable("Comments", "comment");
 
         builder.Property(comment => comment.Id)
-            .UseHiLo("CommentHiLoSequence");
-
-        builder.Property(comment => comment.Id)
+            .UseHiLo("CommentHiLoSequence")
             .UseIdentityColumn(1);
+
+        builder.Property(comment => comment.CreationDate)
+            .HasColumnType("datetime2(0)");
 
         builder.Property(comment => comment.Title)
             .IsRequired()

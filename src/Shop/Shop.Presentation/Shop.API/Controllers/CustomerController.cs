@@ -78,10 +78,10 @@ public class UserController : BaseApiController
         return QueryResult(result);
     }
 
-    [HttpGet("GetByPhoneNumber/{phoneNumber}")]
-    public async Task<ApiResult<UserDto?>> GetByPhoneNumber(string phoneNumber)
+    [HttpGet("GetByEmailOrPhoneNumber/{phoneNumber}")]
+    public async Task<ApiResult<UserDto?>> GetByEmailOrPhoneNumber(string phoneNumber)
     {
-        var result = await _userFacade.GetByPhoneNumber(phoneNumber);
+        var result = await _userFacade.GetByEmailOrPhoneNumber(phoneNumber);
         return QueryResult(result);
     }
 

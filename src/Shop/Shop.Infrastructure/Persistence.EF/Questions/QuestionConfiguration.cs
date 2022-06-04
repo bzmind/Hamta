@@ -13,6 +13,9 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
         builder.Property(question => question.Id)
             .UseIdentityColumn(1);
 
+        builder.Property(question => question.CreationDate)
+            .HasColumnType("datetime2(0)");
+
         builder.Property(question => question.Description)
             .IsRequired()
             .HasMaxLength(300);

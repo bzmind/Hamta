@@ -6,14 +6,23 @@ public static class ValidationMessages
     public const string NotFound = "اطلاعات درخواستی یافت نشد";
     public const string MaxLength = "تعداد کاراکتر های وارد شده بیشتر از حد مجاز است";
     public const string MinLength = "تعداد کاراکتر های وارد شده کمتر از حد مجاز است";
-    public const string InvalidPhoneNumber = "شماره تلفن وارد شده نامعتبر است";
+
+    public const string NameRequired = "نام را وارد کنید";
+    public const string FamilyNameRequired = "نام خانوادگی را وارد کنید";
+    public const string FullNameRequired = "نام و نام خانوادگی را وارد کنید";
+    public const string PhoneNumberRequired = "شماره موبایل را وارد کنید";
+    public const string EmailRequired = "ایمیل را وارد کنید";
+    public const string PasswordRequired = "رمز عبور را وارد کنید";
+
+    public const string InvalidEmail = "ایمیل وارد شده نامعتبر است";
+    public const string InvalidPhoneNumber = "شماره موبایل وارد شده نامعتبر است";
     public const string InvalidPrice = "مبلغ وارد شده نامعتبر است";
 
     /// <summary>
-    /// <example>Example: وارد کردن {نام} الزامی است</example>
+    /// <example>Example: نام} را وارد کنید}</example>
     /// </summary>
     /// <param name="field"></param>
-    public static string FieldRequired(string field) => $"وارد کردن {field} الزامی است";
+    public static string FieldRequired(string field) => $"{field} را وارد کنید";
 
     /// <summary>
     /// <example>Example: نام} وارد شده نامعتبر است}</example>

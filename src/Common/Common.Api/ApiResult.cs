@@ -23,7 +23,7 @@ public enum ApiStatusCode
 {
     Success = 200,
     BadRequest = 400,
-    UnAuthorize = 401,
+    UnAuthorized = 401,
     NotFound = 404,
     ServerError = 500
 }

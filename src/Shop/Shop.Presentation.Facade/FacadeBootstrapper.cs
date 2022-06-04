@@ -9,6 +9,7 @@ using Shop.Presentation.Facade.Orders;
 using Shop.Presentation.Facade.Products;
 using Shop.Presentation.Facade.Questions;
 using Shop.Presentation.Facade.Shippings;
+using Shop.Presentation.Facade.Users.Tokens;
 
 namespace Shop.Presentation.Facade;
 
@@ -21,6 +22,7 @@ public static class FacadeBootstrapper
         services.AddScoped<ICommentFacade, CommentFacade>();
         services.AddScoped<IUserFacade, UserFacade>();
         services.AddScoped<IUserAddressFacade, UserAddressFacade>();
+        services.AddScoped<IUserTokenFacade, UserTokenFacade>();
         services.AddScoped<IInventoryFacade, InventoryFacade>();
         services.AddScoped<IOrderFacade, OrderFacade>();
         services.AddScoped<IProductFacade, ProductFacade>();

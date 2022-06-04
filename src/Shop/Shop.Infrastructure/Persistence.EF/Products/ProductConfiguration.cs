@@ -11,10 +11,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.ToTable("Products", "product");
 
         builder.Property(product => product.Id)
-            .UseHiLo("ProductHiLoSequence");
-
-        builder.Property(product => product.Id)
+            .UseHiLo("ProductHiLoSequence")
             .UseIdentityColumn(1);
+
+        builder.Property(product => product.CreationDate)
+            .HasColumnType("datetime2(0)");
 
         builder.Property(product => product.Name)
             .IsRequired()

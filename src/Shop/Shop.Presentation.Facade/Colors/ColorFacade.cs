@@ -3,8 +3,8 @@ using MediatR;
 using Shop.Application.Colors.Create;
 using Shop.Application.Colors.Edit;
 using Shop.Query.Colors._DTOs;
-using Shop.Query.Colors.GetByFilter;
 using Shop.Query.Colors.GetById;
+using Shop.Query.Colors.GetList;
 
 namespace Shop.Presentation.Facade.Colors;
 

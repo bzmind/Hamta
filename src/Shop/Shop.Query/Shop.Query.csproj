@@ -8,28 +8,14 @@
 
   <ItemGroup>
     <Folder Include="Categories\_DTOs\" />
-    <Folder Include="Categories\GetByParentId\" />
-    <Folder Include="Categories\GetList\" />
-    <Folder Include="Categories\GetById\" />
-    <Folder Include="Colors\GetByFilter\" />
-    <Folder Include="Colors\GetById\" />
     <Folder Include="Colors\_Mappers\" />
     <Folder Include="Colors\_DTOs\" />
-    <Folder Include="Comments\GetById\" />
     <Folder Include="Comments\_Mappers\" />
-    <Folder Include="Inventories\GetByFilter\" />
     <Folder Include="Inventories\_DTOs\" />
     <Folder Include="Inventories\_Mappers\" />
-    <Folder Include="Orders\GetById\" />
-    <Folder Include="Orders\GetByFilter\" />
     <Folder Include="Orders\_DTOs\" />
     <Folder Include="Orders\_Mappers\" />
-    <Folder Include="Products\GetById\" />
-    <Folder Include="Products\GetByFilter\" />
     <Folder Include="Products\_DTOs\" />
-    <Folder Include="Questions\GetById\" />
-    <Folder Include="Questions\GetByFilter\" />
-    <Folder Include="Shippings\GetList\" />
     <Folder Include="Shippings\_DTOs\" />
     <Folder Include="Shippings\_Mappers\" />
   </ItemGroup>
@@ -40,7 +26,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.Query\Common.Query.csproj" />
-    <ProjectReference Include="..\Shop.Infrastructure\Shop.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

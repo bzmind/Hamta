@@ -3,7 +3,7 @@ using AutoMapper;
 using Common.Api;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels;
+using Shop.API.ViewModels.Comments;
 using Shop.Application.Comments.Create;
 using Shop.Application.Comments.SetDislikes;
 using Shop.Application.Comments.SetLikes;

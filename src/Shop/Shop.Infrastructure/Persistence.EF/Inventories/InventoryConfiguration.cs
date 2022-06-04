@@ -13,6 +13,9 @@ public class InventoryConfiguration : IEntityTypeConfiguration<Inventory>
         builder.Property(inventory => inventory.Id)
             .UseIdentityColumn(1);
 
+        builder.Property(inventory => inventory.CreationDate)
+            .HasColumnType("datetime2(0)");
+
         builder.Property(inventory => inventory.Quantity)
             .IsRequired();
 

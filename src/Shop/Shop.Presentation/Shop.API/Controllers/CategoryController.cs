@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Common.Api;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Categories.AddSubCategory;
 using Shop.Application.Categories.Create;
@@ -9,6 +10,7 @@ using Shop.Query.Categories._DTOs;
 
 namespace Shop.API.Controllers;
 
+[Authorize]
 public class CategoryController : BaseApiController
 {
     private readonly ICategoryFacade _categoryFacade;

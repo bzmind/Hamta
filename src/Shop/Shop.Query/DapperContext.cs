@@ -11,6 +11,7 @@ public class DapperContext
     public string Users => "[user].Users";
     public string UserAddresses => "[user].Addresses";
     public string UserFavoriteItems => "[user].FavoriteItems";
+    public string UserTokens => "[user].Tokens";
     public string Orders => "[order].Orders";
     public string OrderAddresses => "[order].Addresses";
     public string OrderItems => "[order].Items";

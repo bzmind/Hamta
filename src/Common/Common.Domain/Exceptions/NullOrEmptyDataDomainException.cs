@@ -14,7 +14,7 @@ public class NullOrEmptyDataDomainException : BaseDomainException
 
     public static void CheckString(string? data, string fieldName)
     {
-        if (string.IsNullOrEmpty(data))
+        if (string.IsNullOrWhiteSpace(data))
             throw new NullOrEmptyDataDomainException($"{fieldName} is null or empty");
     }
 }

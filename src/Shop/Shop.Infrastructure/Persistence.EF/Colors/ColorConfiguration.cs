@@ -13,6 +13,9 @@ public class ColorConfiguration : IEntityTypeConfiguration<Color>
         builder.Property(color => color.Id)
             .UseIdentityColumn(1);
 
+        builder.Property(color => color.CreationDate)
+            .HasColumnType("datetime2(0)");
+
         builder.Property(color => color.Name)
             .IsRequired()
             .HasMaxLength(50);

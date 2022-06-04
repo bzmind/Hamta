@@ -22,7 +22,7 @@ internal static class QuestionMapper
             Status = question.Status
         };
 
-        question.Replies.ToList().ForEach(r => questionDto.Replies.Add(new ReplyDto()
+        question.Replies.ToList().ForEach(r => questionDto.Replies.Add(new ReplyDto
         {
             Id = r.Id,
             CreationDate = r.CreationDate,

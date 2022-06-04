@@ -21,7 +21,7 @@ public class BaseApiController : ControllerBase
         };
     }
 
-    protected ApiResult<TData> CommandResult<TData>(OperationResult<TData> result,
+    protected ApiResult<TData?> CommandResult<TData>(OperationResult<TData> result,
         HttpStatusCode statusCode = HttpStatusCode.OK, string? resultUrl = null)
 
     {

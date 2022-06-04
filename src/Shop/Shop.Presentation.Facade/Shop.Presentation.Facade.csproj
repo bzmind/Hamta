@@ -15,6 +15,7 @@
     <Folder Include="Inventories\" />
     <Folder Include="Orders\" />
     <Folder Include="Products\" />
+    <Folder Include="Users\Tokens\" />
   </ItemGroup>
 
   <ItemGroup>

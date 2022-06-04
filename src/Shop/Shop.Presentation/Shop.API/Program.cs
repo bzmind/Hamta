@@ -1,5 +1,9 @@
+using Common.Api;
+using Common.Api.Jwt;
 using Common.Api.Middleware;
-using Shop.API;
+using Common.Api.Utility;
+using Microsoft.AspNetCore.Mvc;
+using Shop.API.SetupClasses;
 using Shop.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,9 +12,27 @@ var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.RegisterShopDependencies(connectionString);
 builder.Services.RegisterApiDependencies();
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
-builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddControllers()
+    .ConfigureApiBehaviorOptions(options =>
+    {
+        options.InvalidModelStateResponseFactory = context =>
+        {
+            var result = new ApiResult
+            {
+                IsSuccessful = false,
+                MetaData = new MetaData
+                {
+                    ApiStatusCode = ApiStatusCode.BadRequest,
+                    Message = ModelStateUtility.CollectModelStateErrors(context.ModelState)
+                }
+            };
+
+            return new BadRequestObjectResult(result);
+        };
+    });
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -28,6 +50,8 @@ app.UseSwaggerUI(settings =>
 });
 
 app.UseHttpsRedirection();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 
