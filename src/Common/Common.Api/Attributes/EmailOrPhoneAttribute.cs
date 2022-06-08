@@ -2,7 +2,7 @@
 using System.Text.RegularExpressions;
 using Common.Application.Validation;
 
-namespace Common.Api.Validation;
+namespace Common.Api.Attributes;
 
 public class EmailOrPhoneAttribute : ValidationAttribute
 {

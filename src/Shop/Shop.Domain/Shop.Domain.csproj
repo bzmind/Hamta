@@ -14,6 +14,7 @@
     <Folder Include="ColorAggregate\Repository\" />
     <Folder Include="OrderAggregate\ValueObjects\" />
     <Folder Include="QuestionAggregate\Repository\" />
+    <Folder Include="RoleAggregate\Repository\" />
   </ItemGroup>
 
 </Project>

@@ -23,8 +23,11 @@ public class User : BaseAggregateRoot
     private readonly List<UserToken> _tokens = new();
     public IEnumerable<UserToken> Tokens => _tokens.ToList();
 
+    private readonly List<UserRole> _roles = new();
+    public IEnumerable<UserRole> Roles => _roles.ToList();
+
     public const string DefaultAvatarName = "avatar.png";
-    private const int MaximumUsableDevices = 3;
+    private const int MaximumSimultaneousDevices = 3;
 
     private User()
     {
@@ -134,7 +137,7 @@ public class User : BaseAggregateRoot
     {
         var activeTokenCount = Tokens.Count(t => t.RefreshTokenExpireDate > DateTime.Now);
 
-        if (activeTokenCount == MaximumUsableDevices)
+        if (activeTokenCount == MaximumSimultaneousDevices)
             throw new OperationNotAllowedDomainException("You can't use more than 3 devices simultaneously");
 
         var token = new UserToken(Id, jwtTokenHash, refreshTokenHash, jwtTokenExpireDate,
@@ -151,6 +154,21 @@ public class User : BaseAggregateRoot
             throw new DataNotFoundDomainException("Token not found");
 
         _tokens.Remove(token);
+    }
+
+    public void AddRole(UserRole role)
+    {
+        _roles.Add(role);
+    }
+
+    public void RemoveRole(long roleId)
+    {
+        var role = _roles.FirstOrDefault(r => r.Id == roleId);
+
+        if (role == null)
+            throw new DataNotFoundDomainException("Role not found");
+
+        _roles.Remove(role);
     }
 
     private void Guard(string fullName, string phoneNumber, string email, IUserDomainService userDomainService)

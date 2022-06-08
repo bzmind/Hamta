@@ -29,20 +29,23 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
             .WithOne()
             .HasForeignKey(childCategory => childCategory.ParentId);
 
-        builder.OwnsMany(category => category.Specifications, option =>
+        builder.OwnsMany(category => category.Specifications, options =>
         {
-            option.ToTable("Specifications", "category");
+            options.ToTable("Specifications", "category");
 
-            option.HasKey(spec => spec.Id);
+            options.HasKey(specification => specification.Id);
 
-            option.Property(spec => spec.Id)
+            options.Property(specification => specification.Id)
                 .UseIdentityColumn(1);
+            
+            options.Property(specification => specification.CreationDate)
+                .HasColumnType("datetime2(0)");
 
-            option.Property(spec => spec.Title)
+            options.Property(specification => specification.Title)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            option.Property(spec => spec.Description)
+            options.Property(specification => specification.Description)
                 .IsRequired()
                 .HasMaxLength(500);
         });

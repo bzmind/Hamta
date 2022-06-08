@@ -1,13 +1,17 @@
 ﻿using System.Net;
 using Common.Api;
+using Common.Api.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Shippings.Create;
 using Shop.Application.Shippings.Edit;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Shippings;
 using Shop.Query.Shippings._DTOs;
 
 namespace Shop.API.Controllers;
 
+[CheckPermission(RolePermission.Permissions.ShippingManager)]
 public class ShippingController : BaseApiController
 {
     private readonly IShippingFacade _shippingFacade;
@@ -39,6 +43,7 @@ public class ShippingController : BaseApiController
         return CommandResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetById/{shippingId}")]
     public async Task<ApiResult<ShippingDto?>> GetById(long shippingId)
     {
@@ -46,6 +51,7 @@ public class ShippingController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetAll")]
     public async Task<ApiResult<List<ShippingDto>>> GetAll()
     {

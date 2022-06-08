@@ -8,6 +8,7 @@ using Shop.Presentation.Facade.Inventories;
 using Shop.Presentation.Facade.Orders;
 using Shop.Presentation.Facade.Products;
 using Shop.Presentation.Facade.Questions;
+using Shop.Presentation.Facade.Roles;
 using Shop.Presentation.Facade.Shippings;
 using Shop.Presentation.Facade.Users.Tokens;
 
@@ -27,6 +28,7 @@ public static class FacadeBootstrapper
         services.AddScoped<IOrderFacade, OrderFacade>();
         services.AddScoped<IProductFacade, ProductFacade>();
         services.AddScoped<IQuestionFacade, QuestionFacade>();
+        services.AddScoped<IRoleFacade, RoleFacade>();
         services.AddScoped<IShippingFacade, ShippingFacade>();
     }
 }

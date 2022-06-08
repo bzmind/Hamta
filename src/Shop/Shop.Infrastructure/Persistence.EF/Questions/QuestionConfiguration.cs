@@ -24,11 +24,17 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
             .IsRequired()
             .HasMaxLength(20);
 
-        builder.OwnsMany(question => question.Replies, option =>
+        builder.OwnsMany(question => question.Replies, options =>
         {
-            option.ToTable("Replies", "question");
-            option.HasKey(reply => reply.Id);
-            option.Property(reply => reply.Id).UseIdentityColumn();
+            options.ToTable("Replies", "question");
+
+            options.HasKey(reply => reply.Id);
+
+            options.Property(reply => reply.Id)
+                .UseIdentityColumn();
+
+            options.Property(reply => reply.CreationDate)
+                .HasColumnType("datetime2(0)");
         });
     }
 }

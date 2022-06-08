@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using Common.Api.Validation;
+using Common.Api.Attributes;
 using Common.Application.Validation;
 
 namespace Shop.API.ViewModels.Auth;

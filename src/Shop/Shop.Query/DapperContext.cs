@@ -21,6 +21,7 @@ public class DapperContext
     public string Colors => "[color].Colors";
     public string Comments => "[comment].Comments";
     public string CommentHints => "[comment].Hints";
+    public string Roles => "[role].Roles";
     public string Shippings => "[shipping].Shippings";
 
     private readonly string _connectionString;

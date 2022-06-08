@@ -16,6 +16,10 @@
     <Folder Include="Orders\_DTOs\" />
     <Folder Include="Orders\_Mappers\" />
     <Folder Include="Products\_DTOs\" />
+    <Folder Include="Roles\GetList\" />
+    <Folder Include="Roles\GetById\" />
+    <Folder Include="Roles\_Mapper\" />
+    <Folder Include="Roles\_DTOs\" />
     <Folder Include="Shippings\_DTOs\" />
     <Folder Include="Shippings\_Mappers\" />
   </ItemGroup>

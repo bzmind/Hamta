@@ -262,6 +262,27 @@ namespace Shop.Infrastructure.Migrations
                     b.ToTable("Questions", "question");
                 });
 
+            modelBuilder.Entity("Shop.Domain.RoleAggregate.Role", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles", "role");
+                });
+
             modelBuilder.Entity("Shop.Domain.ShippingAggregate.Shipping", b =>
                 {
                     b.Property<long>("Id")
@@ -340,7 +361,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Description")
                                 .IsRequired()
@@ -382,7 +403,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Hint")
                                 .IsRequired()
@@ -416,7 +437,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasColumnType("bigint");
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Reaction")
                                 .IsRequired()
@@ -480,7 +501,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasColumnType("nvarchar(100)");
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("FullAddress")
                                 .IsRequired()
@@ -550,7 +571,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasColumnType("int");
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<long>("InventoryId")
                                 .HasColumnType("bigint");
@@ -645,7 +666,7 @@ namespace Shop.Infrastructure.Migrations
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
@@ -674,7 +695,7 @@ namespace Shop.Infrastructure.Migrations
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Name")
                                 .IsRequired()
@@ -704,7 +725,7 @@ namespace Shop.Infrastructure.Migrations
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Description")
                                 .IsRequired()
@@ -738,7 +759,7 @@ namespace Shop.Infrastructure.Migrations
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Description")
                                 .IsRequired()
@@ -811,7 +832,7 @@ namespace Shop.Infrastructure.Migrations
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Description")
                                 .IsRequired()
@@ -841,6 +862,40 @@ namespace Shop.Infrastructure.Migrations
                         });
 
                     b.Navigation("Replies");
+                });
+
+            modelBuilder.Entity("Shop.Domain.RoleAggregate.Role", b =>
+                {
+                    b.OwnsMany("Shop.Domain.RoleAggregate.RolePermission", "Permissions", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2(0)");
+
+                            b1.Property<string>("Permission")
+                                .IsRequired()
+                                .HasMaxLength(30)
+                                .HasColumnType("nvarchar(30)");
+
+                            b1.Property<long>("RoleId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("RoleId");
+
+                            b1.ToTable("Permissions", "role");
+
+                            b1.WithOwner()
+                                .HasForeignKey("RoleId");
+                        });
+
+                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("Shop.Domain.ShippingAggregate.Shipping", b =>
@@ -901,7 +956,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasColumnType("nvarchar(100)");
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("FullAddress")
                                 .IsRequired()
@@ -970,7 +1025,7 @@ namespace Shop.Infrastructure.Migrations
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<long>("ProductId")
                                 .HasColumnType("bigint");
@@ -988,6 +1043,33 @@ namespace Shop.Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
+                    b.OwnsMany("Shop.Domain.UserAggregate.UserRole", "Roles", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2(0)");
+
+                            b1.Property<long>("RoleId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<long>("UserId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("Roles", "user");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsMany("Shop.Domain.UserAggregate.UserToken", "Tokens", b1 =>
                         {
                             b1.Property<long>("Id")
@@ -997,7 +1079,7 @@ namespace Shop.Infrastructure.Migrations
                             SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
 
                             b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
+                                .HasColumnType("datetime2(0)");
 
                             b1.Property<string>("Device")
                                 .IsRequired()
@@ -1039,6 +1121,8 @@ namespace Shop.Infrastructure.Migrations
 
                     b.Navigation("PhoneNumber")
                         .IsRequired();
+
+                    b.Navigation("Roles");
 
                     b.Navigation("Tokens");
                 });

@@ -43,41 +43,23 @@ public class GetUserByFilterQueryHandler : IBaseQueryHandler<GetUserByFilterQuer
         var finalQuery = await query
             .Skip(skip)
             .Take(@params.Take)
-            .Select(c => c.MapToUserDto())
+            .Select(c => c.MapToUserFilterDto())
             .ToListAsync(cancellationToken);
 
-        var favoriteItemProductIds = new List<long>();
-        finalQuery.ForEach(c =>
+        var roleIds = new List<long>();
+        finalQuery.ForEach(u =>
         {
-            c.FavoriteItems.ForEach(fi =>
-            {
-                favoriteItemProductIds.Add(fi.ProductId);
-            });
+            u.Roles.ForEach(r => roleIds.Add(r.RoleId));
         });
 
-        var tables = await _shopContext.Products.Where(p => favoriteItemProductIds.Contains(p.Id))
-            .Join(
-                _shopContext.Inventories,
-                p => p.Id,
-                i => i.ProductId,
-                (product, inventory) => new
-                {
-                    product,
-                    inventory
-                })
-            .ToListAsync(cancellationToken);
+        var roles = await _shopContext.Roles.Where(r => roleIds.Contains(r.Id)).ToListAsync(cancellationToken);
 
-        finalQuery.ForEach(c =>
+        finalQuery.ForEach(u =>
         {
-            c.FavoriteItems.ForEach(fi =>
+            u.Roles.ForEach(r =>
             {
-                var product = tables.First(t => t.product.Id == fi.ProductId).product;
-                var inventory = tables.First(t => t.inventory.Id == product.Id).inventory;
-                fi.ProductName = product.Name;
-                fi.ProductMainImage = product.MainImage.Name;
-                fi.ProductPrice = inventory.Price.Value;
-                fi.AverageScore = product.AverageScore;
-                fi.IsAvailable = inventory.IsAvailable;
+                var role = roles.First(rl => rl.Id == r.RoleId);
+                r.RoleTitle = role.Title;
             });
         });
 

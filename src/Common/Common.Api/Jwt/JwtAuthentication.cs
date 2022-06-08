@@ -28,7 +28,7 @@ public static class JwtAuthentication
                 ValidateAudience = true
             };
             options.SaveToken = true;
-            options.Events = new JwtBearerEvents()
+            options.Events = new JwtBearerEvents
             {
                 OnTokenValidated = async context =>
                 {

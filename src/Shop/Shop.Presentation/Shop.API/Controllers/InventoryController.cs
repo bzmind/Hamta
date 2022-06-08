@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Common.Api;
+using Common.Api.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Inventories.Create;
 using Shop.Application.Inventories.DecreaseQuantity;
@@ -7,11 +8,13 @@ using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
 using Shop.Application.Inventories.IncreaseQuantity;
 using Shop.Application.Inventories.RemoveDiscount;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Inventories;
 using Shop.Query.Inventories._DTOs;
 
 namespace Shop.API.Controllers;
 
+[CheckPermission(RolePermission.Permissions.InventoryManager)]
 public class InventoryController : BaseApiController
 {
     private readonly IInventoryFacade _inventoryFacade;

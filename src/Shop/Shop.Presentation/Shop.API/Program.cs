@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using Common.Api;
 using Common.Api.Jwt;
 using Common.Api.Middleware;
@@ -31,6 +32,10 @@ builder.Services.AddControllers()
 
             return new BadRequestObjectResult(result);
         };
+    })
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 builder.Services.AddEndpointsApiExplorer();

@@ -1,11 +1,13 @@
 ﻿using Common.Application;
 using MediatR;
 using Shop.Application.Users.AddFavoriteItem;
+using Shop.Application.Users.AddRole;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Application.Users.Register;
 using Shop.Application.Users.Remove;
 using Shop.Application.Users.RemoveFavoriteItem;
+using Shop.Application.Users.RemoveRole;
 using Shop.Application.Users.SetAvatar;
 using Shop.Application.Users.SetSubscriptionToNews;
 using Shop.Query.Users._DTOs;
@@ -55,6 +57,16 @@ internal class UserFacade : IUserFacade
     }
 
     public async Task<OperationResult> RemoveFavoriteItem(RemoveUserFavoriteItemCommand command)
+    {
+        return await _mediator.Send(command);
+    }
+
+    public async Task<OperationResult> AddRole(AddUserRoleCommand command)
+    {
+        return await _mediator.Send(command);
+    }
+
+    public async Task<OperationResult> RemoveRole(RemoveUserRoleCommand command)
     {
         return await _mediator.Send(command);
     }

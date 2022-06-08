@@ -31,75 +31,87 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(product => product.Description)
             .HasMaxLength(2000);
 
-        builder.OwnsMany(product => product.Scores, option =>
+        builder.OwnsMany(product => product.Scores, options =>
         {
-            option.ToTable("Scores", "product");
+            options.ToTable("Scores", "product");
 
-            option.Property(score => score.Value)
+            options.Property(score => score.Value)
                 .IsRequired()
                 .HasColumnType("float(2,1)");
         });
 
-        builder.OwnsOne(product => product.MainImage, option =>
+        builder.OwnsOne(product => product.MainImage, options =>
         {
-            option.ToTable("Images", "product");
+            options.ToTable("Images", "product");
 
-            option.HasKey(mainImage => mainImage.Id);
+            options.HasKey(mainImage => mainImage.Id);
 
-            option.Property(mainImage => mainImage.Id)
+            options.Property(mainImage => mainImage.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(mainImage => mainImage.Name)
+            options.Property(mainImage => mainImage.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(mainImage => mainImage.Name)
                 .IsRequired()
                 .HasMaxLength(100);
         });
 
-        builder.OwnsMany(product => product.GalleryImages, option =>
+        builder.OwnsMany(product => product.GalleryImages, options =>
         {
-            option.ToTable("GalleryImages", "product");
+            options.ToTable("GalleryImages", "product");
 
-            option.HasKey(mainImage => mainImage.Id);
+            options.HasKey(galleryImage => galleryImage.Id);
 
-            option.Property(mainImage => mainImage.Id)
+            options.Property(galleryImage => galleryImage.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(mainImage => mainImage.Name)
+            options.Property(galleryImage => galleryImage.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(galleryImage => galleryImage.Name)
                 .IsRequired()
                 .HasMaxLength(100);
         });
 
-        builder.OwnsMany(product => product.CustomSpecifications, option =>
+        builder.OwnsMany(product => product.CustomSpecifications, options =>
         {
-            option.ToTable("CustomSpecifications", "product");
+            options.ToTable("CustomSpecifications", "product");
 
-            option.HasKey(customSpec => customSpec.Id);
+            options.HasKey(customSpec => customSpec.Id);
 
-            option.Property(customSpec => customSpec.Id)
+            options.Property(customSpec => customSpec.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(customSpec => customSpec.Title)
+            options.Property(customSpec => customSpec.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(customSpec => customSpec.Title)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            option.Property(customSpec => customSpec.Description)
+            options.Property(customSpec => customSpec.Description)
                 .IsRequired()
                 .HasMaxLength(300);
         });
 
-        builder.OwnsMany(product => product.ExtraDescriptions, option =>
+        builder.OwnsMany(product => product.ExtraDescriptions, options =>
         {
-            option.ToTable("ExtraDescriptions", "product");
+            options.ToTable("ExtraDescriptions", "product");
 
-            option.HasKey(extraDescription => extraDescription.Id);
+            options.HasKey(extraDescription => extraDescription.Id);
 
-            option.Property(extraDescription => extraDescription.Id)
+            options.Property(extraDescription => extraDescription.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(extraDescription => extraDescription.Title)
+            options.Property(extraDescription => extraDescription.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(extraDescription => extraDescription.Title)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            option.Property(extraDescription => extraDescription.Description)
+            options.Property(extraDescription => extraDescription.Description)
                 .IsRequired()
                 .HasMaxLength(2000);
         });

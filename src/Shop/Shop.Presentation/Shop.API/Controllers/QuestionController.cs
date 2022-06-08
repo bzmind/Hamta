@@ -1,18 +1,22 @@
 ﻿using System.Net;
 using AutoMapper;
 using Common.Api;
+using Common.Api.Attributes;
 using Common.Api.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Questions;
 using Shop.Application.Questions.AddReply;
 using Shop.Application.Questions.Create;
 using Shop.Application.Questions.RemoveReply;
 using Shop.Application.Questions.SetStatus;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Questions;
 using Shop.Query.Questions._DTOs;
 
 namespace Shop.API.Controllers;
 
+[Authorize]
 public class QuestionController : BaseApiController
 {
     private readonly IQuestionFacade _questionFacade;
@@ -34,6 +38,7 @@ public class QuestionController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
+    [CheckPermission(RolePermission.Permissions.QuestionManager)]
     [HttpPut("SetStatus")]
     public async Task<ApiResult> SetStatus(SetQuestionStatusCommand command)
     {
@@ -64,6 +69,7 @@ public class QuestionController : BaseApiController
         return CommandResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetById/{questionId}")]
     public async Task<ApiResult<QuestionDto?>> GetById(long questionId)
     {
@@ -71,6 +77,7 @@ public class QuestionController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<QuestionFilterResult>> GetByFilter([FromQuery] QuestionFilterParam filterParams)
     {

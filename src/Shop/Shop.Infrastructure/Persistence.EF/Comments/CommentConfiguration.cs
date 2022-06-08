@@ -25,19 +25,22 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
             .IsRequired()
             .HasMaxLength(1500);
 
-        builder.OwnsMany(comment => comment.CommentHints, option =>
+        builder.OwnsMany(comment => comment.CommentHints, options =>
         {
-            option.ToTable("Hints", "comment");
+            options.ToTable("Hints", "comment");
 
-            option.HasKey(hint => hint.Id);
+            options.HasKey(hint => hint.Id);
 
-            option.Property(hint => hint.Id)
+            options.Property(hint => hint.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(hint => hint.Status)
+            options.Property(hint => hint.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(hint => hint.Status)
                 .HasMaxLength(10);
 
-            option.Property(hint => hint.Hint)
+            options.Property(hint => hint.Hint)
                 .HasMaxLength(200);
         });
 
@@ -55,16 +58,19 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         builder.Property(comment => comment.Dislikes)
             .IsRequired();
 
-        builder.OwnsMany(comment => comment.CommentReactions, option =>
+        builder.OwnsMany(comment => comment.CommentReactions, options =>
         {
-            option.ToTable("Reactions", "comment");
+            options.ToTable("Reactions", "comment");
 
-            option.HasKey(reaction => reaction.Id);
+            options.HasKey(reaction => reaction.Id);
 
-            option.Property(reaction => reaction.Id)
+            options.Property(reaction => reaction.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(reaction => reaction.Reaction)
+            options.Property(reaction => reaction.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(reaction => reaction.Reaction)
                 .HasMaxLength(10);
         });
     }

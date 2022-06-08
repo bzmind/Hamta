@@ -21,15 +21,11 @@ public class GetUserByIdQueryHandler : IBaseQueryHandler<GetUserByIdQuery, UserD
 
     public async Task<UserDto?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _shopContext.Users
-            .FirstOrDefaultAsync(c => c.Id == request.UserId, cancellationToken);
-        
-        if (user == null)
-            return null;
+        var user = await _shopContext.Users.FirstOrDefaultAsync(c => c.Id == request.UserId, cancellationToken);
 
         var userDto = user.MapToUserDto();
-        var favoriteItems = await userDto.GetFavoriteItemsAsDto(_dapperContext);
-        userDto.FavoriteItems = favoriteItems;
+        await userDto.GetFavoriteItemsDto(_dapperContext);
+        await userDto.GetRolesDto(_shopContext);
 
         return userDto;
     }

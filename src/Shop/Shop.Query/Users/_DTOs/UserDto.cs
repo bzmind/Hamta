@@ -13,4 +13,5 @@ public class UserDto : BaseDto
     public string AvatarName { get; set; }
     public bool IsSubscribedToNews { get; set; }
     public List<UserFavoriteItemDto> FavoriteItems { get; set; }
+    public List<UserRoleDto> Roles { get; set; }
 }

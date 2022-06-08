@@ -1,13 +1,17 @@
 ﻿using System.Net;
 using Common.Api;
+using Common.Api.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Colors.Create;
 using Shop.Application.Colors.Edit;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Colors;
 using Shop.Query.Colors._DTOs;
 
 namespace Shop.API.Controllers;
 
+[CheckPermission(RolePermission.Permissions.ColorManager)]
 public class ColorController : BaseApiController
 {
     private readonly IColorFacade _colorFacade;
@@ -32,6 +36,7 @@ public class ColorController : BaseApiController
         return CommandResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetById/{colorId}")]
     public async Task<ApiResult<ColorDto?>> GetById(long colorId)
     {
@@ -39,6 +44,7 @@ public class ColorController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<ColorFilterResult>> GetByFilter([FromQuery] ColorFilterParam filterParams)
     {

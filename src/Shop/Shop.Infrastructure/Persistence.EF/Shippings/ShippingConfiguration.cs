@@ -21,9 +21,9 @@ public class ShippingConfiguration : IEntityTypeConfiguration<Shipping>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.OwnsOne(shipping => shipping.Cost, option =>
+        builder.OwnsOne(shipping => shipping.Cost, options =>
         {
-            option.Property(cost => cost.Value)
+            options.Property(cost => cost.Value)
                 .HasColumnName("Cost")
                 .IsRequired();
         });

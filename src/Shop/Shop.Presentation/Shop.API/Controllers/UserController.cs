@@ -1,17 +1,23 @@
 ﻿using System.Net;
 using Common.Api;
+using Common.Api.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Users.AddFavoriteItem;
+using Shop.Application.Users.AddRole;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Application.Users.RemoveFavoriteItem;
+using Shop.Application.Users.RemoveRole;
 using Shop.Application.Users.SetAvatar;
 using Shop.Application.Users.SetSubscriptionToNews;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Users;
 using Shop.Query.Users._DTOs;
 
 namespace Shop.API.Controllers;
 
+[Authorize]
 public class UserController : BaseApiController
 {
     private readonly IUserFacade _userFacade;
@@ -21,6 +27,7 @@ public class UserController : BaseApiController
         _userFacade = userFacade;
     }
 
+    [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateUserCommand command)
     {
@@ -57,6 +64,14 @@ public class UserController : BaseApiController
         return CommandResult(result);
     }
 
+    [CheckPermission(RolePermission.Permissions.UserManager)]
+    [HttpPut("AddRole")]
+    public async Task<ApiResult> AddRole(AddUserRoleCommand command)
+    {
+        var result = await _userFacade.AddRole(command);
+        return CommandResult(result);
+    }
+
     [HttpDelete("RemoveFavoriteItem")]
     public async Task<ApiResult> RemoveFavoriteItem(RemoveUserFavoriteItemCommand command)
     {
@@ -64,6 +79,15 @@ public class UserController : BaseApiController
         return CommandResult(result);
     }
 
+    [CheckPermission(RolePermission.Permissions.UserManager)]
+    [HttpDelete("RemoveRole/{roleId}")]
+    public async Task<ApiResult> RemoveRole(RemoveUserRoleCommand command)
+    {
+        var result = await _userFacade.RemoveRole(command);
+        return CommandResult(result);
+    }
+
+    [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpDelete("Remove/{userId}")]
     public async Task<ApiResult> Remove(long userId)
     {
@@ -71,6 +95,7 @@ public class UserController : BaseApiController
         return CommandResult(result);
     }
 
+    [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpGet("GetById/{userId}")]
     public async Task<ApiResult<UserDto?>> GetById(long userId)
     {
@@ -78,6 +103,7 @@ public class UserController : BaseApiController
         return QueryResult(result);
     }
 
+    [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpGet("GetByEmailOrPhoneNumber/{phoneNumber}")]
     public async Task<ApiResult<UserDto?>> GetByEmailOrPhoneNumber(string phoneNumber)
     {
@@ -85,6 +111,7 @@ public class UserController : BaseApiController
         return QueryResult(result);
     }
 
+    [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<UserFilterResult>> GetByFilter([FromQuery] UserFilterParam filterParam)
     {

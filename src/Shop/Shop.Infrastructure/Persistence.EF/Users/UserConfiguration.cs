@@ -27,20 +27,23 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(50);
 
-        builder.OwnsMany(comment => comment.Addresses, option =>
+        builder.OwnsMany(comment => comment.Addresses, options =>
         {
-            option.ToTable("Addresses", "user");
+            options.ToTable("Addresses", "user");
 
-            option.HasKey(address => address.Id);
+            options.HasKey(address => address.Id);
 
-            option.Property(address => address.Id)
+            options.Property(address => address.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(address => address.FullName)
+            options.Property(address => address.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(address => address.FullName)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            option.OwnsOne(address => address.PhoneNumber, config =>
+            options.OwnsOne(address => address.PhoneNumber, config =>
             {
                 config.Property(phoneNumber => phoneNumber.Value)
                     .HasColumnName("PhoneNumber")
@@ -48,19 +51,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                     .HasMaxLength(11);
             });
 
-            option.Property(address => address.Province)
+            options.Property(address => address.Province)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            option.Property(address => address.City)
+            options.Property(address => address.City)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            option.Property(address => address.FullAddress)
+            options.Property(address => address.FullAddress)
                 .IsRequired()
                 .HasMaxLength(300);
 
-            option.Property(address => address.PostalCode)
+            options.Property(address => address.PostalCode)
                 .IsRequired()
                 .HasMaxLength(10);
         });
@@ -81,42 +84,61 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasColumnType("bit");
 
-        builder.OwnsMany(user => user.FavoriteItems, option =>
+        builder.OwnsMany(user => user.FavoriteItems, options =>
         {
-            option.ToTable("FavoriteItems", "user");
+            options.ToTable("FavoriteItems", "user");
 
-            option.HasKey(favoriteItem => favoriteItem.Id);
+            options.HasKey(favoriteItem => favoriteItem.Id);
 
-            option.Property(favoriteItem => favoriteItem.Id)
+            options.Property(favoriteItem => favoriteItem.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(favoriteItem => favoriteItem.UserId)
+            options.Property(favoriteItem => favoriteItem.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(favoriteItem => favoriteItem.UserId)
                 .IsRequired();
 
-            option.Property(favoriteItem => favoriteItem.ProductId)
+            options.Property(favoriteItem => favoriteItem.ProductId)
                 .IsRequired();
         });
 
-        builder.OwnsMany(user => user.Tokens, option =>
+        builder.OwnsMany(user => user.Tokens, options =>
         {
-            option.ToTable("Tokens", "user");
+            options.ToTable("Tokens", "user");
 
-            option.HasKey(token => token.Id);
+            options.HasKey(t => t.Id);
 
-            option.Property(token => token.Id)
+            options.Property(t => t.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(t => t.JwtTokenHash)
+            options.Property(t => t.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(t => t.JwtTokenHash)
                 .IsRequired()
                 .HasMaxLength(250);
 
-            option.Property(t => t.RefreshTokenHash)
+            options.Property(t => t.RefreshTokenHash)
                 .IsRequired()
                 .HasMaxLength(250);
 
-            option.Property(t => t.Device)
+            options.Property(t => t.Device)
                 .IsRequired()
                 .HasMaxLength(100);
+        });
+
+        builder.OwnsMany(user => user.Roles, options =>
+        {
+            options.ToTable("Roles", "user");
+
+            options.HasKey(role => role.Id);
+
+            options.Property(role => role.Id)
+                .UseIdentityColumn(1);
+
+            options.Property(role => role.CreationDate)
+                .HasColumnType("datetime2(0)");
         });
     }
 }

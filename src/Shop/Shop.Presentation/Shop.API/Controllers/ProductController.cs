@@ -1,5 +1,7 @@
 ﻿using System.Net;
 using Common.Api;
+using Common.Api.Attributes;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.CustomModelBinders;
 using Shop.Application.Products.Create;
@@ -7,11 +9,13 @@ using Shop.Application.Products.Edit;
 using Shop.Application.Products.RemoveGalleryImage;
 using Shop.Application.Products.ReplaceMainImage;
 using Shop.Application.Products.SetScore;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Products;
 using Shop.Query.Products._DTOs;
 
 namespace Shop.API.Controllers;
 
+[CheckPermission(RolePermission.Permissions.ProductManager)]
 public class ProductController : BaseApiController
 {
     private readonly IProductFacade _productFacade;
@@ -66,6 +70,7 @@ public class ProductController : BaseApiController
         return CommandResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetById/{id}")]
     public async Task<ApiResult<ProductDto?>> GetById(long id)
     {
@@ -73,6 +78,7 @@ public class ProductController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<ProductFilterResult>> GetByFilter([FromQuery] ProductFilterParam filterParam)
     {

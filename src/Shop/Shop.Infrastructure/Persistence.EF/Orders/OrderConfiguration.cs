@@ -21,20 +21,23 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .IsRequired()
             .HasMaxLength(20);
 
-        builder.OwnsOne(comment => comment.Address, option =>
+        builder.OwnsOne(comment => comment.Address, options =>
         {
-            option.ToTable("Addresses", "order");
+            options.ToTable("Addresses", "order");
 
-            option.HasKey(address => address.Id);
+            options.HasKey(address => address.Id);
 
-            option.Property(address => address.Id)
+            options.Property(address => address.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(address => address.FullName)
+            options.Property(address => address.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(address => address.FullName)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            option.OwnsOne(address => address.PhoneNumber, config =>
+            options.OwnsOne(address => address.PhoneNumber, config =>
             {
                 config.Property(phoneNumber => phoneNumber.Value)
                     .HasColumnName("PhoneNumber")
@@ -42,31 +45,31 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
                     .HasMaxLength(11);
             });
 
-            option.Property(address => address.Province)
+            options.Property(address => address.Province)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            option.Property(address => address.City)
+            options.Property(address => address.City)
                 .IsRequired()
                 .HasMaxLength(100);
 
-            option.Property(address => address.FullAddress)
+            options.Property(address => address.FullAddress)
                 .IsRequired()
                 .HasMaxLength(300);
 
-            option.Property(address => address.PostalCode)
+            options.Property(address => address.PostalCode)
                 .IsRequired()
                 .HasMaxLength(10);
         });
 
-        builder.OwnsOne(order => order.ShippingInfo, option =>
+        builder.OwnsOne(order => order.ShippingInfo, options =>
         {
-            option.Property(shippingInfo => shippingInfo.ShippingMethod)
+            options.Property(shippingInfo => shippingInfo.ShippingMethod)
                 .HasColumnName("ShippingMethod")
                 .IsRequired()
                 .HasMaxLength(50);
 
-            option.OwnsOne(shippingInfo => shippingInfo.ShippingCost, config =>
+            options.OwnsOne(shippingInfo => shippingInfo.ShippingCost, config =>
             {
                 config.Property(shippingCost => shippingCost.Value)
                     .HasColumnName("ShippingCost")
@@ -74,19 +77,22 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             });
         });
 
-        builder.OwnsMany(order => order.Items, option =>
+        builder.OwnsMany(order => order.Items, options =>
         {
-            option.ToTable("Items", "order");
+            options.ToTable("Items", "order");
 
-            option.HasKey(item => item.Id);
+            options.HasKey(item => item.Id);
 
-            option.Property(item => item.Id)
+            options.Property(item => item.Id)
                 .UseIdentityColumn(1);
 
-            option.Property(item => item.Count)
+            options.Property(item => item.CreationDate)
+                .HasColumnType("datetime2(0)");
+
+            options.Property(item => item.Count)
                 .IsRequired();
 
-            option.OwnsOne(item => item.Price, config =>
+            options.OwnsOne(item => item.Price, config =>
             {
                 config.Property(price => price.Value)
                     .HasColumnName("Price")

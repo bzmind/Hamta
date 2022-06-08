@@ -1,13 +1,16 @@
 ﻿using System.Net;
 using AutoMapper;
 using Common.Api;
+using Common.Api.Attributes;
 using Common.Api.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Comments;
 using Shop.Application.Comments.Create;
 using Shop.Application.Comments.SetDislikes;
 using Shop.Application.Comments.SetLikes;
 using Shop.Application.Comments.SetStatus;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Comments;
 using Shop.Query.Comments._DTOs;
 
@@ -24,6 +27,7 @@ public class CommentController : BaseApiController
         _mapper = mapper;
     }
 
+    [CheckPermission(RolePermission.Permissions.CommentManager)]
     [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateCommentCommandViewModel viewModel)
     {
@@ -34,6 +38,7 @@ public class CommentController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
+    [CheckPermission(RolePermission.Permissions.CommentManager)]
     [HttpPut("SetStatus")]
     public async Task<ApiResult> SetStatus(SetCommentStatusCommand command)
     {
@@ -41,6 +46,7 @@ public class CommentController : BaseApiController
         return CommandResult(result);
     }
 
+    [Authorize]
     [HttpPut("SetLikes/{commentId}")]
     public async Task<ApiResult> SetLikes(long commentId)
     {
@@ -49,6 +55,7 @@ public class CommentController : BaseApiController
         return CommandResult(result);
     }
 
+    [Authorize]
     [HttpPut("SetDislikes/{commentId}")]
     public async Task<ApiResult> SetDislikes(long commentId)
     {
@@ -57,6 +64,7 @@ public class CommentController : BaseApiController
         return CommandResult(result);
     }
 
+    [Authorize]
     [HttpDelete("Remove/{commentId}")]
     public async Task<ApiResult> Remove(long commentId)
     {
@@ -64,6 +72,7 @@ public class CommentController : BaseApiController
         return CommandResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetById/{commentId}")]
     public async Task<ApiResult<CommentDto?>> GetById(long commentId)
     {
@@ -71,6 +80,7 @@ public class CommentController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<CommentFilterResult>> GetByFilter([FromQuery] CommentFilterParams filterParams)
     {

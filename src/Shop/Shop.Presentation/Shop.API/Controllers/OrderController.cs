@@ -1,7 +1,9 @@
 ﻿using System.Net;
 using AutoMapper;
 using Common.Api;
+using Common.Api.Attributes;
 using Common.Api.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Orders;
 using Shop.Application.Orders.AddItem;
@@ -10,11 +12,13 @@ using Shop.Application.Orders.DecreaseItemCount;
 using Shop.Application.Orders.IncreaseOrderItemCount;
 using Shop.Application.Orders.RemoveItem;
 using Shop.Application.Orders.SetStatus;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Orders;
 using Shop.Query.Orders._DTOs;
 
 namespace Shop.API.Controllers;
 
+[Authorize]
 public class OrderController : BaseApiController
 {
     private readonly IOrderFacade _orderFacade;
@@ -62,6 +66,7 @@ public class OrderController : BaseApiController
         return CommandResult(result);
     }
 
+    [CheckPermission(RolePermission.Permissions.OrderManager)]
     [HttpPut("SetStatus")]
     public async Task<ApiResult> SetStatus(SetOrderStatusCommand command)
     {
@@ -77,6 +82,7 @@ public class OrderController : BaseApiController
         return CommandResult(result);
     }
 
+    [CheckPermission(RolePermission.Permissions.OrderManager)]
     [HttpGet("GetById/{orderId}")]
     public async Task<ApiResult<OrderDto?>> GetById(long orderId)
     {
@@ -84,6 +90,7 @@ public class OrderController : BaseApiController
         return QueryResult(result);
     }
 
+    [CheckPermission(RolePermission.Permissions.OrderManager)]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<OrderFilterResult>> GetByFilter([FromQuery] OrderFilterParam filterParams)
     {

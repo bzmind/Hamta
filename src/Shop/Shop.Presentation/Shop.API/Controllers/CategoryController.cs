@@ -1,16 +1,18 @@
 ﻿using System.Net;
 using Common.Api;
+using Common.Api.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Categories.AddSubCategory;
 using Shop.Application.Categories.Create;
 using Shop.Application.Categories.Edit;
+using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Categories;
 using Shop.Query.Categories._DTOs;
 
 namespace Shop.API.Controllers;
 
-[Authorize]
+[CheckPermission(RolePermission.Permissions.CategoryManager)]
 public class CategoryController : BaseApiController
 {
     private readonly ICategoryFacade _categoryFacade;
@@ -51,6 +53,7 @@ public class CategoryController : BaseApiController
         return CommandResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetAll")]
     public async Task<ApiResult<List<CategoryDto>>> GetAll()
     {
@@ -58,6 +61,7 @@ public class CategoryController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetById/{id}")]
     public async Task<ApiResult<CategoryDto?>> GetById(long id)
     {
@@ -65,6 +69,7 @@ public class CategoryController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetSubCategories/{parentId}")]
     public async Task<ApiResult<List<CategoryDto>>> GetByParentId(long parentId)
     {

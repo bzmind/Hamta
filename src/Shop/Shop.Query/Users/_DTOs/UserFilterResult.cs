@@ -2,7 +2,7 @@
 
 namespace Shop.Query.Users._DTOs;
 
-public class UserFilterResult : BaseFilterResult<UserDto, UserFilterParam>
+public class UserFilterResult : BaseFilterResult<UserFilterDto, UserFilterParam>
 {
     
 }

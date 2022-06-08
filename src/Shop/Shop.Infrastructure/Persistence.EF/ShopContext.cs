@@ -7,6 +7,7 @@ using Shop.Domain.InventoryAggregate;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.ProductAggregate;
 using Shop.Domain.QuestionAggregate;
+using Shop.Domain.RoleAggregate;
 using Shop.Domain.ShippingAggregate;
 
 namespace Shop.Infrastructure.Persistence.EF;
@@ -21,6 +22,7 @@ public class ShopContext : DbContext
     public DbSet<Order> Orders { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Question> Questions { get; set; }
+    public DbSet<Role> Roles { get; set; }
     public DbSet<Shipping> Shippings { get; set; }
 
     public ShopContext(DbContextOptions<ShopContext> options) : base(options)
