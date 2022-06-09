@@ -1,6 +1,7 @@
 ﻿using Common.Application;
 using Common.Application.Security;
 using MediatR;
+using Shop.Application.Users;
 using Shop.Application.Users.AddToken;
 using Shop.Application.Users.RemoveToken;
 using Shop.Query.Users._DTOs;
@@ -25,6 +26,11 @@ public class UserTokenFacade : IUserTokenFacade
     public async Task<OperationResult> RemoveToken(RemoveUserTokenCommand command)
     {
         return await _mediator.Send(command);
+    }
+
+    public async Task<OperationResult> RemoveTokensByUserId(long userId)
+    {
+        return await _mediator.Send(new RemoveUserTokensByUserId(userId));
     }
 
     public async Task<UserTokenDto?> GetTokenByRefreshTokenHash(string refreshToken)

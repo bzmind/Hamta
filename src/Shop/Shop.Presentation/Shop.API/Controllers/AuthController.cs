@@ -43,6 +43,7 @@ public class AuthController : BaseApiController
             return CommandResult(OperationResult<UserTokensDto>
                 .NotFound(ValidationMessages.FieldNotFound("کاربری با مشخصات وارد شده")));
 
+        await _userTokenFacade.RemoveTokensByUserId(user.Id);
         var result = await GenerateTokenAndAddItToUser(user);
         return CommandResult(result);
     }
@@ -71,7 +72,7 @@ public class AuthController : BaseApiController
         if (result.RefreshTokenExpireDate < DateTime.Now)
             return CommandResult(OperationResult<UserTokensDto?>.Error("رفرش توکن منقضی شده است"));
 
-        await _userTokenFacade.RemoveToken(new RemoveUserTokenCommand(result.UserId, result.Id));
+        await _userTokenFacade.RemoveTokensByUserId(result.UserId);
 
         var user = await _userFacade.GetById(result.UserId);
         var userTokensResult = await GenerateTokenAndAddItToUser(user!);

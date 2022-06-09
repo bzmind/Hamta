@@ -156,6 +156,11 @@ public class User : BaseAggregateRoot
         _tokens.Remove(token);
     }
 
+    public void RemoveAllTokens()
+    {
+        _tokens.Clear();
+    }
+
     public void AddRole(UserRole role)
     {
         _roles.Add(role);
