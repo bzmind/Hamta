@@ -3,12 +3,12 @@ using Shop.Domain.OrderAggregate;
 
 namespace Shop.Query.Orders._DTOs;
 
-public class OrderFilterResult : BaseFilterResult<OrderDto, OrderFilterParam>
+public class OrderFilterResult : BaseFilterResult<OrderDto, OrderFilterParams>
 {
     
 }
 
-public class OrderFilterParam : BaseFilterParam
+public class OrderFilterParams : BaseFilterParams
 {
     public long? UserId { get; set; }
     public DateTime? StartDate { get; set; }

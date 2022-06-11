@@ -7,9 +7,9 @@ using Shop.Query.Colors._Mappers;
 
 namespace Shop.Query.Colors.GetList;
 
-public class GetColorByFilterQuery : BaseFilterQuery<ColorFilterResult, ColorFilterParam>
+public class GetColorByFilterQuery : BaseFilterQuery<ColorFilterResult, ColorFilterParams>
 {
-    public GetColorByFilterQuery(ColorFilterParam filterParams) : base(filterParams)
+    public GetColorByFilterQuery(ColorFilterParams filterParams) : base(filterParams)
     {
     }
 }

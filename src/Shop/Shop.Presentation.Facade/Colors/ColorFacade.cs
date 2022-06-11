@@ -32,7 +32,7 @@ internal class ColorFacade : IColorFacade
         return await _mediator.Send(new GetColorByIdQuery(id));
     }
 
-    public async Task<ColorFilterResult> GetByFilter(ColorFilterParam filterParams)
+    public async Task<ColorFilterResult> GetByFilter(ColorFilterParams filterParams)
     {
         return await _mediator.Send(new GetColorByFilterQuery(filterParams));
     }

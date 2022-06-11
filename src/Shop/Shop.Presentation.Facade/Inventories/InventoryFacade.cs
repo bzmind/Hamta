@@ -47,9 +47,9 @@ internal class InventoryFacade : IInventoryFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> RemoveDiscount(RemoveInventoryDiscountCommand command)
+    public async Task<OperationResult> RemoveDiscount(long inventoryId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new RemoveInventoryDiscountCommand(inventoryId));
     }
 
     public async Task<OperationResult> Remove(long inventoryId)
@@ -62,7 +62,7 @@ internal class InventoryFacade : IInventoryFacade
         return await _mediator.Send(new GetInventoryByIdQuery(id));
     }
 
-    public async Task<InventoryFilterResult> GetByFilter(InventoryFilterParam filterParams)
+    public async Task<InventoryFilterResult> GetByFilter(InventoryFilterParams filterParams)
     {
         return await _mediator.Send(new GetInventoryByFilterQuery(filterParams));
     }

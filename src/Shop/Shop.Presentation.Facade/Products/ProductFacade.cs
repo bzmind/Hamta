@@ -56,7 +56,7 @@ internal class ProductFacade : IProductFacade
         return await _mediator.Send(new GetProductByIdQuery(id));
     }
 
-    public async Task<ProductFilterResult> GetByFilter(ProductFilterParam filterParams)
+    public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
     {
         return await _mediator.Send(new GetProductByFilterQuery(filterParams));
     }

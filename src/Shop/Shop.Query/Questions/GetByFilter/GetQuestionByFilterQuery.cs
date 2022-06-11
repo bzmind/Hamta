@@ -7,9 +7,9 @@ using Shop.Query.Questions._Mappers;
 
 namespace Shop.Query.Questions.GetByFilter;
 
-public class GetQuestionByFilterQuery : BaseFilterQuery<QuestionFilterResult, QuestionFilterParam>
+public class GetQuestionByFilterQuery : BaseFilterQuery<QuestionFilterResult, QuestionFilterParams>
 {
-    public GetQuestionByFilterQuery(QuestionFilterParam filterParams) : base(filterParams)
+    public GetQuestionByFilterQuery(QuestionFilterParams filterParams) : base(filterParams)
     {
     }
 }

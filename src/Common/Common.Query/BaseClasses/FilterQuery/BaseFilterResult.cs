@@ -9,7 +9,7 @@ public class BaseFilter
     public int EndPage { get; private set; }
     public int Take { get; private set; }
 
-    public void GeneratePaging(IQueryable<Object> data, int take, int currentPage)
+    public void GeneratePaging(IQueryable<object> data, int take, int currentPage)
     {
         var entityCount = data.Count();
         var pageCount = (int)Math.Ceiling(entityCount / (double)take);

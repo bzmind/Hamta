@@ -6,19 +6,7 @@ using Shop.Domain.QuestionAggregate.Repository;
 
 namespace Shop.Application.Questions.AddReply;
 
-public class AddReplyCommand : IBaseCommand
-{
-    public long QuestionId { get; set; }
-    public long UserId { get; set; }
-    public string Description { get; set; }
-
-    public AddReplyCommand(long questionId, long userId, string description)
-    {
-        QuestionId = questionId;
-        UserId = userId;
-        Description = description;
-    }
-}
+public record AddReplyCommand(long UserId, long QuestionId, string Description) : IBaseCommand;
 
 public class AddReplyCommandHandler : IBaseCommandHandler<AddReplyCommand>
 {

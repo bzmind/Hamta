@@ -8,8 +8,7 @@ using Shop.Domain.UserAggregate.Services;
 
 namespace Shop.Application.Users.Edit;
 
-public record EditUserCommand(long UserId, string FullName, string Email, string PhoneNumber)
-    : IBaseCommand;
+public record EditUserCommand(long UserId, string FullName, string Email, string PhoneNumber) : IBaseCommand;
 
 public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
 {

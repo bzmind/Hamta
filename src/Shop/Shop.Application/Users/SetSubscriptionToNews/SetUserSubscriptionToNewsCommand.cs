@@ -6,8 +6,7 @@ namespace Shop.Application.Users.SetSubscriptionToNews;
 
 public record SetUserSubscriptionToNewsCommand(long UserId, bool Subscription) : IBaseCommand;
 
-public class SetUserSubscriptionToNewsCommandHandler
-    : IBaseCommandHandler<SetUserSubscriptionToNewsCommand>
+public class SetUserSubscriptionToNewsCommandHandler : IBaseCommandHandler<SetUserSubscriptionToNewsCommand>
 {
     private readonly IUserRepository _userRepository;
 

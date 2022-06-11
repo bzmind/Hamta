@@ -34,9 +34,9 @@ public class RoleFacade : IRoleFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> Remove(RemoveRoleCommand command)
+    public async Task<OperationResult> Remove(long roleId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new RemoveRoleCommand(roleId));
     }
 
     public async Task<RoleDto?> GetById(long roleId)

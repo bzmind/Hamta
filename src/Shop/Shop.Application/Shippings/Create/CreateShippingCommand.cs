@@ -7,7 +7,7 @@ using Shop.Domain.ShippingAggregate.Repository;
 
 namespace Shop.Application.Shippings.Create;
 
-public record CreateShippingCommand(string ShippingMethod, int ShippingCost) : IBaseCommand<long>;
+public record CreateShippingCommand(string ShippingName, int ShippingCost) : IBaseCommand<long>;
 
 public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCommand, long>
 {
@@ -20,7 +20,7 @@ public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCo
 
     public async Task<OperationResult<long>> Handle(CreateShippingCommand request, CancellationToken cancellationToken)
     {
-        var shipping = new Shipping(request.ShippingMethod, request.ShippingCost);
+        var shipping = new Shipping(request.ShippingName, request.ShippingCost);
 
         _shippingRepository.Add(shipping);
         await _shippingRepository.SaveAsync();
@@ -32,13 +32,13 @@ public class CreateShippingCommandValidator : AbstractValidator<CreateShippingCo
 {
     public CreateShippingCommandValidator()
     {
-        RuleFor(s => s.ShippingMethod)
-            .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام روش ارسال"));
+        RuleFor(s => s.ShippingName)
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام"));
 
         RuleFor(s => s.ShippingCost)
-            .NotNull()
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("هزینه ارسال"))
-            .GreaterThan(0).WithMessage(ValidationMessages.PriceMinAmount("هزینه ارسال", 0));
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("هزینه"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("هزینه"))
+            .GreaterThan(0).WithMessage(ValidationMessages.PriceMinAmount("هزینه", 0));
     }
 }

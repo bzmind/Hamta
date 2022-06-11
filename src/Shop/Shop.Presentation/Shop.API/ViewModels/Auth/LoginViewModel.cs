@@ -7,7 +7,7 @@ namespace Shop.API.ViewModels.Auth;
 public class LoginViewModel
 {
     [EmailOrPhone]
-    public string EmailOrPhoneNumber { get; set; }
+    public string EmailOrPhone { get; set; }
 
     [Required(ErrorMessage = ValidationMessages.PasswordRequired)]
     public string Password { get; set; }

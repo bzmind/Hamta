@@ -18,5 +18,5 @@ public interface IProductFacade
     Task<OperationResult> Remove(long productId);
 
     Task<ProductDto?> GetById(long id);
-    Task<ProductFilterResult> GetByFilter(ProductFilterParam filterParams);
+    Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams);
 }

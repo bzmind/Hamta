@@ -5,7 +5,7 @@ namespace Shop.Domain.OrderAggregate.ValueObjects;
 
 public class ShippingInfo : BaseValueObject
 {
-    public string ShippingMethod { get; private set; }
+    public string ShippingName { get; private set; }
     public Money ShippingCost { get; private set; }
 
     private ShippingInfo()
@@ -13,10 +13,10 @@ public class ShippingInfo : BaseValueObject
 
     }
 
-    public ShippingInfo(string shippingMethod, Money shippingCost)
+    public ShippingInfo(string shippingName, Money shippingCost)
     {
-        Guard(shippingMethod);
-        ShippingMethod = shippingMethod;
+        Guard(shippingName);
+        ShippingName = shippingName;
         ShippingCost = shippingCost;
     }
 

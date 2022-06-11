@@ -1,3 +1,7 @@
 ﻿namespace Shop.API.ViewModels.Questions;
 
-public record AddReplyCommandViewModel(long ProductId, string Description);
+public class AddReplyCommandViewModel
+{
+    public long QuestionId { get; init; }
+    public string Description { get; init; }
+}

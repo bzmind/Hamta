@@ -21,7 +21,7 @@ public class GetOrderByIdQueryHandler : IBaseQueryHandler<GetOrderByIdQuery, Ord
         using var connection = _dapperContext.CreateConnection();
 
         var sql = $@"SELECT
-                        o.Id, o.CreationDate, o.UserId, o.Status, o.ShippingMethod, o.ShippingCost,
+                        o.Id, o.CreationDate, o.UserId, o.Status, o.ShippingName, o.ShippingCost,
                         oa.Id, oa.CreationDate, oa.OrderId, oa.FullName, oa.Province, oa.City,
                         oa.FullAddress, oa.PostalCode, oa.PhoneNumber, oi.Id, oi.CreationDate,
                         oi.OrderId, oi.InventoryId, p.Name AS ProductName, oi.Count, oi.Price,

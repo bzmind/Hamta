@@ -1,8 +1,10 @@
 ﻿using System.Net;
 using Common.Api;
 using Common.Api.Attributes;
+using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shop.API.ViewModels.Users;
 using Shop.Application.Users.AddFavoriteItem;
 using Shop.Application.Users.AddRole;
 using Shop.Application.Users.Create;
@@ -37,29 +39,33 @@ public class UserController : BaseApiController
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditUserCommand command)
+    public async Task<ApiResult> Edit(EditUserCommandViewModel model)
     {
+        var command = new EditUserCommand(User.GetUserId(), model.FullName, model.Email, model.PhoneNumber);
         var result = await _userFacade.Edit(command);
         return CommandResult(result);
     }
 
     [HttpPut("SetAvatar")]
-    public async Task<ApiResult> SetAvatar([FromForm] SetUserAvatarCommand command)
+    public async Task<ApiResult> SetAvatar([FromForm] SetUserAvatarViewModel model)
     {
+        var command = new SetUserAvatarCommand(User.GetUserId(), model.Avatar);
         var result = await _userFacade.SetAvatar(command);
         return CommandResult(result);
     }
 
-    [HttpPut("SetSubscriptionToNews")]
-    public async Task<ApiResult> SetSubscriptionToNews(SetUserSubscriptionToNewsCommand command)
+    [HttpPut("SetSubscriptionToNews/{subscription}")]
+    public async Task<ApiResult> SetSubscriptionToNews(bool subscription)
     {
+        var command = new SetUserSubscriptionToNewsCommand(User.GetUserId(), subscription);
         var result = await _userFacade.SetSubscriptionToNews(command);
         return CommandResult(result);
     }
 
-    [HttpPut("AddFavoriteItem")]
-    public async Task<ApiResult> AddFavoriteItem(AddUserFavoriteItemCommand command)
+    [HttpPut("AddFavoriteItem/{productId}")]
+    public async Task<ApiResult> AddFavoriteItem(long productId)
     {
+        var command = new AddUserFavoriteItemCommand(User.GetUserId(), productId);
         var result = await _userFacade.AddFavoriteItem(command);
         return CommandResult(result);
     }
@@ -72,9 +78,10 @@ public class UserController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpDelete("RemoveFavoriteItem")]
-    public async Task<ApiResult> RemoveFavoriteItem(RemoveUserFavoriteItemCommand command)
+    [HttpDelete("RemoveFavoriteItem/{favoriteItemId}")]
+    public async Task<ApiResult> RemoveFavoriteItem(long favoriteItemId)
     {
+        var command = new RemoveUserFavoriteItemCommand(User.GetUserId(), favoriteItemId);
         var result = await _userFacade.RemoveFavoriteItem(command);
         return CommandResult(result);
     }
@@ -104,18 +111,18 @@ public class UserController : BaseApiController
     }
 
     [CheckPermission(RolePermission.Permissions.UserManager)]
-    [HttpGet("GetByEmailOrPhoneNumber/{phoneNumber}")]
-    public async Task<ApiResult<UserDto?>> GetByEmailOrPhoneNumber(string phoneNumber)
+    [HttpGet("GetByEmailOrPhone/{emailOrPhone}")]
+    public async Task<ApiResult<UserDto?>> GetByEmailOrPhoneNumber(string emailOrPhone)
     {
-        var result = await _userFacade.GetByEmailOrPhoneNumber(phoneNumber);
+        var result = await _userFacade.GetByEmailOrPhoneNumber(emailOrPhone);
         return QueryResult(result);
     }
 
     [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpGet("GetByFilter")]
-    public async Task<ApiResult<UserFilterResult>> GetByFilter([FromQuery] UserFilterParam filterParam)
+    public async Task<ApiResult<UserFilterResult>> GetByFilter([FromQuery] UserFilterParams filterParams)
     {
-        var result = await _userFacade.GetByFilter(filterParam);
+        var result = await _userFacade.GetByFilter(filterParams);
         return QueryResult(result);
     }
 }

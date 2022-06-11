@@ -20,19 +20,16 @@ namespace Shop.API.Controllers;
 public class QuestionController : BaseApiController
 {
     private readonly IQuestionFacade _questionFacade;
-    private readonly IMapper _mapper;
 
-    public QuestionController(IQuestionFacade questionFacade, IMapper mapper)
+    public QuestionController(IQuestionFacade questionFacade)
     {
         _questionFacade = questionFacade;
-        _mapper = mapper;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateQuestionCommandViewModel viewModel)
+    public async Task<ApiResult<long>> Create(CreateQuestionCommandViewModel model)
     {
-        var command = _mapper.Map<CreateQuestionCommand>(viewModel);
-        command.UserId = User.GetUserId();
+        var command = new CreateQuestionCommand(User.GetUserId(), model.ProductId, model.Description);
         var result = await _questionFacade.Create(command);
         var resultUrl = Url.Action("Create", "Question", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
@@ -47,15 +44,14 @@ public class QuestionController : BaseApiController
     }
 
     [HttpPut("AddReply")]
-    public async Task<ApiResult> AddReply(AddReplyCommandViewModel viewModel)
+    public async Task<ApiResult> AddReply(AddReplyCommandViewModel model)
     {
-        var command = _mapper.Map<AddReplyCommand>(viewModel);
-        command.UserId = User.GetUserId();
+        var command = new AddReplyCommand(User.GetUserId(), model.QuestionId, model.Description);
         var result = await _questionFacade.AddReply(command);
         return CommandResult(result);
     }
 
-    [HttpDelete("RemoveReply")]
+    [HttpPut("RemoveReply")]
     public async Task<ApiResult> RemoveReply(RemoveReplyCommand command)
     {
         var result = await _questionFacade.RemoveReply(command);
@@ -79,7 +75,7 @@ public class QuestionController : BaseApiController
 
     [AllowAnonymous]
     [HttpGet("GetByFilter")]
-    public async Task<ApiResult<QuestionFilterResult>> GetByFilter([FromQuery] QuestionFilterParam filterParams)
+    public async Task<ApiResult<QuestionFilterResult>> GetByFilter([FromQuery] QuestionFilterParams filterParams)
     {
         var result = await _questionFacade.GetByFilter(filterParams);
         return QueryResult(result);

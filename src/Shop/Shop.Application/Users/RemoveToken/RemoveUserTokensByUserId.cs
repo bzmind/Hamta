@@ -3,7 +3,7 @@ using Common.Application.BaseClasses;
 using Common.Application.Validation;
 using Shop.Domain.UserAggregate.Repository;
 
-namespace Shop.Application.Users;
+namespace Shop.Application.Users.RemoveToken;
 
 public record RemoveUserTokensByUserId(long UserId) : IBaseCommand;
 

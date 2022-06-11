@@ -12,7 +12,7 @@ public interface IRoleFacade
     Task<OperationResult<long>> Create(CreateRoleCommand command);
     Task<OperationResult> AddPermission(AddRolePermissionCommand command);
     Task<OperationResult> RemovePermission(RemoveRolePermissionCommand command);
-    Task<OperationResult> Remove(RemoveRoleCommand command);
+    Task<OperationResult> Remove(long roleId);
 
     Task<RoleDto?> GetById(long roleId);
     Task<List<RoleDto>> GetAll();

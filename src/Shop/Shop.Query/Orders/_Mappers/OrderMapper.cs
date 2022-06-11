@@ -17,7 +17,7 @@ internal static class OrderMapper
             UserId = order.UserId,
             Status = order.Status,
             Address = order.Address.MapToOrderAddressDto(),
-            ShippingMethod = order.ShippingInfo.ShippingMethod,
+            ShippingName = order.ShippingInfo.ShippingName,
             ShippingCost = order.ShippingInfo.ShippingCost.Value,
             Items = new List<OrderItemDto>()
         };
@@ -36,7 +36,7 @@ internal static class OrderMapper
                 UserId = order.UserId,
                 Status = order.Status,
                 Address = order.Address.MapToOrderAddressDto(),
-                ShippingMethod = order.ShippingInfo.ShippingMethod,
+                ShippingName = order.ShippingInfo.ShippingName,
                 ShippingCost = order.ShippingInfo.ShippingCost.Value,
                 Items = new List<OrderItemDto>()
             });

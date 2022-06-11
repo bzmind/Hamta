@@ -7,9 +7,9 @@ using Shop.Query.Orders._Mappers;
 
 namespace Shop.Query.Orders.GetByFilter;
 
-public class GetOrderByFilterQuery : BaseFilterQuery<OrderFilterResult, OrderFilterParam>
+public class GetOrderByFilterQuery : BaseFilterQuery<OrderFilterResult, OrderFilterParams>
 {
-    public GetOrderByFilterQuery(OrderFilterParam filterParams) : base(filterParams)
+    public GetOrderByFilterQuery(OrderFilterParams filterParams) : base(filterParams)
     {
     }
 }
@@ -36,7 +36,7 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
                 UserId = o.UserId,
                 Status = o.Status,
                 Address = o.Address.MapToOrderAddressDto(),
-                ShippingMethod = o.ShippingInfo.ShippingMethod,
+                ShippingName = o.ShippingInfo.ShippingName,
                 ShippingCost = o.ShippingInfo.ShippingCost.Value,
                 Items = o.Items.ToList().MapToOrderItemDto()
             }).AsQueryable();

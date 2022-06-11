@@ -7,9 +7,9 @@ using Shop.Query.Inventories._Mappers;
 
 namespace Shop.Query.Inventories.GetByFilter;
 
-public class GetInventoryByFilterQuery : BaseFilterQuery<InventoryFilterResult, InventoryFilterParam>
+public class GetInventoryByFilterQuery : BaseFilterQuery<InventoryFilterResult, InventoryFilterParams>
 {
-    public GetInventoryByFilterQuery(InventoryFilterParam filterParams) : base(filterParams)
+    public GetInventoryByFilterQuery(InventoryFilterParams filterParams) : base(filterParams)
     {
     }
 }

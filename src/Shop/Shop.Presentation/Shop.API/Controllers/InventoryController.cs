@@ -7,7 +7,6 @@ using Shop.Application.Inventories.DecreaseQuantity;
 using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
 using Shop.Application.Inventories.IncreaseQuantity;
-using Shop.Application.Inventories.RemoveDiscount;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Inventories;
 using Shop.Query.Inventories._DTOs;
@@ -60,10 +59,10 @@ public class InventoryController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpPut("RemoveDiscount")]
-    public async Task<ApiResult> RemoveDiscount(RemoveInventoryDiscountCommand command)
+    [HttpPut("RemoveDiscount/{inventoryId}")]
+    public async Task<ApiResult> RemoveDiscount(long inventoryId)
     {
-        var result = await _inventoryFacade.RemoveDiscount(command);
+        var result = await _inventoryFacade.RemoveDiscount(inventoryId);
         return CommandResult(result);
     }
 
@@ -82,7 +81,7 @@ public class InventoryController : BaseApiController
     }
 
     [HttpGet("GetByFilter")]
-    public async Task<ApiResult<InventoryFilterResult>> GetByFilter([FromQuery] InventoryFilterParam filterParams)
+    public async Task<ApiResult<InventoryFilterResult>> GetByFilter([FromQuery] InventoryFilterParams filterParams)
     {
         var result = await _inventoryFacade.GetByFilter(filterParams);
         return QueryResult(result);

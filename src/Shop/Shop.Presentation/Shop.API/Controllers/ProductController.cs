@@ -56,7 +56,7 @@ public class ProductController : BaseApiController
         return CommandResult(result);
     }
     
-    [HttpDelete("RemoveGalleryImage")]
+    [HttpPut("RemoveGalleryImage")]
     public async Task<ApiResult> RemoveGalleryImages(RemoveGalleryImageCommand command)
     {
         var result = await _productFacade.RemoveGalleryImage(command);
@@ -80,9 +80,9 @@ public class ProductController : BaseApiController
 
     [AllowAnonymous]
     [HttpGet("GetByFilter")]
-    public async Task<ApiResult<ProductFilterResult>> GetByFilter([FromQuery] ProductFilterParam filterParam)
+    public async Task<ApiResult<ProductFilterResult>> GetByFilter([FromQuery] ProductFilterParams filterParams)
     {
-        var result = await _productFacade.GetByFilter(filterParam);
+        var result = await _productFacade.GetByFilter(filterParams);
         return QueryResult(result);
     }
 }

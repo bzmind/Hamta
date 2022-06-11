@@ -11,5 +11,5 @@ public interface IColorFacade
     Task<OperationResult> Edit(EditColorCommand command);
 
     Task<ColorDto?> GetById(long id);
-    Task<ColorFilterResult> GetByFilter(ColorFilterParam filterParams);
+    Task<ColorFilterResult> GetByFilter(ColorFilterParams filterParams);
 }

@@ -31,15 +31,15 @@ public class AuthController : BaseApiController
     }
 
     [HttpPost("Login")]
-    public async Task<ApiResult<UserTokensDto?>> Login(LoginViewModel viewModel)
+    public async Task<ApiResult<UserTokensDto?>> Login(LoginViewModel model)
     {
-        var user = await _userFacade.GetByEmailOrPhoneNumber(viewModel.EmailOrPhoneNumber);
+        var user = await _userFacade.GetByEmailOrPhoneNumber(model.EmailOrPhone);
 
         if (user == null)
             return CommandResult(OperationResult<UserTokensDto>
                 .NotFound(ValidationMessages.FieldNotFound("کاربری با مشخصات وارد شده")));
 
-        if (SHA256Hash.Compare(user.Password, viewModel.Password) == false)
+        if (SHA256Hash.Compare(user.Password, model.Password) == false)
             return CommandResult(OperationResult<UserTokensDto>
                 .NotFound(ValidationMessages.FieldNotFound("کاربری با مشخصات وارد شده")));
 
@@ -49,10 +49,10 @@ public class AuthController : BaseApiController
     }
 
     [HttpPost("Register")]
-    public async Task<ApiResult> Register(RegisterViewModel viewModel)
+    public async Task<ApiResult> Register(RegisterViewModel model)
     {
         var result = await _userFacade.RegisterUser(new RegisterUserCommand
-            (viewModel.FullName, viewModel.PhoneNumber, viewModel.Password, viewModel.Email));
+            (model.FullName, model.PhoneNumber, model.Password, model.Email));
 
         return CommandResult(result);
     }
@@ -68,7 +68,7 @@ public class AuthController : BaseApiController
 
         if (result.JwtTokenExpireDate > DateTime.Now)
             return CommandResult(OperationResult<UserTokensDto?>.Error("توکن هنوز منقضی نشده است"));
-        
+
         if (result.RefreshTokenExpireDate < DateTime.Now)
             return CommandResult(OperationResult<UserTokensDto?>.Error("رفرش توکن منقضی شده است"));
 
@@ -97,11 +97,17 @@ public class AuthController : BaseApiController
     private async Task<OperationResult<UserTokensDto>> GenerateTokenAndAddItToUser(UserDto userDto)
     {
         var uapParser = Parser.GetDefault();
-        var userAgent = uapParser.Parse(Request.Headers["user-agent"]);
-        var device = $"{userAgent.Device.Family} ({userAgent.OS.Family} {userAgent.OS.Major}" +
-                     $".{(string.IsNullOrWhiteSpace(userAgent.OS.Minor) ? 0 : userAgent.OS.Minor)}) " +
-                     $"- {userAgent.UA.Family} ({userAgent.UA.Major}" +
-                     $".{(string.IsNullOrWhiteSpace(userAgent.UA.Minor) ? 0 : userAgent.UA.Minor)})";
+        var userAgentHeader = Request.Headers["user-agent"].ToString();
+        var device = "not found";
+
+        if (userAgentHeader != null)
+        {
+            var userAgentInfo = uapParser.Parse(userAgentHeader);
+            device = $"{userAgentInfo.Device.Family} ({userAgentInfo.OS.Family} {userAgentInfo.OS.Major}" +
+                     $".{(string.IsNullOrWhiteSpace(userAgentInfo.OS.Minor) ? 0 : userAgentInfo.OS.Minor)}) " +
+                     $"- {userAgentInfo.UA.Family} ({userAgentInfo.UA.Major}" +
+                     $".{(string.IsNullOrWhiteSpace(userAgentInfo.UA.Minor) ? 0 : userAgentInfo.UA.Minor)})";
+        }
 
         var token = JwtTokenBuilder.BuildToken(userDto, _configuration);
         var refreshToken = Guid.NewGuid().ToString();

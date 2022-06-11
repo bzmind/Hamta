@@ -46,7 +46,7 @@ public class ColorController : BaseApiController
 
     [AllowAnonymous]
     [HttpGet("GetByFilter")]
-    public async Task<ApiResult<ColorFilterResult>> GetByFilter([FromQuery] ColorFilterParam filterParams)
+    public async Task<ApiResult<ColorFilterResult>> GetByFilter([FromQuery] ColorFilterParams filterParams)
     {
         var result = await _colorFacade.GetByFilter(filterParams);
         return QueryResult(result);

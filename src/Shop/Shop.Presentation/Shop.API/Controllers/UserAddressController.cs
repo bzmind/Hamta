@@ -26,18 +26,18 @@ public class UserAddressController : BaseApiController
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult> Create(CreateUserAddressCommandViewModel viewModel)
+    public async Task<ApiResult> Create(CreateUserAddressCommandViewModel model)
     {
-        var command = _mapper.Map<CreateUserAddressCommand>(viewModel);
+        var command = _mapper.Map<CreateUserAddressCommand>(model);
         command.UserId = User.GetUserId();
         var result = await _userAddressFacade.Create(command);
         return CommandResult(result);
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditUserAddressCommandViewModel viewModel)
+    public async Task<ApiResult> Edit(EditUserAddressCommandViewModel model)
     {
-        var command = _mapper.Map<EditUserAddressCommand>(viewModel);
+        var command = _mapper.Map<EditUserAddressCommand>(model);
         command.UserId = User.GetUserId();
         var result = await _userAddressFacade.Edit(command);
         return CommandResult(result);

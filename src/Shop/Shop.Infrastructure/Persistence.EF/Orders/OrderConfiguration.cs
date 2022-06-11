@@ -64,8 +64,8 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
         builder.OwnsOne(order => order.ShippingInfo, options =>
         {
-            options.Property(shippingInfo => shippingInfo.ShippingMethod)
-                .HasColumnName("ShippingMethod")
+            options.Property(shippingInfo => shippingInfo.ShippingName)
+                .HasColumnName("ShippingName")
                 .IsRequired()
                 .HasMaxLength(50);
 

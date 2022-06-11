@@ -2,12 +2,12 @@
 
 namespace Shop.Query.Products._DTOs;
 
-public class ProductFilterResult : BaseFilterResult<ProductListDto, ProductFilterParam>
+public class ProductFilterResult : BaseFilterResult<ProductListDto, ProductFilterParams>
 {
     
 }
 
-public class ProductFilterParam : BaseFilterParam
+public class ProductFilterParams : BaseFilterParams
 {
     public long? CategoryId { get; set; }
     public string? Name { get; set; }

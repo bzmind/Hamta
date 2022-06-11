@@ -10,19 +10,7 @@ using Shop.Domain.ShippingAggregate.Repository;
 
 namespace Shop.Application.Orders.Checkout;
 
-public class CheckoutOrderCommand : IBaseCommand
-{
-    public long UserId { get; set; }
-    public long UserAddressId { get; set; }
-    public long ShippingMethodId { get; set; }
-
-    public CheckoutOrderCommand(long userId, long userAddressId, long shippingMethodId)
-    {
-        UserId = userId;
-        UserAddressId = userAddressId;
-        ShippingMethodId = shippingMethodId;
-    }
-}
+public record CheckoutOrderCommand(long UserId, long UserAddressId, long ShippingMethodId) : IBaseCommand;
 
 public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderCommand>
 {

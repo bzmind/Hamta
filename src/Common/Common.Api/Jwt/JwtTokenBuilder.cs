@@ -9,7 +9,7 @@ namespace Common.Api.Jwt;
 
 public class JwtTokenBuilder
 {
-    public static DateTime JwtTokenExpirationDate = DateTime.Now.AddMinutes(5);
+    public static DateTime JwtTokenExpirationDate = DateTime.Now.AddDays(5); // Change it to minutes
     public static DateTime RefreshTokenExpirationDate = DateTime.Now.AddDays(30);
 
     public static string BuildToken(UserDto userDto, IConfiguration configuration)

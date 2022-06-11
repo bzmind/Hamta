@@ -69,6 +69,8 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
+builder.Services.AddRouting(options => options.LowercaseUrls = true);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

@@ -1,6 +1,6 @@
-﻿namespace Common.Query.BaseClasses.FilterQuery;
+﻿namespace Shop.UI.Models;
 
-public class BaseFilterParam
+public class BaseFilterParamsViewModel
 {
     public int PageId { get; set; } = 1;
     public int Take { get; set; } = 10;

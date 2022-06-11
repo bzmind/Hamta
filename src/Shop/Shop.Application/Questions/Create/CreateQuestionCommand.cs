@@ -7,19 +7,7 @@ using Shop.Domain.QuestionAggregate.Repository;
 
 namespace Shop.Application.Questions.Create;
 
-public class CreateQuestionCommand : IBaseCommand<long>
-{
-    public long ProductId { get; set; }
-    public long UserId { get; set; }
-    public string Description { get; set; }
-
-    public CreateQuestionCommand(long productId, long userId, string description)
-    {
-        ProductId = productId;
-        UserId = userId;
-        Description = description;
-    }
-}
+public record CreateQuestionCommand(long UserId, long ProductId, string Description) : IBaseCommand<long>;
 
 public class CreateQuestionCommandHandler : IBaseCommandHandler<CreateQuestionCommand, long>
 {
@@ -46,7 +34,7 @@ public class CreateQuestionCommandValidator : AbstractValidator<CreateQuestionCo
     public CreateQuestionCommandValidator()
     {
         RuleFor(q => q.Description)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("متن سوال"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("متن سوال"));
     }
 }

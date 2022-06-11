@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shop.Domain.RoleAggregate;
+﻿using Shop.Domain.RoleAggregate;
 using Shop.Domain.RoleAggregate.Repository;
 using Shop.Infrastructure.BaseClasses;
 

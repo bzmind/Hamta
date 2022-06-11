@@ -9,7 +9,7 @@ using Shop.Domain.UserAggregate.Repository;
 
 namespace Shop.Application.Users.SetAvatar;
 
-public record SetUserAvatarCommand(long UserId, IFormFile AvatarName) : IBaseCommand;
+public record SetUserAvatarCommand(long UserId, IFormFile Avatar) : IBaseCommand;
 
 public class SetUserAvatarCommandHandler : IBaseCommandHandler<SetUserAvatarCommand>
 {
@@ -33,7 +33,7 @@ public class SetUserAvatarCommandHandler : IBaseCommandHandler<SetUserAvatarComm
         if (oldAvatar != User.DefaultAvatarName)
             _fileService.DeleteFile(Directories.UserAvatars, oldAvatar);
 
-        var newAvatar = await _fileService.SaveFileAndGenerateName(request.AvatarName, Directories.UserAvatars);
+        var newAvatar = await _fileService.SaveFileAndGenerateName(request.Avatar, Directories.UserAvatars);
         user.SetAvatar(newAvatar);
         
         await _userRepository.SaveAsync();
@@ -45,7 +45,7 @@ public class SetUserAvatarCommandValidator : AbstractValidator<SetUserAvatarComm
 {
     public SetUserAvatarCommandValidator()
     {
-        RuleFor(a => a.AvatarName)
+        RuleFor(a => a.Avatar)
             .NotNull()
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس"));
     }

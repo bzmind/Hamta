@@ -2,12 +2,12 @@
 
 namespace Shop.Query.Users._DTOs;
 
-public class UserFilterResult : BaseFilterResult<UserFilterDto, UserFilterParam>
+public class UserFilterResult : BaseFilterResult<UserFilterDto, UserFilterParams>
 {
     
 }
 
-public class UserFilterParam : BaseFilterParam
+public class UserFilterParams : BaseFilterParams
 {
     public string? Name { get; set; }
     public string? PhoneNumber { get; set; }

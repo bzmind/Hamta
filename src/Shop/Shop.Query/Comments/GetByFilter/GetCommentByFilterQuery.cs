@@ -33,17 +33,21 @@ public class GetCommentListQueryHandler : IBaseQueryHandler<GetCommentByFilterQu
                 _shopContext.Users,
                 comment => comment.UserId,
                 user => user.Id,
-                (comment, user) => comment.MapToCommentDto(user.FullName))
+                (comment, user) => new
+                {
+                    comment,
+                    user
+                })
             .AsQueryable();
 
         if (@params.UserId != null)
-            query = query.Where(c => c.UserId == @params.UserId);
+            query = query.Where(c => c.comment.UserId == @params.UserId);
 
         if (@params.ProductId != null)
-            query = query.Where(c => c.ProductId == @params.ProductId);
+            query = query.Where(c => c.comment.ProductId == @params.ProductId);
 
         if (@params.Status != null)
-            query = query.Where(c => c.Status == @params.Status);
+            query = query.Where(c => c.comment.Status == @params.Status.ToString());
 
         var skip = (@params.PageId - 1) * @params.Take;
 
@@ -52,7 +56,14 @@ public class GetCommentListQueryHandler : IBaseQueryHandler<GetCommentByFilterQu
             .Take(@params.Take)
             .ToListAsync(cancellationToken);
 
-        var groupedQueryResult = finalQuery.GroupBy(c => c.Id).Select(commentGroup =>
+        var dtoComments = new List<CommentDto>();
+
+        finalQuery.ForEach(tables =>
+        {
+            dtoComments.Add(tables.comment.MapToCommentDto(tables.user.FullName));
+        });
+
+        var groupedQueryResult = dtoComments.GroupBy(c => c.Id).Select(commentGroup =>
         {
             var firstItem = commentGroup.First();
             firstItem.CommentHints = commentGroup.Select(c => c.CommentHints).First();

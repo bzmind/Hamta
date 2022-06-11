@@ -1,4 +1,11 @@
 ﻿namespace Shop.API.ViewModels.Comments;
 
-public record CreateCommentCommandViewModel(long ProductId, string Title, string Description,
-    List<string> PositivePoints, List<string> NegativePoints, string Recommendation);
+public class CreateCommentCommandViewModel
+{
+    public long ProductId { get; init; }
+    public string Title { get; init; }
+    public string Description { get; init; }
+    public List<string> PositivePoints { get; init; }
+    public List<string> NegativePoints { get; init; }
+    public string Recommendation { get; init; }
+}

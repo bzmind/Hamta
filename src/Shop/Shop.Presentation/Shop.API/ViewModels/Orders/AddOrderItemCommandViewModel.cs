@@ -1,3 +1,7 @@
 ﻿namespace Shop.API.ViewModels.Orders;
 
-public record AddOrderItemCommandViewModel(long InventoryId, int Quantity);
+public class AddOrderItemCommandViewModel
+{
+    public long InventoryId { get; init; }
+    public int Quantity { get; init; }
+}

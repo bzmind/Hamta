@@ -1,3 +1,7 @@
 ﻿namespace Shop.API.ViewModels.Questions;
 
-public record CreateQuestionCommandViewModel(long ProductId, string Description);
+public class CreateQuestionCommandViewModel
+{
+    public long ProductId { get; init; }
+    public string Description { get; init; }
+}

@@ -35,7 +35,7 @@ public class BaseApiController : ControllerBase
                 HttpContext.Response.Headers.Add("ResultUrl", resultUrl);
         }
 
-        return new ApiResult<TData>
+        return new ApiResult<TData?>
         {
             IsSuccessful = result.StatusCode == OperationStatusCode.Success,
             Data = wasSuccessful ? result.Data : default(TData),

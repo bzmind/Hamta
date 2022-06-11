@@ -7,9 +7,9 @@ using Shop.Query.Products._Mappers;
 
 namespace Shop.Query.Products.GetByFilter;
 
-public class GetProductByFilterQuery : BaseFilterQuery<ProductFilterResult, ProductFilterParam>
+public class GetProductByFilterQuery : BaseFilterQuery<ProductFilterResult, ProductFilterParams>
 {
-    public GetProductByFilterQuery(ProductFilterParam filterParams) : base(filterParams)
+    public GetProductByFilterQuery(ProductFilterParams filterParams) : base(filterParams)
     {
     }
 }

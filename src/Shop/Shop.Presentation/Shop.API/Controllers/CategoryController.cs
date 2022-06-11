@@ -70,7 +70,7 @@ public class CategoryController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet("GetSubCategories/{parentId}")]
+    [HttpGet("GetByParentId/{parentId}")]
     public async Task<ApiResult<List<CategoryDto>>> GetByParentId(long parentId)
     {
         var result = await _categoryFacade.GetByParentId(parentId);

@@ -1,7 +1,7 @@
 ﻿namespace Common.Query.BaseClasses.FilterQuery;
 
 public class BaseFilterQuery<TResponse, TParam> : IBaseQuery<TResponse> where TResponse : BaseFilter
-    where TParam : BaseFilterParam
+    where TParam : BaseFilterParams
 {
     public TParam FilterParams { get; set; }
 

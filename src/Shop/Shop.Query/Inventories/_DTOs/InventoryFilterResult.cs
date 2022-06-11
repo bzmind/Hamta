@@ -2,12 +2,12 @@
 
 namespace Shop.Query.Inventories._DTOs;
 
-public class InventoryFilterResult : BaseFilterResult<InventoryDto, InventoryFilterParam>
+public class InventoryFilterResult : BaseFilterResult<InventoryDto, InventoryFilterParams>
 {
     
 }
 
-public class InventoryFilterParam : BaseFilterParam
+public class InventoryFilterParams : BaseFilterParams
 {
     public long? ProductId { get; set; }
     public int? StartQuantity { get; set; }

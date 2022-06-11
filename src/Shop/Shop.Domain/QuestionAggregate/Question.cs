@@ -15,7 +15,7 @@ public class Question : BaseAggregateRoot
 
     public enum QuestionStatus { Pending, Accepted, Rejected }
 
-    public Question(long productId, long userId, string description)
+    public Question(long userId, long productId, string description)
     {
         Guard(description);
         ProductId = productId;

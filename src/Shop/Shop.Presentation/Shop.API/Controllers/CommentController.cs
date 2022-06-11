@@ -29,9 +29,9 @@ public class CommentController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.CommentManager)]
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateCommentCommandViewModel viewModel)
+    public async Task<ApiResult<long>> Create(CreateCommentCommandViewModel model)
     {
-        var command = _mapper.Map<CreateCommentCommand>(viewModel);
+        var command = _mapper.Map<CreateCommentCommand>(model);
         command.UserId = User.GetUserId();
         var result = await _commentFacade.Create(command);
         var resultUrl = Url.Action("Create", "Comment", new { id = result.Data }, Request.Scheme);

@@ -3,12 +3,12 @@ using Shop.Domain.QuestionAggregate;
 
 namespace Shop.Query.Questions._DTOs;
 
-public class QuestionFilterResult : BaseFilterResult<QuestionDto, QuestionFilterParam>
+public class QuestionFilterResult : BaseFilterResult<QuestionDto, QuestionFilterParams>
 {
     
 }
 
-public class QuestionFilterParam : BaseFilterParam
+public class QuestionFilterParams : BaseFilterParams
 {
     public long? ProductId { get; set; }
     public long? UserId { get; set; }

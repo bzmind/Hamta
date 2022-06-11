@@ -16,5 +16,5 @@ public interface IQuestionFacade
     Task<OperationResult> Remove(long questionId);
 
     Task<QuestionDto?> GetById(long id);
-    Task<QuestionFilterResult> GetByFilter(QuestionFilterParam filterParams);
+    Task<QuestionFilterResult> GetByFilter(QuestionFilterParams filterParams);
 }

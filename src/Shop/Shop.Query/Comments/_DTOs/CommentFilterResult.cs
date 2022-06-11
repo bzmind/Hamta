@@ -1,4 +1,5 @@
 ﻿using Common.Query.BaseClasses.FilterQuery;
+using Shop.Domain.CommentAggregate;
 
 namespace Shop.Query.Comments._DTOs;
 
@@ -7,9 +8,9 @@ public class CommentFilterResult : BaseFilterResult<CommentDto, CommentFilterPar
 
 }
 
-public class CommentFilterParams : BaseFilterParam
+public class CommentFilterParams : BaseFilterParams
 {
     public long? UserId { get; set; }
     public long? ProductId { get; set; }
-    public string? Status { get; set; }
+    public Comment.CommentStatus? Status { get; set; }
 }

@@ -30,24 +30,24 @@ public class RoleController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpPut("AddPermission")]
+    [HttpPut("AddPermissions")]
     public async Task<ApiResult> AddPermission(AddRolePermissionCommand command)
     {
         var result = await _roleFacade.AddPermission(command);
         return CommandResult(result);
     }
 
-    [HttpPut("RemovePermission")]
+    [HttpPut("RemovePermissions")]
     public async Task<ApiResult> RemovePermission(RemoveRolePermissionCommand command)
     {
         var result = await _roleFacade.RemovePermission(command);
         return CommandResult(result);
     }
 
-    [HttpDelete("Remove")]
-    public async Task<ApiResult> Remove(RemoveRoleCommand command)
+    [HttpDelete("Remove/{roleId}")]
+    public async Task<ApiResult> Remove(long roleId)
     {
-        var result = await _roleFacade.Remove(command);
+        var result = await _roleFacade.Remove(roleId);
         return CommandResult(result);
     }
     

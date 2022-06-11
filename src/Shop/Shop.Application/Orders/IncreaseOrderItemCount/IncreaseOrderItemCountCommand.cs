@@ -5,19 +5,7 @@ using Shop.Domain.OrderAggregate.Repository;
 
 namespace Shop.Application.Orders.IncreaseOrderItemCount;
 
-public class IncreaseOrderItemCountCommand : IBaseCommand
-{
-    public long UserId { get; set; }
-    public long InventoryId { get; set; }
-    public long OrderItemId { get; set; }
-
-    public IncreaseOrderItemCountCommand(long userId, long inventoryId, long orderItemId)
-    {
-        UserId = userId;
-        InventoryId = inventoryId;
-        OrderItemId = orderItemId;
-    }
-}
+public record IncreaseOrderItemCountCommand(long UserId, long OrderItemId) : IBaseCommand;
 
 public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<IncreaseOrderItemCountCommand>
 {
@@ -37,8 +25,12 @@ public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<Increase
         if (order == null)
             return OperationResult.NotFound("سفارش یافت نشد");
 
-        // TODO: Change status enums to strings
-        var inventory = await _inventoryRepository.GetAsTrackingAsync(request.InventoryId);
+        var itemToBeIncreased = order.Items.FirstOrDefault(oi => oi.Id == request.OrderItemId);
+
+        if (itemToBeIncreased == null)
+            return OperationResult.NotFound("محصول یافت نشد");
+
+        var inventory = await _inventoryRepository.GetAsTrackingAsync(itemToBeIncreased.InventoryId);
 
         if (inventory == null)
             return OperationResult.NotFound("انبار یافت نشد");

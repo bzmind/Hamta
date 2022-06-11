@@ -31,14 +31,14 @@ internal class OrderFacade : IOrderFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> IncreaseItemCount(IncreaseOrderItemCountCommand command)
+    public async Task<OperationResult> IncreaseItemCount(long userId, long orderItemId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new IncreaseOrderItemCountCommand(userId, orderItemId));
     }
 
-    public async Task<OperationResult> DecreaseItemCount(DecreaseOrderItemCountCommand command)
+    public async Task<OperationResult> DecreaseItemCount(long userId, long orderItemId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new DecreaseOrderItemCountCommand(userId, orderItemId));
     }
 
     public async Task<OperationResult> SetStatus(SetOrderStatusCommand command)
@@ -56,7 +56,7 @@ internal class OrderFacade : IOrderFacade
         return await _mediator.Send(new GetOrderByIdQuery(id));
     }
 
-    public async Task<OrderFilterResult> GetByFilter(OrderFilterParam filterParams)
+    public async Task<OrderFilterResult> GetByFilter(OrderFilterParams filterParams)
     {
         return await _mediator.Send(new GetOrderByFilterQuery(filterParams));
     }

@@ -50,7 +50,7 @@ internal class QuestionFacade : IQuestionFacade
         return await _mediator.Send(new GetQuestionByIdQuery(id));
     }
 
-    public async Task<QuestionFilterResult> GetByFilter(QuestionFilterParam filterParams)
+    public async Task<QuestionFilterResult> GetByFilter(QuestionFilterParams filterParams)
     {
         return await _mediator.Send(new GetQuestionByFilterQuery(filterParams));
     }
