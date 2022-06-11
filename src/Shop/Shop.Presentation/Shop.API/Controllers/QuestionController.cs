@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using AutoMapper;
 using Common.Api;
 using Common.Api.Attributes;
 using Common.Api.Utility;

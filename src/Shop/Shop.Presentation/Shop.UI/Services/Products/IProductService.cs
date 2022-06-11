@@ -14,5 +14,5 @@ public interface IProductService
     Task<ApiResult?> Remove(long productId);
 
     Task<ProductDto?> GetById(long productId);
-    Task<List<ProductDto>?> GetByFilter(ProductFilterParamsViewModel filterParams);
+    Task<ProductFilterResult?> GetByFilter(ProductFilterParamsViewModel filterParams);
 }

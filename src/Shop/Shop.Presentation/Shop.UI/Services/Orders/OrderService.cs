@@ -60,13 +60,13 @@ public class OrderService : IOrderService
         return result?.Data;
     }
 
-    public async Task<List<OrderDto>?> GetByFilter(OrderFilterParamsViewModel filterParams)
+    public async Task<OrderFilterResult?> GetByFilter(OrderFilterParamsViewModel filterParams)
     {
         var url = $"api/order/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&StartDate={filterParams.StartDate}" +
                   $"&EndDate={filterParams.EndDate}&Status={filterParams.Status}";
 
-        var result = await _client.GetFromJsonAsync<ApiResult<List<OrderDto>>>(url, _jsonOptions);
+        var result = await _client.GetFromJsonAsync<ApiResult<OrderFilterResult>>(url, _jsonOptions);
         return result?.Data;
     }
 }

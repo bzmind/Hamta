@@ -1,7 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.Security;
 using MediatR;
-using Shop.Application.Users;
 using Shop.Application.Users.AddToken;
 using Shop.Application.Users.RemoveToken;
 using Shop.Query.Users._DTOs;

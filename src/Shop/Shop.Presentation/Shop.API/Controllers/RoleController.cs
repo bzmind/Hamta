@@ -4,7 +4,6 @@ using Common.Api.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Roles.AddPermission;
 using Shop.Application.Roles.Create;
-using Shop.Application.Roles.Remove;
 using Shop.Application.Roles.RemovePermission;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Roles;

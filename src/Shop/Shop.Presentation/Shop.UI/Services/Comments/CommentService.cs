@@ -53,12 +53,12 @@ public class CommentService : ICommentService
         return result?.Data;
     }
 
-    public async Task<List<CommentDto>?> GetByFilter(CommentFilterParamsViewModel filterParams)
+    public async Task<CommentFilterResult?> GetByFilter(CommentFilterParamsViewModel filterParams)
     {
         var url = $"api/comment/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&ProductId={filterParams.ProductId}&Status={filterParams.Status}";
 
-        var result = await _client.GetFromJsonAsync<ApiResult<List<CommentDto>>>(url, _jsonOptions);
+        var result = await _client.GetFromJsonAsync<ApiResult<CommentFilterResult>>(url, _jsonOptions);
         return result?.Data;
     }
 }

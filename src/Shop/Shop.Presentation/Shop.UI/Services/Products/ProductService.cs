@@ -120,14 +120,14 @@ public class ProductService : IProductService
         return result?.Data;
     }
 
-    public async Task<List<ProductDto>?> GetByFilter(ProductFilterParamsViewModel filterParams)
+    public async Task<ProductFilterResult?> GetByFilter(ProductFilterParamsViewModel filterParams)
     {
         var url = $"api/product/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&CategoryId={filterParams.CategoryId}&Name={filterParams.Name}" +
                   $"&EnglishName={filterParams.EnglishName}&Slug={filterParams.Slug}" +
                   $"&AverageScore={filterParams.AverageScore}";
 
-        var result = await _client.GetFromJsonAsync<ApiResult<List<ProductDto>>>(url, _jsonOptions);
+        var result = await _client.GetFromJsonAsync<ApiResult<ProductFilterResult>>(url, _jsonOptions);
         return result?.Data;
     }
 }

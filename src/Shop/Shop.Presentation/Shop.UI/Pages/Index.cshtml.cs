@@ -1,9 +1,4 @@
-﻿using Common.Application;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Shop.UI.Models.Categories;
-using Shop.UI.Models.Products;
-using Shop.UI.Services.Auth;
-using Shop.UI.Services.Categories;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.UI.Services.Products;
 
 namespace Shop.UI.Pages;

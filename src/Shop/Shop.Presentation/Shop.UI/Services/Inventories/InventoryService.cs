@@ -65,7 +65,7 @@ public class InventoryService : IInventoryService
         return result?.Data;
     }
 
-    public async Task<List<InventoryDto>?> GetByFilter(InventoryFilterParamsViewModel filterParams)
+    public async Task<InventoryFilterResult?> GetByFilter(InventoryFilterParamsViewModel filterParams)
     {
         var url = $"api/inventory/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&ProductId={filterParams.ProductId}&StartQuantity={filterParams.StartQuantity}" +
@@ -75,7 +75,7 @@ public class InventoryService : IInventoryService
                   $"&EndDiscountPercentage={filterParams.EndDiscountPercentage}" +
                   $"&IsAvailable={filterParams.IsAvailable}&IsDiscounted={filterParams.IsDiscounted}";
 
-        var result = await _client.GetFromJsonAsync<ApiResult<List<InventoryDto>>>(url, _jsonOptions);
+        var result = await _client.GetFromJsonAsync<ApiResult<InventoryFilterResult>>(url, _jsonOptions);
         return result?.Data;
     }
 }

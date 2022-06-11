@@ -15,10 +15,10 @@ public class BaseFilter
         var pageCount = (int)Math.Ceiling(entityCount / (double)take);
         PageCount = pageCount;
         CurrentPage = currentPage;
-        EndPage = (currentPage + 5 > pageCount) ? pageCount : currentPage + 5;
+        EndPage = currentPage + 5 > pageCount ? pageCount : currentPage + 5;
         EntityCount = entityCount;
         Take = take;
-        StartPage = (currentPage - 4 <= 0) ? 1 : currentPage - 4;
+        StartPage = currentPage - 4 <= 0 ? 1 : currentPage - 4;
     }
 }
 

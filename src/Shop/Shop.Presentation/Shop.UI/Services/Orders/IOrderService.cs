@@ -15,5 +15,5 @@ public interface IOrderService
     Task<ApiResult?> Remove(long orderItemId);
 
     Task<OrderDto?> GetById(long orderId);
-    Task<List<OrderDto>?> GetByFilter(OrderFilterParamsViewModel filterParams);
+    Task<OrderFilterResult?> GetByFilter(OrderFilterParamsViewModel filterParams);
 }

@@ -18,5 +18,5 @@ public interface IUserService
 
     Task<UserDto?> GetById(long userId);
     Task<UserDto?> GetByEmailOrPhone(string emailOrPhone);
-    Task<List<UserDto>?> GetByFilter(UserFilterParamsViewModel filterParams);
+    Task<UserFilterResult?> GetByFilter(UserFilterParamsViewModel filterParams);
 }

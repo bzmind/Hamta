@@ -53,12 +53,12 @@ public class QuestionService : IQuestionService
         return result?.Data;
     }
 
-    public async Task<List<QuestionDto>?> GetByFilter(QuestionFilterParamsViewModel filterParams)
+    public async Task<QuestionFilterResult?> GetByFilter(QuestionFilterParamsViewModel filterParams)
     {
         var url = $"api/question/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&ProductId={filterParams.ProductId}&UserId={filterParams.UserId}&Status={filterParams.Status}";
 
-        var result = await _client.GetFromJsonAsync<ApiResult<List<QuestionDto>>>(url, _jsonOptions);
+        var result = await _client.GetFromJsonAsync<ApiResult<QuestionFilterResult>>(url, _jsonOptions);
         return result?.Data;
     }
 }

@@ -13,5 +13,5 @@ public interface ICommentService
     Task<ApiResult?> Remove(long commentId);
 
     Task<CommentDto?> GetById(long commentId);
-    Task<List<CommentDto>?> GetByFilter(CommentFilterParamsViewModel filterParams);
+    Task<CommentFilterResult?> GetByFilter(CommentFilterParamsViewModel filterParams);
 }

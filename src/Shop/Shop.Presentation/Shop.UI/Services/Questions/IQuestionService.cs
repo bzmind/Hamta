@@ -13,5 +13,5 @@ public interface IQuestionService
     Task<ApiResult?> Remove(long questionId);
 
     Task<QuestionDto?> GetById(long questionId);
-    Task<List<QuestionDto>?> GetByFilter(QuestionFilterParamsViewModel filterParams);
+    Task<QuestionFilterResult?> GetByFilter(QuestionFilterParamsViewModel filterParams);
 }

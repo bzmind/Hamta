@@ -82,12 +82,12 @@ public class UserService : IUserService
         return result?.Data;
     }
 
-    public async Task<List<UserDto>?> GetByFilter(UserFilterParamsViewModel filterParams)
+    public async Task<UserFilterResult?> GetByFilter(UserFilterParamsViewModel filterParams)
     {
         var url = $"api/user/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&Name={filterParams.Name}&PhoneNumber={filterParams.PhoneNumber}&Email={filterParams.Email}";
 
-        var result = await _client.GetFromJsonAsync<ApiResult<List<UserDto>>>(url, _jsonOptions);
+        var result = await _client.GetFromJsonAsync<ApiResult<UserFilterResult>>(url, _jsonOptions);
         return result?.Data;
     }
 }

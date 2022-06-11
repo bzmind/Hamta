@@ -15,5 +15,5 @@ public interface IInventoryService
     Task<ApiResult?> Remove(long inventoryId);
 
     Task<InventoryDto?> GetById(long inventoryId);
-    Task<List<InventoryDto>?> GetByFilter(InventoryFilterParamsViewModel filterParams);
+    Task<InventoryFilterResult?> GetByFilter(InventoryFilterParamsViewModel filterParams);
 }
