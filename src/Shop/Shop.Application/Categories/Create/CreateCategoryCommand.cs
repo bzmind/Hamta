@@ -50,21 +50,21 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
     public CreateCategoryCommandValidator()
     {
         RuleFor(c => c.Title)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
         RuleFor(c => c.Slug)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("اسلاگ"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Title)
-                .NotNull()
+                .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان مشخصات"))
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان مشخصات"));
 
             specification.RuleFor(spec => spec.Description)
-                .NotNull()
+                .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیحات مشخصات"))
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات مشخصات"));
         });
     }

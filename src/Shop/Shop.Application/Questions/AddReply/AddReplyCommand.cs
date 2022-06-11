@@ -36,7 +36,7 @@ public class AddReplyCommandValidator : AbstractValidator<AddReplyCommand>
     public AddReplyCommandValidator()
     {
         RuleFor(r => r.Description)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیح"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیح"));
     }
 }

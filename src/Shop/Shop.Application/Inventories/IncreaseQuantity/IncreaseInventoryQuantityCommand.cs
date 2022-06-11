@@ -36,7 +36,7 @@ public class IncreaseInventoryQuantityCommandValidator : AbstractValidator<Incre
     public IncreaseInventoryQuantityCommandValidator()
     {
         RuleFor(i => i.Amount)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("تعداد"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("تعداد"))
             .GreaterThanOrEqualTo(1).WithMessage(ValidationMessages.FieldGreaterThanOrEqualTo("تعداد", 1));
     }

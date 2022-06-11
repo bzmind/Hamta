@@ -35,7 +35,7 @@ public class DiscountByPercentageCommandValidator : AbstractValidator<DiscountBy
     public DiscountByPercentageCommandValidator()
     {
         RuleFor(i => i.DiscountPercentage)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("تخفیف"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("تخفیف"))
             .GreaterThanOrEqualTo(1).WithMessage(ValidationMessages.DiscountMinPercentage("تخفیف", 1))
             .LessThanOrEqualTo(100).WithMessage(ValidationMessages.DiscountMaxPercentage("تخفیف", 100));

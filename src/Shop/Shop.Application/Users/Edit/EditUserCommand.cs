@@ -40,13 +40,14 @@ public class EditUserCommandValidator : AbstractValidator<EditUserCommand>
     public EditUserCommandValidator()
     {
         RuleFor(c => c.FullName)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام و نام خانوادگی"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام و نام خانوادگی"));
 
         RuleFor(c => c.Email)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("ایمیل"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("ایمیل"));
         
-        RuleFor(c => c.PhoneNumber).ValidPhoneNumber();
+        RuleFor(c => c.PhoneNumber)
+            .ValidPhoneNumber();
     }
 }

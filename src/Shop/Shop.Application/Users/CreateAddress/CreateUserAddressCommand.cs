@@ -59,25 +59,25 @@ public class CreateUserAddressCommandValidator : AbstractValidator<CreateUserAdd
     public CreateUserAddressCommandValidator()
     {
         RuleFor(a => a.FullName)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام و نام خانوادگی"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام و نام خانوادگی"));
 
         RuleFor(a => a.PhoneNumber).ValidPhoneNumber();
 
         RuleFor(a => a.Province)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("استان"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("استان"));
 
         RuleFor(a => a.City)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("شهر"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("شهر"));
 
         RuleFor(a => a.FullAddress)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("آدرس کامل"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آدرس کامل"));
 
         RuleFor(a => a.PostalCode)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("کد پستی"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("کد پستی"));
     }
 }

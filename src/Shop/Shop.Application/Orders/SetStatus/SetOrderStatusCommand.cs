@@ -40,7 +40,7 @@ public class SetOrderStatusCommandValidator : AbstractValidator<SetOrderStatusCo
     public SetOrderStatusCommandValidator()
     {
         RuleFor(o => o.OrderStatus)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("وضعیت سفارش"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("وضعیت سفارش"));
     }
 }

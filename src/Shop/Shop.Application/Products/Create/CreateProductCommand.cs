@@ -79,19 +79,19 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     public CreateProductCommandValidator()
     {
         RuleFor(p => p.Name)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام محصول"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام محصول"));
 
         RuleFor(p => p.Slug)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("اسلاگ"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
         
         RuleFor(p => p.MainImage)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"));
 
         RuleFor(p => p.GalleryImages)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"));
     }
 }

@@ -46,7 +46,7 @@ public class SetUserAvatarCommandValidator : AbstractValidator<SetUserAvatarComm
     public SetUserAvatarCommandValidator()
     {
         RuleFor(a => a.Avatar)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس"));
     }
 }

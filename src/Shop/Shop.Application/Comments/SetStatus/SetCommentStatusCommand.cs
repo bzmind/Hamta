@@ -38,13 +38,13 @@ public class SetCommentStatusCommandValidator : AbstractValidator<SetCommentStat
     public SetCommentStatusCommandValidator()
     {
         RuleFor(c => c.CommentId)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("آیدی"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آیدی"));
 
         RuleFor(c => c.Status)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("وضعیت"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("وضعیت"))
             .IsEnumName(typeof(Comment.CommentStatus), false)
-            .WithMessage(ValidationMessages.FieldInvalid("وضعیت"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("وضعیت"));
+            .WithMessage(ValidationMessages.FieldInvalid("وضعیت"));
     }
 }

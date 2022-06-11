@@ -33,11 +33,11 @@ public class AddColorCommandValidator : AbstractValidator<CreateColorCommand>
     public AddColorCommandValidator()
     {
         RuleFor(c => c.Name)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام رنگ"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام رنگ"));
 
         RuleFor(c => c.Code)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("کد رنگ"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("کد رنگ"));
     }
 }

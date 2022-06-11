@@ -44,7 +44,7 @@ public class ReplaceMainImageCommandValidator : AbstractValidator<ReplaceMainIma
     public ReplaceMainImageCommandValidator()
     {
         RuleFor(p => p.MainImage)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"));
     }
 }

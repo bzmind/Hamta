@@ -65,18 +65,18 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
     public CreateCommentCommandValidator()
     {
         RuleFor(c => c.Title)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
         RuleFor(c => c.Description)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیحات"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
 
         RuleFor(c => c.Recommendation)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("نوع پیشنهاد"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نوع پیشنهاد"))
             .IsEnumName(typeof(Comment.CommentRecommendation), false)
-            .WithMessage(ValidationMessages.FieldInvalid("نوع پیشنهاد"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نوع پیشنهاد"));
+            .WithMessage(ValidationMessages.FieldInvalid("نوع پیشنهاد"));
 
         RuleForEach(c => c.NegativePoints)
             .MaximumLength(10);

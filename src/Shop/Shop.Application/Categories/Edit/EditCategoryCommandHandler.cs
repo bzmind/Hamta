@@ -50,21 +50,21 @@ public class EditCategoryCommandValidator : AbstractValidator<EditCategoryComman
     public EditCategoryCommandValidator()
     {
         RuleFor(c => c.Title)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
         RuleFor(c => c.Slug)
-            .NotNull()
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("اسلاگ"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Title)
-                .NotNull()
+                .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
             specification.RuleFor(spec => spec.Description)
-                .NotNull()
+                .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیحات"))
                 .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
         });
     }
