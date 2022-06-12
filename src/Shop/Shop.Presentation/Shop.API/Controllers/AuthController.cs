@@ -33,7 +33,7 @@ public class AuthController : BaseApiController
     [HttpPost("Login")]
     public async Task<ApiResult<UserTokensDto?>> Login(LoginViewModel model)
     {
-        var user = await _userFacade.GetByEmailOrPhoneNumber(model.EmailOrPhone);
+        var user = await _userFacade.GetByEmailOrPhone(model.EmailOrPhone);
 
         if (user == null)
             return CommandResult(OperationResult<UserTokensDto>
@@ -43,17 +43,15 @@ public class AuthController : BaseApiController
             return CommandResult(OperationResult<UserTokensDto>
                 .NotFound(ValidationMessages.FieldNotFound("کاربری با مشخصات وارد شده")));
 
-        await _userTokenFacade.RemoveTokensByUserId(user.Id);
+        await _userTokenFacade.RemoveTokensByUserId(user.Id); // This clears all the tokens, so the device limit sets back to zero, and user will be logged out of other devices, so it can always login from any device, idk, is it even a problem? but now the device limit doesn't make any sense I guess
         var result = await GenerateTokenAndAddItToUser(user);
         return CommandResult(result);
     }
-
+    
     [HttpPost("Register")]
     public async Task<ApiResult> Register(RegisterViewModel model)
     {
-        var result = await _userFacade.RegisterUser(new RegisterUserCommand
-            (model.FullName, model.PhoneNumber, model.Password, model.Email));
-
+        var result = await _userFacade.Register(new RegisterUserCommand(model.PhoneNumber, model.Password));
         return CommandResult(result);
     }
 

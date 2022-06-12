@@ -16,7 +16,7 @@ public interface IUserFacade
 {
     Task<OperationResult<long>> Create(CreateUserCommand command);
     Task<OperationResult> Edit(EditUserCommand command);
-    Task<OperationResult> RegisterUser(RegisterUserCommand command);
+    Task<OperationResult> Register(RegisterUserCommand command);
     Task<OperationResult> SetAvatar(SetUserAvatarCommand command);
     Task<OperationResult> SetSubscriptionToNews(SetUserSubscriptionToNewsCommand command);
     Task<OperationResult> AddFavoriteItem(AddUserFavoriteItemCommand command);
@@ -26,6 +26,7 @@ public interface IUserFacade
     Task<OperationResult> Remove(long userId);
 
     Task<UserDto?> GetById(long id);
-    Task<UserDto?> GetByEmailOrPhoneNumber(string phoneNumber);
+    Task<UserDto?> GetByEmailOrPhone(string emailOrPhone);
+    Task<OperationResult> SearchByEmailOrPhone(string emailOrPhone);
     Task<UserFilterResult> GetByFilter(UserFilterParams filterParams);
 }

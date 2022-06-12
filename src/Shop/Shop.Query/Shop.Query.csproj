@@ -22,6 +22,7 @@
     <Folder Include="Roles\_DTOs\" />
     <Folder Include="Shippings\_DTOs\" />
     <Folder Include="Shippings\_Mappers\" />
+    <Folder Include="Users\GetByEmailOrPhone\" />
   </ItemGroup>
 
   <ItemGroup>

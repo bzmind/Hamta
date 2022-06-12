@@ -4,7 +4,7 @@ using Common.Application.Validation;
 
 namespace Common.Api.Attributes;
 
-public class EmailOrPhoneAttribute : ValidationAttribute
+public class EmailOrIranPhoneAttribute : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
@@ -26,7 +26,7 @@ public class EmailOrPhoneAttribute : ValidationAttribute
     }
 }
 
-public class IranPhoneNumber : ValidationAttribute
+public class IranPhone : ValidationAttribute
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {

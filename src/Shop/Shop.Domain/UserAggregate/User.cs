@@ -10,10 +10,10 @@ public class User : BaseAggregateRoot
     public string FullName { get; private set; }
     public string? Email { get; private set; }
     public string Password { get; private set; }
+    public PhoneNumber PhoneNumber { get; private set; }
 
     private readonly List<UserAddress> _addresses = new();
     public IEnumerable<UserAddress> Addresses => _addresses.ToList();
-    public PhoneNumber PhoneNumber { get; private set; }
     public string AvatarName { get; private set; } = DefaultAvatarName;
     public bool IsSubscribedToNews { get; private set; }
 
@@ -34,13 +34,11 @@ public class User : BaseAggregateRoot
 
     }
 
-    public User(string fullName, string email, string password, string phoneNumber,
-        IUserDomainService userDomainService)
+    public User(string fullName, string phoneNumber, string password, IUserDomainService userDomainService)
     {
-        Guard(fullName, phoneNumber, email, userDomainService);
+        Guard(fullName, phoneNumber, userDomainService);
         PasswordGuard(password);
         FullName = fullName;
-        Email = email;
         Password = password;
         PhoneNumber = new PhoneNumber(phoneNumber);
         IsSubscribedToNews = false;
@@ -48,16 +46,15 @@ public class User : BaseAggregateRoot
 
     public void Edit(string fullName, string email, string phoneNumber, IUserDomainService userDomainService)
     {
-        Guard(fullName, phoneNumber, email, userDomainService);
+        Guard(fullName, phoneNumber, userDomainService, email);
         FullName = fullName;
         Email = email;
         PhoneNumber = new PhoneNumber(phoneNumber);
     }
 
-    public static User Register(string fullName, string phoneNumber, string password, string email,
-        IUserDomainService userDomainService)
+    public static User Register(string phoneNumber, string password, IUserDomainService userDomainService)
     {
-        return new User(fullName, email, password, phoneNumber, userDomainService);
+        return new User(phoneNumber, password, phoneNumber, userDomainService);
     }
 
     public void AddAddress(long userId, string fullName, string phoneNumber, string province,
@@ -176,14 +173,14 @@ public class User : BaseAggregateRoot
         _roles.Remove(role);
     }
 
-    private void Guard(string fullName, string phoneNumber, string email, IUserDomainService userDomainService)
+    private void Guard(string fullName, string phoneNumber, IUserDomainService userDomainService, string? email = null)
     {
         NullOrEmptyDataDomainException.CheckString(fullName, nameof(fullName));
         NullOrEmptyDataDomainException.CheckString(phoneNumber, nameof(phoneNumber));
 
         userDomainService.IsPhoneNumberDuplicate(phoneNumber);
 
-        if (!string.IsNullOrWhiteSpace(email))
+        if (email != null && !string.IsNullOrWhiteSpace(email))
             userDomainService.IsEmailDuplicate(email);
     }
 

@@ -37,7 +37,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Query", "src\Common\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Api", "src\Common\Common.Api\Common.Api.csproj", "{08D4B1E1-3F71-4BB3-982E-61716E5BF486}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.UI", "src\Shop\Shop.Presentation\Shop.UI\Shop.UI.csproj", "{F752B39E-CBE9-4860-9049-5AF9F6C12CB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shop.UI", "src\Shop\Shop.Presentation\Shop.UI\Shop.UI.csproj", "{F752B39E-CBE9-4860-9049-5AF9F6C12CB0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -2,6 +2,7 @@
 using Common.Api;
 using Common.Api.Attributes;
 using Common.Api.Utility;
+using Common.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Users;
@@ -112,9 +113,17 @@ public class UserController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpGet("GetByEmailOrPhone/{emailOrPhone}")]
-    public async Task<ApiResult<UserDto?>> GetByEmailOrPhoneNumber(string emailOrPhone)
+    public async Task<ApiResult<UserDto?>> GetByEmailOrPhone(string emailOrPhone)
     {
-        var result = await _userFacade.GetByEmailOrPhoneNumber(emailOrPhone);
+        var result = await _userFacade.GetByEmailOrPhone(emailOrPhone);
+        return QueryResult(result);
+    }
+
+    [CheckPermission(RolePermission.Permissions.UserManager)]
+    [HttpGet("SearchByEmailOrPhone/{emailOrPhone}")]
+    public async Task<ApiResult<OperationResult>> SearchByEmailOrPhone(string emailOrPhone)
+    {
+        var result = await _userFacade.SearchByEmailOrPhone(emailOrPhone);
         return QueryResult(result);
     }
 

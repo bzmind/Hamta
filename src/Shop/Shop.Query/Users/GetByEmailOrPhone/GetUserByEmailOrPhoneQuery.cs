@@ -1,7 +1,4 @@
-﻿using Common.Application.Validation;
-using Common.Application.Validation.CustomFluentValidations;
-using Common.Query.BaseClasses;
-using FluentValidation;
+﻿using Common.Query.BaseClasses;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Users._DTOs;
@@ -9,7 +6,7 @@ using Shop.Query.Users._Mappers;
 
 namespace Shop.Query.Users.GetByEmailOrPhone;
 
-public record GetUserByEmailOrPhoneQuery(string EmailOrPhoneNumber) : IBaseQuery<UserDto?>;
+public record GetUserByEmailOrPhoneQuery(string EmailOrPhone) : IBaseQuery<UserDto?>;
 
 public class GetUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<GetUserByEmailOrPhoneQuery, UserDto?>
 {
@@ -23,20 +20,8 @@ public class GetUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<GetUserByEmai
     public async Task<UserDto?> Handle(GetUserByEmailOrPhoneQuery request, CancellationToken cancellationToken)
     {
         var user = await _shopContext.Users
-            .FirstOrDefaultAsync(c => c.PhoneNumber.Value == request.EmailOrPhoneNumber
-                                      || c.Email == request.EmailOrPhoneNumber, cancellationToken);
-
+            .FirstOrDefaultAsync(c => c.PhoneNumber.Value == request.EmailOrPhone
+                                      || c.Email == request.EmailOrPhone, cancellationToken);
         return user.MapToUserDto();
-    }
-}
-
-public class GetUserByEmailOrPhoneQueryValidator : AbstractValidator<GetUserByEmailOrPhoneQuery>
-{
-    public GetUserByEmailOrPhoneQueryValidator()
-    {
-        RuleFor(u => u.EmailOrPhoneNumber)
-            .NotNull().WithMessage(ValidationMessages.PhoneNumberRequired)
-            .NotEmpty().WithMessage(ValidationMessages.PhoneNumberRequired)
-            .ValidEmailOrPhoneNumber();
     }
 }

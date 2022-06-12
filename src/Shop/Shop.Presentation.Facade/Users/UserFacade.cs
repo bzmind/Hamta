@@ -14,6 +14,7 @@ using Shop.Query.Users._DTOs;
 using Shop.Query.Users.GetByEmailOrPhone;
 using Shop.Query.Users.GetByFilter;
 using Shop.Query.Users.GetById;
+using Shop.Query.Users.SearchByEmailOrPhone;
 
 namespace Shop.Presentation.Facade.Users;
 
@@ -36,7 +37,7 @@ internal class UserFacade : IUserFacade
         return await _mediator.Send(command);
     }
     
-    public async Task<OperationResult> RegisterUser(RegisterUserCommand command)
+    public async Task<OperationResult> Register(RegisterUserCommand command)
     {
         return await _mediator.Send(command);
     }
@@ -81,9 +82,14 @@ internal class UserFacade : IUserFacade
         return await _mediator.Send(new GetUserByIdQuery(id));
     }
 
-    public async Task<UserDto?> GetByEmailOrPhoneNumber(string phoneNumber)
+    public async Task<UserDto?> GetByEmailOrPhone(string emailOrPhone)
     {
-        return await _mediator.Send(new GetUserByEmailOrPhoneQuery(phoneNumber));
+        return await _mediator.Send(new GetUserByEmailOrPhoneQuery(emailOrPhone));
+    }
+
+    public async Task<OperationResult> SearchByEmailOrPhone(string emailOrPhone)
+    {
+        return await _mediator.Send(new SearchUserByEmailOrPhoneQuery(emailOrPhone));
     }
 
     public async Task<UserFilterResult> GetByFilter(UserFilterParams filterParams)
