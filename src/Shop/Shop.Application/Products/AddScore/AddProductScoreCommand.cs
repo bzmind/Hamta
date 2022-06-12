@@ -4,20 +4,20 @@ using Common.Application.Validation;
 using FluentValidation;
 using Shop.Domain.ProductAggregate.Repository;
 
-namespace Shop.Application.Products.SetScore;
+namespace Shop.Application.Products.AddScore;
 
-public record AddScoreCommand(long ProductId, int ScoreAmount) : IBaseCommand;
+public record AddProductScoreCommand(long ProductId, int ScoreAmount) : IBaseCommand;
 
-public class AddScoreCommandHandler : IBaseCommandHandler<AddScoreCommand>
+public class AddProductScoreCommandHandler : IBaseCommandHandler<AddProductScoreCommand>
 {
     private readonly IProductRepository _productRepository;
 
-    public AddScoreCommandHandler(IProductRepository productRepository)
+    public AddProductScoreCommandHandler(IProductRepository productRepository)
     {
         _productRepository = productRepository;
     }
 
-    public async Task<OperationResult> Handle(AddScoreCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(AddProductScoreCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetAsTrackingAsync(request.ProductId);
 
@@ -31,7 +31,7 @@ public class AddScoreCommandHandler : IBaseCommandHandler<AddScoreCommand>
     }
 }
 
-public class AddScoreCommandValidator : AbstractValidator<AddScoreCommand>
+public class AddScoreCommandValidator : AbstractValidator<AddProductScoreCommand>
 {
     public AddScoreCommandValidator()
     {

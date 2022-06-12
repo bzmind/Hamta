@@ -5,20 +5,20 @@ using Shop.Domain.ProductAggregate.Repository;
 
 namespace Shop.Application.Products.RemoveGalleryImage;
 
-public record RemoveGalleryImageCommand(long ProductId, long GalleryImageId) : IBaseCommand;
+public record RemoveProductGalleryImageCommand(long ProductId, long GalleryImageId) : IBaseCommand;
 
-public class RemoveGalleryImageCommandHandler : IBaseCommandHandler<RemoveGalleryImageCommand>
+public class RemoveProductGalleryImageCommandHandler : IBaseCommandHandler<RemoveProductGalleryImageCommand>
 {
     private readonly IProductRepository _productRepository;
     private readonly IFileService _fileService;
 
-    public RemoveGalleryImageCommandHandler(IProductRepository productRepository, IFileService fileService)
+    public RemoveProductGalleryImageCommandHandler(IProductRepository productRepository, IFileService fileService)
     {
         _productRepository = productRepository;
         _fileService = fileService;
     }
 
-    public async Task<OperationResult> Handle(RemoveGalleryImageCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(RemoveProductGalleryImageCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetAsTrackingAsync(request.ProductId);
 

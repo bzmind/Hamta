@@ -1,4 +1,6 @@
-﻿namespace Shop.UI.Models.Comments;
+﻿using Shop.UI.Models._Filters;
+
+namespace Shop.UI.Models.Comments;
 
 public class CommentFilterParamsViewModel : BaseFilterParamsViewModel
 {

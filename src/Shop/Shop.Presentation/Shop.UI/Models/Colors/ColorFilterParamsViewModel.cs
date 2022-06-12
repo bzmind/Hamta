@@ -1,4 +1,6 @@
-﻿namespace Shop.UI.Models.Colors;
+﻿using Shop.UI.Models._Filters;
+
+namespace Shop.UI.Models.Colors;
 
 public class ColorFilterParamsViewModel : BaseFilterParamsViewModel
 {

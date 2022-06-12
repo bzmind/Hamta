@@ -8,20 +8,20 @@ using Shop.Domain.ProductAggregate.Repository;
 
 namespace Shop.Application.Products.ReplaceMainImage;
 
-public record ReplaceMainImageCommand(long ProductId, IFormFile MainImage) : IBaseCommand;
+public record ReplaceProductMainImageCommand(long ProductId, IFormFile MainImage) : IBaseCommand;
 
-public class ReplaceMainImageCommandHandler : IBaseCommandHandler<ReplaceMainImageCommand>
+public class ReplaceProductMainImageCommandHandler : IBaseCommandHandler<ReplaceProductMainImageCommand>
 {
     private readonly IProductRepository _productRepository;
     private readonly IFileService _fileService;
 
-    public ReplaceMainImageCommandHandler(IProductRepository productRepository, IFileService fileService)
+    public ReplaceProductMainImageCommandHandler(IProductRepository productRepository, IFileService fileService)
     {
         _productRepository = productRepository;
         _fileService = fileService;
     }
 
-    public async Task<OperationResult> Handle(ReplaceMainImageCommand request, CancellationToken cancellationToken)
+    public async Task<OperationResult> Handle(ReplaceProductMainImageCommand request, CancellationToken cancellationToken)
     {
         var product = await _productRepository.GetAsTrackingAsync(request.ProductId);
 
@@ -39,7 +39,7 @@ public class ReplaceMainImageCommandHandler : IBaseCommandHandler<ReplaceMainIma
     }
 }
 
-public class ReplaceMainImageCommandValidator : AbstractValidator<ReplaceMainImageCommand>
+public class ReplaceMainImageCommandValidator : AbstractValidator<ReplaceProductMainImageCommand>
 {
     public ReplaceMainImageCommandValidator()
     {

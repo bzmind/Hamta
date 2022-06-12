@@ -1,4 +1,6 @@
-﻿namespace Shop.UI.Models.Inventories;
+﻿using Shop.UI.Models._Filters;
+
+namespace Shop.UI.Models.Inventories;
 
 public class InventoryFilterParamsViewModel : BaseFilterParamsViewModel
 {

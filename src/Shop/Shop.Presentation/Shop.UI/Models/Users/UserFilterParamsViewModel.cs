@@ -1,4 +1,6 @@
-﻿namespace Shop.UI.Models.Users;
+﻿using Shop.UI.Models._Filters;
+
+namespace Shop.UI.Models.Users;
 
 public class UserFilterParamsViewModel : BaseFilterParamsViewModel
 {

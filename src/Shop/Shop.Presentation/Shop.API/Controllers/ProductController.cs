@@ -4,11 +4,11 @@ using Common.Api.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.CustomModelBinders;
+using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 using Shop.Application.Products.RemoveGalleryImage;
 using Shop.Application.Products.ReplaceMainImage;
-using Shop.Application.Products.SetScore;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Products;
 using Shop.Query.Products._DTOs;
@@ -43,21 +43,21 @@ public class ProductController : BaseApiController
     }
 
     [HttpPut("ReplaceMainImage")]
-    public async Task<ApiResult> ReplaceMainImage([FromForm] ReplaceMainImageCommand command)
+    public async Task<ApiResult> ReplaceMainImage([FromForm] ReplaceProductMainImageCommand command)
     {
         var result = await _productFacade.ReplaceMainImage(command);
         return CommandResult(result);
     }
 
     [HttpPut("AddScore")]
-    public async Task<ApiResult> AddScore(AddScoreCommand command)
+    public async Task<ApiResult> AddScore(AddProductScoreCommand command)
     {
         var result = await _productFacade.AddScore(command);
         return CommandResult(result);
     }
     
     [HttpPut("RemoveGalleryImage")]
-    public async Task<ApiResult> RemoveGalleryImages(RemoveGalleryImageCommand command)
+    public async Task<ApiResult> RemoveGalleryImages(RemoveProductGalleryImageCommand command)
     {
         var result = await _productFacade.RemoveGalleryImage(command);
         return CommandResult(result);

@@ -1,4 +1,4 @@
-﻿namespace Shop.UI.Models;
+﻿namespace Shop.UI.Models._Filters;
 
 public class BaseFilterParamsViewModel
 {
