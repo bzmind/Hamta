@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Common.Api;
+using Shop.API.ViewModels.Comments;
 using Shop.Query.Comments._DTOs;
 using Shop.UI.Models.Comments;
 
@@ -22,7 +23,7 @@ public class CommentService : ICommentService
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> SetStatus(SetCommentStatusViewModel model)
+    public async Task<ApiResult?> SetStatus(SetCommentStatusCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/comment/setstatus", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);

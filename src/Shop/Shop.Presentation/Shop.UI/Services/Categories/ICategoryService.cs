@@ -6,9 +6,9 @@ namespace Shop.UI.Services.Categories;
 
 public interface ICategoryService
 {
-    Task<ApiResult?> Create(CreateCategoryViewModel model);
-    Task<ApiResult?> AddSubCategory(AddSubCategoryViewModel model);
-    Task<ApiResult?> Edit(EditCategoryViewModel model);
+    Task<ApiResult?> Create(CreateCategoryCommandViewModel model);
+    Task<ApiResult?> AddSubCategory(AddSubCategoryCommandViewModel model);
+    Task<ApiResult?> Edit(EditCategoryCommandViewModel model);
     Task<ApiResult?> Remove(long categoryId);
 
     Task<CategoryDto?> GetById(long categoryId);

@@ -1,6 +1,8 @@
 ﻿using System.Text.Json;
 using Common.Api;
+using Shop.API.ViewModels.Auth;
 using Shop.UI.Models.Auth;
+using LoginResponse = Shop.UI.Models.Auth.LoginResponse;
 
 namespace Shop.UI.Services.Auth;
 

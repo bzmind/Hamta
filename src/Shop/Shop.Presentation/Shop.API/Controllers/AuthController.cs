@@ -31,47 +31,45 @@ public class AuthController : BaseApiController
     }
 
     [HttpPost("Login")]
-    public async Task<ApiResult<UserTokensDto?>> Login(ApiLoginViewModel model)
+    public async Task<ApiResult<LoginResponse?>> Login(LoginViewModel model)
     {
         var user = await _userFacade.GetByEmailOrPhone(model.EmailOrPhone);
 
         if (user == null)
-            return CommandResult(OperationResult<UserTokensDto>
+            return CommandResult(OperationResult<LoginResponse>
                 .NotFound(ValidationMessages.FieldNotFound("کاربری با مشخصات وارد شده")));
 
         if (SHA256Hash.Compare(user.Password, model.Password) == false)
-            return CommandResult(OperationResult<UserTokensDto>
+            return CommandResult(OperationResult<LoginResponse>
                 .NotFound(ValidationMessages.FieldNotFound("کاربری با مشخصات وارد شده")));
 
-        await _userTokenFacade.RemoveTokensByUserId(user.Id); // This clears all the tokens, so the device limit sets back to zero, and user will be logged out of other devices, so it can always login from any device, idk, is it even a problem? but now the device limit doesn't make any sense I guess
         var result = await GenerateTokenAndAddItToUser(user);
         return CommandResult(result);
     }
     
     [HttpPost("Register")]
-    public async Task<ApiResult> Register(ApiRegisterViewModel model)
+    public async Task<ApiResult> Register(RegisterViewModel model)
     {
         var result = await _userFacade.Register(new RegisterUserCommand(model.PhoneNumber, model.Password));
         return CommandResult(result);
     }
 
     [HttpPost("RefreshToken")]
-    public async Task<ApiResult<UserTokensDto?>> RefreshToken(string refreshToken)
+    public async Task<ApiResult<LoginResponse?>> RefreshToken(string refreshToken)
     {
         var result = await _userTokenFacade.GetTokenByRefreshTokenHash(refreshToken);
 
         if (result == null)
-            return CommandResult(OperationResult<UserTokensDto?>
+            return CommandResult(OperationResult<LoginResponse?>
                 .NotFound(ValidationMessages.FieldNotFound("توکن")));
 
         if (result.JwtTokenExpireDate > DateTime.Now)
-            return CommandResult(OperationResult<UserTokensDto?>.Error("توکن هنوز منقضی نشده است"));
+            return CommandResult(OperationResult<LoginResponse?>.Error("توکن هنوز منقضی نشده است"));
 
         if (result.RefreshTokenExpireDate < DateTime.Now)
-            return CommandResult(OperationResult<UserTokensDto?>.Error("رفرش توکن منقضی شده است"));
+            return CommandResult(OperationResult<LoginResponse?>.Error("رفرش توکن منقضی شده است"));
 
-        await _userTokenFacade.RemoveTokensByUserId(result.UserId);
-
+        await _userTokenFacade.RemoveToken(new RemoveUserTokenCommand(result.UserId, result.Id));
         var user = await _userFacade.GetById(result.UserId);
         var userTokensResult = await GenerateTokenAndAddItToUser(user!);
 
@@ -92,7 +90,7 @@ public class AuthController : BaseApiController
         return CommandResult(OperationResult.Success());
     }
 
-    private async Task<OperationResult<UserTokensDto>> GenerateTokenAndAddItToUser(UserDto userDto)
+    private async Task<OperationResult<LoginResponse>> GenerateTokenAndAddItToUser(UserDto userDto)
     {
         var uapParser = Parser.GetDefault();
         var userAgentHeader = Request.Headers["user-agent"].ToString();
@@ -114,9 +112,9 @@ public class AuthController : BaseApiController
             JwtTokenBuilder.JwtTokenExpirationDate, JwtTokenBuilder.RefreshTokenExpirationDate, device));
 
         if (result.StatusCode != OperationStatusCode.Success)
-            return OperationResult<UserTokensDto>.Error();
+            return OperationResult<LoginResponse>.Error();
 
-        return OperationResult<UserTokensDto>.Success(new UserTokensDto
+        return OperationResult<LoginResponse>.Success(new LoginResponse
         {
             Token = token,
             RefreshToken = refreshToken

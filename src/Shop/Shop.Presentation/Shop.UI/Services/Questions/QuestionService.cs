@@ -22,7 +22,7 @@ public class QuestionService : IQuestionService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> SetStatus(SetQuestionStatusViewModel model)
+    public async Task<ApiResult?> SetStatus(SetQuestionStatusCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/question/setstatus", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -34,7 +34,7 @@ public class QuestionService : IQuestionService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> RemoveReply(RemoveReplyViewModel model)
+    public async Task<ApiResult?> RemoveReply(RemoveReplyCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/question/removereply", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

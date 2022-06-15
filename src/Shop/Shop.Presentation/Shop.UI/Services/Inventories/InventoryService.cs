@@ -16,33 +16,33 @@ public class InventoryService : IInventoryService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateInventoryViewModel model)
+    public async Task<ApiResult?> Create(CreateInventoryCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/inventory/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> Edit(EditInventoryViewModel model)
+    public async Task<ApiResult?> Edit(EditInventoryCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/inventory/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> IncreaseQuantity(SetInventoryQuantityViewModel model)
+    public async Task<ApiResult?> IncreaseQuantity(SetInventoryQuantityCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/inventory/increasequantity", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> DecreaseQuantity(CreateInventoryViewModel model)
+    public async Task<ApiResult?> DecreaseQuantity(CreateInventoryCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/inventory/decreasequantity", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> DiscountByPercentage(SetDiscountByPercentageViewModel model)
+    public async Task<ApiResult?> SetDiscountPercentage(SetDiscountPercentageCommandViewModel model)
     {
-        var result = await _client.PutAsJsonAsync("api/inventory/discountbypercentage", model);
+        var result = await _client.PutAsJsonAsync("api/inventory/setdiscountpercentage", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
@@ -69,7 +69,7 @@ public class InventoryService : IInventoryService
     {
         var url = $"api/inventory/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&ProductId={filterParams.ProductId}&StartQuantity={filterParams.StartQuantity}" +
-                  $"&EndQuantity={filterParams}&StartPrice={filterParams.StartPrice}" +
+                  $"&EndQuantity={filterParams.EndQuantity}&StartPrice={filterParams.StartPrice}" +
                   $"&EndPrice={filterParams.EndPrice}" +
                   $"&StartDiscountPercentage={filterParams.StartDiscountPercentage}" +
                   $"&EndDiscountPercentage={filterParams.EndDiscountPercentage}" +

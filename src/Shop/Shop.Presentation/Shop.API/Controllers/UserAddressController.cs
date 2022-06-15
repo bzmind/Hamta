@@ -4,6 +4,7 @@ using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Users;
+using Shop.API.ViewModels.Users.Addresses;
 using Shop.Application.Users.ActivateAddress;
 using Shop.Application.Users.CreateAddress;
 using Shop.Application.Users.EditAddress;

@@ -4,9 +4,9 @@ using Common.Api.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Inventories.Create;
 using Shop.Application.Inventories.DecreaseQuantity;
-using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
 using Shop.Application.Inventories.IncreaseQuantity;
+using Shop.Application.Inventories.SetDiscountPercentage;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Inventories;
 using Shop.Query.Inventories._DTOs;
@@ -52,10 +52,10 @@ public class InventoryController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpPut("DiscountByPercentage")]
-    public async Task<ApiResult> DiscountByPercentage(DiscountByPercentageCommand command)
+    [HttpPut("SetDiscountPercentage")]
+    public async Task<ApiResult> SetDiscountPercentage(SetInventoryDiscountPercentageCommand command)
     {
-        var result = await _inventoryFacade.DiscountByPercentage(command);
+        var result = await _inventoryFacade.SetDiscountPercentage(command);
         return CommandResult(result);
     }
 

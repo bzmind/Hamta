@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Common.Application.Utility;
 using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -39,13 +40,14 @@ public class RegisterModel : PageModel
     {
         var emailOrPhone = TempData["EmailOrPhone"];
 
-        if (emailOrPhone == null)
+        if (emailOrPhone == null || emailOrPhone.ToString()!.IsEmail())
             return RedirectToPage("Login");
 
-        var result = await _authService.Login(new LoginViewModel
+        var result = await _authService.Register(new RegisterViewModel
         {
-            EmailOrPhone = emailOrPhone.ToString()!,
-            Password = Password
+            PhoneNumber = emailOrPhone.ToString()!,
+            Password = Password,
+            ConfirmPassword = ConfirmPassword
         });
 
         return Page();

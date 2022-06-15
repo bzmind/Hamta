@@ -6,8 +6,8 @@ namespace Shop.UI.Services.Shippings;
 
 public interface IShippingService
 {
-    Task<ApiResult?> Create(CreateShippingViewModel model);
-    Task<ApiResult?> Edit(EditShippingViewModel model);
+    Task<ApiResult?> Create(CreateShippingCommandViewModel model);
+    Task<ApiResult?> Edit(EditShippingCommandViewModel model);
     Task<ApiResult?> Remove(long shippingId);
 
     Task<ShippingDto?> GetById(long shippingId);

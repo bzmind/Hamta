@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Common.Api;
+using Shop.API.ViewModels.Comments;
 using Shop.Query.Orders._DTOs;
 using Shop.UI.Models.Comments;
 using Shop.UI.Models.Orders;
@@ -41,7 +42,7 @@ public class OrderService : IOrderService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> SetStatus(SetOrderStatusViewModel model)
+    public async Task<ApiResult?> SetStatus(SetOrderStatusCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/order/setstatus", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

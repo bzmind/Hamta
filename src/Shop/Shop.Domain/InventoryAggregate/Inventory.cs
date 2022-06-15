@@ -50,7 +50,7 @@ public class Inventory : BaseAggregateRoot
         Quantity -= amount;
     }
 
-    public void DiscountByPercentage(int discountPercentage)
+    public void SetDiscountPercentage(int discountPercentage)
     {
         if (discountPercentage is < 0 or > 100)
             throw new OutOfRangeValueDomainException("Discount percentage must be between 0 and 100");

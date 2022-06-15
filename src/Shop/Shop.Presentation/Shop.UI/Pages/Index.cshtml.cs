@@ -16,7 +16,7 @@ public class IndexModel : PageModel
 
     public async Task OnGet()
     {
-        //var result = await _productService.Create(new CreateProductViewModel
+        //var result = await _productService.Create(new CreateProductCommandViewModel
         //{
         //    CategoryId = 1,
         //    Name = "test",

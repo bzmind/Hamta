@@ -17,7 +17,7 @@ public class UserService : IUserService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateUserViewModel model)
+    public async Task<ApiResult?> Create(CreateUserCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/user/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -47,7 +47,7 @@ public class UserService : IUserService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> AddRole(AddUserRoleViewModel model)
+    public async Task<ApiResult?> AddRole(AddUserRoleCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/user/addrole", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

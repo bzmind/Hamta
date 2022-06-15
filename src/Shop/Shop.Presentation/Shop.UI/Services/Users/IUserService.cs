@@ -7,12 +7,12 @@ namespace Shop.UI.Services.Users;
 
 public interface IUserService
 {
-    Task<ApiResult?> Create(CreateUserViewModel model);
+    Task<ApiResult?> Create(CreateUserCommandViewModel model);
     Task<ApiResult?> Edit(EditUserViewModel model);
     Task<ApiResult?> SetAvatar(SetUserAvatarViewModel model);
     Task<ApiResult?> SetSubscriptionToNews(bool subscription);
     Task<ApiResult?> AddFavoriteItem(long productId);
-    Task<ApiResult?> AddRole(AddUserRoleViewModel model);
+    Task<ApiResult?> AddRole(AddUserRoleCommandViewModel model);
     Task<ApiResult?> RemoveFavoriteItem(long favoriteItemId);
     Task<ApiResult?> RemoveRole(long roleId);
     Task<ApiResult?> Remove(long userId);

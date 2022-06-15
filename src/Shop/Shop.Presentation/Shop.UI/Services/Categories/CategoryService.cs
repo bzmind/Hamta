@@ -16,19 +16,19 @@ public class CategoryService : ICategoryService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateCategoryViewModel model)
+    public async Task<ApiResult?> Create(CreateCategoryCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/category/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> AddSubCategory(AddSubCategoryViewModel model)
+    public async Task<ApiResult?> AddSubCategory(AddSubCategoryCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/category/addsubcategory", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> Edit(EditCategoryViewModel model)
+    public async Task<ApiResult?> Edit(EditCategoryCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/category/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);

@@ -6,11 +6,11 @@ namespace Shop.UI.Services.Inventories;
 
 public interface IInventoryService
 {
-    Task<ApiResult?> Create(CreateInventoryViewModel model);
-    Task<ApiResult?> Edit(EditInventoryViewModel model);
-    Task<ApiResult?> IncreaseQuantity(SetInventoryQuantityViewModel model);
-    Task<ApiResult?> DecreaseQuantity(CreateInventoryViewModel model);
-    Task<ApiResult?> DiscountByPercentage(SetDiscountByPercentageViewModel model);
+    Task<ApiResult?> Create(CreateInventoryCommandViewModel model);
+    Task<ApiResult?> Edit(EditInventoryCommandViewModel model);
+    Task<ApiResult?> IncreaseQuantity(SetInventoryQuantityCommandViewModel model);
+    Task<ApiResult?> DecreaseQuantity(CreateInventoryCommandViewModel model);
+    Task<ApiResult?> SetDiscountPercentage(SetDiscountPercentageCommandViewModel model);
     Task<ApiResult?> RemoveDiscount(long inventoryId);
     Task<ApiResult?> Remove(long inventoryId);
 

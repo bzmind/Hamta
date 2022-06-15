@@ -2,11 +2,11 @@
 using MediatR;
 using Shop.Application.Inventories.Create;
 using Shop.Application.Inventories.DecreaseQuantity;
-using Shop.Application.Inventories.DiscountByPercentage;
 using Shop.Application.Inventories.Edit;
 using Shop.Application.Inventories.IncreaseQuantity;
 using Shop.Application.Inventories.Remove;
 using Shop.Application.Inventories.RemoveDiscount;
+using Shop.Application.Inventories.SetDiscountPercentage;
 using Shop.Query.Inventories._DTOs;
 using Shop.Query.Inventories.GetByFilter;
 using Shop.Query.Inventories.GetByProductId;
@@ -42,7 +42,7 @@ internal class InventoryFacade : IInventoryFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> DiscountByPercentage(DiscountByPercentageCommand command)
+    public async Task<OperationResult> SetDiscountPercentage(SetInventoryDiscountPercentageCommand command)
     {
         return await _mediator.Send(command);
     }

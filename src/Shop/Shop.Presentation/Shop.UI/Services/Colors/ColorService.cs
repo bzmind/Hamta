@@ -16,13 +16,13 @@ public class ColorService : IColorService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateColorViewModel model)
+    public async Task<ApiResult?> Create(CreateColorCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/color/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> Edit(EditColorViewModel model)
+    public async Task<ApiResult?> Edit(EditColorCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/color/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);

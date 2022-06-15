@@ -2,6 +2,7 @@
 using Shop.API.ViewModels.Comments;
 using Shop.API.ViewModels.Orders;
 using Shop.API.ViewModels.Users;
+using Shop.API.ViewModels.Users.Addresses;
 using Shop.Application.Comments.Create;
 using Shop.Application.Orders.IncreaseOrderItemCount;
 using Shop.Application.Users.CreateAddress;
