@@ -84,9 +84,9 @@ public class UserService : IUserService
         return result?.Data;
     }
 
-    public async Task<OperationResult> SearchByEmailOrPhone(string emailOrPhone)
+    public async Task<OperationResult<LoginResult>> SearchByEmailOrPhone(string emailOrPhone)
     {
-        var result = await _client.GetFromJsonAsync<ApiResult<OperationResult>>
+        var result = await _client.GetFromJsonAsync<ApiResult<OperationResult<LoginResult>>>
             ($"api/User/searchbyemailorphone/{emailOrPhone}", _jsonOptions);
         return result?.Data!;
     }

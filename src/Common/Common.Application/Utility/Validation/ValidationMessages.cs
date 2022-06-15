@@ -1,4 +1,4 @@
-﻿namespace Common.Application.Validation;
+﻿namespace Common.Application.Utility.Validation;
 
 public static class ValidationMessages
 {
@@ -7,15 +7,23 @@ public static class ValidationMessages
     public const string MaxLength = "تعداد کاراکتر های وارد شده بیشتر از حد مجاز است";
     public const string MinLength = "تعداد کاراکتر های وارد شده کمتر از حد مجاز است";
 
-    public const string NameRequired = "نام را وارد کنید";
-    public const string FamilyNameRequired = "نام خانوادگی را وارد کنید";
-    public const string FullNameRequired = "نام و نام خانوادگی را وارد کنید";
-    public const string PhoneNumberRequired = "شماره موبایل را وارد کنید";
-    public const string EmailRequired = "ایمیل را وارد کنید";
-    public const string PasswordRequired = "رمز عبور را وارد کنید";
+    public const string NameRequired = "لطفا نام را وارد کنید";
+    public const string FamilyNameRequired = "لطفا نام خانوادگی را وارد کنید";
+    public const string FullNameRequired = "لطفا نام و نام خانوادگی را وارد کنید";
+    public const string PhoneNumberRequired = "لطفا شماره موبایل را وارد کنید";
+    public const string EmailRequired = "لطفا ایمیل را وارد کنید";
+    public const string PasswordRequired = "لطفا رمز عبور را وارد کنید";
+    public const string ConfirmPasswordRequired = "لطفا تکرار رمز عبور را وارد کنید";
+    public const string EmailOrPhoneRequired = "لطفا شماره موبایل یا ایمیل را وارد کنید";
 
+    public const string InvalidName = "نام وارد شده نامعتبر است";
+    public const string InvalidFamilyName = "نام خانوادگی وارد شده نامعتبر است";
+    public const string InvalidFullName = "نام و نام خانوادگی وارد شده نامعتبر است";
+    public const string InvalidEmailOrPhone = "شماره موبایل یا ایمیل وارد شده نامعتبر است";
     public const string InvalidEmail = "ایمیل وارد شده نامعتبر است";
     public const string InvalidPhoneNumber = "شماره موبایل وارد شده نامعتبر است";
+    public const string InvalidPassword = "رمز عبور وارد شده نامعتبر است";
+    public const string InvalidConfirmPassword = "رمز های عبور با هم یکسان نیستند";
     public const string InvalidPrice = "مبلغ وارد شده نامعتبر است";
 
     /// <summary>

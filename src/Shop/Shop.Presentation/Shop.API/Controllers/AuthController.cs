@@ -1,8 +1,8 @@
 ﻿using Common.Api;
 using Common.Api.Jwt;
 using Common.Application;
-using Common.Application.Security;
-using Common.Application.Validation;
+using Common.Application.Utility.Security;
+using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -31,7 +31,7 @@ public class AuthController : BaseApiController
     }
 
     [HttpPost("Login")]
-    public async Task<ApiResult<UserTokensDto?>> Login(LoginViewModel model)
+    public async Task<ApiResult<UserTokensDto?>> Login(ApiLoginViewModel model)
     {
         var user = await _userFacade.GetByEmailOrPhone(model.EmailOrPhone);
 
@@ -49,7 +49,7 @@ public class AuthController : BaseApiController
     }
     
     [HttpPost("Register")]
-    public async Task<ApiResult> Register(RegisterViewModel model)
+    public async Task<ApiResult> Register(ApiRegisterViewModel model)
     {
         var result = await _userFacade.Register(new RegisterUserCommand(model.PhoneNumber, model.Password));
         return CommandResult(result);

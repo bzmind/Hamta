@@ -1,7 +1,7 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
-using Common.Application.FileUtility;
-using Common.Application.Validation;
+using Common.Application.Utility.FileUtility;
+using Common.Application.Utility.Validation;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Shop.Domain.ProductAggregate;

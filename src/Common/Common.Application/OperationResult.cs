@@ -36,7 +36,7 @@ public class OperationResult
 
 public class OperationResult<TData>
 {
-    public TData? Data { get; set; } = default(TData);
+    public TData? Data { get; set; }
     public string Message { get; set; }
     public OperationStatusCode StatusCode { get; set; }
 
@@ -51,23 +51,26 @@ public class OperationResult<TData>
         StatusCode = statusCode;
     }
 
-    public static OperationResult<TData> Success(TData data)
-        => new (data, SuccessMessage, OperationStatusCode.Success);
-
-    public static OperationResult<TData> Success(TData data, string successMessage)
-        => new (data, successMessage, OperationStatusCode.Success);
+    public static OperationResult<TData> Success(TData data, string? message = null)
+        => new (data, message ?? SuccessMessage, OperationStatusCode.Success);
 
     public static OperationResult<TData> Error()
-        => new (default(TData), ErrorMessage, OperationStatusCode.Error);
+        => new(default, ErrorMessage, OperationStatusCode.Error);
 
-    public static OperationResult<TData> Error(string errorMessage)
-        => new (default(TData), errorMessage, OperationStatusCode.Error);
+    public static OperationResult<TData> Error(string? message = null)
+        => new(default, message ?? ErrorMessage, OperationStatusCode.Error);
 
+    public static OperationResult<TData> Error(TData? data = default, string? message = null)
+        => new(data, message ?? ErrorMessage, OperationStatusCode.Error);
+    
     public static OperationResult<TData> NotFound()
-        => new (default(TData), NotFoundMessage, OperationStatusCode.NotFound);
-
-    public static OperationResult<TData> NotFound(string notFoundMessage)
-        => new (default(TData), notFoundMessage, OperationStatusCode.NotFound);
+        => new (default, NotFoundMessage, OperationStatusCode.NotFound);
+    
+    public static OperationResult<TData> NotFound(string? message = null)
+        => new (default, message ?? NotFoundMessage, OperationStatusCode.NotFound);
+    
+    public static OperationResult<TData> NotFound(TData? data = default, string? message = null)
+        => new (data, message ?? NotFoundMessage, OperationStatusCode.NotFound);
 }
 
 public enum OperationStatusCode

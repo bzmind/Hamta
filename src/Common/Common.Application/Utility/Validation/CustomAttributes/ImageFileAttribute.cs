@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
-namespace Common.Application.Validation.CustomAttributes;
+namespace Common.Application.Utility.Validation.CustomAttributes;
 
 public class ImageFileAttribute : ValidationAttribute, IClientModelValidator
 {

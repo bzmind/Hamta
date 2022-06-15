@@ -3,7 +3,7 @@ using Common.Application.Exceptions;
 using FluentValidation;
 using MediatR;
 
-namespace Common.Application.Validation;
+namespace Common.Application.Utility.Validation;
 
 public class CommandValidationBehavior<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>

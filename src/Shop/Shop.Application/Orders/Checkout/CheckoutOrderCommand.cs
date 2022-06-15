@@ -1,6 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
-using Common.Application.Validation;
+using Common.Application.Utility.Validation;
 using Common.Domain.ValueObjects;
 using Shop.Domain.UserAggregate.Repository;
 using Shop.Domain.InventoryAggregate.Repository;

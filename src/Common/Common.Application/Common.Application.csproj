@@ -18,9 +18,7 @@
   <ItemGroup>
     <Folder Include="Exceptions\" />
     <Folder Include="BaseClasses\" />
-    <Folder Include="FileUtility\" />
-    <Folder Include="Validation\CustomFluentValidations\" />
-    <Folder Include="Validation\CustomAttributes\" />
+    <Folder Include="Utility\FileUtility\" />
   </ItemGroup>
 
   <ItemGroup>

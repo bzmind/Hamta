@@ -1,7 +1,7 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
-using Common.Application.Validation;
-using Common.Application.Validation.CustomFluentValidations;
+using Common.Application.Utility.Validation;
+using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
 using Shop.Domain.UserAggregate.Repository;
 

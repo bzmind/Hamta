@@ -1,15 +1,16 @@
-﻿using System.Text.RegularExpressions;
-using Common.Application;
-using Common.Application.Validation;
+﻿using Common.Application;
+using Common.Application.Utility;
+using Common.Application.Utility.Validation;
 using Common.Query.BaseClasses;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
+using Shop.Query.Users._DTOs;
 
 namespace Shop.Query.Users.SearchByEmailOrPhone;
 
-public record SearchUserByEmailOrPhoneQuery(string EmailOrPhone) : IBaseQuery<OperationResult>;
+public record SearchUserByEmailOrPhoneQuery(string EmailOrPhone) : IBaseQuery<OperationResult<LoginResult>>;
 
-public class SearchUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<SearchUserByEmailOrPhoneQuery, OperationResult>
+public class SearchUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<SearchUserByEmailOrPhoneQuery, OperationResult<LoginResult>>
 {
     private readonly ShopContext _shopContext;
 
@@ -18,32 +19,33 @@ public class SearchUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<SearchUser
         _shopContext = shopContext;
     }
 
-    public async Task<OperationResult> Handle(SearchUserByEmailOrPhoneQuery request, CancellationToken cancellationToken)
+    public async Task<OperationResult<LoginResult>> Handle(SearchUserByEmailOrPhoneQuery request, CancellationToken cancellationToken)
     {
-        var user = await _shopContext.Users
-            .FirstOrDefaultAsync(c => c.PhoneNumber.Value == request.EmailOrPhone
+        var userExists = await _shopContext.Users
+            .AnyAsync(c => c.PhoneNumber.Value == request.EmailOrPhone
                                       || c.Email == request.EmailOrPhone, cancellationToken);
 
-        if (user != null)
-            return OperationResult.Success();
+        if (userExists)
+            return OperationResult<LoginResult>.Success(new LoginResult
+            {
+                UserExists = true,
+                NextStep = LoginResult.NextSteps.Password
+            });
 
-        if (IsThisEmailOrPhone(request.EmailOrPhone) == "phone")
-            return OperationResult.NotFound("User was not be found by phone");
+        if (request.EmailOrPhone.IsPhone())
+            return OperationResult<LoginResult>.Success(new LoginResult
+            {
+                UserExists = false,
+                NextStep = LoginResult.NextSteps.Register
+            });
 
-        if (IsThisEmailOrPhone(request.EmailOrPhone) == "email")
-            return OperationResult.NotFound("User was not be found by email");
+        if (request.EmailOrPhone.IsEmail())
+            return OperationResult<LoginResult>.Error(new LoginResult
+            {
+                UserExists = false,
+                NextStep = LoginResult.NextSteps.RegisterWithPhone
+            }, "حساب کاربری با مشخصات وارد شده وجود ندارد. لطفا از شماره تلفن همراه برای ساخت حساب کاربری استفاده نمایید.");
 
-        return OperationResult.Error(ValidationMessages.FieldInvalid("شماره موبایل یا ایمیل"));
-    }
-
-    private string IsThisEmailOrPhone(string input)
-    {
-        if (Regex.IsMatch(input, "09(1[0-9]|3[1-9]|2[1-9])-?[0-9]{3}-?[0-9]{4}") && input.Length == 11)
-            return "phone";
-
-        if (Regex.IsMatch(input, @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}"))
-            return "email";
-
-        return "none";
+        return OperationResult<LoginResult>.Error(null, ValidationMessages.InvalidEmailOrPhone);
     }
 }

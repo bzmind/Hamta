@@ -1,7 +1,7 @@
 ﻿using System.Text;
 using System.Text.Json;
 using Common.Api;
-using Common.Application.Validation.CustomAttributes;
+using Common.Application.Utility.Validation.CustomAttributes;
 using Shop.Query.Products._DTOs;
 using Shop.UI.Models.Products;
 

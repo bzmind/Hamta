@@ -119,9 +119,10 @@ public class UserController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
     [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpGet("SearchByEmailOrPhone/{emailOrPhone}")]
-    public async Task<ApiResult<OperationResult>> SearchByEmailOrPhone(string emailOrPhone)
+    public async Task<ApiResult<OperationResult<LoginResult>>> SearchByEmailOrPhone(string emailOrPhone)
     {
         var result = await _userFacade.SearchByEmailOrPhone(emailOrPhone);
         return QueryResult(result);

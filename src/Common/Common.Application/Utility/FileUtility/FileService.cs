@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 
-namespace Common.Application.FileUtility;
+namespace Common.Application.Utility.FileUtility;
 
 public class FileService : IFileService
 {
@@ -26,7 +26,7 @@ public class FileService : IFileService
     public void DeleteFile(string path, string fileName)
     {
         var filePath = Path.Combine(Directory.GetCurrentDirectory(), path,
-              fileName);
+            fileName);
         if (File.Exists(filePath))
             File.Delete(filePath);
     }
@@ -79,8 +79,8 @@ public class FileService : IFileService
         var fileName = file.FileName;
 
         fileName = Guid.NewGuid() + DateTime.Now.TimeOfDay.ToString()
-                                      .Replace(":", "")
-                                      .Replace(".", "") + Path.GetExtension(fileName);
+            .Replace(":", "")
+            .Replace(".", "") + Path.GetExtension(fileName);
 
         var folderName = Path.Combine(Directory.GetCurrentDirectory(), directoryPath.Replace("/", "\\"));
 

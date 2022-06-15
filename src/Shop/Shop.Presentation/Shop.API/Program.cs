@@ -10,8 +10,19 @@ using Shop.API.SetupClasses;
 using Shop.Config;
 
 var builder = WebApplication.CreateBuilder(args);
+const string corsPolicyName = "ApiCORS";
 
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        corsPolicyName,
+        policy =>
+        {
+            policy.WithOrigins("https://localhost:7212");
+        });
+});
+
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.RegisterShopDependencies(connectionString);
 builder.Services.RegisterApiDependencies();
@@ -69,7 +80,11 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddRouting(options => options.LowercaseUrls = true);
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
 
 var app = builder.Build();
 
@@ -82,6 +97,8 @@ app.UseSwaggerUI(settings =>
 });
 
 app.UseHttpsRedirection();
+
+app.UseCors(corsPolicyName);
 
 app.UseAuthentication();
 

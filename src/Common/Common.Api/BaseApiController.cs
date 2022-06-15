@@ -23,11 +23,10 @@ public class BaseApiController : ControllerBase
 
     protected ApiResult<TData?> CommandResult<TData>(OperationResult<TData> result,
         HttpStatusCode statusCode = HttpStatusCode.OK, string? resultUrl = null)
-
     {
-        var wasSuccessful = result.StatusCode == OperationStatusCode.Success;
+        var isSuccessful = result.StatusCode == OperationStatusCode.Success;
 
-        if (wasSuccessful)
+        if (isSuccessful)
         {
             HttpContext.Response.StatusCode = (int)statusCode;
 
@@ -38,7 +37,7 @@ public class BaseApiController : ControllerBase
         return new ApiResult<TData?>
         {
             IsSuccessful = result.StatusCode == OperationStatusCode.Success,
-            Data = wasSuccessful ? result.Data : default(TData),
+            Data = isSuccessful ? result.Data : default(TData),
             MetaData = new MetaData
             {
                 Message = result.Message,

@@ -1,7 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace Common.Application.Security;
+namespace Common.Application.Utility.Security;
 
 public static class SHA256Hash
 {

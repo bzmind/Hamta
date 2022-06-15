@@ -19,6 +19,6 @@ public interface IUserService
 
     Task<UserDto?> GetById(long userId);
     Task<UserDto?> GetByEmailOrPhone(string emailOrPhone);
-    Task<OperationResult> SearchByEmailOrPhone(string emailOrPhone);
+    Task<OperationResult<LoginResult>> SearchByEmailOrPhone(string emailOrPhone);
     Task<UserFilterResult?> GetByFilter(UserFilterParamsViewModel filterParams);
 }

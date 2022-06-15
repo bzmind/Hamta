@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 using Microsoft.AspNetCore.Http;
 
-namespace Common.Application.Validation.CustomAttributes;
+namespace Common.Application.Utility.Validation.CustomAttributes;
 
 public static class ImageValidation
 {

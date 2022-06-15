@@ -1,4 +1,4 @@
-﻿using Common.Application.Validation;
+﻿using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Shop.Presentation.Facade.Users.Tokens;
 

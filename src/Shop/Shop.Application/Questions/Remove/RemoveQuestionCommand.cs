@@ -1,6 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
-using Common.Application.Validation;
+using Common.Application.Utility.Validation;
 using Shop.Domain.QuestionAggregate.Repository;
 
 namespace Shop.Application.Questions.Remove;

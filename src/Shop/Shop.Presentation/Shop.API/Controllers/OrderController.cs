@@ -1,5 +1,4 @@
 ﻿using System.Net;
-using AutoMapper;
 using Common.Api;
 using Common.Api.Attributes;
 using Common.Api.Utility;
@@ -20,12 +19,10 @@ namespace Shop.API.Controllers;
 public class OrderController : BaseApiController
 {
     private readonly IOrderFacade _orderFacade;
-    private readonly IMapper _mapper;
 
-    public OrderController(IOrderFacade orderFacade, IMapper mapper)
+    public OrderController(IOrderFacade orderFacade)
     {
         _orderFacade = orderFacade;
-        _mapper = mapper;
     }
 
     [HttpPost("AddItem")]

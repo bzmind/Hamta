@@ -1,6 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
-using Common.Application.FileUtility;
+using Common.Application.Utility.FileUtility;
 using Shop.Domain.ProductAggregate.Repository;
 
 namespace Shop.Application.Products.RemoveGalleryImage;

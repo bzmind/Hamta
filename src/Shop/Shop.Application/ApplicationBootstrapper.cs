@@ -1,4 +1,4 @@
-﻿using Common.Application.FileUtility;
+﻿using Common.Application.Utility.FileUtility;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Application.Categories._Services;
 using Shop.Application.Users._Services;

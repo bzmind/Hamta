@@ -87,7 +87,7 @@ internal class UserFacade : IUserFacade
         return await _mediator.Send(new GetUserByEmailOrPhoneQuery(emailOrPhone));
     }
 
-    public async Task<OperationResult> SearchByEmailOrPhone(string emailOrPhone)
+    public async Task<OperationResult<LoginResult>> SearchByEmailOrPhone(string emailOrPhone)
     {
         return await _mediator.Send(new SearchUserByEmailOrPhoneQuery(emailOrPhone));
     }

@@ -1,7 +1,7 @@
 ﻿using System.Text.RegularExpressions;
 using FluentValidation;
 
-namespace Common.Application.Validation.CustomFluentValidations;
+namespace Common.Application.Utility.Validation.CustomFluentValidations;
 
 public static class CustomFluentValidations
 {

@@ -1,5 +1,5 @@
 ﻿using Common.Application;
-using Common.Application.Security;
+using Common.Application.Utility.Security;
 using MediatR;
 using Shop.Application.Users.AddToken;
 using Shop.Application.Users.RemoveToken;

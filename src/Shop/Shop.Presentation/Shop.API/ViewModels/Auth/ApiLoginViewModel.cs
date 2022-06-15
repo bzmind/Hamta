@@ -1,10 +1,10 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Common.Api.Attributes;
-using Common.Application.Validation;
+using Common.Application.Utility.Validation;
 
 namespace Shop.API.ViewModels.Auth;
 
-public class LoginViewModel
+public class ApiLoginViewModel
 {
     [EmailOrIranPhone]
     public string EmailOrPhone { get; set; }
