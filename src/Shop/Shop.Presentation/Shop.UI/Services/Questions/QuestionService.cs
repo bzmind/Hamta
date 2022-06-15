@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using Common.Api;
+using Shop.API.ViewModels.Questions;
 using Shop.Query.Questions._DTOs;
 using Shop.UI.Models.Questions;
 
@@ -16,7 +17,7 @@ public class QuestionService : IQuestionService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateQuestionViewModel model)
+    public async Task<ApiResult?> Create(CreateQuestionCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/question/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -28,7 +29,7 @@ public class QuestionService : IQuestionService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> AddReply(AddReplyViewModel model)
+    public async Task<ApiResult?> AddReply(AddReplyCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/question/addreply", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

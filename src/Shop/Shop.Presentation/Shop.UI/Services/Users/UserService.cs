@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Common.Api;
 using Common.Application;
+using Shop.API.ViewModels.Users;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Models.Users;
 
@@ -23,7 +24,7 @@ public class UserService : IUserService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> Edit(EditUserViewModel model)
+    public async Task<ApiResult?> Edit(EditUserCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/user/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

@@ -1,4 +1,6 @@
-﻿namespace Common.Application.Utility.Validation;
+﻿using Shop.Domain.UserAggregate;
+
+namespace Common.Application.Utility.Validation;
 
 public static class ValidationMessages
 {
@@ -25,6 +27,8 @@ public static class ValidationMessages
     public const string InvalidPassword = "رمز عبور وارد شده نامعتبر است";
     public const string InvalidConfirmPassword = "رمز های عبور با هم یکسان نیستند";
     public const string InvalidPrice = "مبلغ وارد شده نامعتبر است";
+
+    public static string PasswordMinLength = $"رمز عبور باید بیشتر از {User.PasswordMinLength} کاراکتر باشد";
 
     /// <summary>
     /// <example>Example: نام} را وارد کنید}</example>

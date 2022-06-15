@@ -26,8 +26,9 @@ public class User : BaseAggregateRoot
     private readonly List<UserRole> _roles = new();
     public IEnumerable<UserRole> Roles => _roles.ToList();
 
+    public const int PasswordMinLength = 8;
+    public const int MaximumSimultaneousDevices = 3;
     public const string DefaultAvatarName = "avatar.png";
-    private const int MaximumSimultaneousDevices = 3;
 
     private User()
     {
@@ -135,7 +136,8 @@ public class User : BaseAggregateRoot
         var activeTokenCount = Tokens.Count(t => t.RefreshTokenExpireDate > DateTime.Now);
 
         if (activeTokenCount == MaximumSimultaneousDevices)
-            throw new OperationNotAllowedDomainException("You can't use more than 3 devices simultaneously");
+            throw new OperationNotAllowedDomainException
+                ($"You can't use more than {MaximumSimultaneousDevices} devices simultaneously");
 
         var token = new UserToken(Id, jwtTokenHash, refreshTokenHash, jwtTokenExpireDate,
             refreshTokenExpireDate, device);
@@ -189,6 +191,6 @@ public class User : BaseAggregateRoot
         NullOrEmptyDataDomainException.CheckString(password, nameof(password));
 
         if (password.Length < 8)
-            throw new InvalidDataDomainException("Password must have 8 or more characters");
+            throw new InvalidDataDomainException($"Password cannot have less than {PasswordMinLength} characters");
     }
 }

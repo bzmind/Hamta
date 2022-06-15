@@ -17,7 +17,7 @@ public class CommentService : ICommentService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateCommentViewModel model)
+    public async Task<ApiResult?> Create(CreateCommentCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/comment/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);

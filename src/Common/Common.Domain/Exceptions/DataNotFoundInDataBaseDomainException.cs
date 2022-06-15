@@ -1,4 +1,6 @@
-﻿namespace Common.Domain.Exceptions;
+﻿using Common.Domain.BaseClasses;
+
+namespace Common.Domain.Exceptions;
 
 public class DataNotFoundInDatabaseDomainException : BaseDomainException
 {

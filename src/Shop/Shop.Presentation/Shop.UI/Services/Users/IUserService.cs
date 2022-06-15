@@ -1,5 +1,6 @@
 ﻿using Common.Api;
 using Common.Application;
+using Shop.API.ViewModels.Users;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Models.Users;
 
@@ -8,7 +9,7 @@ namespace Shop.UI.Services.Users;
 public interface IUserService
 {
     Task<ApiResult?> Create(CreateUserCommandViewModel model);
-    Task<ApiResult?> Edit(EditUserViewModel model);
+    Task<ApiResult?> Edit(EditUserCommandViewModel model);
     Task<ApiResult?> SetAvatar(SetUserAvatarViewModel model);
     Task<ApiResult?> SetSubscriptionToNews(bool subscription);
     Task<ApiResult?> AddFavoriteItem(long productId);

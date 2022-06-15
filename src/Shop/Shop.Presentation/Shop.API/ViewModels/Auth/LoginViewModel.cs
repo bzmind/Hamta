@@ -6,7 +6,8 @@ namespace Shop.API.ViewModels.Auth;
 
 public class LoginViewModel
 {
-    [EmailOrIranPhone]
+    [EmailOrIranPhone(ErrorMessage = ValidationMessages.InvalidEmailOrPhone)]
+    [Required(ErrorMessage = ValidationMessages.EmailOrPhoneRequired)]
     public string EmailOrPhone { get; set; }
 
     [Required(ErrorMessage = ValidationMessages.PasswordRequired)]

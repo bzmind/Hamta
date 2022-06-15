@@ -1,8 +1,8 @@
 ﻿using System.Text.Json;
 using Common.Api;
 using Shop.API.ViewModels.Comments;
+using Shop.API.ViewModels.Orders;
 using Shop.Query.Orders._DTOs;
-using Shop.UI.Models.Comments;
 using Shop.UI.Models.Orders;
 
 namespace Shop.UI.Services.Orders;
@@ -18,13 +18,13 @@ public class OrderService : IOrderService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateCommentViewModel model)
+    public async Task<ApiResult?> Create(CreateCommentCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/order/additem", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> Checkout(CheckoutOrderViewModel model)
+    public async Task<ApiResult?> Checkout(CheckoutOrderCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/order/checkout", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

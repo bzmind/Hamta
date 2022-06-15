@@ -1,5 +1,5 @@
 ﻿using Common.Api;
-using Shop.UI.Models.Auth;
+using Shop.API.ViewModels.Auth;
 
 namespace Shop.UI.Services.Auth;
 

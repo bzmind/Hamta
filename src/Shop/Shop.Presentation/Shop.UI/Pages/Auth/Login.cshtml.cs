@@ -5,7 +5,6 @@ using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Query.Users._DTOs;
-using Shop.UI.Services.Auth;
 using Shop.UI.Services.Users;
 
 namespace Shop.UI.Pages.Auth;

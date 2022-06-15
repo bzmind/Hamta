@@ -3,7 +3,7 @@ using Common.Application.Utility;
 using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Shop.UI.Models.Auth;
+using Shop.API.ViewModels.Auth;
 using Shop.UI.Services.Auth;
 
 namespace Shop.UI.Pages.Auth;
