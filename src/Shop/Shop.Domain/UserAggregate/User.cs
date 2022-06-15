@@ -190,7 +190,7 @@ public class User : BaseAggregateRoot
     {
         NullOrEmptyDataDomainException.CheckString(password, nameof(password));
 
-        if (password.Length < 8)
+        if (password.Length < PasswordMinLength)
             throw new InvalidDataDomainException($"Password cannot have less than {PasswordMinLength} characters");
     }
 }
