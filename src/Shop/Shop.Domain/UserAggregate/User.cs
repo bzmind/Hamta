@@ -55,7 +55,7 @@ public class User : BaseAggregateRoot
 
     public static User Register(string phoneNumber, string password, IUserDomainService userDomainService)
     {
-        return new User(phoneNumber, password, phoneNumber, userDomainService);
+        return new User(phoneNumber, phoneNumber, password, userDomainService);
     }
 
     public void AddAddress(long userId, string fullName, string phoneNumber, string province,
@@ -191,6 +191,6 @@ public class User : BaseAggregateRoot
         NullOrEmptyDataDomainException.CheckString(password, nameof(password));
 
         if (password.Length < PasswordMinLength)
-            throw new InvalidDataDomainException($"Password cannot have less than {PasswordMinLength} characters");
+            throw new InvalidDataDomainException($"Password cannot be less than {PasswordMinLength} characters");
     }
 }

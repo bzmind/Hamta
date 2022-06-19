@@ -10,17 +10,15 @@ using Shop.API.SetupClasses;
 using Shop.Config;
 
 var builder = WebApplication.CreateBuilder(args);
-const string corsPolicyName = "ApiCORS";
+const string CORSPolicyName = "ApiCORS";
 
 // Add services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(
-        corsPolicyName,
-        policy =>
-        {
-            policy.WithOrigins("https://localhost:7212");
-        });
+    options.AddPolicy(CORSPolicyName, policy =>
+    {
+        policy.WithOrigins("https://localhost:7212");
+    });
 });
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -97,15 +95,9 @@ app.UseSwaggerUI(settings =>
 });
 
 app.UseHttpsRedirection();
-
-app.UseCors(corsPolicyName);
-
+app.UseCors(CORSPolicyName);
 app.UseAuthentication();
-
 app.UseAuthorization();
-
 app.UseApiCustomExceptionHandler();
-
 app.MapControllers();
-
 app.Run();

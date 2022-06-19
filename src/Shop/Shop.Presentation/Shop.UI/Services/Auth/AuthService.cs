@@ -10,8 +10,7 @@ public class AuthService : IAuthService
     private readonly JsonSerializerOptions _jsonOptions;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthService(HttpClient client, JsonSerializerOptions jsonOptions,
-        IHttpContextAccessor httpContextAccessor)
+    public AuthService(HttpClient client, JsonSerializerOptions jsonOptions, IHttpContextAccessor httpContextAccessor)
     {
         _client = client;
         _jsonOptions = jsonOptions;
@@ -39,7 +38,7 @@ public class AuthService : IAuthService
 
     public async Task<ApiResult?> Logout()
     {
-        var result = await _client.DeleteAsync("api/auth/register");
+        var result = await _client.PostAsync("api/auth/logout", null);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 }

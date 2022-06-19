@@ -21,7 +21,7 @@ public class PhoneNumber : BaseValueObject
     {
         NullOrEmptyDataDomainException.CheckString(phoneNumber, nameof(phoneNumber));
 
-        if (phoneNumber.Length is > 11 or < 11)
-            throw new InvalidDataDomainException("Phone number cannot be greater or less than 11 characters");
+        if (phoneNumber.Length != 11)
+            throw new InvalidDataDomainException("Phone number must be 11 characters");
     }
 }

@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#f7858d">
     <meta name="msapplication-navbutton-color" content="#f7858d">
     <meta name="apple-mobile-web-app-status-bar-style" content="#f7858d">
-    <title>@ViewData["Title"]</title>
+    <title>@ViewData["Title"] | فروشگاه اینترنتی دیدیکالا</title>
     <link rel="stylesheet" href="/assets/css/vendor/font-awesome.min.css">
     <link rel="stylesheet" href="/assets/css/vendor/materialdesignicons.min.css">
     <link rel="stylesheet" href="/assets/css/vendor/bootstrap.min.css">
@@ -25,8 +25,25 @@
 
 <body>
     <div class="wrapper vh-100 d-flex align-items-center justify-content-center">
+        <div id="validation-summary-wrapper">
+            <div asp-validation-summary="ModelOnly" id="validation-summary"></div>
+        </div>
         <main class="main-content dt-sl mt-4 mb-3">
-            @RenderBody()
+            <div class="container main-container">
+                <div class="row">
+                    <div class="col-xl-3 col-lg-5 col-md-7 col-12 mx-auto">
+                        <div class="auth-wrapper form-ui border p-4">
+                            <div class="logo-area text-center mb-4">
+                                <a href="/"><img src="/assets/img/logo.png" class="img-fluid" alt="logo"></a>
+                            </div>
+                            <div class="section-title title-wide mb-3 p-0 no-after-title-wide no-title-wide-before">
+                                <h2 class="font-weight-bold p-0">@ViewData["Title"]</h2>
+                            </div>
+                            @RenderBody()
+                        </div>
+                    </div>
+                </div>
+            </div>
         </main>
     </div>
     <script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
@@ -45,6 +62,7 @@
     <script src="/assets/js/vendor/ResizeSensor.min.js"></script>
     <script src="/assets/js/vendor/theia-sticky-sidebar.min.js"></script>
     <script src="/assets/js/main.js"></script>
+    <script src="/assets/js/custom.js"></script>
     <partial name="Shared/_ValidationScriptsPartial" />
 </body>
 

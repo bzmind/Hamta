@@ -11,5 +11,6 @@ public class LoginViewModel
     public string EmailOrPhone { get; set; }
 
     [Required(ErrorMessage = ValidationMessages.PasswordRequired)]
+    [MinLength(8, ErrorMessage = "رمز عبور باید بیشتر از 7 کاراکتر باشد")]
     public string Password { get; set; }
 }

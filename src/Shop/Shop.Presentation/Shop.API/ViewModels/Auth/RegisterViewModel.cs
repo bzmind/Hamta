@@ -6,8 +6,8 @@ namespace Shop.API.ViewModels.Auth;
 
 public class RegisterViewModel
 {
-    [IranPhone]
     [Required(ErrorMessage = ValidationMessages.PhoneNumberRequired)]
+    [IranPhone(ErrorMessage = ValidationMessages.InvalidPhoneNumber)]
     public string PhoneNumber { get; set; }
 
     [Required(ErrorMessage = ValidationMessages.PasswordRequired)]

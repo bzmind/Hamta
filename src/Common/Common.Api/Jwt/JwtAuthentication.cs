@@ -19,7 +19,8 @@ public static class JwtAuthentication
         {
             options.TokenValidationParameters = new TokenValidationParameters
             {
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtConfig:SignInKey"])),
+                IssuerSigningKey = new SymmetricSecurityKey
+                    (Encoding.UTF8.GetBytes(configuration["JwtConfig:SignInKey"])),
                 ValidIssuer = configuration["JwtConfig:Issuer"],
                 ValidAudience = configuration["JwtConfig:Audience"],
                 ValidateLifetime = true,

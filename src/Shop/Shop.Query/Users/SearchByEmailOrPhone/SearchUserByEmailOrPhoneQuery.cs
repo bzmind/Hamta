@@ -44,7 +44,8 @@ public class SearchUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<SearchUser
             {
                 UserExists = false,
                 NextStep = LoginResult.NextSteps.RegisterWithPhone
-            }, "حساب کاربری با مشخصات وارد شده وجود ندارد. لطفا از شماره تلفن همراه برای ساخت حساب کاربری استفاده نمایید.");
+            }, "حساب کاربری با مشخصات وارد شده وجود ندارد. " +
+               "لطفا از شماره تلفن همراه برای ساخت حساب کاربری استفاده نمایید.");
 
         return OperationResult<LoginResult>.Error(null, ValidationMessages.InvalidEmailOrPhone);
     }
