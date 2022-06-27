@@ -46,7 +46,7 @@ public class EditUserCommandValidator : AbstractValidator<EditUserCommand>
         RuleFor(c => c.Email)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("ایمیل"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("ایمیل"));
-        
+
         RuleFor(c => c.PhoneNumber)
             .ValidPhoneNumber();
     }

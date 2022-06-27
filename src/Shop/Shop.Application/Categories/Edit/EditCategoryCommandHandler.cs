@@ -39,7 +39,7 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
                     specification.Description, specification.IsImportantFeature)));
             category.SetSpecifications(specifications);
         }
-        
+
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();
     }

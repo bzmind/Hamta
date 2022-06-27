@@ -1,16 +1,18 @@
-﻿@model Shop.UI.Models.RegisterModel
+﻿@model Shop.UI.Models.Auth.RegisterModel
 @{
-    Layout = "Shared/Layouts/_AuthLayout";
+    //Layout = "Shared/Layouts/_AuthLayout";
     ViewData["Title"] = "ثبت نام";
 }
 
-<form method="post" asp-page-handler="Register" class="m-0 p-0">
+<form method="post" asp-page-handler="Register">
     <div class="form-row-title mb-3">
-        <h4 class="font-weight-normal">لطفا رمز عبور و تکرار رمز عبور خود را وارد کنید</h4>
+        <h4 class="font-weight-normal fa-1x">لطفا رمز عبور و تکرار رمز عبور خود را وارد کنید</h4>
     </div>
     @Html.EditorFor(m => m.Password)
     @Html.EditorFor(m => m.ConfirmPassword)
-    <div class="form-row mt-3 m-0">
-        <button class="btn-primary-cm mx-auto w-100">ورود</button>
+    <div class="form-element-row text-left mb-2 mt-4">
+        <button class="btn-element btn-info-element w-100">
+            ورود
+        </button>
     </div>
 </form>

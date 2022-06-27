@@ -1,6 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Common.Application.Utility;
+﻿using Common.Application.Utility;
 using Common.Application.Utility.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace Common.Api.Attributes;
 

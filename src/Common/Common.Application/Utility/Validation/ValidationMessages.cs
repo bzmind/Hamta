@@ -26,6 +26,10 @@ public static class ValidationMessages
     public const string InvalidConfirmPassword = "رمز های عبور با هم یکسان نیستند";
     public const string InvalidPrice = "مبلغ وارد شده نامعتبر است";
 
+    public const string EmailRegex = @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}";
+    public const string IranPhoneRegex = @"^(?:0|98|\+98|\+980|098)?(9\d{9})$";
+    public const string EmailOrPhoneRegex = EmailRegex + "|" + IranPhoneRegex;
+
     /// <summary>
     /// <example>Example: نام} را وارد کنید}</example>
     /// </summary>

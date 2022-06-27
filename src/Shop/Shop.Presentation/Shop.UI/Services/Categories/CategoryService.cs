@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.Query.Categories._DTOs;
 using Shop.UI.Models.Categories;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Categories;
 

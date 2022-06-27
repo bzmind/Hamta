@@ -16,7 +16,7 @@ public class Money : BaseValueObject
         Guard(toomanPrice);
         Value = toomanPrice;
     }
-    
+
     public static Money operator +(Money firstMoney, Money secondMoney)
     {
         return new Money(firstMoney.Value + secondMoney.Value);

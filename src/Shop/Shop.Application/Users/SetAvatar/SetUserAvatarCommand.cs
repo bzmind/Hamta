@@ -35,7 +35,7 @@ public class SetUserAvatarCommandHandler : IBaseCommandHandler<SetUserAvatarComm
 
         var newAvatar = await _fileService.SaveFileAndGenerateName(request.Avatar, Directories.UserAvatars);
         user.SetAvatar(newAvatar);
-        
+
         await _userRepository.SaveAsync();
         return OperationResult.Success();
     }

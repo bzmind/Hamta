@@ -33,7 +33,7 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
         {
             var specifications = new List<CategorySpecification>();
 
-            request.Specifications.ToList().ForEach(specification => 
+            request.Specifications.ToList().ForEach(specification =>
                 specifications.Add(new CategorySpecification(newSubCategory.Id, specification.Title,
                     specification.Description, specification.IsImportantFeature)));
 

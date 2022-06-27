@@ -37,7 +37,7 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
             options.Property(specification => specification.Id)
                 .UseIdentityColumn(1);
-            
+
             options.Property(specification => specification.CreationDate)
                 .HasColumnType("datetime2(0)");
 

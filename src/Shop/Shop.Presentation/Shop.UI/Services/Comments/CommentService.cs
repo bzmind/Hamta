@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.API.ViewModels.Comments;
 using Shop.Query.Comments._DTOs;
 using Shop.UI.Models.Comments;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Comments;
 

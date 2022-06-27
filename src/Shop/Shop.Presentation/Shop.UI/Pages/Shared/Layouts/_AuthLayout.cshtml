@@ -1,69 +1,65 @@
 ﻿<!DOCTYPE html>
-<html lang="fa">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <meta name="theme-color" content="#f7858d">
-    <meta name="msapplication-navbutton-color" content="#f7858d">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#f7858d">
-    <title>@ViewData["Title"] | فروشگاه اینترنتی دیدیکالا</title>
-    <link rel="stylesheet" href="/assets/css/vendor/font-awesome.min.css">
-    <link rel="stylesheet" href="/assets/css/vendor/materialdesignicons.min.css">
-    <link rel="stylesheet" href="/assets/css/vendor/bootstrap.min.css">
-    <link rel="stylesheet" href="/assets/css/vendor/bootstrap-slider.min.css">
-    <link rel="stylesheet" href="/assets/css/vendor/owl.carousel.min.css">
-    <link rel="stylesheet" href="/assets/css/vendor/jquery.horizontalmenu.css">
-    <link rel="stylesheet" href="/assets/css/vendor/fancybox.min.css">
-    <link rel="stylesheet" href="/assets/css/vendor/nice-select.css">
-    <link rel="stylesheet" href="/assets/css/vendor/nouislider.min.css">
-    <link rel="stylesheet" href="/assets/css/main.css">
-    <link rel="stylesheet" href="/assets/css/colors/blue-color.css">
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/apexcharts.css">
+    <link rel="stylesheet" href="/assets/css/plugins/jquery.classycountdown.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/nouislider.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/sweetalert2.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/select2.min.css">
+    <link rel="stylesheet" href="/assets/css/plugins/swiper.min.css">
+    <link rel="stylesheet" href="/assets/css/theme.css">
+    <link rel="stylesheet" href="/assets/css/plugins/three-dots.css">
     <link rel="stylesheet" href="/assets/css/custom.css">
+    <link rel="stylesheet" href="/assets/css/colors/blue.css">
 </head>
 
 <body>
-    <div class="wrapper vh-100 d-flex align-items-center justify-content-center">
-        <div id="validation-summary-wrapper">
-            <div asp-validation-summary="ModelOnly" id="validation-summary"></div>
-        </div>
-        <main class="main-content dt-sl mt-4 mb-3">
-            <div class="container main-container">
-                <div class="row">
-                    <div class="col-xl-3 col-lg-5 col-md-7 col-12 mx-auto">
-                        <div class="auth-wrapper form-ui border p-4">
-                            <div class="logo-area text-center mb-4">
-                                <a href="/"><img src="/assets/img/logo.png" class="img-fluid" alt="logo"></a>
-                            </div>
-                            <div class="section-title title-wide mb-3 p-0 no-after-title-wide no-title-wide-before">
-                                <h2 class="font-weight-bold p-0">@ViewData["Title"]</h2>
-                            </div>
-                            @RenderBody()
+    <div class="page-wrapper auth-page-wrapper">
+        <div id="alerts"></div>
+        <main class="page-content">
+            <div class="container">
+                <div class="auth-wrapper">
+                    <div class="auth-form shadow-around">
+                        <div class="site-logo">
+                            <a href="#">
+                                <img src="/assets/images/logo.png" alt="logo">
+                            </a>
                         </div>
+                        <div class="auth-form-title border-0">
+                            @ViewData["Title"]
+                        </div>
+                        @RenderBody()
                     </div>
                 </div>
             </div>
         </main>
     </div>
-    <script src="/assets/js/vendor/jquery-3.4.1.min.js"></script>
-    <script src="/assets/js/vendor/popper.min.js"></script>
-    <script src="/assets/js/vendor/bootstrap.min.js"></script>
-    <script src="/assets/js/vendor/bootstrap-slider.min.js"></script>
-    <script src="/assets/js/vendor/owl.carousel.min.js"></script>
-    <script src="/assets/js/vendor/owl.carousel2.thumbs.min.js"></script>
-    <script src="/assets/js/vendor/jquery.nicescroll.min.js"></script>
-    <script src="/assets/js/vendor/jquery.nice-select.min.js"></script>
-    <script src="/assets/js/vendor/nouislider.min.js"></script>
-    <script src="/assets/js/vendor/jquery.horizontalmenu.js"></script>
-    <script src="/assets/js/vendor/jquery.fancybox.min.js"></script>
-    <script src="/assets/js/vendor/countdown.min.js"></script>
-    <script src="/assets/js/vendor/wNumb.js"></script>
-    <script src="/assets/js/vendor/ResizeSensor.min.js"></script>
-    <script src="/assets/js/vendor/theia-sticky-sidebar.min.js"></script>
-    <script src="/assets/js/main.js"></script>
-    <script src="/assets/js/custom.js"></script>
+
+    <script src="/assets/js/jquery-3.5.1.min.js"></script>
+    <script src="/assets/js/plugins/popper.min.js"></script>
+    <script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/assets/js/plugins/apexcharts.min.js"></script>
+    <script src="/assets/js/plugins/jquery.ez-plus.js"></script>
+    <script src="/assets/js/plugins/jquery.knob.js"></script>
+    <script src="/assets/js/plugins/jquery.throttle.js"></script>
+    <script src="/assets/js/plugins/jquery.classycountdown.min.js"></script>
+    <script src="/assets/js/plugins/jquery.nicescroll.min.js"></script>
+    <script src="/assets/js/plugins/nouislider.min.js"></script>
+    <script src="/assets/js/plugins/sweetalert2.all.min.js"></script>
+    <script src="/assets/js/plugins/select2.full.min.js"></script>
+    <script src="/assets/js/plugins/swiper.min.js"></script>
+    <script src="/assets/js/plugins/ResizeSensor.min.js"></script>
+    <script src="/assets/js/plugins/theia-sticky-sidebar.min.js"></script>
+    <script src="/assets/js/plugins/wNumb.js"></script>
+    <script src="/assets/js/theme.js"></script>
     <partial name="Shared/_ValidationScriptsPartial" />
+    <script src="/assets/js/custom.js"></script>
 </body>
 
 </html>

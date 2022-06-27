@@ -1,7 +1,7 @@
-﻿using System.Text;
-using Common.Application.Exceptions;
+﻿using Common.Application.Exceptions;
 using FluentValidation;
 using MediatR;
+using System.Text;
 
 namespace Common.Application.Utility.Validation;
 
@@ -31,8 +31,7 @@ public class CommandValidationBehavior<TRequest, TResponse> : IPipelineBehavior<
             {
                 stringBuilder.Append(error.ErrorMessage + "\n");
             }
-            
-            throw new InvalidCommandException(stringBuilder.ToString());
+            throw new InvalidCommandApplicationException(stringBuilder.ToString());
         }
 
         var response = await next();

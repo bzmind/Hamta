@@ -1,8 +1,6 @@
-﻿using System.Net;
-using Common.Api;
+﻿using Common.Api;
 using Common.Api.Attributes;
 using Common.Api.Utility;
-using Common.Application;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Users;
@@ -17,6 +15,7 @@ using Shop.Application.Users.SetSubscriptionToNews;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Users;
 using Shop.Query.Users._DTOs;
+using System.Net;
 
 namespace Shop.API.Controllers;
 
@@ -122,7 +121,7 @@ public class UserController : BaseApiController
     [AllowAnonymous]
     [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpGet("SearchByEmailOrPhone/{emailOrPhone}")]
-    public async Task<ApiResult<OperationResult<LoginResult>>> SearchByEmailOrPhone(string emailOrPhone)
+    public async Task<ApiResult<LoginNextStep>> SearchByEmailOrPhone(string emailOrPhone)
     {
         var result = await _userFacade.SearchByEmailOrPhone(emailOrPhone);
         return QueryResult(result);

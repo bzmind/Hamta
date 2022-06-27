@@ -1,16 +1,21 @@
-﻿@page
+﻿@page "{handler?}"
 @model LoginModel
 @{
     Layout = "Shared/Layouts/_AuthLayout";
     ViewData["Title"] = "ورود | ثبت نام";
 }
 
-<form method="post" class="m-0 p-0">
+<form method="post" data-ajax="true" asp-page="Login">
     <div class="form-row-title mb-3">
-        <h4 class="font-weight-normal">لطفا شماره موبایل یا ایمیل خود را وارد کنید</h4>
+        <h4 class="font-weight-normal fa-1x">لطفا شماره موبایل یا ایمیل خود را وارد کنید</h4>
     </div>
     @Html.EditorFor(m => m.EmailOrPhone)
-    <div class="form-row mt-3 m-0">
-        <button class="btn-primary-cm mx-auto w-100">ورود</button>
+    <div class="form-element-row text-left mt-4">
+        <div class="loading">
+            <div class="dot-flashing"></div>
+        </div>
+        <button class="btn-element btn-info-element w-100 btn-loading">
+            ورود
+        </button>
     </div>
 </form>

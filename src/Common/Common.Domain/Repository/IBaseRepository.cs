@@ -1,5 +1,5 @@
-﻿using System.Linq.Expressions;
-using Common.Domain.BaseClasses;
+﻿using Common.Domain.BaseClasses;
+using System.Linq.Expressions;
 
 namespace Common.Domain.Repository;
 

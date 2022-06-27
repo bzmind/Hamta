@@ -1,6 +1,6 @@
-﻿using System.Net;
-using Common.Application;
+﻿using Common.Application;
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 
 namespace Common.Api;
 

@@ -27,7 +27,7 @@ public class ReplaceProductMainImageCommandHandler : IBaseCommandHandler<Replace
 
         if (product == null)
             return OperationResult.NotFound();
-        
+
         _fileService.DeleteFile(Directories.ProductMainImages, product.MainImage.Name);
 
         var newImage = await _fileService

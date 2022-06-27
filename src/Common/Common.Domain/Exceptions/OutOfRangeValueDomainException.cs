@@ -6,7 +6,7 @@ public class OutOfRangeValueDomainException : BaseDomainException
 {
     public OutOfRangeValueDomainException()
     {
-        
+
     }
 
     public OutOfRangeValueDomainException(string message) : base(message)

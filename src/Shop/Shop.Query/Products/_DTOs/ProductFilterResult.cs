@@ -4,7 +4,7 @@ namespace Shop.Query.Products._DTOs;
 
 public class ProductFilterResult : BaseFilterResult<ProductListDto, ProductFilterParams>
 {
-    
+
 }
 
 public class ProductFilterParams : BaseFilterParams

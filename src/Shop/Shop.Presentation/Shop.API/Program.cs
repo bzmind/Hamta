@@ -1,4 +1,3 @@
-using System.Text.Json.Serialization;
 using Common.Api;
 using Common.Api.Jwt;
 using Common.Api.Middleware;
@@ -8,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Shop.API.SetupClasses;
 using Shop.Config;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 const string CORSPolicyName = "ApiCORS";
@@ -23,10 +23,14 @@ builder.Services.AddCors(options =>
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.RegisterShopDependencies(connectionString);
-builder.Services.RegisterApiDependencies();
+builder.Services.RegisterApiDependencies(builder.Configuration);
 builder.Services.AddJwtAuthentication(builder.Configuration);
 
 builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
+    })
     .ConfigureApiBehaviorOptions(options =>
     {
         options.InvalidModelStateResponseFactory = context =>
@@ -40,13 +44,8 @@ builder.Services.AddControllers()
                     Message = ModelStateUtility.CollectModelStateErrors(context.ModelState)
                 }
             };
-
             return new BadRequestObjectResult(result);
         };
-    })
-    .AddJsonOptions(options =>
-    {
-        options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
 
 builder.Services.AddEndpointsApiExplorer();
@@ -86,8 +85,10 @@ builder.Services.AddRouting(options =>
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseMiddleware<CustomIpRateLimitMiddleware>();
+
 app.UseSwagger();
+
 app.UseSwaggerUI(settings =>
 {
     settings.DisplayRequestDuration();
@@ -95,9 +96,15 @@ app.UseSwaggerUI(settings =>
 });
 
 app.UseHttpsRedirection();
+
 app.UseCors(CORSPolicyName);
+
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.UseApiCustomExceptionHandler();
+
 app.MapControllers();
+
 app.Run();

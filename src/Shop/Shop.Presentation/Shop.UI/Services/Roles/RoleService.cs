@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.Query.Roles._DTOs;
 using Shop.UI.Models.Roles;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Roles;
 

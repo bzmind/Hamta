@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.Query.Colors._DTOs;
 using Shop.UI.Models.Colors;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Colors;
 

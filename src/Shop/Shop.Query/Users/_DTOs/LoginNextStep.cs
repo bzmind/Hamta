@@ -1,6 +1,6 @@
 ﻿namespace Shop.Query.Users._DTOs;
 
-public class LoginResult
+public class LoginNextStep
 {
     public bool UserExists { get; set; }
     public NextSteps NextStep { get; set; }

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Common.Api;
+﻿using Common.Api;
 using Common.Api.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,6 +11,7 @@ using Shop.Application.Products.ReplaceMainImage;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Products;
 using Shop.Query.Products._DTOs;
+using System.Net;
 
 namespace Shop.API.Controllers;
 
@@ -55,7 +55,7 @@ public class ProductController : BaseApiController
         var result = await _productFacade.AddScore(command);
         return CommandResult(result);
     }
-    
+
     [HttpPut("RemoveGalleryImage")]
     public async Task<ApiResult> RemoveGalleryImages(RemoveProductGalleryImageCommand command)
     {

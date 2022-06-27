@@ -42,7 +42,7 @@ public class ApiCustomExceptionHandlerMiddleware
             SetErrorMessage(exception);
             await WriteToResponseAsync();
         }
-        catch (InvalidCommandException exception)
+        catch (InvalidCommandApplicationException exception)
         {
             apiStatusCode = ApiStatusCode.BadRequest;
             httpStatusCode = HttpStatusCode.BadRequest;

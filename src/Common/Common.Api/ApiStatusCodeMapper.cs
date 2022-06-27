@@ -6,18 +6,27 @@ public static class ApiStatusCodeMapper
 {
     public static ApiStatusCode MapToApiStatusCode(this OperationStatusCode statusCode)
     {
-        switch (statusCode)
+        return statusCode switch
         {
-            case OperationStatusCode.Success:
-                return ApiStatusCode.Success;
+            OperationStatusCode.Success => ApiStatusCode.Success,
+            OperationStatusCode.BadRequest => ApiStatusCode.BadRequest,
+            OperationStatusCode.NotFound => ApiStatusCode.NotFound,
+            OperationStatusCode.TooManyRequests => ApiStatusCode.TooManyRequests,
+            OperationStatusCode.ServerError => ApiStatusCode.ServerError,
+            _ => ApiStatusCode.ServerError
+        };
+    }
 
-            case OperationStatusCode.Error:
-                return ApiStatusCode.ServerError;
-
-            case OperationStatusCode.NotFound:
-                return ApiStatusCode.NotFound;
-        }
-
-        return ApiStatusCode.ServerError;
+    public static OperationStatusCode MapToOperationStatusCode(this ApiStatusCode statusCode)
+    {
+        return statusCode switch
+        {
+            ApiStatusCode.Success => OperationStatusCode.Success,
+            ApiStatusCode.BadRequest => OperationStatusCode.BadRequest,
+            ApiStatusCode.NotFound => OperationStatusCode.NotFound,
+            ApiStatusCode.TooManyRequests => OperationStatusCode.TooManyRequests,
+            ApiStatusCode.ServerError => OperationStatusCode.ServerError,
+            _ => OperationStatusCode.ServerError
+        };
     }
 }

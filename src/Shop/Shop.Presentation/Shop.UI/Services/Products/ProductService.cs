@@ -1,9 +1,9 @@
-﻿using System.Text;
-using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Common.Application.Utility.Validation.CustomAttributes;
 using Shop.Query.Products._DTOs;
 using Shop.UI.Models.Products;
+using System.Text;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Products;
 

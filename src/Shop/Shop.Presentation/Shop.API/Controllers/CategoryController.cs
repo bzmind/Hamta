@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Common.Api;
+﻿using Common.Api;
 using Common.Api.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -9,6 +8,7 @@ using Shop.Application.Categories.Edit;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Categories;
 using Shop.Query.Categories._DTOs;
+using System.Net;
 
 namespace Shop.API.Controllers;
 

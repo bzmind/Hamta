@@ -1,9 +1,8 @@
-﻿using System.Text.Json;
-using Common.Api;
-using Common.Application;
+﻿using Common.Api;
 using Shop.API.ViewModels.Users;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Models.Users;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Users;
 
@@ -85,11 +84,11 @@ public class UserService : IUserService
         return result?.Data;
     }
 
-    public async Task<OperationResult<LoginResult>> SearchByEmailOrPhone(string emailOrPhone)
+    public async Task<ApiResult<LoginNextStep>> SearchByEmailOrPhone(string emailOrPhone)
     {
-        var result = await _client.GetFromJsonAsync<ApiResult<OperationResult<LoginResult>>>
-            ($"api/User/searchbyemailorphone/{emailOrPhone}", _jsonOptions);
-        return result?.Data!;
+        var result = await _client.GetAsync($"api/user/searchbyemailorphone/{emailOrPhone}");
+        var jsonResult = await result.Content.ReadFromJsonAsync<ApiResult<LoginNextStep>>(_jsonOptions);
+        return jsonResult;
     }
 
     public async Task<UserFilterResult?> GetByFilter(UserFilterParamsViewModel filterParams)

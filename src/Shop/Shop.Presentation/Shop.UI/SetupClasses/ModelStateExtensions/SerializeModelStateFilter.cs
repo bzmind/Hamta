@@ -6,6 +6,7 @@ namespace Shop.UI.SetupClasses.ModelStateExtensions;
 public class SerializeModelStateFilter : IPageFilter
 {
     public static readonly string Key = $"{nameof(SerializeModelStateFilter)}Data";
+
     public void OnPageHandlerSelected(PageHandlerSelectedContext context)
     {
         if (!(context.HandlerInstance is PageModel page))

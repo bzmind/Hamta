@@ -24,7 +24,7 @@ public class SetQuestionStatusCommandHandler : IBaseCommandHandler<SetQuestionSt
         if (question == null)
             return OperationResult.NotFound();
 
-        if (!Enum.TryParse(request.Status, out Question.QuestionStatus status)) 
+        if (!Enum.TryParse(request.Status, out Question.QuestionStatus status))
             return OperationResult.Error(ValidationMessages.FieldInvalid("وضعیت سوال"));
 
         question.SetStatus(status);

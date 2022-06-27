@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Common.Api;
+﻿using Common.Api;
 using Common.Api.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Inventories.Create;
@@ -10,6 +9,7 @@ using Shop.Application.Inventories.SetDiscountPercentage;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Inventories;
 using Shop.Query.Inventories._DTOs;
+using System.Net;
 
 namespace Shop.API.Controllers;
 

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Common.Api;
+﻿using Common.Api;
 using Common.Api.Attributes;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
@@ -12,6 +11,7 @@ using Shop.Application.Orders.SetStatus;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Orders;
 using Shop.Query.Orders._DTOs;
+using System.Net;
 
 namespace Shop.API.Controllers;
 

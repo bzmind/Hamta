@@ -1,6 +1,8 @@
 ﻿@model string
-<div class="form-row with-icon m-0">
-    <input type="text" asp-for="@Model" class="input-ui pr-2"
-           placeholder="@(ViewData["placeholder"] ?? Html.DisplayNameFor(m => m))">
+<div class="form-element-row">
+    <div class="form-element-with-icon">
+        <input type="text" class="input-element" asp-for="@Model"
+               placeholder="@(ViewData["placeholder"] ?? Html.DisplayNameFor(m => m))">
+    </div>
 </div>
-<span asp-validation-for="@Model" class="d-block mt-1 mb-2"></span>
+<span asp-validation-for="@Model" class="d-block mb-2"></span>

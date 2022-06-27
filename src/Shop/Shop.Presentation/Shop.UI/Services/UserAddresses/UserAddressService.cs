@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.API.ViewModels.Users.Addresses;
 using Shop.Query.Users._DTOs;
+using System.Text.Json;
 
 namespace Shop.UI.Services.UserAddresses;
 

@@ -1,7 +1,7 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.Query.Inventories._DTOs;
 using Shop.UI.Models.Inventories;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Inventories;
 

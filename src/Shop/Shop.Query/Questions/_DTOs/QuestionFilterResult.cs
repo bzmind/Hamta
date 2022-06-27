@@ -5,7 +5,7 @@ namespace Shop.Query.Questions._DTOs;
 
 public class QuestionFilterResult : BaseFilterResult<QuestionDto, QuestionFilterParams>
 {
-    
+
 }
 
 public class QuestionFilterParams : BaseFilterParams

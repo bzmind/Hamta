@@ -1,11 +1,11 @@
 ﻿using Common.Application.Utility.FileUtility;
 using Microsoft.Extensions.DependencyInjection;
 using Shop.Application.Categories._Services;
-using Shop.Application.Users._Services;
 using Shop.Application.Products._Services;
+using Shop.Application.Users._Services;
 using Shop.Domain.CategoryAggregate.Services;
-using Shop.Domain.UserAggregate.Services;
 using Shop.Domain.ProductAggregate.Services;
+using Shop.Domain.UserAggregate.Services;
 
 namespace Shop.Application;
 

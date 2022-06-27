@@ -16,22 +16,22 @@ public class OperationResult
     }
 
     public static OperationResult Success()
-        => new (SuccessMessage, OperationStatusCode.Success);
+        => new(SuccessMessage, OperationStatusCode.Success);
 
     public static OperationResult Success(string successMessage)
-        => new (successMessage, OperationStatusCode.Success);
+        => new(successMessage, OperationStatusCode.Success);
 
     public static OperationResult Error()
-        => new (ErrorMessage, OperationStatusCode.Error);
+        => new(ErrorMessage, OperationStatusCode.ServerError);
 
     public static OperationResult Error(string errorMessage)
-        => new (errorMessage, OperationStatusCode.Error);
+        => new(errorMessage, OperationStatusCode.ServerError);
 
     public static OperationResult NotFound()
-        => new (NotFoundMessage, OperationStatusCode.NotFound);
+        => new(NotFoundMessage, OperationStatusCode.NotFound);
 
     public static OperationResult NotFound(string notFoundMessage)
-        => new (notFoundMessage, OperationStatusCode.NotFound);
+        => new(notFoundMessage, OperationStatusCode.NotFound);
 }
 
 public class OperationResult<TData>
@@ -52,30 +52,32 @@ public class OperationResult<TData>
     }
 
     public static OperationResult<TData> Success(TData data, string? message = null)
-        => new (data, message ?? SuccessMessage, OperationStatusCode.Success);
+        => new(data, message ?? SuccessMessage, OperationStatusCode.Success);
 
     public static OperationResult<TData> Error()
-        => new(default, ErrorMessage, OperationStatusCode.Error);
+        => new(default, ErrorMessage, OperationStatusCode.ServerError);
 
     public static OperationResult<TData> Error(string? message = null)
-        => new(default, message ?? ErrorMessage, OperationStatusCode.Error);
+        => new(default, message ?? ErrorMessage, OperationStatusCode.ServerError);
 
     public static OperationResult<TData> Error(TData? data = default, string? message = null)
-        => new(data, message ?? ErrorMessage, OperationStatusCode.Error);
-    
+        => new(data, message ?? ErrorMessage, OperationStatusCode.ServerError);
+
     public static OperationResult<TData> NotFound()
-        => new (default, NotFoundMessage, OperationStatusCode.NotFound);
-    
+        => new(default, NotFoundMessage, OperationStatusCode.NotFound);
+
     public static OperationResult<TData> NotFound(string? message = null)
-        => new (default, message ?? NotFoundMessage, OperationStatusCode.NotFound);
-    
+        => new(default, message ?? NotFoundMessage, OperationStatusCode.NotFound);
+
     public static OperationResult<TData> NotFound(TData? data = default, string? message = null)
-        => new (data, message ?? NotFoundMessage, OperationStatusCode.NotFound);
+        => new(data, message ?? NotFoundMessage, OperationStatusCode.NotFound);
 }
 
 public enum OperationStatusCode
 {
     Success = 200,
-    Error = 400,
-    NotFound = 404
+    BadRequest = 400,
+    NotFound = 404,
+    TooManyRequests = 429,
+    ServerError = 500
 }

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Common.Api;
+﻿using Common.Api;
 using Common.Api.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +7,7 @@ using Shop.Application.Colors.Edit;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Colors;
 using Shop.Query.Colors._DTOs;
+using System.Net;
 
 namespace Shop.API.Controllers;
 

@@ -1,8 +1,8 @@
-﻿using System.Linq.Expressions;
-using Common.Domain.BaseClasses;
+﻿using Common.Domain.BaseClasses;
 using Common.Domain.Repository;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
+using System.Linq.Expressions;
 
 namespace Shop.Infrastructure.BaseClasses;
 
@@ -49,7 +49,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     {
         Context.Set<TEntity>().Remove(entity);
     }
-    
+
     public bool Exists(Expression<Func<TEntity, bool>> expression)
     {
         return Context.Set<TEntity>().Any(expression);

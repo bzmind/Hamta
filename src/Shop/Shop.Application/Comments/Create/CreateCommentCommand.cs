@@ -1,7 +1,7 @@
-﻿using FluentValidation;
-using Common.Application;
+﻿using Common.Application;
 using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
+using FluentValidation;
 using Shop.Domain.CommentAggregate;
 using Shop.Domain.CommentAggregate.Repository;
 
@@ -90,7 +90,7 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
                 .NotNull()
                 .MinimumLength(3).WithMessage(ValidationMessages.MinLength);
         });
-        
+
         RuleForEach(c => c.NegativePoints).ChildRules(point =>
         {
             point.RuleFor(p => p)

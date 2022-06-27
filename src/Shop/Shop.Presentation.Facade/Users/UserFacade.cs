@@ -36,7 +36,7 @@ internal class UserFacade : IUserFacade
     {
         return await _mediator.Send(command);
     }
-    
+
     public async Task<OperationResult> Register(RegisterUserCommand command)
     {
         return await _mediator.Send(command);
@@ -87,7 +87,7 @@ internal class UserFacade : IUserFacade
         return await _mediator.Send(new GetUserByEmailOrPhoneQuery(emailOrPhone));
     }
 
-    public async Task<OperationResult<LoginResult>> SearchByEmailOrPhone(string emailOrPhone)
+    public async Task<LoginNextStep> SearchByEmailOrPhone(string emailOrPhone)
     {
         return await _mediator.Send(new SearchUserByEmailOrPhoneQuery(emailOrPhone));
     }

@@ -3,24 +3,24 @@ using Microsoft.Extensions.DependencyInjection;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.ColorAggregate.Repository;
 using Shop.Domain.CommentAggregate.Repository;
-using Shop.Domain.UserAggregate.Repository;
 using Shop.Domain.InventoryAggregate.Repository;
 using Shop.Domain.OrderAggregate.Repository;
 using Shop.Domain.ProductAggregate.Repository;
 using Shop.Domain.QuestionAggregate.Repository;
 using Shop.Domain.RoleAggregate.Repository;
 using Shop.Domain.ShippingAggregate.Repository;
+using Shop.Domain.UserAggregate.Repository;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Infrastructure.Persistence.EF.Categories;
 using Shop.Infrastructure.Persistence.EF.Colors;
 using Shop.Infrastructure.Persistence.EF.Comments;
-using Shop.Infrastructure.Persistence.EF.Users;
 using Shop.Infrastructure.Persistence.EF.Inventories;
 using Shop.Infrastructure.Persistence.EF.Orders;
 using Shop.Infrastructure.Persistence.EF.Products;
 using Shop.Infrastructure.Persistence.EF.Questions;
 using Shop.Infrastructure.Persistence.EF.Roles;
 using Shop.Infrastructure.Persistence.EF.Shippings;
+using Shop.Infrastructure.Persistence.EF.Users;
 
 namespace Shop.Infrastructure;
 

@@ -1,22 +1,14 @@
-using System.Text;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Shop.UI.SetupClasses;
 using Shop.UI.SetupClasses.ModelStateExtensions;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddMvcOptions(options =>
 {
     options.Filters.Add<SerializeModelStateFilter>();
-});
-
-builder.Services.AddSingleton(new JsonSerializerOptions
-{
-    Converters = { new JsonStringEnumConverter() },
-    PropertyNameCaseInsensitive = true
 });
 
 builder.Services.RegisterUiDependencies();
@@ -50,7 +42,7 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Error");
+    app.UseExceptionHandler("/ServerError");
     app.UseHsts();
 }
 
@@ -65,10 +57,17 @@ app.Use(async (context, next) =>
     }
     await next();
 });
+
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
+
 app.UseRouting();
+
 app.UseAuthentication();
+
 app.UseAuthorization();
+
 app.MapRazorPages();
+
 app.Run();

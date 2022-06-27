@@ -6,12 +6,12 @@ public class NullOrEmptyDataDomainException : BaseDomainException
 {
     public NullOrEmptyDataDomainException()
     {
-        
+
     }
 
     public NullOrEmptyDataDomainException(string message) : base(message)
     {
-        
+
     }
 
     public static void CheckString(string? data, string fieldName)

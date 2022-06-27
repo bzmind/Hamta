@@ -4,5 +4,5 @@ namespace Shop.Domain.ColorAggregate.Repository;
 
 public interface IColorRepository : IBaseRepository<Color>
 {
-    
+
 }

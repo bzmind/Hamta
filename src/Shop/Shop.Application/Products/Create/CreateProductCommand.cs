@@ -85,7 +85,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
         RuleFor(p => p.Slug)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("اسلاگ"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
-        
+
         RuleFor(p => p.MainImage)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"));

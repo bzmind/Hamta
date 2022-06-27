@@ -1,8 +1,8 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.API.ViewModels.Questions;
 using Shop.Query.Questions._DTOs;
 using Shop.UI.Models.Questions;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Questions;
 

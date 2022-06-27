@@ -1,5 +1,4 @@
 ﻿using Common.Api;
-using Common.Application;
 using Shop.API.ViewModels.Users;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Models.Users;
@@ -20,6 +19,6 @@ public interface IUserService
 
     Task<UserDto?> GetById(long userId);
     Task<UserDto?> GetByEmailOrPhone(string emailOrPhone);
-    Task<OperationResult<LoginResult>> SearchByEmailOrPhone(string emailOrPhone);
+    Task<ApiResult<LoginNextStep>> SearchByEmailOrPhone(string emailOrPhone);
     Task<UserFilterResult?> GetByFilter(UserFilterParamsViewModel filterParams);
 }

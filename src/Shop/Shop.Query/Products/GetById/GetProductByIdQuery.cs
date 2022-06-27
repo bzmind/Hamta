@@ -89,7 +89,7 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
             firstItem.ProductInventories = productGroup.Select(p => p.ProductInventories).First();
             return firstItem;
         }).Single();
-            
+
         return groupedProduct;
     }
 }

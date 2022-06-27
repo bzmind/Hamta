@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Common.Api;
+﻿using Common.Api;
 using Common.Api.Attributes;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Roles.AddPermission;
@@ -8,6 +7,7 @@ using Shop.Application.Roles.RemovePermission;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Roles;
 using Shop.Query.Roles._DTOs;
+using System.Net;
 
 namespace Shop.API.Controllers;
 
@@ -49,7 +49,7 @@ public class RoleController : BaseApiController
         var result = await _roleFacade.Remove(roleId);
         return CommandResult(result);
     }
-    
+
     [HttpGet("GetById/{roleId}")]
     public async Task<ApiResult<RoleDto?>> GetById(long roleId)
     {

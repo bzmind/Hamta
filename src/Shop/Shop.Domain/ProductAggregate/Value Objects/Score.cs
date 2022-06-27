@@ -9,7 +9,7 @@ public class Score : BaseValueObject
 
     private const int MinimumScore = 0;
     private const int MaximumScore = 5;
-    
+
     private Score()
     {
 

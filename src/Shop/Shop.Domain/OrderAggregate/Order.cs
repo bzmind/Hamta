@@ -29,7 +29,7 @@ public class Order : BaseAggregateRoot
             return itemsPrice;
         }
     }
-    
+
     public Order(long userId)
     {
         UserId = userId;

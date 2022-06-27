@@ -1,35 +1,38 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using Common.Api;
 using Common.Api.Attributes;
-using Common.Application;
 using Common.Application.Utility;
 using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.API.ViewModels.Auth;
 using Shop.Query.Users._DTOs;
-using Shop.UI.Models;
+using Shop.UI.Models.Auth;
 using Shop.UI.Services.Auth;
 using Shop.UI.Services.Users;
 using Shop.UI.SetupClasses.ModelStateExtensions;
+using Shop.UI.SetupClasses.RazorUtility;
 
 namespace Shop.UI.Pages.Auth;
 
+// TODO: Api project is still using the old model for login, it asks for emailOrPhone and also password which is wrong, fix it, make it like the UI project
 [BindProperties]
-[ValidateAntiForgeryToken]
-public class LoginModel : PageModel
+public class LoginModel : BaseRazorPage
 {
     private readonly IUserService _userService;
     private readonly IAuthService _authService;
+    private readonly IRazorToStringRenderer _razorToStringRenderer;
 
-    public LoginModel(IUserService userService, IAuthService authService)
+    public LoginModel(IUserService userService, IAuthService authService,
+        IRazorToStringRenderer razorToStringRenderer)
     {
         _userService = userService;
         _authService = authService;
+        _razorToStringRenderer = razorToStringRenderer;
     }
 
     [Display(Name = "شماره موبایل یا ایمیل")]
     [Required(ErrorMessage = ValidationMessages.EmailOrPhoneRequired)]
+    [RegularExpression(ValidationMessages.EmailOrPhoneRegex, ErrorMessage = ValidationMessages.InvalidEmailOrPhone)]
     [EmailOrIranPhone(ErrorMessage = ValidationMessages.InvalidEmailOrPhone)]
     public string EmailOrPhone { get; set; }
 
@@ -39,29 +42,42 @@ public class LoginModel : PageModel
         return Page();
     }
 
+    public async Task<IActionResult> OnGetShowPasswordPage()
+    {
+        var page = await _razorToStringRenderer.RenderToStringAsync("_Password", new PasswordModel(), PageContext);
+        return Content(page);
+    }
+
+    public async Task<IActionResult> OnGetShowRegisterPage()
+    {
+        var page = await _razorToStringRenderer.RenderToStringAsync("_Register", new RegisterModel(), PageContext);
+        return Content(page);
+    }
+    
     public async Task<IActionResult> OnPost()
     {
-        var hasVisitedLogin = TempData["AlreadyVisitedLogin"];
-        var hasVisitedRegister = TempData["AlreadyVisitedRegister"];
+        var apiResult = await _userService.SearchByEmailOrPhone(EmailOrPhone);
 
-        if (hasVisitedLogin != null || hasVisitedRegister != null)
-            return RedirectToPage("Login");
-
-        var searchResult = await _userService.SearchByEmailOrPhone(EmailOrPhone);
-
-        if (searchResult.StatusCode != OperationStatusCode.Success)
+        if (apiResult.Data.NextStep is LoginNextStep.NextSteps.RegisterWithPhone)
         {
-            ModelState.AddModelError(string.Empty, searchResult.Message);
-            return RedirectToPage("Login").WithModelStateOf(this);
+            apiResult.MetaData.Message = "حساب کاربری با مشخصات وارد شده وجود ندارد. " +
+                                         "لطفا از شماره تلفن همراه برای ساخت حساب کاربری استفاده نمایید.";
+            MakeAlert(apiResult);
+            return AjaxResultJson(apiResult, false);
         }
 
-        TempData["AlreadyVisitedLogin"] = "true";
         TempData["EmailOrPhone"] = EmailOrPhone;
 
-        if (searchResult.Data!.NextStep is LoginResult.NextSteps.Register)
-            return Partial("_Register");
+        if (apiResult.Data.NextStep is LoginNextStep.NextSteps.Register)
+        {
+            var registerPage = await _razorToStringRenderer.RenderToStringAsync
+                ("_Register", new RegisterModel(), PageContext);
+            return AjaxResultJson(ApiResult<string>.Success(registerPage), true);
+        }
 
-        return Partial("_Password");
+        var passwordPage = await _razorToStringRenderer.RenderToStringAsync
+            ("_Password", new PasswordModel(), PageContext);
+        return AjaxResultJson(ApiResult<string>.Success(passwordPage), true);
     }
 
     public async Task<IActionResult> OnPostPassword(PasswordModel model)
@@ -77,7 +93,7 @@ public class LoginModel : PageModel
         {
             EmailOrPhone = emailOrPhone,
             Password = model.Password
-        }, "_Password");
+        }, "Password");
     }
 
     public async Task<IActionResult> OnPostRegister(RegisterModel model)
@@ -86,8 +102,6 @@ public class LoginModel : PageModel
 
         if (string.IsNullOrWhiteSpace(emailOrPhone) || emailOrPhone.IsEmail())
             return RedirectToPage("Login");
-
-        TempData["AlreadyVisitedRegister"] = "true";
 
         var register = await _authService.Register(new RegisterViewModel
         {
@@ -99,19 +113,17 @@ public class LoginModel : PageModel
         if (register.IsSuccessful == false)
         {
             ModelState.AddModelError(string.Empty, register.MetaData.Message);
-            return Partial("_Register");
+            return RedirectToPage("Login", "Register").WithModelStateOf(this);
         }
-
-
 
         return await LoginUserAndAddTokenCookies(new LoginViewModel
         {
             EmailOrPhone = emailOrPhone,
             Password = model.Password
-        }, "_Register");
+        }, "Register");
     }
 
-    private async Task<IActionResult> LoginUserAndAddTokenCookies(LoginViewModel model, string fallBackPage)
+    private async Task<IActionResult> LoginUserAndAddTokenCookies(LoginViewModel model, string fallBackHandler)
     {
         var loginResult = await _authService.Login(new LoginViewModel
         {
@@ -122,7 +134,7 @@ public class LoginModel : PageModel
         if (!loginResult.IsSuccessful)
         {
             ModelState.AddModelError(string.Empty, loginResult.MetaData.Message);
-            return Partial(fallBackPage);
+            return RedirectToPage("Login", fallBackHandler).WithModelStateOf(this);
         }
 
         var token = loginResult.Data.Token;

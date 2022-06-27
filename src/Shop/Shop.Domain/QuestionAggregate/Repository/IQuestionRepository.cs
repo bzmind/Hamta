@@ -4,5 +4,5 @@ namespace Shop.Domain.QuestionAggregate.Repository;
 
 public interface IQuestionRepository : IBaseRepository<Question>
 {
-    
+
 }

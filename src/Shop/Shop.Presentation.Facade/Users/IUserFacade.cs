@@ -27,6 +27,6 @@ public interface IUserFacade
 
     Task<UserDto?> GetById(long id);
     Task<UserDto?> GetByEmailOrPhone(string emailOrPhone);
-    Task<OperationResult<LoginResult>> SearchByEmailOrPhone(string emailOrPhone);
+    Task<LoginNextStep> SearchByEmailOrPhone(string emailOrPhone);
     Task<UserFilterResult> GetByFilter(UserFilterParams filterParams);
 }

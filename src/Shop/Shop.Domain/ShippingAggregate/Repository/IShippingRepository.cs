@@ -4,5 +4,5 @@ namespace Shop.Domain.ShippingAggregate.Repository;
 
 public interface IShippingRepository : IBaseRepository<Shipping>
 {
-    
+
 }

@@ -1,5 +1,4 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using Common.Api;
 using Common.Api.Attributes;
 using Common.Api.Utility;
@@ -13,6 +12,7 @@ using Shop.Application.Comments.SetStatus;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Comments;
 using Shop.Query.Comments._DTOs;
+using System.Net;
 
 namespace Shop.API.Controllers;
 

@@ -1,7 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using Common.Application.Utility.Validation;
+﻿using Common.Application.Utility.Validation;
+using System.ComponentModel.DataAnnotations;
 
-namespace Shop.UI.Models;
+namespace Shop.UI.Models.Auth;
 
 public class PasswordModel
 {

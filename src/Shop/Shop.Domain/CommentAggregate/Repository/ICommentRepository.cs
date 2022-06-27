@@ -4,5 +4,5 @@ namespace Shop.Domain.CommentAggregate.Repository;
 
 public interface ICommentRepository : IBaseRepository<Comment>
 {
-    
+
 }

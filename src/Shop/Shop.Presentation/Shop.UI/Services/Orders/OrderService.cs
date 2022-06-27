@@ -1,9 +1,9 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.API.ViewModels.Comments;
 using Shop.API.ViewModels.Orders;
 using Shop.Query.Orders._DTOs;
 using Shop.UI.Models.Orders;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Orders;
 

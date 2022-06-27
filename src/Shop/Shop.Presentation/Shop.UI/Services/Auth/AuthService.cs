@@ -1,6 +1,6 @@
-﻿using System.Text.Json;
-using Common.Api;
+﻿using Common.Api;
 using Shop.API.ViewModels.Auth;
+using System.Text.Json;
 
 namespace Shop.UI.Services.Auth;
 
@@ -22,7 +22,7 @@ public class AuthService : IAuthService
         var result = await _client.PostAsJsonAsync("api/auth/login", model);
         return await result.Content.ReadFromJsonAsync<ApiResult<LoginResponse>>(_jsonOptions);
     }
-    
+
     public async Task<ApiResult?> Register(RegisterViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/auth/register", model);

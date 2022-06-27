@@ -1,6 +1,4 @@
-﻿using System.Text.Json;
-using System.Text.Json.Serialization;
-using Shop.UI.Services.Auth;
+﻿using Shop.UI.Services.Auth;
 using Shop.UI.Services.Categories;
 using Shop.UI.Services.Comments;
 using Shop.UI.Services.Inventories;
@@ -11,6 +9,9 @@ using Shop.UI.Services.Roles;
 using Shop.UI.Services.Shippings;
 using Shop.UI.Services.UserAddresses;
 using Shop.UI.Services.Users;
+using Shop.UI.SetupClasses.RazorUtility;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Shop.UI.SetupClasses;
 
@@ -18,7 +19,7 @@ public static class UiBootstrapper
 {
     public static void RegisterUiDependencies(this IServiceCollection services)
     {
-        const string baseAddress = "https://localhost:7087";
+        const string baseAddress = "https://localhost:5001";
 
         services.AddHttpClient<IAuthService, AuthService>
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
@@ -76,5 +77,6 @@ public static class UiBootstrapper
 
         services.AddHttpContextAccessor();
         services.AddScoped<HttpClientAuthorizationDelegateHandler>();
+        services.AddScoped<IRazorToStringRenderer, RazorToStringRenderer>();
     }
 }
