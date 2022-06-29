@@ -18,13 +18,13 @@ public class OrderService : IOrderService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateCommentCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateCommentViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/order/additem", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> Checkout(CheckoutOrderCommandViewModel model)
+    public async Task<ApiResult?> Checkout(CheckoutOrderViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/order/checkout", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -42,7 +42,7 @@ public class OrderService : IOrderService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> SetStatus(SetOrderStatusCommandViewModel model)
+    public async Task<ApiResult?> SetStatus(SetOrderStatusViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/order/setstatus", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -61,7 +61,7 @@ public class OrderService : IOrderService
         return result?.Data;
     }
 
-    public async Task<OrderFilterResult?> GetByFilter(OrderFilterParamsViewModel filterParams)
+    public async Task<OrderFilterResult?> GetByFilter(OrderFilterParams filterParams)
     {
         var url = $"api/order/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&StartDate={filterParams.StartDate}" +

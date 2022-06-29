@@ -4,27 +4,31 @@ public static class ValidationMessages
 {
     public const string Required = "وارد کردن این فیلد اجباری است";
     public const string NotFound = "اطلاعات درخواستی یافت نشد";
-    public const string MaxLength = "تعداد کاراکتر های وارد شده بیشتر از حد مجاز است";
-    public const string MinLength = "تعداد کاراکتر های وارد شده کمتر از حد مجاز است";
+    public const string MaxLength = "تعداد کاراکتر ها بیشتر از حد مجاز است";
+    public const string MinLength = "تعداد کاراکتر ها کمتر از حد مجاز است";
 
     public const string NameRequired = "لطفا نام را وارد کنید";
     public const string FamilyNameRequired = "لطفا نام خانوادگی را وارد کنید";
     public const string FullNameRequired = "لطفا نام و نام خانوادگی را وارد کنید";
     public const string PhoneNumberRequired = "لطفا شماره موبایل را وارد کنید";
     public const string EmailRequired = "لطفا ایمیل را وارد کنید";
+    public const string NewPasswordRequired = "لطفا رمز عبور جدید را وارد کنید";
+    public const string CurrentPasswordRequired = "لطفا رمز عبور فعلی را وارد کنید";
     public const string PasswordRequired = "لطفا رمز عبور را وارد کنید";
     public const string ConfirmPasswordRequired = "لطفا تکرار رمز عبور را وارد کنید";
     public const string EmailOrPhoneRequired = "لطفا شماره موبایل یا ایمیل را وارد کنید";
 
-    public const string InvalidName = "نام وارد شده نامعتبر است";
-    public const string InvalidFamilyName = "نام خانوادگی وارد شده نامعتبر است";
-    public const string InvalidFullName = "نام و نام خانوادگی وارد شده نامعتبر است";
-    public const string InvalidEmailOrPhone = "شماره موبایل یا ایمیل وارد شده نامعتبر است";
-    public const string InvalidEmail = "ایمیل وارد شده نامعتبر است";
-    public const string InvalidPhoneNumber = "شماره موبایل وارد شده نامعتبر است";
-    public const string InvalidPassword = "رمز عبور وارد شده نامعتبر است";
+    public const string InvalidName = "نام نامعتبر است";
+    public const string InvalidFamilyName = "نام خانوادگی نامعتبر است";
+    public const string InvalidFullName = "نام و نام خانوادگی نامعتبر است";
+    public const string InvalidEmailOrPhone = "شماره موبایل یا ایمیل نامعتبر است";
+    public const string InvalidEmail = "ایمیل نامعتبر است";
+    public const string InvalidPhoneNumber = "شماره موبایل نامعتبر است";
+    public const string InvalidNewPassword = "رمز عبور جدید نامعتبر است";
+    public const string InvalidCurrentPassword = "رمز عبور فعلی نامعتبر است";
+    public const string InvalidPassword = "رمز عبور نامعتبر است";
     public const string InvalidConfirmPassword = "رمز های عبور با هم یکسان نیستند";
-    public const string InvalidPrice = "مبلغ وارد شده نامعتبر است";
+    public const string InvalidPrice = "مبلغ نامعتبر است";
 
     public const string EmailRegex = @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}";
     public const string IranPhoneRegex = @"^(?:0|98|\+98|\+980|098)?(9\d{9})$";
@@ -37,10 +41,10 @@ public static class ValidationMessages
     public static string FieldRequired(string field) => $"{field} را وارد کنید";
 
     /// <summary>
-    /// <example>Example: نام} وارد شده نامعتبر است}</example>
+    /// <example>Example: نام} نامعتبر است}</example>
     /// </summary>
     /// <param name="field"></param>
-    public static string FieldInvalid(string field) => $"{field} وارد شده نامعتبر است";
+    public static string FieldInvalid(string field) => $"{field} نامعتبر است";
 
 
     /// <summary>
@@ -161,7 +165,7 @@ public static class ValidationMessages
     /// <param name="field"></param>
     /// <param name="maxAmount"></param>
     public static string PriceMaxAmount(string field, int maxAmount)
-        => $"{field} باید کمتر از {maxAmount.ToString("C0")} درصد باشد";
+        => $"{field} باید کمتر از {maxAmount:C0} درصد باشد";
 
     /// <summary>
     /// <example>Example: قیمت} باید بیشتر از {0} تومان باشد}</example>
@@ -169,7 +173,7 @@ public static class ValidationMessages
     /// <param name="field"></param>
     /// <param name="minAmount"></param>
     public static string PriceMinAmount(string field, int minAmount)
-        => $"{field} باید بیشتر از {minAmount.ToString("C0")} درصد باشد";
+        => $"{field} باید بیشتر از {minAmount:C0} درصد باشد";
 
     /// <summary>
     /// <example>Example: سفارش} یافت نشد}</example>

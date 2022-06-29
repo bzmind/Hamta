@@ -16,13 +16,13 @@ public class ColorService : IColorService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateColorCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateColorViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/color/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> Edit(EditColorCommandViewModel model)
+    public async Task<ApiResult?> Edit(EditColorViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/color/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
@@ -35,7 +35,7 @@ public class ColorService : IColorService
         return result?.Data;
     }
 
-    public async Task<List<ColorDto>?> GetByFilter(ColorFilterParamsViewModel filterParams)
+    public async Task<List<ColorDto>?> GetByFilter(ColorFilterParams filterParams)
     {
         var url = $"api/color/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&Name={filterParams.Name}&Code={filterParams.Code}";

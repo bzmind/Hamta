@@ -17,13 +17,13 @@ public class UserService : IUserService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateUserCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateUserViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/user/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> Edit(EditUserCommandViewModel model)
+    public async Task<ApiResult?> Edit(EditUserViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/user/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -32,6 +32,12 @@ public class UserService : IUserService
     public async Task<ApiResult?> SetAvatar(SetUserAvatarViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/user/setavatar", model);
+        return await result.Content.ReadFromJsonAsync<ApiResult>();
+    }
+
+    public async Task<ApiResult?> ResetPassword(ResetUserPasswordViewModel model)
+    {
+        var result = await _client.PutAsJsonAsync("api/user/resetpassword", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
@@ -47,7 +53,7 @@ public class UserService : IUserService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> AddRole(AddUserRoleCommandViewModel model)
+    public async Task<ApiResult?> AddRole(AddUserRoleViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/user/addrole", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -91,7 +97,7 @@ public class UserService : IUserService
         return jsonResult;
     }
 
-    public async Task<UserFilterResult?> GetByFilter(UserFilterParamsViewModel filterParams)
+    public async Task<UserFilterResult?> GetByFilter(UserFilterParams filterParams)
     {
         var url = $"api/user/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&Name={filterParams.Name}&PhoneNumber={filterParams.PhoneNumber}&Email={filterParams.Email}";

@@ -16,13 +16,13 @@ public class ShippingService : IShippingService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateShippingCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateShippingViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/shipping/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> Edit(EditShippingCommandViewModel model)
+    public async Task<ApiResult?> Edit(EditShippingViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/shipping/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

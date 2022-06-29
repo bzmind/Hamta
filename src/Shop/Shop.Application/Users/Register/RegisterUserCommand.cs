@@ -44,8 +44,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .ValidPhoneNumber();
 
         RuleFor(u => u.Password)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("رمز عبور"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("رمز عبور"))
+            .NotNull().WithMessage(ValidationMessages.PasswordRequired)
+            .NotEmpty().WithMessage(ValidationMessages.PasswordRequired)
             .MinimumLength(8).WithMessage(ValidationMessages.FieldCharactersMinLength("رمز عبور", 7));
     }
 }

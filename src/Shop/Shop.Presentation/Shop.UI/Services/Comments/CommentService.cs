@@ -17,13 +17,13 @@ public class CommentService : ICommentService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateCommentCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateCommentViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/comment/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> SetStatus(SetCommentStatusCommandViewModel model)
+    public async Task<ApiResult?> SetStatus(SetCommentStatusViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/comment/setstatus", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
@@ -54,7 +54,7 @@ public class CommentService : ICommentService
         return result?.Data;
     }
 
-    public async Task<CommentFilterResult?> GetByFilter(CommentFilterParamsViewModel filterParams)
+    public async Task<CommentFilterResult?> GetByFilter(CommentFilterParams filterParams)
     {
         var url = $"api/comment/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&ProductId={filterParams.ProductId}&Status={filterParams.Status}";

@@ -7,6 +7,8 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<Folder Include="Pages\Profile\Comments\" />
+		<Folder Include="Pages\Profile\Favorites\" />
 		<Folder Include="Services\UserAddresses\" />
 		<Folder Include="Services\Inventories\" />
 		<Folder Include="Services\Users\" />
@@ -19,7 +21,6 @@
 		<Folder Include="Services\Colors\" />
 		<Folder Include="Services\Categories\" />
 		<Folder Include="Services\Auth\" />
-		<Folder Include="SetupClasses\CustomAttributes\" />
 		<Folder Include="SetupClasses\RazorUtility\" />
 	</ItemGroup>
 

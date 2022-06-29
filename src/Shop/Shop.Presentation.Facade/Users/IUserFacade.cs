@@ -6,6 +6,7 @@ using Shop.Application.Users.Edit;
 using Shop.Application.Users.Register;
 using Shop.Application.Users.RemoveFavoriteItem;
 using Shop.Application.Users.RemoveRole;
+using Shop.Application.Users.ResetPassword;
 using Shop.Application.Users.SetAvatar;
 using Shop.Application.Users.SetSubscriptionToNews;
 using Shop.Query.Users._DTOs;
@@ -18,6 +19,7 @@ public interface IUserFacade
     Task<OperationResult> Edit(EditUserCommand command);
     Task<OperationResult> Register(RegisterUserCommand command);
     Task<OperationResult> SetAvatar(SetUserAvatarCommand command);
+    Task<OperationResult> ResetPassword(ResetUserPasswordCommand command);
     Task<OperationResult> SetSubscriptionToNews(SetUserSubscriptionToNewsCommand command);
     Task<OperationResult> AddFavoriteItem(AddUserFavoriteItemCommand command);
     Task<OperationResult> RemoveFavoriteItem(RemoveUserFavoriteItemCommand command);

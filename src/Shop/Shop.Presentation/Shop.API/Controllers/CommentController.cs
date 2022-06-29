@@ -29,7 +29,7 @@ public class CommentController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.CommentManager)]
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateCommentCommandViewModel model)
+    public async Task<ApiResult<long>> Create(CreateCommentViewModel model)
     {
         var command = _mapper.Map<CreateCommentCommand>(model);
         command.UserId = User.GetUserId();

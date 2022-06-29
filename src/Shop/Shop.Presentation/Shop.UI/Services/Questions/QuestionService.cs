@@ -17,25 +17,25 @@ public class QuestionService : IQuestionService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateQuestionCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateQuestionViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/question/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> SetStatus(SetQuestionStatusCommandViewModel model)
+    public async Task<ApiResult?> SetStatus(SetQuestionStatusViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/question/setstatus", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> AddReply(AddReplyCommandViewModel model)
+    public async Task<ApiResult?> AddReply(AddReplyViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/question/addreply", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> RemoveReply(RemoveReplyCommandViewModel model)
+    public async Task<ApiResult?> RemoveReply(RemoveReplyViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/question/removereply", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -54,7 +54,7 @@ public class QuestionService : IQuestionService
         return result?.Data;
     }
 
-    public async Task<QuestionFilterResult?> GetByFilter(QuestionFilterParamsViewModel filterParams)
+    public async Task<QuestionFilterResult?> GetByFilter(QuestionFilterParams filterParams)
     {
         var url = $"api/question/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&ProductId={filterParams.ProductId}&UserId={filterParams.UserId}&Status={filterParams.Status}";

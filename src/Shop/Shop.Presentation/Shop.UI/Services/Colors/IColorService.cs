@@ -6,9 +6,9 @@ namespace Shop.UI.Services.Colors;
 
 public interface IColorService
 {
-    Task<ApiResult?> Create(CreateColorCommandViewModel model);
-    Task<ApiResult?> Edit(EditColorCommandViewModel model);
+    Task<ApiResult?> Create(CreateColorViewModel model);
+    Task<ApiResult?> Edit(EditColorViewModel model);
 
     Task<ColorDto?> GetById(long colorId);
-    Task<List<ColorDto>?> GetByFilter(ColorFilterParamsViewModel filterParams);
+    Task<List<ColorDto>?> GetByFilter(ColorFilterParams filterParams);
 }

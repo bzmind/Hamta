@@ -16,19 +16,19 @@ public class RoleService : IRoleService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateRoleCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateRoleViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/role/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> AddPermissions(SetPermissionCommandViewModel model)
+    public async Task<ApiResult?> AddPermissions(SetPermissionViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/role/addpermissions", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> RemovePermissions(SetPermissionCommandViewModel model)
+    public async Task<ApiResult?> RemovePermissions(SetPermissionViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/role/removepermissions", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

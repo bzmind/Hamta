@@ -6,8 +6,8 @@ namespace Shop.UI.Services.UserAddresses;
 
 public interface IUserAddressService
 {
-    Task<ApiResult?> Create(CreateUserAddressCommandViewModel model);
-    Task<ApiResult?> Edit(EditUserAddressCommandViewModel model);
+    Task<ApiResult?> Create(CreateUserAddressViewModel model);
+    Task<ApiResult?> Edit(EditUserAddressViewModel model);
     Task<ApiResult?> Activate(long addressId);
     Task<ApiResult?> Remove(long addressId);
 

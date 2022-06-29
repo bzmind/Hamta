@@ -26,7 +26,7 @@ public class OrderController : BaseApiController
     }
 
     [HttpPost("AddItem")]
-    public async Task<ApiResult<long>> AddItem(AddOrderItemCommandViewModel model)
+    public async Task<ApiResult<long>> AddItem(AddOrderItemViewModel model)
     {
         var command = new AddOrderItemCommand(User.GetUserId(), model.InventoryId, model.Quantity);
         var result = await _orderFacade.AddItem(command);
@@ -35,7 +35,7 @@ public class OrderController : BaseApiController
     }
 
     [HttpPut("Checkout")]
-    public async Task<ApiResult> Checkout(CheckoutOrderCommandViewModel model)
+    public async Task<ApiResult> Checkout(CheckoutOrderViewModel model)
     {
         var command = new CheckoutOrderCommand(User.GetUserId(), model.UserAddressId, model.ShippingMethodId);
         var result = await _orderFacade.Checkout(command);

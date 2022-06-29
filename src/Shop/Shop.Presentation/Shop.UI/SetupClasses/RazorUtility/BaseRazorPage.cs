@@ -14,6 +14,13 @@ public class BaseRazorPage : PageModel
         HttpContext.Response.Cookies.Append("alert", model);
     }
 
+    protected void MakeAlert(string message)
+    {
+        var apiResult = new ApiResult { MetaData = new MetaData { Message = message } };
+        var model = JsonConvert.SerializeObject(apiResult);
+        HttpContext.Response.Cookies.Append("alert", model);
+    }
+
     protected ContentResult AjaxHtmlResult<T>(ApiResult<T> apiResult)
     {
         var model = new AjaxResult
@@ -30,7 +37,6 @@ public class BaseRazorPage : PageModel
     {
         var model = new AjaxResult
         {
-            IsMessage = true,
             Message = apiResult.MetaData.Message,
             StatusCode = apiResult.MetaData.ApiStatusCode
         };
@@ -51,7 +57,6 @@ public class BaseRazorPage : PageModel
     {
         public bool IsRedirection { get; set; }
         public string RedirectPath { get; set; }
-        public bool IsMessage { get; set; }
         public bool IsHtml { get; set; }
         public string Message { get; set; }
         public object Data { get; set; }

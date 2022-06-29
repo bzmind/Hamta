@@ -13,9 +13,9 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<CreateCommentCommand, CreateCommentCommandViewModel>().ReverseMap();
-        CreateMap<CreateUserAddressCommand, CreateUserAddressCommandViewModel>().ReverseMap();
-        CreateMap<EditUserAddressCommand, EditUserAddressCommandViewModel>().ReverseMap();
-        CreateMap<IncreaseOrderItemCountCommand, IncreaseOrderItemCountCommandViewModel>().ReverseMap();
+        CreateMap<CreateCommentCommand, CreateCommentViewModel>().ReverseMap();
+        CreateMap<CreateUserAddressCommand, CreateUserAddressViewModel>().ReverseMap();
+        CreateMap<EditUserAddressCommand, EditUserAddressViewModel>().ReverseMap();
+        CreateMap<IncreaseOrderItemCountCommand, IncreaseOrderItemCountViewModel>().ReverseMap();
     }
 }

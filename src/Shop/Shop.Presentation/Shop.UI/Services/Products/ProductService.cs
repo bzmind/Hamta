@@ -18,7 +18,7 @@ public class ProductService : IProductService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateProductCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateProductViewModel model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.CategoryId.ToString()), "CategoryId");
@@ -50,7 +50,7 @@ public class ProductService : IProductService
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> Edit(EditProductCommandViewModel model)
+    public async Task<ApiResult?> Edit(EditProductViewModel model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
@@ -83,7 +83,7 @@ public class ProductService : IProductService
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> ReplaceMainImage(ReplaceProductMainImageCommandViewModel model)
+    public async Task<ApiResult?> ReplaceMainImage(ReplaceProductMainImageViewModel model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
@@ -95,13 +95,13 @@ public class ProductService : IProductService
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> AddScore(AddProductScoreCommandViewModel model)
+    public async Task<ApiResult?> AddScore(AddProductScoreViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/product/addscore", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> RemoveGalleryImage(RemoveProductGalleryImageCommandViewModel model)
+    public async Task<ApiResult?> RemoveGalleryImage(RemoveProductGalleryImageViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/product/removegalleryimage", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
@@ -120,7 +120,7 @@ public class ProductService : IProductService
         return result?.Data;
     }
 
-    public async Task<ProductFilterResult?> GetByFilter(ProductFilterParamsViewModel filterParams)
+    public async Task<ProductFilterResult?> GetByFilter(ProductFilterParams filterParams)
     {
         var url = $"api/product/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&CategoryId={filterParams.CategoryId}&Name={filterParams.Name}" +

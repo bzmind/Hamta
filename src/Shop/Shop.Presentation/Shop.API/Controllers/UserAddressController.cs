@@ -26,7 +26,7 @@ public class UserAddressController : BaseApiController
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult> Create(CreateUserAddressCommandViewModel model)
+    public async Task<ApiResult> Create(CreateUserAddressViewModel model)
     {
         var command = _mapper.Map<CreateUserAddressCommand>(model);
         command.UserId = User.GetUserId();
@@ -35,7 +35,7 @@ public class UserAddressController : BaseApiController
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditUserAddressCommandViewModel model)
+    public async Task<ApiResult> Edit(EditUserAddressViewModel model)
     {
         var command = _mapper.Map<EditUserAddressCommand>(model);
         command.UserId = User.GetUserId();

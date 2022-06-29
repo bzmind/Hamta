@@ -6,13 +6,13 @@ namespace Shop.UI.Services.Products;
 
 public interface IProductService
 {
-    Task<ApiResult?> Create(CreateProductCommandViewModel model);
-    Task<ApiResult?> Edit(EditProductCommandViewModel model);
-    Task<ApiResult?> ReplaceMainImage(ReplaceProductMainImageCommandViewModel model);
-    Task<ApiResult?> AddScore(AddProductScoreCommandViewModel model);
-    Task<ApiResult?> RemoveGalleryImage(RemoveProductGalleryImageCommandViewModel model);
+    Task<ApiResult?> Create(CreateProductViewModel model);
+    Task<ApiResult?> Edit(EditProductViewModel model);
+    Task<ApiResult?> ReplaceMainImage(ReplaceProductMainImageViewModel model);
+    Task<ApiResult?> AddScore(AddProductScoreViewModel model);
+    Task<ApiResult?> RemoveGalleryImage(RemoveProductGalleryImageViewModel model);
     Task<ApiResult?> Remove(long productId);
 
     Task<ProductDto?> GetById(long productId);
-    Task<ProductFilterResult?> GetByFilter(ProductFilterParamsViewModel filterParams);
+    Task<ProductFilterResult?> GetByFilter(ProductFilterParams filterParams);
 }

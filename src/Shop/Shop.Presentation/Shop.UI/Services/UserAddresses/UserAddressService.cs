@@ -16,13 +16,13 @@ public class UserAddressService : IUserAddressService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateUserAddressCommandViewModel model)
+    public async Task<ApiResult?> Create(CreateUserAddressViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/useraddress/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> Edit(EditUserAddressCommandViewModel model)
+    public async Task<ApiResult?> Edit(EditUserAddressViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/useraddress/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
