@@ -3,7 +3,7 @@ using Common.Api;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels.Users.Addresses;
+using Shop.API.CommandViewModels.Users.Addresses;
 using Shop.Application.Users.ActivateAddress;
 using Shop.Application.Users.CreateAddress;
 using Shop.Application.Users.EditAddress;
@@ -26,7 +26,7 @@ public class UserAddressController : BaseApiController
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult> Create(CreateUserAddressViewModel model)
+    public async Task<ApiResult> Create(CreateUserAddressCommandViewModel model)
     {
         var command = _mapper.Map<CreateUserAddressCommand>(model);
         command.UserId = User.GetUserId();
@@ -35,7 +35,7 @@ public class UserAddressController : BaseApiController
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditUserAddressViewModel model)
+    public async Task<ApiResult> Edit(EditUserAddressCommandViewModel model)
     {
         var command = _mapper.Map<EditUserAddressCommand>(model);
         command.UserId = User.GetUserId();

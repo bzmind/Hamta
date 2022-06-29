@@ -1,6 +1,6 @@
-﻿namespace Shop.API.ViewModels.Users.Addresses;
+﻿namespace Shop.API.CommandViewModels.Users.Addresses;
 
-public class CreateUserAddressViewModel
+public class CreateUserAddressCommandViewModel
 {
     public string FullName { get; init; }
     public string PhoneNumber { get; init; }

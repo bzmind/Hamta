@@ -1,6 +1,6 @@
-﻿namespace Shop.API.ViewModels.Orders;
+﻿namespace Shop.API.CommandViewModels.Orders;
 
-public class CheckoutOrderViewModel
+public class CheckoutOrderCommandViewModel
 {
     public long UserAddressId { get; init; }
     public long ShippingMethodId { get; init; }

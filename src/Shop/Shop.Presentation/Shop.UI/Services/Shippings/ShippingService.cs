@@ -1,7 +1,8 @@
 ﻿using Common.Api;
 using Shop.Query.Shippings._DTOs;
-using Shop.UI.Models.Shippings;
 using System.Text.Json;
+using Shop.Application.Shippings.Create;
+using Shop.Application.Shippings.Edit;
 
 namespace Shop.UI.Services.Shippings;
 
@@ -16,13 +17,13 @@ public class ShippingService : IShippingService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateShippingViewModel model)
+    public async Task<ApiResult?> Create(CreateShippingCommand model)
     {
         var result = await _client.PostAsJsonAsync("api/shipping/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> Edit(EditShippingViewModel model)
+    public async Task<ApiResult?> Edit(EditShippingCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/shipping/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

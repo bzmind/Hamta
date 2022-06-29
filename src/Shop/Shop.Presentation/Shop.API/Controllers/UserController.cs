@@ -16,6 +16,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Users;
 using Shop.Query.Users._DTOs;
 using System.Net;
+using Shop.API.CommandViewModels.Users;
 using Shop.Application.Users.ResetPassword;
 
 namespace Shop.API.Controllers;
@@ -40,7 +41,7 @@ public class UserController : BaseApiController
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditUserViewModel model)
+    public async Task<ApiResult> Edit(EditUserCommandViewModel model)
     {
         var command = new EditUserCommand(User.GetUserId(), model.FullName, model.Email, model.PhoneNumber);
         var result = await _userFacade.Edit(command);
@@ -48,7 +49,7 @@ public class UserController : BaseApiController
     }
 
     [HttpPut("SetAvatar")]
-    public async Task<ApiResult> SetAvatar([FromForm] SetUserAvatarViewModel model)
+    public async Task<ApiResult> SetAvatar([FromForm] SetUserAvatarCommandViewModel model)
     {
         var command = new SetUserAvatarCommand(User.GetUserId(), model.Avatar);
         var result = await _userFacade.SetAvatar(command);

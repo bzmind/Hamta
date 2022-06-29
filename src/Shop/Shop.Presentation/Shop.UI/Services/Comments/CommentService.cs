@@ -1,8 +1,8 @@
 ﻿using Common.Api;
-using Shop.API.ViewModels.Comments;
 using Shop.Query.Comments._DTOs;
-using Shop.UI.Models.Comments;
 using System.Text.Json;
+using Shop.API.CommandViewModels.Comments;
+using Shop.Application.Comments.SetStatus;
 
 namespace Shop.UI.Services.Comments;
 
@@ -17,13 +17,13 @@ public class CommentService : ICommentService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateCommentViewModel model)
+    public async Task<ApiResult?> Create(CreateCommentCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/comment/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> SetStatus(SetCommentStatusViewModel model)
+    public async Task<ApiResult?> SetStatus(SetCommentStatusCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/comment/setstatus", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);

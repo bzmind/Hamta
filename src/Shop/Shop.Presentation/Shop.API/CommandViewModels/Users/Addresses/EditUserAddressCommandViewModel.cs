@@ -1,6 +1,6 @@
-﻿namespace Shop.API.ViewModels.Users.Addresses;
+﻿namespace Shop.API.CommandViewModels.Users.Addresses;
 
-public class EditUserAddressViewModel
+public class EditUserAddressCommandViewModel
 {
     public long AddressId { get; init; }
     public string FullName { get; init; }

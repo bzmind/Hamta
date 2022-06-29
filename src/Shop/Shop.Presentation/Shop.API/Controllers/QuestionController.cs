@@ -3,7 +3,6 @@ using Common.Api.Attributes;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels.Questions;
 using Shop.Application.Questions.AddReply;
 using Shop.Application.Questions.Create;
 using Shop.Application.Questions.RemoveReply;
@@ -12,6 +11,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Questions;
 using Shop.Query.Questions._DTOs;
 using System.Net;
+using Shop.API.CommandViewModels.Questions;
 
 namespace Shop.API.Controllers;
 
@@ -26,7 +26,7 @@ public class QuestionController : BaseApiController
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateQuestionViewModel model)
+    public async Task<ApiResult<long>> Create(CreateQuestionCommandViewModel model)
     {
         var command = new CreateQuestionCommand(User.GetUserId(), model.ProductId, model.Description);
         var result = await _questionFacade.Create(command);
@@ -43,7 +43,7 @@ public class QuestionController : BaseApiController
     }
 
     [HttpPut("AddReply")]
-    public async Task<ApiResult> AddReply(AddReplyViewModel model)
+    public async Task<ApiResult> AddReply(AddReplyCommandViewModel model)
     {
         var command = new AddReplyCommand(User.GetUserId(), model.QuestionId, model.Description);
         var result = await _questionFacade.AddReply(command);

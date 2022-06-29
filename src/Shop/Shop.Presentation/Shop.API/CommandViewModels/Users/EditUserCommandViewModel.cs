@@ -1,6 +1,6 @@
-﻿namespace Shop.API.ViewModels.Users;
+﻿namespace Shop.API.CommandViewModels.Users;
 
-public class EditUserViewModel
+public class EditUserCommandViewModel
 {
     public string FullName { get; init; }
     public string Email { get; init; }

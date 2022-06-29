@@ -1,8 +1,10 @@
 ﻿using Common.Api;
-using Shop.API.ViewModels.Users;
 using Shop.Query.Users._DTOs;
-using Shop.UI.Models.Users;
 using System.Text.Json;
+using Shop.API.CommandViewModels.Users;
+using Shop.Application.Users.AddRole;
+using Shop.Application.Users.Create;
+using Shop.Application.Users.ResetPassword;
 
 namespace Shop.UI.Services.Users;
 
@@ -17,25 +19,25 @@ public class UserService : IUserService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateUserViewModel model)
+    public async Task<ApiResult?> Create(CreateUserCommand model)
     {
         var result = await _client.PostAsJsonAsync("api/user/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> Edit(EditUserViewModel model)
+    public async Task<ApiResult?> Edit(EditUserCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/user/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> SetAvatar(SetUserAvatarViewModel model)
+    public async Task<ApiResult?> SetAvatar(SetUserAvatarCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/user/setavatar", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> ResetPassword(ResetUserPasswordViewModel model)
+    public async Task<ApiResult?> ResetPassword(ResetUserPasswordCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/user/resetpassword", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
@@ -53,7 +55,7 @@ public class UserService : IUserService
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> AddRole(AddUserRoleViewModel model)
+    public async Task<ApiResult?> AddRole(AddUserRoleCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/user/addrole", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

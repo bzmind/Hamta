@@ -1,9 +1,13 @@
 ﻿using Common.Api;
-using Common.Application.Utility.Validation.CustomAttributes;
 using Shop.Query.Products._DTOs;
-using Shop.UI.Models.Products;
 using System.Text;
 using System.Text.Json;
+using Common.Application.Utility.Validation.CustomAttributes;
+using Shop.Application.Products.AddScore;
+using Shop.Application.Products.Create;
+using Shop.Application.Products.Edit;
+using Shop.Application.Products.RemoveGalleryImage;
+using Shop.Application.Products.ReplaceMainImage;
 
 namespace Shop.UI.Services.Products;
 
@@ -18,7 +22,7 @@ public class ProductService : IProductService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateProductViewModel model)
+    public async Task<ApiResult?> Create(CreateProductCommand model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.CategoryId.ToString()), "CategoryId");
@@ -43,14 +47,14 @@ public class ProductService : IProductService
         var specificationsJson = JsonSerializer.Serialize(model.CustomSpecifications);
         formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "CustomSpecifications");
 
-        var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescription);
+        var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
         formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
 
         var result = await _client.PostAsync("api/product/create", formData);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> Edit(EditProductViewModel model)
+    public async Task<ApiResult?> Edit(EditProductCommand model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
@@ -76,14 +80,14 @@ public class ProductService : IProductService
         var specificationsJson = JsonSerializer.Serialize(model.CustomSpecifications);
         formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "CustomSpecifications");
 
-        var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescription);
+        var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
         formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
 
         var result = await _client.PutAsync("api/product/edit", formData);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> ReplaceMainImage(ReplaceProductMainImageViewModel model)
+    public async Task<ApiResult?> ReplaceMainImage(ReplaceProductMainImageCommand model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
@@ -95,13 +99,13 @@ public class ProductService : IProductService
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> AddScore(AddProductScoreViewModel model)
+    public async Task<ApiResult?> AddScore(AddProductScoreCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/product/addscore", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> RemoveGalleryImage(RemoveProductGalleryImageViewModel model)
+    public async Task<ApiResult?> RemoveGalleryImage(RemoveProductGalleryImageCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/product/removegalleryimage", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);

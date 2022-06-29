@@ -1,8 +1,9 @@
 ﻿using Common.Api;
-using Shop.API.ViewModels.Questions;
 using Shop.Query.Questions._DTOs;
-using Shop.UI.Models.Questions;
 using System.Text.Json;
+using Shop.API.CommandViewModels.Questions;
+using Shop.Application.Questions.RemoveReply;
+using Shop.Application.Questions.SetStatus;
 
 namespace Shop.UI.Services.Questions;
 
@@ -17,25 +18,25 @@ public class QuestionService : IQuestionService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateQuestionViewModel model)
+    public async Task<ApiResult?> Create(CreateQuestionCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/question/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> SetStatus(SetQuestionStatusViewModel model)
+    public async Task<ApiResult?> SetStatus(SetQuestionStatusCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/question/setstatus", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> AddReply(AddReplyViewModel model)
+    public async Task<ApiResult?> AddReply(AddReplyCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/question/addreply", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();
     }
 
-    public async Task<ApiResult?> RemoveReply(RemoveReplyViewModel model)
+    public async Task<ApiResult?> RemoveReply(RemoveReplyCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/question/removereply", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>();

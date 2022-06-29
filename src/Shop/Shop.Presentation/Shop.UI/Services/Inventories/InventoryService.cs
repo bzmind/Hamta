@@ -1,7 +1,11 @@
 ﻿using Common.Api;
 using Shop.Query.Inventories._DTOs;
-using Shop.UI.Models.Inventories;
 using System.Text.Json;
+using Shop.Application.Inventories.Create;
+using Shop.Application.Inventories.DecreaseQuantity;
+using Shop.Application.Inventories.Edit;
+using Shop.Application.Inventories.IncreaseQuantity;
+using Shop.Application.Inventories.SetDiscountPercentage;
 
 namespace Shop.UI.Services.Inventories;
 
@@ -16,31 +20,34 @@ public class InventoryService : IInventoryService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateInventoryViewModel model)
+    // This Commands are actually used only to send Data through HttpClient, they're just DTO not Command
+    // They might be the same as their command records, this 👇 was the same as it's command (CreateInventoryCommand)
+    // IDK about others, but Ashrafi had named these "...Command" as well.
+    public async Task<ApiResult?> Create(CreateInventoryCommand model)
     {
         var result = await _client.PostAsJsonAsync("api/inventory/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> Edit(EditInventoryViewModel model)
+    public async Task<ApiResult?> Edit(EditInventoryCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/inventory/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> IncreaseQuantity(SetInventoryQuantityViewModel model)
+    public async Task<ApiResult?> IncreaseQuantity(IncreaseInventoryQuantityCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/inventory/increasequantity", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> DecreaseQuantity(CreateInventoryViewModel model)
+    public async Task<ApiResult?> DecreaseQuantity(DecreaseInventoryQuantityCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/inventory/decreasequantity", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> SetDiscountPercentage(SetDiscountPercentageViewModel model)
+    public async Task<ApiResult?> SetDiscountPercentage(SetInventoryDiscountPercentageCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/inventory/setdiscountpercentage", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);

@@ -3,7 +3,6 @@ using Common.Api.Attributes;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels.Orders;
 using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.RemoveItem;
@@ -12,6 +11,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Orders;
 using Shop.Query.Orders._DTOs;
 using System.Net;
+using Shop.API.CommandViewModels.Orders;
 
 namespace Shop.API.Controllers;
 
@@ -26,7 +26,7 @@ public class OrderController : BaseApiController
     }
 
     [HttpPost("AddItem")]
-    public async Task<ApiResult<long>> AddItem(AddOrderItemViewModel model)
+    public async Task<ApiResult<long>> AddItem(AddOrderItemCommandViewModel model)
     {
         var command = new AddOrderItemCommand(User.GetUserId(), model.InventoryId, model.Quantity);
         var result = await _orderFacade.AddItem(command);
@@ -35,7 +35,7 @@ public class OrderController : BaseApiController
     }
 
     [HttpPut("Checkout")]
-    public async Task<ApiResult> Checkout(CheckoutOrderViewModel model)
+    public async Task<ApiResult> Checkout(CheckoutOrderCommandViewModel model)
     {
         var command = new CheckoutOrderCommand(User.GetUserId(), model.UserAddressId, model.ShippingMethodId);
         var result = await _orderFacade.Checkout(command);

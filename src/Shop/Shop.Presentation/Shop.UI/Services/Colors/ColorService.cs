@@ -1,7 +1,8 @@
 ﻿using Common.Api;
 using Shop.Query.Colors._DTOs;
-using Shop.UI.Models.Colors;
 using System.Text.Json;
+using Shop.Application.Colors.Create;
+using Shop.Application.Colors.Edit;
 
 namespace Shop.UI.Services.Colors;
 
@@ -16,13 +17,13 @@ public class ColorService : IColorService
         _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateColorViewModel model)
+    public async Task<ApiResult?> Create(CreateColorCommand model)
     {
         var result = await _client.PostAsJsonAsync("api/color/create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> Edit(EditColorViewModel model)
+    public async Task<ApiResult?> Edit(EditColorCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/color/edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);

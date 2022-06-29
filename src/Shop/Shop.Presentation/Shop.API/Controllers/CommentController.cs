@@ -4,7 +4,6 @@ using Common.Api.Attributes;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels.Comments;
 using Shop.Application.Comments.Create;
 using Shop.Application.Comments.SetDislikes;
 using Shop.Application.Comments.SetLikes;
@@ -13,6 +12,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Comments;
 using Shop.Query.Comments._DTOs;
 using System.Net;
+using Shop.API.CommandViewModels.Comments;
 
 namespace Shop.API.Controllers;
 
@@ -29,7 +29,7 @@ public class CommentController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.CommentManager)]
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateCommentViewModel model)
+    public async Task<ApiResult<long>> Create(CreateCommentCommandViewModel model)
     {
         var command = _mapper.Map<CreateCommentCommand>(model);
         command.UserId = User.GetUserId();

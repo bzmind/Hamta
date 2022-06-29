@@ -1,6 +1,6 @@
-﻿namespace Shop.API.ViewModels.Questions;
+﻿namespace Shop.API.CommandViewModels.Questions;
 
-public class AddReplyViewModel
+public class AddReplyCommandViewModel
 {
     public long QuestionId { get; init; }
     public string Description { get; init; }

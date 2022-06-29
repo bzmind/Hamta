@@ -1,6 +1,6 @@
-﻿namespace Shop.API.ViewModels.Comments;
+﻿namespace Shop.API.CommandViewModels.Comments;
 
-public class CreateCommentViewModel
+public class CreateCommentCommandViewModel
 {
     public int ProductId { get; set; }
     public string Title { get; set; }
