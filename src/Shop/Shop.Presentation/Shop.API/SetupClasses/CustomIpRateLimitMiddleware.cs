@@ -23,7 +23,7 @@ public class CustomIpRateLimitMiddleware : IpRateLimitMiddleware
             MetaData = new MetaData
             {
                 ApiStatusCode = ApiStatusCode.TooManyRequests,
-                Message = "بیش از حد مجاز تلاش کرده‌اید"
+                Message = "بیش از حد مجاز تلاش کرده‌اید."
             }
         };
 

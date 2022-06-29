@@ -28,9 +28,7 @@ public class RazorToStringRenderer : IRazorToStringRenderer
         var viewResult = _razorViewEngine.FindView(context, viewName, false);
 
         if (viewResult.View == null)
-        {
             throw new ArgumentNullException($"{viewName} does not match any available view");
-        }
 
         var viewDictionary = new ViewDataDictionary(new EmptyModelMetadataProvider(), new ModelStateDictionary())
         {
