@@ -22,6 +22,9 @@ public class ResetUserPasswordCommandHandler : IBaseCommandHandler<ResetUserPass
     {
         var user = await _userRepository.GetAsTrackingAsync(request.UserId);
 
+        if (user == null)
+            return OperationResult.NotFound(ValidationMessages.FieldNotFound("کاربر"));
+
         var isSamePassword = SHA256Hash.Compare(user.Password, request.CurrentPassword);
 
         if (!isSamePassword)

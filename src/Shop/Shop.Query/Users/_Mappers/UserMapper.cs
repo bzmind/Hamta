@@ -23,7 +23,7 @@ internal static class UserMapper
             Addresses = user.Addresses.ToList().MapToUserAddressDto(),
             PhoneNumber = user.PhoneNumber,
             AvatarName = user.AvatarName,
-            IsSubscribedToNews = user.IsSubscribedToNews,
+            IsSubscribedToNewsletter = user.IsSubscribedToNewsletter,
             FavoriteItems = user.FavoriteItems.Select(fi => new UserFavoriteItemDto
             {
                 Id = fi.Id,
@@ -61,7 +61,7 @@ internal static class UserMapper
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
             AvatarName = user.AvatarName,
-            IsSubscribedToNews = user.IsSubscribedToNews,
+            IsSubscribedToNewsletter = user.IsSubscribedToNewsletter,
             Roles = user.Roles.Select(r => new UserRoleDto
             {
                 Id = r.Id,

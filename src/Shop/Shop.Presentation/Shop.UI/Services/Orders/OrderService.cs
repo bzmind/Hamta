@@ -21,37 +21,37 @@ public class OrderService : IOrderService
     public async Task<ApiResult?> Create(CreateCommentCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/order/additem", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Checkout(CheckoutOrderCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/order/checkout", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> IncreaseItemCount(long orderItemId)
     {
         var result = await _client.PutAsync($"api/order/increaseitemcount/{orderItemId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> DecreaseItemCount(long orderItemId)
     {
         var result = await _client.PutAsync($"api/order/decreaseitemcount/{orderItemId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> SetStatus(SetOrderStatusCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/order/setstatus", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long orderItemId)
     {
         var result = await _client.DeleteAsync($"api/order/remove/{orderItemId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<OrderDto?> GetById(long orderId)

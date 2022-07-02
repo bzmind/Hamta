@@ -16,6 +16,7 @@ public static class ValidationMessages
     public const string CurrentPasswordRequired = "لطفا رمز عبور فعلی را وارد کنید";
     public const string PasswordRequired = "لطفا رمز عبور را وارد کنید";
     public const string ConfirmPasswordRequired = "لطفا تکرار رمز عبور را وارد کنید";
+    public const string ConfirmNewPasswordRequired = "لطفا تکرار رمز عبور جدید را وارد کنید";
     public const string EmailOrPhoneRequired = "لطفا شماره موبایل یا ایمیل را وارد کنید";
 
     public const string InvalidName = "نام نامعتبر است";
@@ -28,6 +29,7 @@ public static class ValidationMessages
     public const string InvalidCurrentPassword = "رمز عبور فعلی نامعتبر است";
     public const string InvalidPassword = "رمز عبور نامعتبر است";
     public const string InvalidConfirmPassword = "رمز های عبور با هم یکسان نیستند";
+    public const string InvalidConfirmNewPassword = "رمز های عبور جدید با هم یکسان نیستند";
     public const string InvalidPrice = "مبلغ نامعتبر است";
 
     public const string EmailRegex = @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}";

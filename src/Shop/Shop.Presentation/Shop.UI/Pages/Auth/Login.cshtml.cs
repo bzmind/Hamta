@@ -6,7 +6,7 @@ using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Auth;
 using Shop.Query.Users._DTOs;
-using Shop.UI.Pages.Auth.Models;
+using Shop.UI.Models.Auth;
 using Shop.UI.Services.Auth;
 using Shop.UI.Services.Users;
 using Shop.UI.SetupClasses.RazorUtility;
@@ -43,26 +43,27 @@ public class LoginModel : BaseRazorPage
 
     public async Task<IActionResult> OnPost()
     {
-        var apiResult = await _userService.SearchByEmailOrPhone(EmailOrPhone);
+        var result = await _userService.SearchByEmailOrPhone(EmailOrPhone);
 
-        if (apiResult.IsSuccessful == false)
+        if (result.IsSuccessful == false)
         {
-            Response.StatusCode = (int)apiResult.MetaData.ApiStatusCode;
-            MakeAlert(apiResult);
-            return AjaxMessageResult(apiResult);
+            if (result.MetaData.ApiStatusCode == ApiStatusCode.TooManyRequests)
+                Response.StatusCode = (int)result.MetaData.ApiStatusCode;
+            MakeAlert(result);
+            return AjaxMessageResult(result);
         }
 
-        if (apiResult.Data.NextStep is LoginNextStep.NextSteps.RegisterWithPhone)
+        if (result.Data.NextStep is LoginNextStep.NextSteps.RegisterWithPhone)
         {
-            apiResult.MetaData.Message = "حساب کاربری با مشخصات وارد شده وجود ندارد. " +
+            result.MetaData.Message = "حساب کاربری با مشخصات وارد شده وجود ندارد. " +
                                          "لطفا از شماره تلفن همراه برای ساخت حساب کاربری استفاده نمایید.";
-            MakeAlert(apiResult);
-            return AjaxMessageResult(apiResult);
+            MakeAlert(result);
+            return AjaxMessageResult(result);
         }
 
         TempData["EmailOrPhone"] = EmailOrPhone;
 
-        if (apiResult.Data.NextStep is LoginNextStep.NextSteps.Register)
+        if (result.Data.NextStep is LoginNextStep.NextSteps.Register)
             return AjaxHtmlResult(ApiResult<string>.Success(await RegisterPageHtml()));
 
         return AjaxHtmlResult(ApiResult<string>.Success(await PasswordPageHtml()));
@@ -99,7 +100,7 @@ public class LoginModel : BaseRazorPage
         if (registerResult.IsSuccessful == false)
         {
             MakeAlert(registerResult);
-            return AjaxMessageResult(ApiResult.Error());
+            return AjaxMessageResult(registerResult);
         }
 
         return await LoginUserAndAddTokenCookies(new LoginViewModel
@@ -120,7 +121,7 @@ public class LoginModel : BaseRazorPage
         if (loginResult.IsSuccessful == false)
         {
             MakeAlert(loginResult);
-            return AjaxMessageResult(ApiResult.Error());
+            return AjaxMessageResult(loginResult);
         }
 
         TempData.Clear();

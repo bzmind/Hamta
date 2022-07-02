@@ -11,7 +11,7 @@ using Shop.Application.Users.Edit;
 using Shop.Application.Users.RemoveFavoriteItem;
 using Shop.Application.Users.RemoveRole;
 using Shop.Application.Users.SetAvatar;
-using Shop.Application.Users.SetSubscriptionToNews;
+using Shop.Application.Users.SetNewsletterSubscription;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Users;
 using Shop.Query.Users._DTOs;
@@ -57,18 +57,17 @@ public class UserController : BaseApiController
     }
 
     [HttpPut("ResetPassword")]
-    public async Task<ApiResult> ResetPassword([FromForm] ResetUserPasswordViewModel model)
+    public async Task<ApiResult> ResetPassword(ResetUserPasswordViewModel model)
     {
         var command = new ResetUserPasswordCommand(User.GetUserId(), model.CurrentPassword, model.NewPassword);
         var result = await _userFacade.ResetPassword(command);
         return CommandResult(result);
     }
 
-    [HttpPut("SetSubscriptionToNews/{subscription}")]
-    public async Task<ApiResult> SetSubscriptionToNews(bool subscription)
+    [HttpPut("SetNewsletterSubscription/{userId}")]
+    public async Task<ApiResult> SetNewsletterSubscription(long userId)
     {
-        var command = new SetUserSubscriptionToNewsCommand(User.GetUserId(), subscription);
-        var result = await _userFacade.SetSubscriptionToNews(command);
+        var result = await _userFacade.SetNewsletterSubscription(userId);
         return CommandResult(result);
     }
 

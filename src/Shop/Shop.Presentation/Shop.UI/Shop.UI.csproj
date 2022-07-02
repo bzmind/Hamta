@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<Folder Include="Models\" />
 		<Folder Include="Pages\Profile\Comments\" />
 		<Folder Include="Pages\Profile\Favorites\" />
 		<Folder Include="Services\UserAddresses\" />

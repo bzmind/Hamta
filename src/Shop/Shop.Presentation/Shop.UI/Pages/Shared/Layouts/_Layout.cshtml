@@ -21,6 +21,7 @@
 
 <body>
     <div class="page-wrapper">
+        <div id="alerts"></div>
         <partial name="Shared/_MainHeader" />
         <partial name="Shared/_ResponsiveHeader" />
         <main class="page-content">
@@ -55,6 +56,7 @@
     <script src="/assets/js/plugins/wNumb.js"></script>
     <script src="/assets/js/theme.js"></script>
     <script src="/assets/js/custom.js"></script>
+    <partial name="Shared/_ValidationScriptsPartial" />
     @await RenderSectionAsync("Scripts", false)
     <script>
         $(document).ready(function() {

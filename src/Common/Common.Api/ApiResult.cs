@@ -8,19 +8,6 @@ public class ApiResult
 
     public bool IsSuccessful { get; set; }
     public MetaData MetaData { get; set; }
-
-    public static ApiResult Error()
-    {
-        return new ApiResult
-        {
-            IsSuccessful = false,
-            MetaData = new MetaData
-            {
-                ApiStatusCode = ApiStatusCode.Success,
-                Message = SuccessMessage
-            }
-        };
-    }
 }
 
 public class ApiResult<TData> : ApiResult

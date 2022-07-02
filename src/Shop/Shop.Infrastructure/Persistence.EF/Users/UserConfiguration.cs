@@ -80,7 +80,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(user => user.IsSubscribedToNews)
+        builder.Property(user => user.IsSubscribedToNewsletter)
             .IsRequired()
             .HasColumnType("bit");
 

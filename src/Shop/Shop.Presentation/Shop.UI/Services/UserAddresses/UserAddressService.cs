@@ -19,25 +19,25 @@ public class UserAddressService : IUserAddressService
     public async Task<ApiResult?> Create(CreateUserAddressCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/useraddress/create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Edit(EditUserAddressCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/useraddress/edit", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Activate(long addressId)
     {
         var result = await _client.PutAsync($"api/useraddress/activate/{addressId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long addressId)
     {
         var result = await _client.DeleteAsync($"api/useraddress/remove/{addressId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<UserAddressDto?> GetById(long addressId)

@@ -1,4 +1,5 @@
-﻿using Common.Domain.Exceptions;
+﻿using System.Text.Json.Serialization;
+using Common.Domain.Exceptions;
 
 namespace Common.Domain.ValueObjects;
 
@@ -11,10 +12,10 @@ public class PhoneNumber : BaseValueObject
 
     }
 
-    public PhoneNumber(string phoneNumber)
+    public PhoneNumber(string value)
     {
-        Guard(phoneNumber);
-        Value = phoneNumber;
+        Guard(value);
+        Value = value;
     }
 
     private void Guard(string phoneNumber)

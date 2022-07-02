@@ -21,31 +21,31 @@ public class QuestionService : IQuestionService
     public async Task<ApiResult?> Create(CreateQuestionCommandViewModel model)
     {
         var result = await _client.PostAsJsonAsync("api/question/create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> SetStatus(SetQuestionStatusCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/question/setstatus", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> AddReply(AddReplyCommandViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/question/addreply", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> RemoveReply(RemoveReplyCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/question/removereply", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long questionId)
     {
         var result = await _client.DeleteAsync($"api/question/setstatus/{questionId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<QuestionDto?> GetById(long questionId)

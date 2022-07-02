@@ -21,25 +21,25 @@ public class RoleService : IRoleService
     public async Task<ApiResult?> Create(CreateRoleCommand model)
     {
         var result = await _client.PostAsJsonAsync("api/role/create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> AddPermissions(AddRolePermissionCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/role/addpermissions", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> RemovePermissions(RemoveRolePermissionCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/role/removepermissions", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long roleId)
     {
         var result = await _client.DeleteAsync("api/role/remove");
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<RoleDto?> GetById(long roleId)

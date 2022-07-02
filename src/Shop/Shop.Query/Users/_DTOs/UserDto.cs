@@ -11,7 +11,7 @@ public class UserDto : BaseDto
     public List<UserAddressDto> Addresses { get; set; }
     public PhoneNumber PhoneNumber { get; set; }
     public string AvatarName { get; set; }
-    public bool IsSubscribedToNews { get; set; }
+    public bool IsSubscribedToNewsletter { get; set; }
     public List<UserFavoriteItemDto> FavoriteItems { get; set; }
     public List<UserRoleDto> Roles { get; set; }
 }

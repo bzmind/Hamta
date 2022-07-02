@@ -10,7 +10,7 @@ using Shop.Application.Users.RemoveFavoriteItem;
 using Shop.Application.Users.RemoveRole;
 using Shop.Application.Users.ResetPassword;
 using Shop.Application.Users.SetAvatar;
-using Shop.Application.Users.SetSubscriptionToNews;
+using Shop.Application.Users.SetNewsletterSubscription;
 using Shop.Query.Users._DTOs;
 using Shop.Query.Users.GetByEmailOrPhone;
 using Shop.Query.Users.GetByFilter;
@@ -53,9 +53,9 @@ internal class UserFacade : IUserFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> SetSubscriptionToNews(SetUserSubscriptionToNewsCommand command)
+    public async Task<OperationResult<bool>> SetNewsletterSubscription(long userId)
     {
-        return await _mediator.Send(command);
+        return await _mediator.Send(new SetUserNewsletterSubscriptionCommand(userId));
     }
 
     public async Task<OperationResult> AddFavoriteItem(AddUserFavoriteItemCommand command)

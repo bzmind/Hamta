@@ -1,7 +1,7 @@
 ﻿using Common.Application.Utility.Validation;
 using System.ComponentModel.DataAnnotations;
 
-namespace Shop.UI.Pages.Auth.Models;
+namespace Shop.UI.Models.Auth;
 
 public class RegisterModel
 {

@@ -15,7 +15,7 @@ public class User : BaseAggregateRoot
     private readonly List<UserAddress> _addresses = new();
     public IEnumerable<UserAddress> Addresses => _addresses.ToList();
     public string AvatarName { get; private set; } = DefaultAvatarName;
-    public bool IsSubscribedToNews { get; private set; }
+    public bool IsSubscribedToNewsletter { get; private set; }
 
     private readonly List<UserFavoriteItem> _favoriteItems = new();
     public IEnumerable<UserFavoriteItem> FavoriteItems => _favoriteItems.ToList();
@@ -42,7 +42,7 @@ public class User : BaseAggregateRoot
         FullName = fullName;
         Password = password;
         PhoneNumber = new PhoneNumber(phoneNumber);
-        IsSubscribedToNews = false;
+        IsSubscribedToNewsletter = false;
     }
 
     public void Edit(string fullName, string email, string phoneNumber, IUserDomainService userDomainService)
@@ -110,9 +110,9 @@ public class User : BaseAggregateRoot
         AvatarName = avatarName;
     }
 
-    public void SetSubscriptionToNews(bool subscription)
+    public void SetNewsletterSubscription()
     {
-        IsSubscribedToNews = subscription;
+        IsSubscribedToNewsletter = !IsSubscribedToNewsletter;
     }
 
     public void AddFavoriteItem(UserFavoriteItem favoriteItem)

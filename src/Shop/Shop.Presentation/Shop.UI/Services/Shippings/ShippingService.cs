@@ -20,19 +20,19 @@ public class ShippingService : IShippingService
     public async Task<ApiResult?> Create(CreateShippingCommand model)
     {
         var result = await _client.PostAsJsonAsync("api/shipping/create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Edit(EditShippingCommand model)
     {
         var result = await _client.PutAsJsonAsync("api/shipping/edit", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long shippingId)
     {
         var result = await _client.DeleteAsync($"api/shipping/remove/{shippingId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>();
+        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ShippingDto?> GetById(long shippingId)

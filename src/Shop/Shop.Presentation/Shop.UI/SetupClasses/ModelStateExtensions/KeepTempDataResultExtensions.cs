@@ -9,6 +9,7 @@ public static class KeepTempDataResultExtensions
     {
         if (page.ModelState.IsValid)
             return actionResult;
+
         var modelState = ModelStateSerializer.Serialize(page.ModelState);
         page.TempData[SerializeModelStateFilter.Key] = modelState;
         return actionResult;

@@ -9,6 +9,6 @@ public class UserFilterDto : BaseDto
     public string Email { get; set; }
     public PhoneNumber PhoneNumber { get; set; }
     public string AvatarName { get; set; }
-    public bool IsSubscribedToNews { get; set; }
+    public bool IsSubscribedToNewsletter { get; set; }
     public List<UserRoleDto> Roles { get; set; }
 }

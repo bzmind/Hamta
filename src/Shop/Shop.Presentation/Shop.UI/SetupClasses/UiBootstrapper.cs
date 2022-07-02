@@ -19,7 +19,7 @@ public static class UiBootstrapper
 {
     public static void RegisterUiDependencies(this IServiceCollection services)
     {
-        const string baseAddress = "https://localhost:5001";
+        const string baseAddress = "https://localhost:7087";
 
         services.AddHttpClient<IAuthService, AuthService>
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
