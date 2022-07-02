@@ -13,7 +13,6 @@ using Shop.UI.SetupClasses.RazorUtility;
 
 namespace Shop.UI.Pages.Auth;
 
-// TODO: Api project is still using the old model for login, it asks for emailOrPhone and also password which is wrong, fix it, make it like the UI project
 [BindProperties]
 public class LoginModel : BaseRazorPage
 {
@@ -37,6 +36,9 @@ public class LoginModel : BaseRazorPage
 
     public IActionResult OnGet()
     {
+        if (User.Identity.IsAuthenticated)
+            return RedirectToPage("../Index");
+
         TempData.Clear();
         return Page();
     }
@@ -56,7 +58,7 @@ public class LoginModel : BaseRazorPage
         if (result.Data.NextStep is LoginNextStep.NextSteps.RegisterWithPhone)
         {
             result.MetaData.Message = "حساب کاربری با مشخصات وارد شده وجود ندارد. " +
-                                         "لطفا از شماره تلفن همراه برای ساخت حساب کاربری استفاده نمایید.";
+                                      "لطفا از شماره تلفن همراه برای ساخت حساب کاربری استفاده نمایید.";
             MakeAlert(result);
             return AjaxMessageResult(result);
         }

@@ -11,7 +11,6 @@ using Shop.Application.Users.Edit;
 using Shop.Application.Users.RemoveFavoriteItem;
 using Shop.Application.Users.RemoveRole;
 using Shop.Application.Users.SetAvatar;
-using Shop.Application.Users.SetNewsletterSubscription;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Users;
 using Shop.Query.Users._DTOs;

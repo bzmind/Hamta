@@ -19,62 +19,59 @@ public class InventoryService : IInventoryService
         _client = client;
         _jsonOptions = jsonOptions;
     }
-
-    // This Commands are actually used only to send Data through HttpClient, they're just DTO not Command
-    // They might be the same as their command records, this 👇 was the same as it's command (CreateInventoryCommand)
-    // IDK about others, but Ashrafi had named these "...Command" as well.
+    
     public async Task<ApiResult?> Create(CreateInventoryCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/inventory/create", model);
+        var result = await _client.PostAsJsonAsync("api/inventory/Create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Edit(EditInventoryCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/inventory/edit", model);
+        var result = await _client.PutAsJsonAsync("api/inventory/Edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> IncreaseQuantity(IncreaseInventoryQuantityCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/inventory/increasequantity", model);
+        var result = await _client.PutAsJsonAsync("api/inventory/IIncreaseQuantity", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> DecreaseQuantity(DecreaseInventoryQuantityCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/inventory/decreasequantity", model);
+        var result = await _client.PutAsJsonAsync("api/inventory/DecreaseQuantity", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> SetDiscountPercentage(SetInventoryDiscountPercentageCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/inventory/setdiscountpercentage", model);
+        var result = await _client.PutAsJsonAsync("api/inventory/SetDiscountPercentage", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> RemoveDiscount(long inventoryId)
     {
-        var result = await _client.PutAsync($"api/inventory/removediscount/{inventoryId}", null);
+        var result = await _client.PutAsync($"api/inventory/RemoveDiscount/{inventoryId}", null);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long inventoryId)
     {
-        var result = await _client.DeleteAsync($"api/inventory/remove/{inventoryId}");
+        var result = await _client.DeleteAsync($"api/inventory/Remove/{inventoryId}");
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<InventoryDto?> GetById(long inventoryId)
     {
         var result = await _client
-            .GetFromJsonAsync<ApiResult<InventoryDto>>($"api/inventory/getbyid/{inventoryId}", _jsonOptions);
+            .GetFromJsonAsync<ApiResult<InventoryDto>>($"api/inventory/GetById/{inventoryId}", _jsonOptions);
         return result?.Data;
     }
 
     public async Task<InventoryFilterResult?> GetByFilter(InventoryFilterParams filterParams)
     {
-        var url = $"api/inventory/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"api/inventory/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&ProductId={filterParams.ProductId}&StartQuantity={filterParams.StartQuantity}" +
                   $"&EndQuantity={filterParams.EndQuantity}&StartPrice={filterParams.StartPrice}" +
                   $"&EndPrice={filterParams.EndPrice}" +

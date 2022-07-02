@@ -19,33 +19,33 @@ public class ShippingService : IShippingService
 
     public async Task<ApiResult?> Create(CreateShippingCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/shipping/create", model);
+        var result = await _client.PostAsJsonAsync("api/shipping/Create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Edit(EditShippingCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/shipping/edit", model);
+        var result = await _client.PutAsJsonAsync("api/shipping/Edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long shippingId)
     {
-        var result = await _client.DeleteAsync($"api/shipping/remove/{shippingId}");
+        var result = await _client.DeleteAsync($"api/shipping/Remove/{shippingId}");
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ShippingDto?> GetById(long shippingId)
     {
         var result = await _client
-            .GetFromJsonAsync<ApiResult<ShippingDto>>($"api/shipping/getbyid/{shippingId}", _jsonOptions);
+            .GetFromJsonAsync<ApiResult<ShippingDto>>($"api/shipping/GetById/{shippingId}", _jsonOptions);
         return result?.Data;
     }
 
     public async Task<List<ShippingDto>?> GetAll()
     {
         var result = await _client
-            .GetFromJsonAsync<ApiResult<List<ShippingDto>>>("api/shipping/getall", _jsonOptions);
+            .GetFromJsonAsync<ApiResult<List<ShippingDto>>>("api/shipping/GetAll", _jsonOptions);
         return result?.Data;
     }
 }

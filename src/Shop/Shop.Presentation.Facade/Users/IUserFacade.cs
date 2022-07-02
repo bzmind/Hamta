@@ -8,7 +8,6 @@ using Shop.Application.Users.RemoveFavoriteItem;
 using Shop.Application.Users.RemoveRole;
 using Shop.Application.Users.ResetPassword;
 using Shop.Application.Users.SetAvatar;
-using Shop.Application.Users.SetNewsletterSubscription;
 using Shop.Query.Users._DTOs;
 
 namespace Shop.Presentation.Facade.Users;

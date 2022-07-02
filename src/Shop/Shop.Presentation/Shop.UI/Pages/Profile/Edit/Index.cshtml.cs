@@ -4,8 +4,8 @@ using Common.Api;
 using Common.Api.Attributes;
 using Common.Api.Utility;
 using Common.Application.Utility.Validation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using Shop.API.CommandViewModels.Users;
 using Shop.API.ViewModels.Users;
 using Shop.UI.Services.Users;
@@ -14,6 +14,7 @@ using Shop.UI.SetupClasses.RazorUtility;
 
 namespace Shop.UI.Pages.Profile.Edit;
 
+[Authorize]
 [BindProperties]
 public class IndexModel : BaseRazorPage
 {

@@ -50,7 +50,7 @@ public class ProductService : IProductService
         var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
         formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
 
-        var result = await _client.PostAsync("api/product/create", formData);
+        var result = await _client.PostAsync("api/product/Create", formData);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
@@ -83,7 +83,7 @@ public class ProductService : IProductService
         var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
         formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
 
-        var result = await _client.PutAsync("api/product/edit", formData);
+        var result = await _client.PutAsync("api/product/Edit", formData);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
@@ -95,38 +95,38 @@ public class ProductService : IProductService
         if (model.MainImage.IsImage())
             formData.Add(new StreamContent(model.MainImage.OpenReadStream()), "MainImage", model.MainImage.FileName);
 
-        var result = await _client.PutAsync("api/product/replacemainimage", formData);
+        var result = await _client.PutAsync("api/product/ReplaceMainImage", formData);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> AddScore(AddProductScoreCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/product/addscore", model);
+        var result = await _client.PutAsJsonAsync("api/product/AddScore", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> RemoveGalleryImage(RemoveProductGalleryImageCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/product/removegalleryimage", model);
+        var result = await _client.PutAsJsonAsync("api/product/RemoveGalleryImage", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long productId)
     {
-        var result = await _client.DeleteAsync($"api/product/remove/{productId}");
+        var result = await _client.DeleteAsync($"api/product/Remove/{productId}");
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ProductDto?> GetById(long productId)
     {
         var result = await _client
-            .GetFromJsonAsync<ApiResult<ProductDto>>($"api/product/getbyid/{productId}", _jsonOptions);
+            .GetFromJsonAsync<ApiResult<ProductDto>>($"api/product/GetById/{productId}", _jsonOptions);
         return result?.Data;
     }
 
     public async Task<ProductFilterResult?> GetByFilter(ProductFilterParams filterParams)
     {
-        var url = $"api/product/getbyfilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"api/product/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&CategoryId={filterParams.CategoryId}&Name={filterParams.Name}" +
                   $"&EnglishName={filterParams.EnglishName}&Slug={filterParams.Slug}" +
                   $"&AverageScore={filterParams.AverageScore}";

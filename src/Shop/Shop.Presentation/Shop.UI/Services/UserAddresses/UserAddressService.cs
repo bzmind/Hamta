@@ -18,39 +18,39 @@ public class UserAddressService : IUserAddressService
 
     public async Task<ApiResult?> Create(CreateUserAddressCommandViewModel model)
     {
-        var result = await _client.PostAsJsonAsync("api/useraddress/create", model);
+        var result = await _client.PostAsJsonAsync("api/UserAddress/Create", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Edit(EditUserAddressCommandViewModel model)
     {
-        var result = await _client.PutAsJsonAsync("api/useraddress/edit", model);
+        var result = await _client.PutAsJsonAsync("api/UserAddress/Edit", model);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Activate(long addressId)
     {
-        var result = await _client.PutAsync($"api/useraddress/activate/{addressId}", null);
+        var result = await _client.PutAsync($"api/UserAddress/Activate/{addressId}", null);
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<ApiResult?> Remove(long addressId)
     {
-        var result = await _client.DeleteAsync($"api/useraddress/remove/{addressId}");
+        var result = await _client.DeleteAsync($"api/UserAddress/Remove/{addressId}");
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
     public async Task<UserAddressDto?> GetById(long addressId)
     {
         var result = await _client
-            .GetFromJsonAsync<ApiResult<UserAddressDto>>($"api/useraddress/getbyid/{addressId}", _jsonOptions);
+            .GetFromJsonAsync<ApiResult<UserAddressDto>>($"api/UserAddress/GetById/{addressId}", _jsonOptions);
         return result?.Data;
     }
 
     public async Task<List<UserAddressDto>?> GetAll(long userId)
     {
         var result = await _client
-            .GetFromJsonAsync<ApiResult<List<UserAddressDto>>>($"api/useraddress/getall/{userId}", _jsonOptions);
+            .GetFromJsonAsync<ApiResult<List<UserAddressDto>>>($"api/UserAddress/GetAll/{userId}", _jsonOptions);
         return result?.Data;
     }
 }

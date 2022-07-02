@@ -1,5 +1,4 @@
-﻿using System.Text.Json.Serialization;
-using Common.Domain.Exceptions;
+﻿using Common.Domain.Exceptions;
 
 namespace Common.Domain.ValueObjects;
 
