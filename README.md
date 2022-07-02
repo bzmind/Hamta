@@ -1,2 +1,2 @@
-# Didikala
-Didikala online shop
+# Hamta
+Hamta online shop
