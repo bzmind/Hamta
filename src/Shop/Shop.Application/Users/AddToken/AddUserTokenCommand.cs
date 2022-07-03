@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.Security;
 using Common.Application.Utility.Validation;
+using Shop.Domain.UserAggregate;
 using Shop.Domain.UserAggregate.Repository;
 
 namespace Shop.Application.Users.AddToken;
@@ -24,6 +25,10 @@ public class AddUserTokenCommandHandler : IBaseCommandHandler<AddUserTokenComman
 
         if (user == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("کاربر"));
+
+        if (user.Tokens.Count(t => t.RefreshTokenExpireDate > DateTime.Now) >= User.MaximumSimultaneousDevices)
+            return OperationResult.Error($"شما نمی‌توانید از بیشتر از {User.MaximumSimultaneousDevices} " +
+                                         "دستگاه به صورت همزمان استفاده کنید.");
 
         user.AddToken(request.JwtToken.ToSHA256(), request.RefreshToken.ToSHA256(), request.JwtTokenExpireDate,
             request.RefreshTokenExpireDate, request.Device);

@@ -19,9 +19,8 @@ public class GetShippingByIdQueryHandler : IBaseQueryHandler<GetShippingByIdQuer
 
     public async Task<ShippingDto> Handle(GetShippingByIdQuery request, CancellationToken cancellationToken)
     {
-        var shipping =
-            await _shopContext.Shippings.FirstOrDefaultAsync(s => s.Id == request.ShippingId, cancellationToken);
-
+        var shipping = await _shopContext.Shippings
+            .FirstOrDefaultAsync(s => s.Id == request.ShippingId, cancellationToken);
         return shipping.MapToShippingDto();
     }
 }

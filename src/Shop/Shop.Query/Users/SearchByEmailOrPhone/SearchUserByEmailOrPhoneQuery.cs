@@ -27,20 +27,20 @@ public class SearchUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<SearchUser
             return new LoginNextStep
             {
                 UserExists = true,
-                NextStep = LoginNextStep.NextSteps.Password
+                NextStep = NextSteps.Password
             };
 
         if (request.EmailOrPhone.IsPhone())
             return new LoginNextStep
             {
                 UserExists = false,
-                NextStep = LoginNextStep.NextSteps.Register
+                NextStep = NextSteps.Register
             };
 
         return new LoginNextStep
         {
             UserExists = false,
-            NextStep = LoginNextStep.NextSteps.RegisterWithPhone
+            NextStep = NextSteps.RegisterWithPhone
         };
     }
 }

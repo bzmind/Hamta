@@ -12,6 +12,7 @@ using Shop.UI.Services.Users;
 using Shop.UI.SetupClasses.RazorUtility;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Shop.Infrastructure.EmailService;
 
 namespace Shop.UI.SetupClasses;
 
@@ -78,5 +79,6 @@ public static class UiBootstrapper
         services.AddHttpContextAccessor();
         services.AddScoped<HttpClientAuthorizationDelegateHandler>();
         services.AddScoped<IRazorToStringRenderer, RazorToStringRenderer>();
+        services.AddScoped<IEmailSender, EmailSender>();
     }
 }

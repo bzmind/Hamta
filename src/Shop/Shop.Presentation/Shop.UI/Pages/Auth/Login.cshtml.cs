@@ -55,7 +55,7 @@ public class LoginModel : BaseRazorPage
             return AjaxMessageResult(result);
         }
 
-        if (result.Data.NextStep is LoginNextStep.NextSteps.RegisterWithPhone)
+        if (result.Data.NextStep is NextSteps.RegisterWithPhone)
         {
             result.MetaData.Message = "حساب کاربری با مشخصات وارد شده وجود ندارد. " +
                                       "لطفا از شماره تلفن همراه برای ساخت حساب کاربری استفاده نمایید.";
@@ -65,7 +65,7 @@ public class LoginModel : BaseRazorPage
 
         TempData["EmailOrPhone"] = EmailOrPhone;
 
-        if (result.Data.NextStep is LoginNextStep.NextSteps.Register)
+        if (result.Data.NextStep is NextSteps.Register)
             return AjaxHtmlResult(ApiResult<string>.Success(await RegisterPageHtml()));
 
         return AjaxHtmlResult(ApiResult<string>.Success(await PasswordPageHtml()));

@@ -10,6 +10,7 @@ using Shop.Domain.QuestionAggregate.Repository;
 using Shop.Domain.RoleAggregate.Repository;
 using Shop.Domain.ShippingAggregate.Repository;
 using Shop.Domain.UserAggregate.Repository;
+using Shop.Infrastructure.EmailService;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Infrastructure.Persistence.EF.Categories;
 using Shop.Infrastructure.Persistence.EF.Colors;

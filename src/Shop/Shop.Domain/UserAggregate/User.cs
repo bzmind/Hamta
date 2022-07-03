@@ -135,7 +135,7 @@ public class User : BaseAggregateRoot
     {
         var activeTokenCount = Tokens.Count(t => t.RefreshTokenExpireDate > DateTime.Now);
 
-        if (activeTokenCount == MaximumSimultaneousDevices)
+        if (activeTokenCount >= MaximumSimultaneousDevices)
             throw new OperationNotAllowedDomainException
                 ($"You can't use more than {MaximumSimultaneousDevices} devices simultaneously");
 

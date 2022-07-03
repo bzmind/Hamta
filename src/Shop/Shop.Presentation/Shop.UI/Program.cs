@@ -9,7 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddMvcOptions(options =>
 {
     options.Filters.Add<SerializeModelStateFilter>();
-    //options.Filters.Add<RateLimitFilter>();
 });
 
 builder.Services.RegisterUiDependencies();
