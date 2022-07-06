@@ -12,8 +12,8 @@ public class Comment : BaseAggregateRoot
 
     private readonly List<CommentHint> _commentHints = new();
     public IEnumerable<CommentHint> CommentHints => _commentHints.ToList();
-    public string Status { get; private set; }
-    public string Recommendation { get; private set; }
+    public CommentStatus Status { get; private set; }
+    public CommentRecommendation Recommendation { get; private set; }
     public int Likes { get; private set; }
     public int Dislikes { get; private set; }
 
@@ -36,8 +36,8 @@ public class Comment : BaseAggregateRoot
         UserId = userId;
         Title = title;
         Description = description;
-        Status = CommentStatus.Pending.ToString();
-        Recommendation = recommendation.ToString();
+        Status = CommentStatus.Pending;
+        Recommendation = recommendation;
         Likes = 0;
         Dislikes = 0;
     }
@@ -74,7 +74,7 @@ public class Comment : BaseAggregateRoot
 
     public void SetCommentStatus(CommentStatus status)
     {
-        Status = status.ToString();
+        Status = status;
     }
 
     public void SetLikes(long userId)
@@ -85,7 +85,7 @@ public class Comment : BaseAggregateRoot
         {
             _commentReactions.Remove(user);
 
-            if (user.Reaction == CommentReaction.ReactionType.Like.ToString())
+            if (user.Reaction == CommentReaction.ReactionType.Like)
             {
                 Likes--;
             }
@@ -113,7 +113,7 @@ public class Comment : BaseAggregateRoot
         {
             _commentReactions.Remove(user);
 
-            if (user.Reaction == CommentReaction.ReactionType.Dislike.ToString())
+            if (user.Reaction == CommentReaction.ReactionType.Dislike)
             {
                 Dislikes--;
             }

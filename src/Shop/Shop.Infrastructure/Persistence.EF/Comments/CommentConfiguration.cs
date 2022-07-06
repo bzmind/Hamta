@@ -38,6 +38,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
                 .HasColumnType("datetime2(0)");
 
             options.Property(hint => hint.Status)
+                .HasConversion<string>()
                 .HasMaxLength(10);
 
             options.Property(hint => hint.Hint)
@@ -45,10 +46,12 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
         });
 
         builder.Property(comment => comment.Status)
+            .HasConversion<string>()
             .IsRequired()
             .HasMaxLength(20);
 
         builder.Property(comment => comment.Recommendation)
+            .HasConversion<string>()
             .IsRequired()
             .HasMaxLength(20);
 
@@ -71,6 +74,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
                 .HasColumnType("datetime2(0)");
 
             options.Property(reaction => reaction.Reaction)
+                .HasConversion<string>()
                 .HasMaxLength(10);
         });
     }

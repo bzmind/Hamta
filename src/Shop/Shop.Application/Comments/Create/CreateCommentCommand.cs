@@ -15,10 +15,10 @@ public class CreateCommentCommand : IBaseCommand<long>
     public string Description { get; set; }
     public List<string> PositivePoints { get; set; }
     public List<string> NegativePoints { get; set; }
-    public string Recommendation { get; set; }
+    public Comment.CommentRecommendation Recommendation { get; set; }
 
     public CreateCommentCommand(long productId, long userId, string title, string description,
-        List<string> positivePoints, List<string> negativePoints, string recommendation)
+        List<string> positivePoints, List<string> negativePoints, Comment.CommentRecommendation recommendation)
     {
         ProductId = productId;
         UserId = userId;
@@ -41,10 +41,8 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
 
     public async Task<OperationResult<long>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
-        Enum.TryParse(request.Recommendation, out Comment.CommentRecommendation recommendation);
-
         var comment = new Comment(request.ProductId, request.UserId, request.Title, request.Description,
-            recommendation);
+            request.Recommendation);
 
         await _commentRepository.AddAsync(comment);
 
@@ -64,38 +62,24 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
 {
     public CreateCommentCommandValidator()
     {
-        RuleFor(c => c.Title)
+        RuleFor(r => r.Title)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
-        RuleFor(c => c.Description)
+        RuleFor(r => r.Description)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیحات"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
 
-        RuleFor(c => c.Recommendation)
+        RuleFor(r => r.Recommendation)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("نوع پیشنهاد"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نوع پیشنهاد"))
-            .IsEnumName(typeof(Comment.CommentRecommendation), false)
-            .WithMessage(ValidationMessages.FieldInvalid("نوع پیشنهاد"));
+            .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("نوع پیشنهاد"));
 
-        RuleForEach(c => c.NegativePoints)
-            .MaximumLength(10);
+        RuleForEach(r => r.NegativePoints)
+            .NotNull().WithMessage(ValidationMessages.MinCharactersLength)
+            .MinimumLength(3).WithMessage(ValidationMessages.MinCharactersLength);
 
-        RuleForEach(c => c.PositivePoints)
-            .MaximumLength(10);
-
-        RuleForEach(c => c.PositivePoints).ChildRules(point =>
-        {
-            point.RuleFor(p => p)
-                .NotNull()
-                .MinimumLength(3).WithMessage(ValidationMessages.MinLength);
-        });
-
-        RuleForEach(c => c.NegativePoints).ChildRules(point =>
-        {
-            point.RuleFor(p => p)
-                .NotNull()
-                .MinimumLength(3).WithMessage(ValidationMessages.MinLength);
-        });
+        RuleForEach(r => r.PositivePoints)
+            .NotNull().WithMessage(ValidationMessages.MinCharactersLength)
+            .MinimumLength(3).WithMessage(ValidationMessages.MinCharactersLength);
     }
 }

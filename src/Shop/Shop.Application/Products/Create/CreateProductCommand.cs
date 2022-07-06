@@ -12,8 +12,7 @@ namespace Shop.Application.Products.Create;
 
 public record CreateProductCommand(long CategoryId, string Name, string? EnglishName, string Slug,
     string? Description, IFormFile MainImage, List<IFormFile> GalleryImages,
-    List<Specification>? CustomSpecifications,
-    Dictionary<string, string>? ExtraDescriptions) : IBaseCommand<long>;
+    List<Specification>? CustomSpecifications, Dictionary<string, string>? ExtraDescriptions) : IBaseCommand<long>;
 
 public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductCommand, long>
 {

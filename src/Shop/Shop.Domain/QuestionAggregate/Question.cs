@@ -8,7 +8,7 @@ public class Question : BaseAggregateRoot
     public long ProductId { get; private set; }
     public long UserId { get; private set; }
     public string Description { get; private set; }
-    public string Status { get; private set; }
+    public QuestionStatus Status { get; private set; }
 
     private readonly List<Reply> _replies = new List<Reply>();
     public IEnumerable<Reply> Replies => _replies.ToList();
@@ -21,7 +21,7 @@ public class Question : BaseAggregateRoot
         ProductId = productId;
         UserId = userId;
         Description = description;
-        Status = QuestionStatus.Pending.ToString();
+        Status = QuestionStatus.Pending;
     }
 
     public void AddReply(long userId, string description)
@@ -42,7 +42,7 @@ public class Question : BaseAggregateRoot
 
     public void SetStatus(QuestionStatus status)
     {
-        Status = status.ToString();
+        Status = status;
     }
 
     private void Guard(string description)

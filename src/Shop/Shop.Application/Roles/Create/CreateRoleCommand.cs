@@ -40,8 +40,8 @@ public class CreateRoleCommandValidator : AbstractValidator<CreateRoleCommand>
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
 
-        RuleFor(r => r.Permissions)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("مجوز ها"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("مجوز ها"));
+        RuleForEach(r => r.Permissions)
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("مجوز"))
+            .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("مجوز"));
     }
 }

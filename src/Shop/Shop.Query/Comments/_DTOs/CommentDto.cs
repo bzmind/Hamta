@@ -1,4 +1,5 @@
 ﻿using Common.Query.BaseClasses;
+using Shop.Domain.CommentAggregate;
 
 namespace Shop.Query.Comments._DTOs;
 
@@ -10,8 +11,8 @@ public class CommentDto : BaseDto
     public string Title { get; set; }
     public string Description { get; set; }
     public List<CommentHintDto> CommentHints { get; set; }
-    public string Status { get; set; }
-    public string Recommendation { get; set; }
+    public Comment.CommentStatus Status { get; set; }
+    public Comment.CommentRecommendation Recommendation { get; set; }
     public int Likes { get; set; }
     public int Dislikes { get; set; }
 }

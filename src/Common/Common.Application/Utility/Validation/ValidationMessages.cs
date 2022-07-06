@@ -4,8 +4,8 @@ public static class ValidationMessages
 {
     public const string Required = "وارد کردن این فیلد اجباری است";
     public const string NotFound = "اطلاعات درخواستی یافت نشد";
-    public const string MaxLength = "تعداد کاراکتر ها بیشتر از حد مجاز است";
-    public const string MinLength = "تعداد کاراکتر ها کمتر از حد مجاز است";
+    public const string MaxCharactersLength = "تعداد کاراکتر ها بیشتر از حد مجاز است";
+    public const string MinCharactersLength = "تعداد کاراکتر ها کمتر از حد مجاز است";
 
     public const string NameRequired = "لطفا نام را وارد کنید";
     public const string FamilyNameRequired = "لطفا نام خانوادگی را وارد کنید";
@@ -18,6 +18,7 @@ public static class ValidationMessages
     public const string ConfirmPasswordRequired = "لطفا تکرار رمز عبور را وارد کنید";
     public const string ConfirmNewPasswordRequired = "لطفا تکرار رمز عبور جدید را وارد کنید";
     public const string EmailOrPhoneRequired = "لطفا شماره موبایل یا ایمیل را وارد کنید";
+    public const string GenderRequired = "لطفا جنسیت را انتخاب کنید";
 
     public const string InvalidName = "نام نامعتبر است";
     public const string InvalidFamilyName = "نام خانوادگی نامعتبر است";
@@ -31,6 +32,7 @@ public static class ValidationMessages
     public const string InvalidConfirmPassword = "رمز های عبور با هم یکسان نیستند";
     public const string InvalidConfirmNewPassword = "رمز های عبور جدید با هم یکسان نیستند";
     public const string InvalidPrice = "مبلغ نامعتبر است";
+    public const string InvalidGender = "جنسیت نامعتبر است";
 
     public const string EmailRegex = @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}";
     public const string IranPhoneRegex = @"^(?:0|98|\+98|\+980|098)?(9\d{9})$";

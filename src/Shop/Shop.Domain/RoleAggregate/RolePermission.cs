@@ -5,7 +5,7 @@ namespace Shop.Domain.RoleAggregate;
 
 public class RolePermission : BaseEntity
 {
-    public string Permission { get; private set; }
+    public Permissions Permission { get; private set; }
 
     public enum Permissions
     {
@@ -29,7 +29,7 @@ public class RolePermission : BaseEntity
     public RolePermission(Permissions permission)
     {
         Guard(permission);
-        Permission = permission.ToString();
+        Permission = permission;
     }
 
     private void Guard(Permissions permission)

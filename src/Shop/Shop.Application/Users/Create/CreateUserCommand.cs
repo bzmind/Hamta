@@ -10,7 +10,8 @@ using Shop.Domain.UserAggregate.Services;
 
 namespace Shop.Application.Users.Create;
 
-public record CreateUserCommand(string PhoneNumber, string Password) : IBaseCommand<long>;
+public record CreateUserCommand(string FullName, User.UserGender Gender, string PhoneNumber,
+    string Password) : IBaseCommand<long>;
 
 public class CreateUserCommandHandler : IBaseCommandHandler<CreateUserCommand, long>
 {
@@ -25,7 +26,7 @@ public class CreateUserCommandHandler : IBaseCommandHandler<CreateUserCommand, l
 
     public async Task<OperationResult<long>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var user = new User(request.PhoneNumber, request.Password.ToSHA256(), request.PhoneNumber,
+        var user = new User(request.FullName, request.Gender, request.PhoneNumber, request.Password.ToSHA256(),
             _userDomainService);
 
         _userRepository.Add(user);

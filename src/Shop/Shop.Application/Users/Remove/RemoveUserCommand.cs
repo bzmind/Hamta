@@ -29,7 +29,7 @@ public class RemoveUserCommandHandler : IBaseCommandHandler<RemoveUserCommand>
 
         var userOrder = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
 
-        if (userOrder != null && userOrder.Status != Order.OrderStatus.Pending.ToString())
+        if (userOrder != null && userOrder.Status != Order.OrderStatus.Pending)
         {
             return OperationResult
                 .Error("امکان حذف حساب کاربری وجود ندارد، زیرا کاربر دارای سفارشِ در حال پردازش است");

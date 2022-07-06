@@ -8,14 +8,20 @@ namespace Shop.Domain.OrderAggregate;
 public class Order : BaseAggregateRoot
 {
     public long UserId { get; private set; }
-    public string Status { get; private set; }
+    public OrderStatus Status { get; private set; }
     public OrderAddress? Address { get; private set; }
     public ShippingInfo? ShippingInfo { get; private set; }
 
     private readonly List<OrderItem> _items = new();
     public IEnumerable<OrderItem> Items => _items.ToList();
 
-    public enum OrderStatus { Pending, Preparing, Sending, Received }
+    public enum OrderStatus
+    {
+        Pending,
+        Preparing,
+        Sending,
+        Received
+    }
 
     public int? TotalPrice
     {
@@ -33,7 +39,7 @@ public class Order : BaseAggregateRoot
     public Order(long userId)
     {
         UserId = userId;
-        Status = OrderStatus.Pending.ToString();
+        Status = OrderStatus.Pending;
     }
 
     public void AddOrderItem(OrderItem orderItem)
@@ -89,7 +95,7 @@ public class Order : BaseAggregateRoot
 
     public void SetStatus(OrderStatus orderStatus)
     {
-        Status = orderStatus.ToString();
+        Status = orderStatus;
     }
 
     public void Checkout(OrderAddress address, string shippingMethod, int shippingCost)
@@ -97,13 +103,13 @@ public class Order : BaseAggregateRoot
         OrderEditGuard();
 
         Address = address;
-        Status = OrderStatus.Preparing.ToString();
+        Status = OrderStatus.Preparing;
         ShippingInfo = new ShippingInfo(shippingMethod, new Money(shippingCost));
     }
 
     private void OrderEditGuard()
     {
-        if (Status != OrderStatus.Pending.ToString())
+        if (Status != OrderStatus.Pending)
             throw new OperationNotAllowedDomainException("Cannot edit order, order is already sent");
     }
 }

@@ -3,12 +3,14 @@ using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
 using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
+using Shop.Domain.UserAggregate;
 using Shop.Domain.UserAggregate.Repository;
 using Shop.Domain.UserAggregate.Services;
 
 namespace Shop.Application.Users.Edit;
 
-public record EditUserCommand(long UserId, string FullName, string Email, string PhoneNumber) : IBaseCommand;
+public record EditUserCommand(long UserId, string FullName, User.UserGender Gender, string Email,
+    string PhoneNumber) : IBaseCommand;
 
 public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
 {
@@ -28,7 +30,7 @@ public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
         if (user == null)
             return OperationResult.NotFound();
 
-        user.Edit(request.FullName, request.Email, request.PhoneNumber, _userDomainService);
+        user.Edit(request.FullName, request.Gender, request.Email, request.PhoneNumber, _userDomainService);
 
         await _userRepository.SaveAsync();
         return OperationResult.Success();

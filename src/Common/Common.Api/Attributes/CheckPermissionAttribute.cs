@@ -68,6 +68,6 @@ public class CheckPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationF
         var roles = await _roleFacade.GetAll();
         var userRoles = roles.Where(r => roleIds.Contains(r.Id));
 
-        return userRoles.Any(r => r.Permissions.Contains(_permission.ToString()));
+        return userRoles.Any(r => r.Permissions.Contains(_permission));
     }
 }

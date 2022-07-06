@@ -35,6 +35,7 @@ public class RoleConfiguration : IEntityTypeConfiguration<Role>
                 .HasColumnType("datetime2(0)");
 
             options.Property(permission => permission.Permission)
+                .HasConversion<string>()
                 .IsRequired()
                 .HasMaxLength(30);
         });

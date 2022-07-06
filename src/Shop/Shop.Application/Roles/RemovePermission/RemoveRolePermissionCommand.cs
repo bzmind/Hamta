@@ -38,8 +38,8 @@ public class RemoveRolePermissionCommandValidator : AbstractValidator<RemoveRole
 {
     public RemoveRolePermissionCommandValidator()
     {
-        RuleFor(r => r.Permissions)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("مجوز ها"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("مجوز ها"));
+        RuleForEach(r => r.Permissions)
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("مجوز"))
+            .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("مجوز"));
     }
 }

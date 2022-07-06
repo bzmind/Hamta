@@ -46,11 +46,12 @@ public class AuthController : BaseApiController
         var result = await GenerateTokenAndAddItToUser(user);
         return CommandResult(result);
     }
-    
+
     [HttpPost("Register")]
     public async Task<ApiResult> Register(RegisterViewModel model)
     {
-        var result = await _userFacade.Register(new RegisterUserCommand(model.PhoneNumber, model.Password));
+        var result = await _userFacade.Register(new RegisterUserCommand(model.FullName, model.Gender,
+            model.PhoneNumber, model.Password));
         return CommandResult(result);
     }
 

@@ -47,7 +47,7 @@ public class GetCommentListQueryHandler : IBaseQueryHandler<GetCommentByFilterQu
             query = query.Where(c => c.comment.ProductId == @params.ProductId);
 
         if (@params.Status != null)
-            query = query.Where(c => c.comment.Status == @params.Status.ToString());
+            query = query.Where(c => c.comment.Status == @params.Status);
 
         var skip = (@params.PageId - 1) * @params.Take;
 

@@ -62,7 +62,7 @@ public class IndexModel : BaseRazorPage
 
         return RedirectToPage("../Index");
     }
-    
+
     public async Task<IActionResult> OnPostResetPassword(ResetUserPasswordViewModel model)
     {
         var result = await _userService.ResetPassword(model);
@@ -81,10 +81,9 @@ public class IndexModel : BaseRazorPage
     {
         var result = await _userService.SetNewsletterSubscription(User.GetUserId());
 
-        MakeAlert(result);
-
         if (result.IsSuccessful == false)
         {
+            MakeAlert(result);
             if (result.MetaData.ApiStatusCode == ApiStatusCode.TooManyRequests)
                 Response.StatusCode = (int)result.MetaData.ApiStatusCode;
             return AjaxMessageResult(result);

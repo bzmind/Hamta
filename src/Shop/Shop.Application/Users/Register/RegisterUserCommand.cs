@@ -10,7 +10,8 @@ using Shop.Domain.UserAggregate.Services;
 
 namespace Shop.Application.Users.Register;
 
-public record RegisterUserCommand(string PhoneNumber, string Password) : IBaseCommand;
+public record RegisterUserCommand(string FullName, User.UserGender Gender, string PhoneNumber,
+    string Password) : IBaseCommand;
 
 public class RegisterUserCommandHandler : IBaseCommandHandler<RegisterUserCommand>
 {
@@ -25,7 +26,8 @@ public class RegisterUserCommandHandler : IBaseCommandHandler<RegisterUserComman
 
     public async Task<OperationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
-        var user = User.Register(request.PhoneNumber, request.Password.ToSHA256(), _userDomainService);
+        var user = User.Register(request.FullName, request.Gender, request.PhoneNumber, request.Password.ToSHA256(),
+            _userDomainService);
 
         _userRepository.Add(user);
 
@@ -38,6 +40,14 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
 {
     public RegisterUserCommandValidator()
     {
+        RuleFor(u => u.FullName)
+            .NotNull().WithMessage(ValidationMessages.FullNameRequired)
+            .NotEmpty().WithMessage(ValidationMessages.FullNameRequired);
+
+        RuleFor(u => u.Gender)
+            .NotNull().WithMessage(ValidationMessages.GenderRequired)
+            .IsInEnum().WithMessage(ValidationMessages.InvalidGender);
+
         RuleFor(u => u.PhoneNumber)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("شماره موبایل"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("شماره موبایل"))

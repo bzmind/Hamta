@@ -7,7 +7,7 @@ using Shop.Domain.OrderAggregate.Repository;
 
 namespace Shop.Application.Orders.SetStatus;
 
-public record SetOrderStatusCommand(long UserId, string OrderStatus) : IBaseCommand;
+public record SetOrderStatusCommand(long UserId, Order.OrderStatus OrderStatus) : IBaseCommand;
 
 public class SetOrderStatusCommandHandler : IBaseCommandHandler<SetOrderStatusCommand>
 {
@@ -24,11 +24,8 @@ public class SetOrderStatusCommandHandler : IBaseCommandHandler<SetOrderStatusCo
 
         if (order == null)
             return OperationResult.NotFound();
-
-        if (Enum.TryParse(request.OrderStatus, out Order.OrderStatus status))
-            return OperationResult.Error("وضعیت سفارش نامعتبر است");
-
-        order.SetStatus(status);
+        
+        order.SetStatus(request.OrderStatus);
 
         await _orderRepository.SaveAsync();
         return OperationResult.Success();
@@ -41,6 +38,6 @@ public class SetOrderStatusCommandValidator : AbstractValidator<SetOrderStatusCo
     {
         RuleFor(o => o.OrderStatus)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("وضعیت سفارش"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("وضعیت سفارش"));
+            .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("وضعیت سفارش"));
     }
 }

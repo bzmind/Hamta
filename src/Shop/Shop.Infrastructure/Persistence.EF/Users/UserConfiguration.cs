@@ -27,6 +27,19 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(50);
 
+        builder.OwnsOne(user => user.PhoneNumber, config =>
+        {
+            config.Property(phoneNumber => phoneNumber.Value)
+                .HasColumnName("PhoneNumber")
+                .IsRequired()
+                .HasMaxLength(11);
+        });
+
+        builder.Property(user => user.Gender)
+            .HasConversion<string>()
+            .IsRequired()
+            .HasMaxLength(10);
+
         builder.OwnsMany(comment => comment.Addresses, options =>
         {
             options.ToTable("Addresses", "user");
@@ -66,14 +79,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             options.Property(address => address.PostalCode)
                 .IsRequired()
                 .HasMaxLength(10);
-        });
-
-        builder.OwnsOne(user => user.PhoneNumber, config =>
-        {
-            config.Property(phoneNumber => phoneNumber.Value)
-                .HasColumnName("PhoneNumber")
-                .IsRequired()
-                .HasMaxLength(11);
         });
 
         builder.Property(user => user.AvatarName)

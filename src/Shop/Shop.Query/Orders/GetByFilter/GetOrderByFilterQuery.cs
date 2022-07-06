@@ -51,7 +51,7 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
             query = query.Where(o => o.CreationDate <= @params.EndDate);
 
         if (@params.Status != null)
-            query = query.Where(o => o.Status == @params.Status.ToString());
+            query = query.Where(o => o.Status == @params.Status);
 
         var skip = (@params.PageId - 1) * @params.Take;
 

@@ -85,7 +85,7 @@ public class LoginModel : BaseRazorPage
         });
     }
 
-    public async Task<IActionResult> OnPostRegister(RegisterModel model)
+    public async Task<IActionResult> OnPostRegister(RegisterViewModel model)
     {
         var emailOrPhone = TempData.Peek("EmailOrPhone")?.ToString();
 
@@ -94,6 +94,8 @@ public class LoginModel : BaseRazorPage
 
         var registerResult = await _authService.Register(new RegisterViewModel
         {
+            FullName = model.FullName,
+            Gender = model.Gender,
             PhoneNumber = emailOrPhone,
             Password = model.Password,
             ConfirmPassword = model.ConfirmPassword
@@ -143,6 +145,6 @@ public class LoginModel : BaseRazorPage
 
     private async Task<string> RegisterPageHtml()
     {
-        return await _razorToStringRenderer.RenderToStringAsync("_Register", new RegisterModel(), PageContext);
+        return await _razorToStringRenderer.RenderToStringAsync("_Register", new RegisterViewModel(), PageContext);
     }
 }

@@ -11,6 +11,7 @@ public class User : BaseAggregateRoot
     public string? Email { get; private set; }
     public string Password { get; private set; }
     public PhoneNumber PhoneNumber { get; private set; }
+    public UserGender Gender { get; private set; }
 
     private readonly List<UserAddress> _addresses = new();
     public IEnumerable<UserAddress> Addresses => _addresses.ToList();
@@ -30,32 +31,43 @@ public class User : BaseAggregateRoot
     public const int MaximumSimultaneousDevices = 3;
     public const string DefaultAvatarName = "avatar.png";
 
+    public enum UserGender
+    {
+        Male = 1,
+        Female = 2
+    }
+
     private User()
     {
 
     }
 
-    public User(string fullName, string phoneNumber, string password, IUserDomainService userDomainService)
+    public User(string fullName, UserGender gender, string phoneNumber, string password,
+        IUserDomainService userDomainService)
     {
         Guard(fullName, phoneNumber, userDomainService);
         PasswordGuard(password);
         FullName = fullName;
         Password = password;
         PhoneNumber = new PhoneNumber(phoneNumber);
+        Gender = gender;
         IsSubscribedToNewsletter = false;
     }
 
-    public void Edit(string fullName, string email, string phoneNumber, IUserDomainService userDomainService)
+    public void Edit(string fullName, UserGender gender, string email, string phoneNumber,
+        IUserDomainService userDomainService)
     {
         Guard(fullName, phoneNumber, userDomainService, email);
         FullName = fullName;
         Email = email;
         PhoneNumber = new PhoneNumber(phoneNumber);
+        Gender = gender;
     }
 
-    public static User Register(string phoneNumber, string password, IUserDomainService userDomainService)
+    public static User Register(string fullName, UserGender gender, string phoneNumber, string password,
+        IUserDomainService userDomainService)
     {
-        return new User(phoneNumber, phoneNumber, password, userDomainService);
+        return new User(fullName, gender, phoneNumber, password, userDomainService);
     }
 
     public void AddAddress(long userId, string fullName, string phoneNumber, string province,

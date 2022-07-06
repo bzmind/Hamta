@@ -43,7 +43,7 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
             query = query.Where(q => q.UserId == @params.UserId);
 
         if (@params.Status != null)
-            query = query.Where(q => q.Status == @params.Status.ToString());
+            query = query.Where(q => q.Status == @params.Status);
 
         var skip = (@params.PageId - 1) * @params.Take;
 

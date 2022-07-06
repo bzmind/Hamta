@@ -21,6 +21,7 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
             .HasMaxLength(300);
 
         builder.Property(question => question.Status)
+            .HasConversion<string>()
             .IsRequired()
             .HasMaxLength(20);
 

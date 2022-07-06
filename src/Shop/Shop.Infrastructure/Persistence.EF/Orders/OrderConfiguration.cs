@@ -18,6 +18,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
             .HasColumnType("datetime2(0)");
 
         builder.Property(order => order.Status)
+            .HasConversion<string>()
             .IsRequired()
             .HasMaxLength(20);
 
