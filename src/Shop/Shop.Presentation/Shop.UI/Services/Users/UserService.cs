@@ -31,12 +31,6 @@ public class UserService : IUserService
         return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
     }
 
-    public async Task<ApiResult?> SetAvatar(SetUserAvatarCommandViewModel model)
-    {
-        var result = await _client.PutAsJsonAsync("api/user/SetAvatar", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
-    }
-
     public async Task<ApiResult?> ResetPassword(ResetUserPasswordViewModel model)
     {
         var result = await _client.PutAsJsonAsync("api/user/ResetPassword", model);

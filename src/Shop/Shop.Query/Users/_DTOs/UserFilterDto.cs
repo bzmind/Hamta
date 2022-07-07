@@ -8,7 +8,7 @@ public class UserFilterDto : BaseDto
     public string FullName { get; set; }
     public string Email { get; set; }
     public PhoneNumber PhoneNumber { get; set; }
-    public string AvatarName { get; set; }
+    public long AvatarId { get; set; }
     public bool IsSubscribedToNewsletter { get; set; }
     public List<UserRoleDto> Roles { get; set; }
 }

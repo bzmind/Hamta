@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="AvatarAggregate\Repository\" />
     <Folder Include="ColorAggregate\Repository\" />
     <Folder Include="OrderAggregate\ValueObjects\" />
     <Folder Include="QuestionAggregate\Repository\" />

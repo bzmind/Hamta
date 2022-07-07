@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Shop.Domain.AvatarAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.ColorAggregate.Repository;
 using Shop.Domain.CommentAggregate.Repository;
@@ -10,8 +11,8 @@ using Shop.Domain.QuestionAggregate.Repository;
 using Shop.Domain.RoleAggregate.Repository;
 using Shop.Domain.ShippingAggregate.Repository;
 using Shop.Domain.UserAggregate.Repository;
-using Shop.Infrastructure.EmailService;
 using Shop.Infrastructure.Persistence.EF;
+using Shop.Infrastructure.Persistence.EF.Avatars;
 using Shop.Infrastructure.Persistence.EF.Categories;
 using Shop.Infrastructure.Persistence.EF.Colors;
 using Shop.Infrastructure.Persistence.EF.Comments;
@@ -29,6 +30,7 @@ public class InfrastructureBootstrapper
 {
     public static void RegisterDependencies(IServiceCollection services, string connectionString)
     {
+        services.AddTransient<IAvatarRepository, AvatarRepository>();
         services.AddTransient<ICategoryRepository, CategoryRepository>();
         services.AddTransient<IColorRepository, ColorRepository>();
         services.AddTransient<ICommentRepository, CommentRepository>();

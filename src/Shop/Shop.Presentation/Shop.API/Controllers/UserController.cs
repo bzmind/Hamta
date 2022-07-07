@@ -10,7 +10,6 @@ using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Application.Users.RemoveFavoriteItem;
 using Shop.Application.Users.RemoveRole;
-using Shop.Application.Users.SetAvatar;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Users;
 using Shop.Query.Users._DTOs;
@@ -43,16 +42,8 @@ public class UserController : BaseApiController
     public async Task<ApiResult> Edit(EditUserCommandViewModel model)
     {
         var command = new EditUserCommand(User.GetUserId(), model.FullName, model.Gender, model.Email,
-            model.PhoneNumber);
+            model.PhoneNumber, model.AvatarId);
         var result = await _userFacade.Edit(command);
-        return CommandResult(result);
-    }
-
-    [HttpPut("SetAvatar")]
-    public async Task<ApiResult> SetAvatar([FromForm] SetUserAvatarCommandViewModel model)
-    {
-        var command = new SetUserAvatarCommand(User.GetUserId(), model.Avatar);
-        var result = await _userFacade.SetAvatar(command);
         return CommandResult(result);
     }
 

@@ -40,7 +40,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(10);
 
-        builder.OwnsMany(comment => comment.Addresses, options =>
+        builder.OwnsMany(user => user.Addresses, options =>
         {
             options.ToTable("Addresses", "user");
 
@@ -80,10 +80,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                 .IsRequired()
                 .HasMaxLength(10);
         });
-
-        builder.Property(user => user.AvatarName)
-            .IsRequired()
-            .HasMaxLength(100);
 
         builder.Property(user => user.IsSubscribedToNewsletter)
             .IsRequired()

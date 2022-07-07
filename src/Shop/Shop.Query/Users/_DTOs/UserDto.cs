@@ -10,7 +10,7 @@ public class UserDto : BaseDto
     public string Password { get; set; }
     public List<UserAddressDto> Addresses { get; set; }
     public PhoneNumber PhoneNumber { get; set; }
-    public string AvatarName { get; set; }
+    public long AvatarId { get; set; }
     public bool IsSubscribedToNewsletter { get; set; }
     public List<UserFavoriteItemDto> FavoriteItems { get; set; }
     public List<UserRoleDto> Roles { get; set; }

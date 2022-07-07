@@ -4,6 +4,7 @@ using Common.Application.Utility.Security;
 using Common.Application.Utility.Validation;
 using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
+using Shop.Domain.AvatarAggregate.Repository;
 using Shop.Domain.UserAggregate;
 using Shop.Domain.UserAggregate.Repository;
 using Shop.Domain.UserAggregate.Services;
@@ -17,17 +18,22 @@ public class RegisterUserCommandHandler : IBaseCommandHandler<RegisterUserComman
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserDomainService _userDomainService;
+    private readonly IAvatarRepository _avatarRepository;
 
-    public RegisterUserCommandHandler(IUserRepository userRepository, IUserDomainService userDomainService)
+    public RegisterUserCommandHandler(IUserRepository userRepository, IUserDomainService userDomainService,
+        IAvatarRepository avatarRepository)
     {
         _userRepository = userRepository;
         _userDomainService = userDomainService;
+        _avatarRepository = avatarRepository;
     }
 
     public async Task<OperationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
     {
+        var avatar = await _avatarRepository.GetRandomAvatarNameByUserGender(request.Gender);
+
         var user = User.Register(request.FullName, request.Gender, request.PhoneNumber, request.Password.ToSHA256(),
-            _userDomainService);
+            avatar.Id, _userDomainService);
 
         _userRepository.Add(user);
 

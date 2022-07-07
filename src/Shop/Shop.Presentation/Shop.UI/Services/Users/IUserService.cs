@@ -11,7 +11,6 @@ public interface IUserService
 {
     Task<ApiResult?> Create(CreateUserCommand model);
     Task<ApiResult?> Edit(EditUserCommandViewModel model);
-    Task<ApiResult?> SetAvatar(SetUserAvatarCommandViewModel model);
     Task<ApiResult?> ResetPassword(ResetUserPasswordViewModel model);
     Task<ApiResult<bool>> SetNewsletterSubscription(long userId);
     Task<ApiResult?> AddFavoriteItem(long productId);

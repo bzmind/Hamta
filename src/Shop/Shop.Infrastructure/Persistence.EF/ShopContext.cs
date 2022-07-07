@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Shop.Domain.AvatarAggregate;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.ColorAggregate;
 using Shop.Domain.CommentAggregate;
@@ -14,6 +15,7 @@ namespace Shop.Infrastructure.Persistence.EF;
 
 public class ShopContext : DbContext
 {
+    public DbSet<Avatar> Avatars { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<Color> Colors { get; set; }
     public DbSet<Comment> Comments { get; set; }

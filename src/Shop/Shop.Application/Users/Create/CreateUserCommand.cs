@@ -4,6 +4,7 @@ using Common.Application.Utility.Security;
 using Common.Application.Utility.Validation;
 using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
+using Shop.Domain.AvatarAggregate.Repository;
 using Shop.Domain.UserAggregate;
 using Shop.Domain.UserAggregate.Repository;
 using Shop.Domain.UserAggregate.Services;
@@ -17,17 +18,22 @@ public class CreateUserCommandHandler : IBaseCommandHandler<CreateUserCommand, l
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserDomainService _userDomainService;
+    private readonly IAvatarRepository _avatarRepository;
 
-    public CreateUserCommandHandler(IUserRepository userRepository, IUserDomainService userDomainService)
+    public CreateUserCommandHandler(IUserRepository userRepository, IUserDomainService userDomainService,
+        IAvatarRepository avatarRepository)
     {
         _userRepository = userRepository;
         _userDomainService = userDomainService;
+        _avatarRepository = avatarRepository;
     }
 
     public async Task<OperationResult<long>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
+        var avatar = await _avatarRepository.GetRandomAvatarNameByUserGender(request.Gender);
+
         var user = new User(request.FullName, request.Gender, request.PhoneNumber, request.Password.ToSHA256(),
-            _userDomainService);
+            avatar.Id, _userDomainService);
 
         _userRepository.Add(user);
 
@@ -40,6 +46,14 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
 {
     public CreateUserCommandValidator()
     {
+        RuleFor(c => c.FullName)
+            .NotNull().WithMessage(ValidationMessages.FullNameRequired)
+            .NotEmpty().WithMessage(ValidationMessages.FullNameRequired);
+
+        RuleFor(c => c.Gender)
+            .NotNull().WithMessage(ValidationMessages.GenderRequired)
+            .IsInEnum().WithMessage(ValidationMessages.InvalidGender);
+
         RuleFor(c => c.PhoneNumber)
             .ValidPhoneNumber();
 

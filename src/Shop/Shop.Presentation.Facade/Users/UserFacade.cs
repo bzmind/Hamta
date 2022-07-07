@@ -9,7 +9,6 @@ using Shop.Application.Users.Remove;
 using Shop.Application.Users.RemoveFavoriteItem;
 using Shop.Application.Users.RemoveRole;
 using Shop.Application.Users.ResetPassword;
-using Shop.Application.Users.SetAvatar;
 using Shop.Application.Users.SetNewsletterSubscription;
 using Shop.Query.Users._DTOs;
 using Shop.Query.Users.GetByEmailOrPhone;
@@ -39,11 +38,6 @@ internal class UserFacade : IUserFacade
     }
 
     public async Task<OperationResult> Register(RegisterUserCommand command)
-    {
-        return await _mediator.Send(command);
-    }
-
-    public async Task<OperationResult> SetAvatar(SetUserAvatarCommand command)
     {
         return await _mediator.Send(command);
     }

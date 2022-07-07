@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Infrastructure.EmailService;
-using Shop.Infrastructure.EmailService._DTOs;
 using Shop.UI.SetupClasses.RazorUtility;
 
 namespace Shop.UI.Pages.Profile;

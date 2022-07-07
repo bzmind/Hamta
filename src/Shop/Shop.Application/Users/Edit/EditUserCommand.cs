@@ -3,6 +3,7 @@ using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
 using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
+using Shop.Domain.AvatarAggregate.Repository;
 using Shop.Domain.UserAggregate;
 using Shop.Domain.UserAggregate.Repository;
 using Shop.Domain.UserAggregate.Services;
@@ -10,17 +11,20 @@ using Shop.Domain.UserAggregate.Services;
 namespace Shop.Application.Users.Edit;
 
 public record EditUserCommand(long UserId, string FullName, User.UserGender Gender, string Email,
-    string PhoneNumber) : IBaseCommand;
+    string PhoneNumber, long AvatarId) : IBaseCommand;
 
 public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
 {
     private readonly IUserRepository _userRepository;
     private readonly IUserDomainService _userDomainService;
+    private readonly IAvatarRepository _avatarRepository;
 
-    public EditUserCommandHandler(IUserRepository userRepository, IUserDomainService userDomainService)
+    public EditUserCommandHandler(IUserRepository userRepository, IUserDomainService userDomainService,
+        IAvatarRepository avatarRepository)
     {
         _userRepository = userRepository;
         _userDomainService = userDomainService;
+        _avatarRepository = avatarRepository;
     }
 
     public async Task<OperationResult> Handle(EditUserCommand request, CancellationToken cancellationToken)
@@ -30,7 +34,13 @@ public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
         if (user == null)
             return OperationResult.NotFound();
 
-        user.Edit(request.FullName, request.Gender, request.Email, request.PhoneNumber, _userDomainService);
+        var avatar = await _avatarRepository.GetAsync(request.AvatarId);
+
+        if (avatar == null)
+            return OperationResult.NotFound(ValidationMessages.FieldNotFound("آواتار"));
+
+        user.Edit(request.FullName, request.Gender, request.Email, request.PhoneNumber, avatar.Id,
+            _userDomainService);
 
         await _userRepository.SaveAsync();
         return OperationResult.Success();
