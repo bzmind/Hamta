@@ -33,7 +33,7 @@ public class RegisterUserCommandHandler : IBaseCommandHandler<RegisterUserComman
         var avatar = await _avatarRepository.GetRandomAvatarNameByUserGender(request.Gender);
 
         var user = User.Register(request.FullName, request.Gender, request.PhoneNumber, request.Password.ToSHA256(),
-            avatar.Id, _userDomainService);
+            avatar.Name, _userDomainService);
 
         _userRepository.Add(user);
 

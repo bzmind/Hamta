@@ -19,9 +19,7 @@ public class GetColorByIdQueryHandler : IBaseQueryHandler<GetColorByIdQuery, Col
 
     public async Task<ColorDto?> Handle(GetColorByIdQuery request, CancellationToken cancellationToken)
     {
-        var color = await _shopContext.Colors
-            .FirstOrDefaultAsync(c => c.Id == request.ColorId, cancellationToken);
-
+        var color = await _shopContext.Colors.FirstOrDefaultAsync(c => c.Id == request.ColorId, cancellationToken);
         return color.MapToColorDto();
     }
 }

@@ -22,7 +22,8 @@ internal static class UserMapper
             Password = user.Password,
             Addresses = user.Addresses.ToList().MapToUserAddressDto(),
             PhoneNumber = user.PhoneNumber,
-            AvatarId = user.AvatarId,
+            Gender = user.Gender,
+            AvatarName = user.AvatarName,
             IsSubscribedToNewsletter = user.IsSubscribedToNewsletter,
             FavoriteItems = user.FavoriteItems.Select(fi => new UserFavoriteItemDto
             {
@@ -60,7 +61,8 @@ internal static class UserMapper
             FullName = user.FullName,
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
-            AvatarId = user.AvatarId,
+            Gender = user.Gender,
+            AvatarName = user.AvatarName,
             IsSubscribedToNewsletter = user.IsSubscribedToNewsletter,
             Roles = user.Roles.Select(r => new UserRoleDto
             {
@@ -97,7 +99,6 @@ internal static class UserMapper
             .QueryAsync<UserFavoriteItemDto>(sql, new { UserDtoId = userDto.Id });
 
         userDto.FavoriteItems = result.ToList();
-
         return userDto;
     }
 

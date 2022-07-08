@@ -49,18 +49,18 @@ public class CategoryService : ICategoryService
         return result?.Data;
     }
 
-    public async Task<List<CategoryDto>?> GetByParentId(long parentId)
+    public async Task<List<CategoryDto>> GetByParentId(long parentId)
     {
         var result = await _client
             .GetFromJsonAsync<ApiResult<List<CategoryDto>>>
                 ($"api/category/GetByParentId/{parentId}", _jsonOptions);
-        return result?.Data;
+        return result.Data;
     }
 
-    public async Task<List<CategoryDto>?> GetAll()
+    public async Task<List<CategoryDto>> GetAll()
     {
         var result = await _client
             .GetFromJsonAsync<ApiResult<List<CategoryDto>>>("api/category/GetAll", _jsonOptions);
-        return result?.Data;
+        return result.Data;
     }
 }

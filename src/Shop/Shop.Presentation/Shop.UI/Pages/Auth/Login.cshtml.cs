@@ -4,6 +4,7 @@ using Common.Api.Attributes;
 using Common.Application.Utility;
 using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Shop.API.ViewModels.Auth;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Models.Auth;
@@ -34,12 +35,13 @@ public class LoginModel : BaseRazorPage
     [EmailOrIranPhone(ErrorMessage = ValidationMessages.InvalidEmailOrPhone)]
     public string EmailOrPhone { get; set; }
 
-    public IActionResult OnGet()
+    public IActionResult OnGet(string redirectTo)
     {
         if (User.Identity.IsAuthenticated)
             return RedirectToPage("../Index");
 
         TempData.Clear();
+        TempData["redirectTo"] = redirectTo;
         return Page();
     }
 
@@ -73,7 +75,7 @@ public class LoginModel : BaseRazorPage
 
     public async Task<IActionResult> OnPostPassword(PasswordModel model)
     {
-        var emailOrPhone = TempData.Peek("EmailOrPhone")?.ToString();
+        var emailOrPhone = TempData["EmailOrPhone"]?.ToString();
 
         if (string.IsNullOrWhiteSpace(emailOrPhone))
             return AjaxRedirectToPageResult("Login");
@@ -87,7 +89,7 @@ public class LoginModel : BaseRazorPage
 
     public async Task<IActionResult> OnPostRegister(RegisterViewModel model)
     {
-        var emailOrPhone = TempData.Peek("EmailOrPhone")?.ToString();
+        var emailOrPhone = TempData["EmailOrPhone"]?.ToString();
 
         if (string.IsNullOrWhiteSpace(emailOrPhone) || emailOrPhone.IsEmail())
             return AjaxRedirectToPageResult("Login");
@@ -128,12 +130,16 @@ public class LoginModel : BaseRazorPage
             return AjaxMessageResult(loginResult);
         }
 
-        TempData.Clear();
+        //TempData.Clear();
 
         var token = loginResult.Data.Token;
         var refreshToken = loginResult.Data.RefreshToken;
         Response.Cookies.Append("token", token);
         Response.Cookies.Append("refresh-token", refreshToken);
+
+        var redirectTo = TempData["redirectTo"]?.ToString();
+        if (!string.IsNullOrWhiteSpace(redirectTo) && Url.IsLocalUrl(redirectTo))
+            return AjaxRedirectToPageResult(redirectTo);
 
         return AjaxRedirectToPageResult("../Index");
     }

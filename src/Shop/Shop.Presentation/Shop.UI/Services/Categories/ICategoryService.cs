@@ -14,6 +14,6 @@ public interface ICategoryService
     Task<ApiResult?> Remove(long categoryId);
 
     Task<CategoryDto?> GetById(long categoryId);
-    Task<List<CategoryDto>?> GetByParentId(long parentId);
-    Task<List<CategoryDto>?> GetAll();
+    Task<List<CategoryDto>> GetByParentId(long parentId);
+    Task<List<CategoryDto>> GetAll();
 }

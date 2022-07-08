@@ -14,5 +14,5 @@ public interface IRoleService
     Task<ApiResult?> Remove(long roleId);
 
     Task<RoleDto?> GetById(long roleId);
-    Task<List<RoleDto>?> GetAll();
+    Task<List<RoleDto>> GetAll();
 }

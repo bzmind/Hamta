@@ -6,15 +6,16 @@ using Common.Api.Utility;
 using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Shop.API.CommandViewModels.Users;
 using Shop.API.ViewModels.Users;
+using Shop.Domain.UserAggregate;
 using Shop.UI.Services.Users;
 using Shop.UI.SetupClasses.ModelStateExtensions;
 using Shop.UI.SetupClasses.RazorUtility;
 
 namespace Shop.UI.Pages.Profile.Edit;
 
-[Authorize]
 [BindProperties]
 public class IndexModel : BaseRazorPage
 {
@@ -42,12 +43,27 @@ public class IndexModel : BaseRazorPage
     [IranPhone(ErrorMessage = ValidationMessages.InvalidPhoneNumber)]
     public string PhoneNumber { get; set; }
 
+    [Display(Name = "جنسیت")]
+    [Required(ErrorMessage = ValidationMessages.GenderRequired)]
+    [EnumNotNullOrZero(ErrorMessage = ValidationMessages.InvalidGender)]
+    public User.UserGender Gender { get; set; }
+
+    [Display(Name = "آواتار")]
+    [Required(ErrorMessage = ValidationMessages.GenderRequired)]
+    [EnumNotNullOrZero(ErrorMessage = ValidationMessages.InvalidGender)]
+    public long AvatarId { get; set; }
+
+    [BindNever]
+    public string AvatarName { get; set; }
+
     public async Task OnGet()
     {
         var user = await _userService.GetById(User.GetUserId());
         FullName = user.FullName;
         Email = user.Email;
         PhoneNumber = user.PhoneNumber.Value;
+        Gender = user.Gender;
+        AvatarName = user.AvatarName;
         ViewData["IsSubscribedToNewsletter"] = user.IsSubscribedToNewsletter;
     }
 
@@ -57,8 +73,15 @@ public class IndexModel : BaseRazorPage
         {
             FullName = FullName,
             Email = Email,
-            PhoneNumber = PhoneNumber
+            PhoneNumber = PhoneNumber,
+            Gender = Gender
         });
+
+        if (result.IsSuccessful == false)
+        {
+            MakeAlert(result);
+            return RedirectToPage().WithModelStateOf(this);
+        }
 
         return RedirectToPage("../Index");
     }

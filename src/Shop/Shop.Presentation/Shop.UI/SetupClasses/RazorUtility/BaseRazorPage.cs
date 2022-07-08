@@ -45,10 +45,14 @@ public class BaseRazorPage : PageModel
 
     protected ContentResult AjaxRedirectToPageResult(string page)
     {
+        var path = Url.PageLink(page);
+        if (string.IsNullOrWhiteSpace(path))
+            path = $"..{page}";
+
         var model = new AjaxResult
         {
             IsRedirection = true,
-            RedirectPath = Url.PageLink(page)
+            RedirectPath = path
         };
         return Content(JsonConvert.SerializeObject(model));
     }

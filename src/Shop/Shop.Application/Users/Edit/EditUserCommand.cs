@@ -30,16 +30,14 @@ public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
     public async Task<OperationResult> Handle(EditUserCommand request, CancellationToken cancellationToken)
     {
         var user = await _userRepository.GetAsTrackingAsync(request.UserId);
-
         if (user == null)
             return OperationResult.NotFound();
 
         var avatar = await _avatarRepository.GetAsync(request.AvatarId);
-
         if (avatar == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("آواتار"));
 
-        user.Edit(request.FullName, request.Gender, request.Email, request.PhoneNumber, avatar.Id,
+        user.Edit(request.FullName, request.Gender, request.Email, request.PhoneNumber, avatar.Name,
             _userDomainService);
 
         await _userRepository.SaveAsync();

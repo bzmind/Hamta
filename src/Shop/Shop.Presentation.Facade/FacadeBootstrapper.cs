@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Shop.Presentation.Facade.Avatars;
 using Shop.Presentation.Facade.Categories;
 using Shop.Presentation.Facade.Colors;
 using Shop.Presentation.Facade.Comments;
@@ -18,6 +19,7 @@ public static class FacadeBootstrapper
 {
     public static void RegisterDependencies(IServiceCollection services)
     {
+        services.AddScoped<IAvatarFacade, AvatarFacade>();
         services.AddScoped<ICategoryFacade, CategoryFacade>();
         services.AddScoped<IColorFacade, ColorFacade>();
         services.AddScoped<ICommentFacade, CommentFacade>();

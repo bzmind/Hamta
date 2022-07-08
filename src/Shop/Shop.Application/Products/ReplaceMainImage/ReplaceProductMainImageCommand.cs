@@ -15,7 +15,8 @@ public class ReplaceProductMainImageCommandHandler : IBaseCommandHandler<Replace
     private readonly IProductRepository _productRepository;
     private readonly IFileService _fileService;
 
-    public ReplaceProductMainImageCommandHandler(IProductRepository productRepository, IFileService fileService)
+    public ReplaceProductMainImageCommandHandler(IProductRepository productRepository,
+        IFileService fileService)
     {
         _productRepository = productRepository;
         _fileService = fileService;

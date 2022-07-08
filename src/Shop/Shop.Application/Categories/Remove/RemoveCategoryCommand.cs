@@ -1,5 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
+using Common.Application.Utility.Validation;
 using Shop.Domain.CategoryAggregate.Repository;
 
 namespace Shop.Application.Categories.Remove;
@@ -20,7 +21,7 @@ public class RemoveCategoryCommandHandler : IBaseCommandHandler<RemoveCategoryCo
         var category = await _categoryRepository.RemoveCategory(request.SubCategoryId);
 
         if (!category)
-            return OperationResult.Error("امکان حذف این دسته بندی وجود ندارد");
+            return OperationResult.Error(ValidationMessages.FieldCantBeRemoved("دسته بندی"));
 
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();

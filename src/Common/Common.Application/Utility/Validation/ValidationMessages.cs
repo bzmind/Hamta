@@ -185,4 +185,18 @@ public static class ValidationMessages
     /// <param name="field"></param>
     public static string FieldNotFound(string field)
         => $"{field} یافت نشد";
+
+    /// <summary>
+    /// <example>Example: نام} تکراری است}</example>
+    /// </summary>
+    /// <param name="field"></param>
+    public static string FieldDuplicate(string field)
+        => $"{field} تکراری است";
+
+    /// <summary>
+    /// <example>Example امکان حذف این {سفارش} وجود ندارد</example>
+    /// </summary>
+    /// <param name="field"></param>
+    public static string FieldCantBeRemoved(string field)
+        => $"امکان حذف این {field} وجود ندارد";
 }

@@ -42,10 +42,10 @@ public class ShippingService : IShippingService
         return result?.Data;
     }
 
-    public async Task<List<ShippingDto>?> GetAll()
+    public async Task<List<ShippingDto>> GetAll()
     {
         var result = await _client
             .GetFromJsonAsync<ApiResult<List<ShippingDto>>>("api/shipping/GetAll", _jsonOptions);
-        return result?.Data;
+        return result.Data;
     }
 }

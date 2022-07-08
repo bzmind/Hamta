@@ -40,6 +40,10 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .IsRequired()
             .HasMaxLength(10);
 
+        builder.Property(user => user.AvatarName)
+            .IsRequired()
+            .HasMaxLength(100);
+
         builder.OwnsMany(user => user.Addresses, options =>
         {
             options.ToTable("Addresses", "user");

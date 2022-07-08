@@ -19,9 +19,7 @@ public class GetShippingListQueryHandler : IBaseQueryHandler<GetShippingListQuer
 
     public async Task<List<ShippingDto>> Handle(GetShippingListQuery request, CancellationToken cancellationToken)
     {
-        var shipping =
-            await _shopContext.Shippings.OrderByDescending(s => s.Id).ToListAsync(cancellationToken);
-
+        var shipping = await _shopContext.Shippings.OrderByDescending(s => s.Id).ToListAsync(cancellationToken);
         return shipping.MapToShippingDto();
     }
 }

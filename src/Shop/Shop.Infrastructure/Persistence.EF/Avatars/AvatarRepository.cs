@@ -20,4 +20,15 @@ public class AvatarRepository : BaseRepository<Avatar>, IAvatarRepository
             .OrderBy(_ => new Random().Next())
             .First();
     }
+
+    public async Task<bool> RemoveAvatar(long avatarId)
+    {
+        var avatar = await Context.Avatars.FirstOrDefaultAsync(a => a.Id == avatarId);
+        if (avatar == null)
+            return false;
+
+        Context.Remove(avatar);
+        await Context.SaveChangesAsync();
+        return true;
+    }
 }

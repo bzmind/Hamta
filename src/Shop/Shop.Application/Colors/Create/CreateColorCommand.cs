@@ -21,7 +21,6 @@ public class AddColorCommandHandler : IBaseCommandHandler<CreateColorCommand, lo
     public async Task<OperationResult<long>> Handle(CreateColorCommand request, CancellationToken cancellationToken)
     {
         var color = new Color(request.Name, request.Code);
-
         _colorRepository.Add(color);
         await _colorRepository.SaveAsync();
         return OperationResult<long>.Success(color.Id);

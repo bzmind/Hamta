@@ -25,8 +25,7 @@ public class CategoryController : BaseApiController
     [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateCategoryCommand command)
     {
-        var model = new CreateCategoryCommand(command.Title, command.Slug, command.Specifications);
-        var result = await _categoryFacade.Create(model);
+        var result = await _categoryFacade.Create(command);
         var resultUrl = Url.Action("Create", "Category", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }

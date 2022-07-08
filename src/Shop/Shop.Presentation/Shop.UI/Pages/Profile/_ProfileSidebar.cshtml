@@ -1,4 +1,12 @@
-﻿<div class="col-lg-3 col-md-4 mb-md-0 mb-3 sticky-sidebar">
+﻿@using Common.Api.Utility
+@using Shop.UI.Services.Users
+@using Shop.UI.SetupClasses.ServerSide
+@inject IUserService UserService
+@{
+    var currentUser = await UserService.GetById(User.GetUserId());
+}
+
+<div class="col-lg-3 col-md-4 mb-md-0 mb-3 sticky-sidebar">
     <div class="sidebar-widget">
         <div class="banner mb-3">
             <a href="#">
@@ -9,14 +17,14 @@
         <div class="profile-sidebar shadow-around">
             <div class="d-flex align-items-center">
                 <div class="profile-avatar">
-                    <img src="/assets/images/avatar/avatar.png" alt="avatar">
+                    <img src="@ServerSettings.ServerAvatarsPath/@currentUser?.AvatarName" alt="avatar">
                 </div>
                 <div class="profile-info">
                     <div class="d-block">
-                        <h6><strong>جلال بهرامی راد</strong></h6>
+                        <h6><strong>@currentUser.FullName</strong></h6>
                     </div>
                     <div class="d-block">
-                        <strong class="text-muted">09104466813</strong>
+                        <strong class="text-muted">@currentUser.PhoneNumber.Value</strong>
                     </div>
                 </div>
             </div>

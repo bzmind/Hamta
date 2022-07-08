@@ -47,10 +47,10 @@ public class UserAddressService : IUserAddressService
         return result?.Data;
     }
 
-    public async Task<List<UserAddressDto>?> GetAll(long userId)
+    public async Task<List<UserAddressDto>> GetAll(long userId)
     {
         var result = await _client
             .GetFromJsonAsync<ApiResult<List<UserAddressDto>>>($"api/UserAddress/GetAll/{userId}", _jsonOptions);
-        return result?.Data;
+        return result.Data;
     }
 }

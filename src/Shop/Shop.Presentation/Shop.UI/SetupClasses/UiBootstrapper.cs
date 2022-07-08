@@ -13,6 +13,7 @@ using Shop.UI.SetupClasses.RazorUtility;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Shop.Infrastructure.EmailService;
+using Shop.UI.SetupClasses.HttpClient;
 
 namespace Shop.UI.SetupClasses;
 

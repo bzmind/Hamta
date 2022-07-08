@@ -9,6 +9,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddMvcOptions(options =>
 {
     options.Filters.Add<SerializeModelStateFilter>();
+}).AddRazorPagesOptions(options =>
+{
+    options.Conventions.AuthorizeFolder("/Profile", "ProfileAuth");
 });
 
 builder.Services.RegisterUiDependencies();
@@ -16,6 +19,14 @@ builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
     options.LowercaseQueryStrings = true;
+});
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("ProfileAuth", config =>
+    {
+        config.RequireAuthenticatedUser();
+    });
 });
 
 builder.Services.AddAuthentication(options =>
@@ -56,6 +67,17 @@ app.Use(async (context, next) =>
         context.Request.Headers.Append("Authorization", $"Bearer {token}");
     }
     await next();
+});
+
+app.Use(async (context, next) =>
+{
+    await next();
+    var status = context.Response.StatusCode;
+    if (status == 401)
+    {
+        var previousPath = context.Request.Path;
+        context.Response.Redirect($"/auth/login?redirectTo={previousPath}");
+    }
 });
 
 app.UseHttpsRedirection();

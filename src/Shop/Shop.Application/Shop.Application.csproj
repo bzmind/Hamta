@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Folder Include="Avatars\Remove\" />
+    <Folder Include="Avatars\Create\" />
     <Folder Include="Categories\AddSubCategory\" />
     <Folder Include="Colors\Edit\" />
     <Folder Include="Comments\Remove\" />

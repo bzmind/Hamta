@@ -18,11 +18,11 @@ public class AvatarConfiguration : IEntityTypeConfiguration<Avatar>
 
         builder.Property(avatar => avatar.Name)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(100);
 
         builder.Property(avatar => avatar.Gender)
             .HasConversion<string>()
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(10);
     }
 }

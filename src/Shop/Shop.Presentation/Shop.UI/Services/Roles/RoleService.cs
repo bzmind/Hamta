@@ -49,9 +49,9 @@ public class RoleService : IRoleService
         return result?.Data;
     }
 
-    public async Task<List<RoleDto>?> GetAll()
+    public async Task<List<RoleDto>> GetAll()
     {
         var result = await _client.GetFromJsonAsync<ApiResult<List<RoleDto>>>("api/role/GetAll", _jsonOptions);
-        return result?.Data;
+        return result.Data;
     }
 }

@@ -12,5 +12,5 @@ public interface IShippingService
     Task<ApiResult?> Remove(long shippingId);
 
     Task<ShippingDto?> GetById(long shippingId);
-    Task<List<ShippingDto>?> GetAll();
+    Task<List<ShippingDto>> GetAll();
 }

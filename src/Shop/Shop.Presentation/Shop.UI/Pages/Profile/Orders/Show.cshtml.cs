@@ -3,7 +3,6 @@ using Shop.UI.SetupClasses.RazorUtility;
 
 namespace Shop.UI.Pages.Profile.Orders;
 
-[Authorize]
 public class ShowModel : BaseRazorPage
 {
     public void OnGet()

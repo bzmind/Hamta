@@ -3,6 +3,7 @@
 @model Shop.UI.Pages.Profile.Edit.IndexModel
 @{
     ViewData["Title"] = "ویرایش اطلاعات";
+    var isSubscribedToNewsletter = ViewData["IsSubscribedToNewsletter"];
 }
 
 <div class="container">
@@ -16,50 +17,29 @@
                     </div>
                     <section class="shadow-around p-3">
                         <form method="post">
-                            <div class="row">
-                                <div class="col-lg-12 mb-3">
-                                    <div class="text-dark">
-                                        @Html.EditorFor(m => m.FullName)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12 mb-3">
-                                    <div class="text-dark">
-                                        @Html.EditorFor(m => m.Email)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-lg-12 mb-3">
-                                    <div class="text-dark">
-                                        @Html.EditorFor(m => m.PhoneNumber)
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-element-row text-right">
-                                        <button class="btn-element btn-success-element">
-                                            <i class="fad fa-user-edit"></i>
-                                            ذخیره تغییرات
-                                        </button>
-                                    </div>
-                                </div>
+                            @Html.EditorFor(m => m.FullName)
+                            @Html.EditorFor(m => m.Email)
+                            @Html.EditorFor(m => m.PhoneNumber)
+                            @Html.EditorFor(m => m.Gender)
+                            @Html.EditorFor(m => m.AvatarId)
+                            <div class="form-element-row text-right m-0 mt-3">
+                                <button class="btn-element btn-success-element">
+                                    <i class="fad fa-user-edit"></i>
+                                    ذخیره تغییرات
+                                </button>
                             </div>
                         </form>
                     </section>
                     <section class="shadow-around p-3 mt-3">
                         <div class="row align-items-center">
                             <div class="col-md-12 form-element-row position-relative widget widget-newsletter m-0">
-                                @if (ViewData["IsSubscribedToNewsletter"].Equals(false)
-                                     || ViewData["IsSubscribedToNewsletter"] == null)
+                                @if (isSubscribedToNewsletter == null || isSubscribedToNewsletter.Equals(false))
                                 {
-                                    <partial name="_NotSubscribedToNewsletter"/>
+                                    <partial name="_NotSubscribedToNewsletter" />
                                 }
                                 else
                                 {
-                                    <partial name="_SubscribedToNewsletter"/>
+                                    <partial name="_SubscribedToNewsletter" />
                                 }
                             </div>
                         </div>
