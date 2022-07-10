@@ -1,14 +1,15 @@
 ﻿@page "{handler?}"
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Shop.API.ViewModels.Users
+@using Shop.UI.SetupClasses.ServerSide
 @model Shop.UI.Pages.Profile.Edit.IndexModel
 @{
     ViewData["Title"] = "ویرایش اطلاعات";
-    var isSubscribedToNewsletter = ViewData["IsSubscribedToNewsletter"];
 }
 
 <div class="container">
     <div class="row mb-5">
-        <partial name="_ProfileSidebar" />
+        <partial name="Profile/_ProfileSidebar" />
         <div class="col-lg-9 col-md-8">
             <div class="row mb-3">
                 <div class="col-lg-6 pr-0">
@@ -17,11 +18,17 @@
                     </div>
                     <section class="shadow-around p-3">
                         <form method="post">
+                            <div class="form-element-row">
+                                <button type="button" id="edit-avatar-btn"
+                                        onclick="openAvatarsModal('@Url.Page("Index", "ShowAvatarsModal")', 'انتخاب آواتار')">
+                                    <i class="far fa-camera"></i>
+                                    <img src="@ServerSettings.ServerAvatarsPath/@Model?.AvatarName" alt="avatarId">
+                                </button>
+                            </div>
                             @Html.EditorFor(m => m.FullName)
                             @Html.EditorFor(m => m.Email)
                             @Html.EditorFor(m => m.PhoneNumber)
                             @Html.EditorFor(m => m.Gender)
-                            @Html.EditorFor(m => m.AvatarId)
                             <div class="form-element-row text-right m-0 mt-3">
                                 <button class="btn-element btn-success-element">
                                     <i class="fad fa-user-edit"></i>
@@ -33,7 +40,7 @@
                     <section class="shadow-around p-3 mt-3">
                         <div class="row align-items-center">
                             <div class="col-md-12 form-element-row position-relative widget widget-newsletter m-0">
-                                @if (isSubscribedToNewsletter == null || isSubscribedToNewsletter.Equals(false))
+                                @if (Model?.IsSubscribedToNewsletter == false)
                                 {
                                     <partial name="_NotSubscribedToNewsletter" />
                                 }

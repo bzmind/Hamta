@@ -8,11 +8,11 @@ namespace Shop.UI.Services.Roles;
 
 public interface IRoleService
 {
-    Task<ApiResult?> Create(CreateRoleCommand model);
-    Task<ApiResult?> AddPermissions(AddRolePermissionCommand model);
-    Task<ApiResult?> RemovePermissions(RemoveRolePermissionCommand model);
-    Task<ApiResult?> Remove(long roleId);
+    Task<ApiResult> Create(CreateRoleCommand model);
+    Task<ApiResult> AddPermissions(AddRolePermissionCommand model);
+    Task<ApiResult> RemovePermissions(RemoveRolePermissionCommand model);
+    Task<ApiResult> Remove(long roleId);
 
-    Task<RoleDto?> GetById(long roleId);
+    Task<RoleDto> GetById(long roleId);
     Task<List<RoleDto>> GetAll();
 }

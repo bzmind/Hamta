@@ -9,6 +9,7 @@ using Shop.Application.Users.Remove;
 using Shop.Application.Users.RemoveFavoriteItem;
 using Shop.Application.Users.RemoveRole;
 using Shop.Application.Users.ResetPassword;
+using Shop.Application.Users.SetAvatar;
 using Shop.Application.Users.SetNewsletterSubscription;
 using Shop.Query.Users._DTOs;
 using Shop.Query.Users.GetByEmailOrPhone;
@@ -50,6 +51,11 @@ internal class UserFacade : IUserFacade
     public async Task<OperationResult<bool>> SetNewsletterSubscription(long userId)
     {
         return await _mediator.Send(new SetUserNewsletterSubscriptionCommand(userId));
+    }
+
+    public async Task<OperationResult> SetAvatar(long userId, long avatarId)
+    {
+        return await _mediator.Send(new SetUserAvatarCommand(userId, avatarId));
     }
 
     public async Task<OperationResult> AddFavoriteItem(AddUserFavoriteItemCommand command)

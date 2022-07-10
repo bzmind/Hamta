@@ -27,23 +27,32 @@ public class GetUserByFilterQueryHandler : IBaseQueryHandler<GetUserByFilterQuer
     {
         var @params = request.FilterParams;
 
-        var query = _shopContext.Users.OrderByDescending(c => c.Id).AsQueryable();
+        var query = _shopContext.Users
+            .Join(_shopContext.Avatars,
+                u => u.AvatarId,
+                a => a.Id,
+                (user, avatar) => new
+                {
+                    user,
+                    avatar
+                })
+            .OrderByDescending(c => c.user.Id).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(@params.Name))
-            query = query.Where(c => c.FullName.Contains(@params.Name));
+            query = query.Where(c => c.user.FullName.Contains(@params.Name));
 
         if (!string.IsNullOrWhiteSpace(@params.PhoneNumber))
-            query = query.Where(c => c.FullName.Contains(@params.PhoneNumber));
+            query = query.Where(c => c.user.FullName.Contains(@params.PhoneNumber));
 
         if (!string.IsNullOrWhiteSpace(@params.Email))
-            query = query.Where(c => c.FullName.Contains(@params.Email));
+            query = query.Where(c => c.user.FullName.Contains(@params.Email));
 
         var skip = (@params.PageId - 1) * @params.Take;
 
         var finalQuery = await query
             .Skip(skip)
             .Take(@params.Take)
-            .Select(c => c.MapToUserFilterDto())
+            .Select(c => c.user.MapToUserFilterDto(c.avatar))
             .ToListAsync(cancellationToken);
 
         var roleIds = new List<long>();

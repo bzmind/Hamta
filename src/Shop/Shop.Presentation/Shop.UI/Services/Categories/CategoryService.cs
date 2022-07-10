@@ -7,60 +7,47 @@ using Shop.Application.Categories.Edit;
 
 namespace Shop.UI.Services.Categories;
 
-public class CategoryService : ICategoryService
+public class CategoryService : BaseService, ICategoryService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Category";
 
-    public CategoryService(HttpClient client, JsonSerializerOptions jsonOptions)
+    public CategoryService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
+
+    public async Task<ApiResult> Create(CreateCategoryCommand model)
     {
-        _client = client;
-        _jsonOptions = jsonOptions;
+        return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult?> Create(CreateCategoryCommand model)
+    public async Task<ApiResult> AddSubCategory(AddSubCategoryCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/category/Create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PostAsJsonAsync("AddSubcategory", model);
     }
 
-    public async Task<ApiResult?> AddSubCategory(AddSubCategoryCommand model)
+    public async Task<ApiResult> Edit(EditCategoryCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/category/AddSubcategory", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("Edit", model);
     }
 
-    public async Task<ApiResult?> Edit(EditCategoryCommand model)
+    public async Task<ApiResult> Remove(long categoryId)
     {
-        var result = await _client.PutAsJsonAsync("api/category/Edit", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"Remove/{categoryId}");
     }
 
-    public async Task<ApiResult?> Remove(long categoryId)
+    public async Task<CategoryDto> GetById(long categoryId)
     {
-        var result = await _client.DeleteAsync($"api/category/Remove/{categoryId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
-    }
-
-    public async Task<CategoryDto?> GetById(long categoryId)
-    {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<CategoryDto>>($"api/category/GetById/{categoryId}", _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<CategoryDto>($"GetById/{categoryId}");
+        return result.Data;
     }
 
     public async Task<List<CategoryDto>> GetByParentId(long parentId)
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<List<CategoryDto>>>
-                ($"api/category/GetByParentId/{parentId}", _jsonOptions);
+        var result = await GetFromJsonAsync<List<CategoryDto>>($"GetByParentId/{parentId}");
         return result.Data;
     }
 
     public async Task<List<CategoryDto>> GetAll()
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<List<CategoryDto>>>("api/category/GetAll", _jsonOptions);
+        var result = await GetFromJsonAsync<List<CategoryDto>>("GetAll");
         return result.Data;
     }
 }

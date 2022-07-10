@@ -6,46 +6,36 @@ using Shop.Application.Shippings.Edit;
 
 namespace Shop.UI.Services.Shippings;
 
-public class ShippingService : IShippingService
+public class ShippingService : BaseService, IShippingService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Shipping";
 
-    public ShippingService(HttpClient client, JsonSerializerOptions jsonOptions)
+    public ShippingService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
+
+    public async Task<ApiResult> Create(CreateShippingCommand model)
     {
-        _client = client;
-        _jsonOptions = jsonOptions;
+        return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult?> Create(CreateShippingCommand model)
+    public async Task<ApiResult> Edit(EditShippingCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/shipping/Create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("Edit", model);
     }
 
-    public async Task<ApiResult?> Edit(EditShippingCommand model)
+    public async Task<ApiResult> Remove(long shippingId)
     {
-        var result = await _client.PutAsJsonAsync("api/shipping/Edit", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"Remove/{shippingId}");
     }
 
-    public async Task<ApiResult?> Remove(long shippingId)
+    public async Task<ShippingDto> GetById(long shippingId)
     {
-        var result = await _client.DeleteAsync($"api/shipping/Remove/{shippingId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
-    }
-
-    public async Task<ShippingDto?> GetById(long shippingId)
-    {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<ShippingDto>>($"api/shipping/GetById/{shippingId}", _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<ShippingDto>($"GetById/{shippingId}");
+        return result.Data;
     }
 
     public async Task<List<ShippingDto>> GetAll()
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<List<ShippingDto>>>("api/shipping/GetAll", _jsonOptions);
+        var result = await GetFromJsonAsync<List<ShippingDto>>("GetAll");
         return result.Data;
     }
 }

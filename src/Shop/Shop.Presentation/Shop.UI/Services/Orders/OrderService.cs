@@ -7,67 +7,54 @@ using Shop.Application.Orders.SetStatus;
 
 namespace Shop.UI.Services.Orders;
 
-public class OrderService : IOrderService
+public class OrderService : BaseService, IOrderService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Order";
 
-    public OrderService(HttpClient client, JsonSerializerOptions jsonOptions)
+    public OrderService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
+
+    public async Task<ApiResult> Create(CreateCommentCommandViewModel model)
     {
-        _client = client;
-        _jsonOptions = jsonOptions;
+        return await PostAsJsonAsync("AddItem", model);
     }
 
-    public async Task<ApiResult?> Create(CreateCommentCommandViewModel model)
+    public async Task<ApiResult> Checkout(CheckoutOrderCommandViewModel model)
     {
-        var result = await _client.PostAsJsonAsync("api/order/AddItem", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("Checkout", model);
     }
 
-    public async Task<ApiResult?> Checkout(CheckoutOrderCommandViewModel model)
+    public async Task<ApiResult> IncreaseItemCount(long orderItemId)
     {
-        var result = await _client.PutAsJsonAsync("api/order/Checkout", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsync($"IncreaseItemCount/{orderItemId}");
     }
 
-    public async Task<ApiResult?> IncreaseItemCount(long orderItemId)
+    public async Task<ApiResult> DecreaseItemCount(long orderItemId)
     {
-        var result = await _client.PutAsync($"api/order/IncreaseItemCount/{orderItemId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsync($"DecreaseItemCount/{orderItemId}");
     }
 
-    public async Task<ApiResult?> DecreaseItemCount(long orderItemId)
+    public async Task<ApiResult> SetStatus(SetOrderStatusCommand model)
     {
-        var result = await _client.PutAsync($"api/order/DecreaseItemCount/{orderItemId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("SetStatus", model);
     }
 
-    public async Task<ApiResult?> SetStatus(SetOrderStatusCommand model)
+    public async Task<ApiResult> Remove(long orderItemId)
     {
-        var result = await _client.PutAsJsonAsync("api/order/SetStatus", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"Remove/{orderItemId}");
     }
 
-    public async Task<ApiResult?> Remove(long orderItemId)
+    public async Task<OrderDto> GetById(long orderId)
     {
-        var result = await _client.DeleteAsync($"api/order/Remove/{orderItemId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        var result = await GetFromJsonAsync<OrderDto>($"GetById/{orderId}");
+        return result.Data;
     }
 
-    public async Task<OrderDto?> GetById(long orderId)
+    public async Task<OrderFilterResult> GetByFilter(OrderFilterParams filterParams)
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<OrderDto>>($"api/order/GetById/{orderId}", _jsonOptions);
-        return result?.Data;
-    }
-
-    public async Task<OrderFilterResult?> GetByFilter(OrderFilterParams filterParams)
-    {
-        var url = $"api/order/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"api/order/GetByFilterPageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&StartDate={filterParams.StartDate}" +
                   $"&EndDate={filterParams.EndDate}&Status={filterParams.Status}";
-
-        var result = await _client.GetFromJsonAsync<ApiResult<OrderFilterResult>>(url, _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<OrderFilterResult>(url);
+        return result.Data;
     }
 }

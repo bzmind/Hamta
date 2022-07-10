@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Infrastructure.EmailService;
 using Shop.UI.SetupClasses.RazorUtility;
@@ -10,7 +9,8 @@ public class IndexModel : BaseRazorPage
 {
     private readonly IEmailSender _emailSender;
 
-    public IndexModel(IEmailSender emailSender)
+    public IndexModel(IEmailSender emailSender,
+        IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
     {
         _emailSender = emailSender;
     }

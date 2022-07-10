@@ -8,6 +8,13 @@ namespace Shop.UI.SetupClasses.RazorUtility;
 [ValidateAntiForgeryToken]
 public class BaseRazorPage : PageModel
 {
+    private readonly IRazorToStringRenderer _razorToStringRenderer;
+        
+    public BaseRazorPage(IRazorToStringRenderer razorToStringRenderer)
+    {
+        _razorToStringRenderer = razorToStringRenderer;
+    }
+
     protected void MakeAlert(ApiResult apiResult)
     {
         var model = JsonConvert.SerializeObject(apiResult);
@@ -33,7 +40,7 @@ public class BaseRazorPage : PageModel
         return Content(JsonConvert.SerializeObject(model));
     }
 
-    protected ContentResult AjaxMessageResult(ApiResult apiResult)
+    protected ContentResult AjaxErrorMessageResult(ApiResult apiResult)
     {
         var model = new AjaxResult
         {
@@ -65,5 +72,11 @@ public class BaseRazorPage : PageModel
         public string Message { get; set; }
         public object Data { get; set; }
         public ApiStatusCode StatusCode { get; set; }
+    }
+
+    protected async Task<ContentResult> SuccessResultWithPageHtml(string pageName, object? pageModel)
+    {
+        return AjaxHtmlResult(ApiResult<string>.Success
+            (await _razorToStringRenderer.RenderToStringAsync(pageName, pageModel, PageContext)));
     }
 }

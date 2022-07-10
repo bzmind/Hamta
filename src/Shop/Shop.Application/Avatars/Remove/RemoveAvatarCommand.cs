@@ -28,7 +28,7 @@ public class RemoveAvatarCommandHandler : IBaseCommandHandler<RemoveAvatarComman
 
         _fileService.DeleteFile(Directories.UserAvatars, oldAvatar.Name);
 
-        var canRemoveAvatar = await _avatarRepository.RemoveAvatar(oldAvatar.Id);
+        var canRemoveAvatar = _avatarRepository.RemoveAvatar(oldAvatar);
         if (!canRemoveAvatar)
             return OperationResult.Error(ValidationMessages.FieldCantBeRemoved("آواتار"));
 

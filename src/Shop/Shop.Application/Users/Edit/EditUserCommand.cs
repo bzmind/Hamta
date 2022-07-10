@@ -11,7 +11,7 @@ using Shop.Domain.UserAggregate.Services;
 namespace Shop.Application.Users.Edit;
 
 public record EditUserCommand(long UserId, string FullName, User.UserGender Gender, string Email,
-    string PhoneNumber, long AvatarId) : IBaseCommand;
+    string PhoneNumber) : IBaseCommand;
 
 public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
 {
@@ -33,11 +33,7 @@ public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
         if (user == null)
             return OperationResult.NotFound();
 
-        var avatar = await _avatarRepository.GetAsync(request.AvatarId);
-        if (avatar == null)
-            return OperationResult.NotFound(ValidationMessages.FieldNotFound("آواتار"));
-
-        user.Edit(request.FullName, request.Gender, request.Email, request.PhoneNumber, avatar.Name,
+        user.Edit(request.FullName, request.Gender, request.Email, request.PhoneNumber,
             _userDomainService);
 
         await _userRepository.SaveAsync();

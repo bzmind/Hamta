@@ -26,6 +26,7 @@ public class CreateAvatarCommandHandler : IBaseCommandHandler<CreateAvatarComman
     {
         var image = await _fileService.SaveFileAndGenerateName(request.AvatarFile, Directories.UserAvatars);
         var avatar = new Avatar(image, request.Gender);
+
         _avatarRepository.Add(avatar);
         await _avatarRepository.SaveAsync();
         return OperationResult<long>.Success(avatar.Id);

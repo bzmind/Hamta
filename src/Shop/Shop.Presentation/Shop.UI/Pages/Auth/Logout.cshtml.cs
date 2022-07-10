@@ -1,16 +1,15 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.UI.Services.Auth;
 using Shop.UI.SetupClasses.RazorUtility;
 
 namespace Shop.UI.Pages.Auth;
 
-[Authorize]
 public class LogoutModel : BaseRazorPage
 {
     private readonly IAuthService _authService;
 
-    public LogoutModel(IAuthService authService)
+    public LogoutModel(IAuthService authService,
+        IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
     {
         _authService = authService;
     }

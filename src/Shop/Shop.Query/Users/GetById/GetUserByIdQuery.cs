@@ -21,9 +21,18 @@ public class GetUserByIdQueryHandler : IBaseQueryHandler<GetUserByIdQuery, UserD
 
     public async Task<UserDto?> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var user = await _shopContext.Users.FirstOrDefaultAsync(c => c.Id == request.UserId, cancellationToken);
-        var userDto = user.MapToUserDto();
+        var tables = await _shopContext.Users
+            .Join(_shopContext.Avatars,
+                u => u.AvatarId,
+                a => a.Id,
+                (user, avatar) => new
+                {
+                    user,
+                    avatar
+                })
+            .FirstOrDefaultAsync(c => c.user.Id == request.UserId, cancellationToken);
 
+        var userDto = tables.user.MapToUserDto(tables.avatar);
         await userDto.GetFavoriteItemsDto(_dapperContext);
         await userDto.GetRolesDto(_shopContext);
         return userDto;

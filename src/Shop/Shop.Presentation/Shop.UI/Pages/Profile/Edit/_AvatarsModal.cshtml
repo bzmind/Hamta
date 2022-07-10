@@ -1,0 +1,41 @@
+﻿@using Common.Api.Utility
+@using Shop.Domain.AvatarAggregate
+@using Shop.UI.Services.Users
+@using Shop.UI.SetupClasses.ServerSide
+@model List<Shop.Query.Avatars._DTOs.AvatarDto>
+@inject IUserService UserService
+@{
+    var currentUser = await UserService.GetById(User.GetUserId());
+}
+
+<form method="post" asp-page-handler="SetAvatar" onsubmit="return setAvatar(event)">
+    <div class="avatars-container">
+        @foreach (var gender in Enum.GetValues<Avatar.AvatarGender>().Select(g => g).ToList())
+        {
+            <div class="row w-100 justify-content-center">
+                <label><strong>@gender</strong></label>
+            </div>
+            @foreach (var avatar in Model)
+            {
+                if (avatar.Gender == gender)
+                {
+                    <label class="avatar-single">
+                        <input type="radio" name="radio"
+                               checked="@(currentUser.Avatar.Id == avatar.Id ? "checked" : null)" />
+                        <input type="hidden" value="@avatar.Id" />
+                        <span class="d-block checkmark">
+                            <img src="@ServerSettings.ServerAvatarsPath/@avatar.Name" alt="@($"{gender} avatar")" />
+                        </span>
+                    </label>
+                }
+            }
+            <div class="w-100"></div>
+        }
+    </div>
+    <div class="form-element-row text-right m-0 mt-3">
+        <button class="btn-element btn-success-element">
+            <i class="fad fa-user-edit"></i>
+            ذخیره تغییرات
+        </button>
+    </div>
+</form>

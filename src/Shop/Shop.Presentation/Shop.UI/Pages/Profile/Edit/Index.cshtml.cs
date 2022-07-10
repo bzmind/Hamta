@@ -4,12 +4,12 @@ using Common.Api;
 using Common.Api.Attributes;
 using Common.Api.Utility;
 using Common.Application.Utility.Validation;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Shop.API.CommandViewModels.Users;
 using Shop.API.ViewModels.Users;
 using Shop.Domain.UserAggregate;
+using Shop.UI.Services.Avatars;
 using Shop.UI.Services.Users;
 using Shop.UI.SetupClasses.ModelStateExtensions;
 using Shop.UI.SetupClasses.RazorUtility;
@@ -20,12 +20,13 @@ namespace Shop.UI.Pages.Profile.Edit;
 public class IndexModel : BaseRazorPage
 {
     private readonly IUserService _userService;
-    private readonly IRazorToStringRenderer _razorToStringRenderer;
+    private readonly IAvatarService _avatarService;
 
-    public IndexModel(IUserService userService, IRazorToStringRenderer razorToStringRenderer)
+    public IndexModel(IUserService userService, IAvatarService avatarService,
+        IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
     {
         _userService = userService;
-        _razorToStringRenderer = razorToStringRenderer;
+        _avatarService = avatarService;
     }
 
     [DisplayName("نام و نام خانوادگی")]
@@ -48,13 +49,10 @@ public class IndexModel : BaseRazorPage
     [EnumNotNullOrZero(ErrorMessage = ValidationMessages.InvalidGender)]
     public User.UserGender Gender { get; set; }
 
-    [Display(Name = "آواتار")]
-    [Required(ErrorMessage = ValidationMessages.GenderRequired)]
-    [EnumNotNullOrZero(ErrorMessage = ValidationMessages.InvalidGender)]
-    public long AvatarId { get; set; }
-
     [BindNever]
     public string AvatarName { get; set; }
+    [BindNever]
+    public bool IsSubscribedToNewsletter { get; set; }
 
     public async Task OnGet()
     {
@@ -63,8 +61,8 @@ public class IndexModel : BaseRazorPage
         Email = user.Email;
         PhoneNumber = user.PhoneNumber.Value;
         Gender = user.Gender;
-        AvatarName = user.AvatarName;
-        ViewData["IsSubscribedToNewsletter"] = user.IsSubscribedToNewsletter;
+        AvatarName = user.Avatar.Name;
+        IsSubscribedToNewsletter = user.IsSubscribedToNewsletter;
     }
 
     public async Task<IActionResult> OnPost()
@@ -83,7 +81,7 @@ public class IndexModel : BaseRazorPage
             return RedirectToPage().WithModelStateOf(this);
         }
 
-        return RedirectToPage("../Index");
+        return RedirectToPage("Index");
     }
 
     public async Task<IActionResult> OnPostResetPassword(ResetUserPasswordViewModel model)
@@ -109,16 +107,30 @@ public class IndexModel : BaseRazorPage
             MakeAlert(result);
             if (result.MetaData.ApiStatusCode == ApiStatusCode.TooManyRequests)
                 Response.StatusCode = (int)result.MetaData.ApiStatusCode;
-            return AjaxMessageResult(result);
+            return AjaxErrorMessageResult(result);
         }
 
         if (result.Data == false)
+            return await SuccessResultWithPageHtml("_NotSubscribedToNewsletter", null);
+
+        return await SuccessResultWithPageHtml("_SubscribedToNewsletter", null);
+    }
+
+    public async Task<IActionResult> OnGetShowAvatarsModal()
+    {
+        var avatars = await _avatarService.GetAll();
+        return await SuccessResultWithPageHtml("_AvatarsModal", avatars);
+    }
+
+    public async Task<IActionResult> OnPostSetAvatar(long avatarId)
+    {
+        var result = await _userService.SetAvatar(avatarId);
+        if (result.IsSuccessful == false)
         {
-            return AjaxHtmlResult(ApiResult<string>.Success
-                (await _razorToStringRenderer.RenderToStringAsync("_NotSubscribedToNewsletter", null, PageContext)));
+            MakeAlert(result);
+            return AjaxErrorMessageResult(result);
         }
 
-        return AjaxHtmlResult(ApiResult<string>.Success
-            (await _razorToStringRenderer.RenderToStringAsync("_SubscribedToNewsletter", null, PageContext)));
+        return AjaxRedirectToPageResult("Index");
     }
 }

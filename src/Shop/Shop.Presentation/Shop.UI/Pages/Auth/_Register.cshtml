@@ -11,7 +11,7 @@
 <div class="auth-form-title border-0">
     @ViewData["Title"]
 </div>
-<form method="post" asp-page-handler="Register" onsubmit="return onFormSubmit(event, updateLoginForm)">
+<form method="post" asp-page-handler="Register" onsubmit="return handleLoginPageAjax(event)">
     @Html.EditorFor(m => m.FullName)
     @Html.EditorFor(m => m.Password)
     @Html.EditorFor(m => m.ConfirmPassword)

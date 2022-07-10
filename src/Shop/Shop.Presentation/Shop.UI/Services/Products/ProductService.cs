@@ -11,18 +11,13 @@ using Shop.Application.Products.ReplaceMainImage;
 
 namespace Shop.UI.Services.Products;
 
-public class ProductService : IProductService
+public class ProductService : BaseService, IProductService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Product";
 
-    public ProductService(HttpClient client, JsonSerializerOptions jsonOptions)
-    {
-        _client = client;
-        _jsonOptions = jsonOptions;
-    }
+    public ProductService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult?> Create(CreateProductCommand model)
+    public async Task<ApiResult> Create(CreateProductCommand model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.CategoryId.ToString()), "CategoryId");
@@ -50,11 +45,10 @@ public class ProductService : IProductService
         var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
         formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
 
-        var result = await _client.PostAsync("api/product/Create", formData);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PostAsFormDataAsync("Create", formData);
     }
 
-    public async Task<ApiResult?> Edit(EditProductCommand model)
+    public async Task<ApiResult> Edit(EditProductCommand model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
@@ -83,11 +77,10 @@ public class ProductService : IProductService
         var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
         formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
 
-        var result = await _client.PutAsync("api/product/Edit", formData);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsFormDataAsync("Edit", formData);
     }
 
-    public async Task<ApiResult?> ReplaceMainImage(ReplaceProductMainImageCommand model)
+    public async Task<ApiResult> ReplaceMainImage(ReplaceProductMainImageCommand model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
@@ -95,43 +88,37 @@ public class ProductService : IProductService
         if (model.MainImage.IsImage())
             formData.Add(new StreamContent(model.MainImage.OpenReadStream()), "MainImage", model.MainImage.FileName);
 
-        var result = await _client.PutAsync("api/product/ReplaceMainImage", formData);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsFormDataAsync("ReplaceMainImage", formData);
     }
 
-    public async Task<ApiResult?> AddScore(AddProductScoreCommand model)
+    public async Task<ApiResult> AddScore(AddProductScoreCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/product/AddScore", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("AddScore", model);
     }
 
-    public async Task<ApiResult?> RemoveGalleryImage(RemoveProductGalleryImageCommand model)
+    public async Task<ApiResult> RemoveGalleryImage(RemoveProductGalleryImageCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/product/RemoveGalleryImage", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("RemoveGalleryImage", model);
     }
 
-    public async Task<ApiResult?> Remove(long productId)
+    public async Task<ApiResult> Remove(long productId)
     {
-        var result = await _client.DeleteAsync($"api/product/Remove/{productId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"Remove/{productId}");
     }
 
-    public async Task<ProductDto?> GetById(long productId)
+    public async Task<ProductDto> GetById(long productId)
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<ProductDto>>($"api/product/GetById/{productId}", _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<ProductDto>($"GetById/{productId}");
+        return result.Data;
     }
 
-    public async Task<ProductFilterResult?> GetByFilter(ProductFilterParams filterParams)
+    public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
     {
-        var url = $"api/product/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"api/product/GetByFilterPageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&CategoryId={filterParams.CategoryId}&Name={filterParams.Name}" +
                   $"&EnglishName={filterParams.EnglishName}&Slug={filterParams.Slug}" +
                   $"&AverageScore={filterParams.AverageScore}";
-
-        var result = await _client.GetFromJsonAsync<ApiResult<ProductFilterResult>>(url, _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<ProductFilterResult>(url);
+        return result.Data;
     }
 }

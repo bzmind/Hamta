@@ -6,42 +6,33 @@ using Shop.Application.Colors.Edit;
 
 namespace Shop.UI.Services.Colors;
 
-public class ColorService : IColorService
+public class ColorService : BaseService, IColorService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Color";
+    
+    public ColorService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public ColorService(HttpClient client, JsonSerializerOptions jsonOptions)
+    public async Task<ApiResult> Create(CreateColorCommand model)
     {
-        _client = client;
-        _jsonOptions = jsonOptions;
+        return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult?> Create(CreateColorCommand model)
+    public async Task<ApiResult> Edit(EditColorCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/color/Create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("Edit", model);
     }
 
-    public async Task<ApiResult?> Edit(EditColorCommand model)
+    public async Task<ColorDto> GetById(long colorId)
     {
-        var result = await _client.PutAsJsonAsync("api/color/Edit", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
-    }
-
-    public async Task<ColorDto?> GetById(long colorId)
-    {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<ColorDto>>($"api/color/GetById/{colorId}", _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<ColorDto>($"GetById/{colorId}");
+        return result.Data;
     }
 
     public async Task<List<ColorDto>> GetByFilter(ColorFilterParams filterParams)
     {
-        var url = $"api/color/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&Name={filterParams.Name}&Code={filterParams.Code}";
-
-        var result = await _client.GetFromJsonAsync<ApiResult<List<ColorDto>>>(url, _jsonOptions);
+        var url = $"api/color/GetByFilterPageId={filterParams.PageId}" +
+                  $"&Take={filterParams.Take}&Name={filterParams.Name}&Code={filterParams.Code}";
+        var result = await GetFromJsonAsync<List<ColorDto>>(url);
         return result.Data;
     }
 }

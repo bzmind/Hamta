@@ -13,6 +13,7 @@ using Shop.UI.SetupClasses.RazorUtility;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Shop.Infrastructure.EmailService;
+using Shop.UI.Services.Avatars;
 using Shop.UI.SetupClasses.HttpClient;
 
 namespace Shop.UI.SetupClasses;
@@ -22,6 +23,10 @@ public static class UiBootstrapper
     public static void RegisterUiDependencies(this IServiceCollection services)
     {
         const string baseAddress = "https://localhost:7087";
+
+        services.AddHttpClient<IAvatarService, AvatarService>
+            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 
         services.AddHttpClient<IAuthService, AuthService>
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))

@@ -19,9 +19,17 @@ public class GetUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<GetUserByEmai
 
     public async Task<UserDto?> Handle(GetUserByEmailOrPhoneQuery request, CancellationToken cancellationToken)
     {
-        var user = await _shopContext.Users
-            .FirstOrDefaultAsync(c => c.PhoneNumber.Value == request.EmailOrPhone
-                                      || c.Email == request.EmailOrPhone, cancellationToken);
-        return user.MapToUserDto();
+        var tables = await _shopContext.Users
+            .Join(_shopContext.Avatars,
+                u => u.AvatarId,
+                a => a.Id,
+                (user, avatar) => new
+                {
+                    user,
+                    avatar
+                })
+            .FirstOrDefaultAsync(tables => tables.user.PhoneNumber.Value == request.EmailOrPhone ||
+                                         tables.user.Email == request.EmailOrPhone, cancellationToken);
+        return tables.user.MapToUserDto(tables.avatar);
     }
 }

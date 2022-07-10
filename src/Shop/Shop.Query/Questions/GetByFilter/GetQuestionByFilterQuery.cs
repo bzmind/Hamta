@@ -33,7 +33,7 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
                 _shopContext.Users,
                 q => q.UserId,
                 c => c.Id,
-                (question, user) => question.MapToQuestionDto(user.FullName))
+                (question, user) => question.MapToQuestionDto(user))
             .AsQueryable();
 
         if (@params.ProductId != null)

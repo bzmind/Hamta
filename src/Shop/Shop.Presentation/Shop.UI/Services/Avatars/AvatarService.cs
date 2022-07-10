@@ -6,51 +6,40 @@ using Shop.Query.Avatars._DTOs;
 
 namespace Shop.UI.Services.Avatars;
 
-public class AvatarService : IAvatarService
+public class AvatarService : BaseService, IAvatarService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Avatar";
 
-    public AvatarService(HttpClient client, JsonSerializerOptions jsonOptions)
-    {
-        _client = client;
-        _jsonOptions = jsonOptions;
-    }
+    public AvatarService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult?> Create(CreateAvatarCommand model)
+    public async Task<ApiResult> Create(CreateAvatarCommand model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StreamContent(model.AvatarFile.OpenReadStream()), "AvatarFile", model.AvatarFile.FileName);
         formData.Add(new StringContent(model.Gender.ToString()));
-
-        var result = await _client.PostAsync("api/avatar/Create", formData);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PostAsFormDataAsync("Create", formData);
     }
 
-    public async Task<ApiResult?> Remove(long avatarId)
+    public async Task<ApiResult> Remove(long avatarId)
     {
-        var result = await _client.DeleteAsync($"api/avatar/Remove/{avatarId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"Remove/{avatarId}");
     }
 
-    public async Task<AvatarDto?> GetById(long avatarId)
+    public async Task<AvatarDto> GetById(long avatarId)
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<AvatarDto>>($"api/product/GetById/{avatarId}", _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<AvatarDto>($"GetById/{avatarId}");
+        return result.Data;
     }
 
-    public async Task<AvatarDto?> GetByGender(Avatar.AvatarGender gender)
+    public async Task<AvatarDto> GetByGender(Avatar.AvatarGender gender)
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<AvatarDto>>($"api/product/GetById/{gender}", _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<AvatarDto>($"GetByGender/{gender}");
+        return result.Data;
     }
 
     public async Task<List<AvatarDto>> GetAll()
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<List<AvatarDto>>>("api/category/GetAll", _jsonOptions);
+        var result = await GetFromJsonAsync<List<AvatarDto>>($"GetAll");
         return result.Data;
     }
 }

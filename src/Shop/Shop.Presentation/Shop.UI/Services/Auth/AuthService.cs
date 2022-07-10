@@ -4,41 +4,36 @@ using System.Text.Json;
 
 namespace Shop.UI.Services.Auth;
 
-public class AuthService : IAuthService
+public class AuthService : BaseService, IAuthService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Auth";
+
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthService(HttpClient client, JsonSerializerOptions jsonOptions, IHttpContextAccessor httpContextAccessor)
+    public AuthService(HttpClient client, JsonSerializerOptions jsonOptions,
+        IHttpContextAccessor httpContextAccessor) : base(client, jsonOptions)
     {
-        _client = client;
-        _jsonOptions = jsonOptions;
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<ApiResult<LoginResponse>?> Login(LoginViewModel model)
+    public async Task<ApiResult<LoginResponse>> Login(LoginViewModel model)
     {
-        var result = await _client.PostAsJsonAsync("api/auth/Login", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult<LoginResponse>>(_jsonOptions);
+        return await PostAsJsonAsync<LoginResponse>("Login", model);
     }
 
-    public async Task<ApiResult?> Register(RegisterViewModel model)
+    public async Task<ApiResult> Register(RegisterViewModel model)
     {
-        var result = await _client.PostAsJsonAsync("api/auth/Register", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PostAsJsonAsync<LoginResponse>("Register", model);
     }
 
-    public async Task<ApiResult<LoginResponse>?> RefreshToken()
+    public async Task<ApiResult<LoginResponse>> RefreshToken()
     {
         var refreshToken = _httpContextAccessor.HttpContext!.Request.Cookies["refreshToken"];
-        var result = await _client.PostAsync($"api/auth/RefreshToken?refreshToken={refreshToken}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult<LoginResponse>>(_jsonOptions);
+        return await PostAsync<LoginResponse>($"RefreshToken={refreshToken}");
     }
 
-    public async Task<ApiResult?> Logout()
+    public async Task<ApiResult> Logout()
     {
-        var result = await _client.PostAsync("api/auth/Logout", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PostAsync<LoginResponse>("Logout");
     }
 }

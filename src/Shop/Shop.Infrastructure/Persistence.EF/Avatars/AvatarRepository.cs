@@ -21,14 +21,9 @@ public class AvatarRepository : BaseRepository<Avatar>, IAvatarRepository
             .First();
     }
 
-    public async Task<bool> RemoveAvatar(long avatarId)
+    public bool RemoveAvatar(Avatar avatar)
     {
-        var avatar = await Context.Avatars.FirstOrDefaultAsync(a => a.Id == avatarId);
-        if (avatar == null)
-            return false;
-
-        Context.Remove(avatar);
-        await Context.SaveChangesAsync();
+        Context.Avatars.Remove(avatar);
         return true;
     }
 }

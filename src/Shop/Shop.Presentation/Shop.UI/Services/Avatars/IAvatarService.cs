@@ -7,10 +7,10 @@ namespace Shop.UI.Services.Avatars;
 
 public interface IAvatarService
 {
-    Task<ApiResult?> Create(CreateAvatarCommand model);
-    Task<ApiResult?> Remove(long avatarId);
+    Task<ApiResult> Create(CreateAvatarCommand model);
+    Task<ApiResult> Remove(long avatarId);
 
-    Task<AvatarDto?> GetById(long avatarId);
-    Task<AvatarDto?> GetByGender(Avatar.AvatarGender gender);
+    Task<AvatarDto> GetById(long avatarId);
+    Task<AvatarDto> GetByGender(Avatar.AvatarGender gender);
     Task<List<AvatarDto>> GetAll();
 }

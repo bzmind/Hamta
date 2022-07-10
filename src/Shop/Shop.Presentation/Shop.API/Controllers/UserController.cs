@@ -42,7 +42,7 @@ public class UserController : BaseApiController
     public async Task<ApiResult> Edit(EditUserCommandViewModel model)
     {
         var command = new EditUserCommand(User.GetUserId(), model.FullName, model.Gender, model.Email,
-            model.PhoneNumber, model.AvatarId);
+            model.PhoneNumber);
         var result = await _userFacade.Edit(command);
         return CommandResult(result);
     }
@@ -59,6 +59,13 @@ public class UserController : BaseApiController
     public async Task<ApiResult> SetNewsletterSubscription(long userId)
     {
         var result = await _userFacade.SetNewsletterSubscription(userId);
+        return CommandResult(result);
+    }
+
+    [HttpPut("SetAvatar/{avatarId}")]
+    public async Task<ApiResult> SetAvatar(long avatarId)
+    {
+        var result = await _userFacade.SetAvatar(User.GetUserId(), avatarId);
         return CommandResult(result);
     }
 

@@ -32,8 +32,11 @@ public class GetQuestionByIdQueryHandler : IBaseQueryHandler<GetQuestionByIdQuer
                 })
             .FirstOrDefaultAsync(cancellationToken);
 
+        if (tables == null)
+            return null;
+
         var repliesUserIds = new List<long>();
-        tables?.question.Replies.ToList().ForEach(rDto =>
+        tables.question.Replies.ToList().ForEach(rDto =>
         {
             repliesUserIds.Add(rDto.UserId);
         });
@@ -41,7 +44,7 @@ public class GetQuestionByIdQueryHandler : IBaseQueryHandler<GetQuestionByIdQuer
         var users = await _shopContext.Users
             .Where(c => repliesUserIds.Contains(c.Id)).ToListAsync(cancellationToken);
 
-        var questionDto = tables.question.MapToQuestionDto(tables.user.FullName);
+        var questionDto = tables.question.MapToQuestionDto(tables.user);
 
         questionDto.Replies.ForEach(rDto =>
         {

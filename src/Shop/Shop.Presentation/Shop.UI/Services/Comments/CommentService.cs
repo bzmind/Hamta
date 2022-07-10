@@ -6,60 +6,48 @@ using Shop.Application.Comments.SetStatus;
 
 namespace Shop.UI.Services.Comments;
 
-public class CommentService : ICommentService
+public class CommentService : BaseService, ICommentService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Comment";
 
-    public CommentService(HttpClient client, JsonSerializerOptions jsonOptions)
+    public CommentService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
+
+    public async Task<ApiResult> Create(CreateCommentCommandViewModel model)
     {
-        _client = client;
-        _jsonOptions = jsonOptions;
+        return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult?> Create(CreateCommentCommandViewModel model)
+    public async Task<ApiResult> SetStatus(SetCommentStatusCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/comment/Create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("SetStatus", model);
     }
 
-    public async Task<ApiResult?> SetStatus(SetCommentStatusCommand model)
+    public async Task<ApiResult> SetLikes(long commentId)
     {
-        var result = await _client.PutAsJsonAsync("api/comment/SetStatus", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsync($"SetLikes/{commentId}");
     }
 
-    public async Task<ApiResult?> SetLikes(long commentId)
+    public async Task<ApiResult> SetDislikes(long commentId)
     {
-        var result = await _client.PutAsync($"api/comment/SetLikes/{commentId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsync($"SetDislikes/{commentId}");
     }
 
-    public async Task<ApiResult?> SetDislikes(long commentId)
+    public async Task<ApiResult> Remove(long commentId)
     {
-        var result = await _client.PutAsync($"api/comment/SetDislikes/{commentId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"Remove/{commentId}");
     }
 
-    public async Task<ApiResult?> Remove(long commentId)
+    public async Task<CommentDto> GetById(long commentId)
     {
-        var result = await _client.DeleteAsync($"api/comment/Remove/{commentId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        var result = await GetFromJsonAsync<CommentDto>($"Remove/{commentId}");
+        return result.Data;
     }
 
-    public async Task<CommentDto?> GetById(long commentId)
+    public async Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams)
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<CommentDto>>($"api/comment/Remove/{commentId}", _jsonOptions);
-        return result?.Data;
-    }
-
-    public async Task<CommentFilterResult?> GetByFilter(CommentFilterParams filterParams)
-    {
-        var url = $"api/comment/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"api/comment/GetByFilterPageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&ProductId={filterParams.ProductId}&Status={filterParams.Status}";
-
-        var result = await _client.GetFromJsonAsync<ApiResult<CommentFilterResult>>(url, _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<CommentFilterResult>(url);
+        return result.Data;
     }
 }

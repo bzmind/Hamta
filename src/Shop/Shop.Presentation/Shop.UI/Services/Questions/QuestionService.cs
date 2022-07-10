@@ -7,60 +7,48 @@ using Shop.Application.Questions.SetStatus;
 
 namespace Shop.UI.Services.Questions;
 
-public class QuestionService : IQuestionService
+public class QuestionService : BaseService, IQuestionService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "Question";
 
-    public QuestionService(HttpClient client, JsonSerializerOptions jsonOptions)
+    public QuestionService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
+
+    public async Task<ApiResult> Create(CreateQuestionCommandViewModel model)
     {
-        _client = client;
-        _jsonOptions = jsonOptions;
+        return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult?> Create(CreateQuestionCommandViewModel model)
+    public async Task<ApiResult> SetStatus(SetQuestionStatusCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/question/Create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("SetStatus", model);
     }
 
-    public async Task<ApiResult?> SetStatus(SetQuestionStatusCommand model)
+    public async Task<ApiResult> AddReply(AddReplyCommandViewModel model)
     {
-        var result = await _client.PutAsJsonAsync("api/question/SetStatus", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("AddReply", model);
     }
 
-    public async Task<ApiResult?> AddReply(AddReplyCommandViewModel model)
+    public async Task<ApiResult> RemoveReply(RemoveReplyCommand model)
     {
-        var result = await _client.PutAsJsonAsync("api/question/AddReply", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("RemoveReply", model);
     }
 
-    public async Task<ApiResult?> RemoveReply(RemoveReplyCommand model)
+    public async Task<ApiResult> Remove(long questionId)
     {
-        var result = await _client.PutAsJsonAsync("api/question/RemoveReply", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"Remove/{questionId}");
     }
 
-    public async Task<ApiResult?> Remove(long questionId)
+    public async Task<QuestionDto> GetById(long questionId)
     {
-        var result = await _client.DeleteAsync($"api/question/SetStatus/{questionId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        var result = await GetFromJsonAsync<QuestionDto>($"GetById/{questionId}");
+        return result.Data;
     }
 
-    public async Task<QuestionDto?> GetById(long questionId)
+    public async Task<QuestionFilterResult> GetByFilter(QuestionFilterParams filterParams)
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<QuestionDto>>($"api/question/GetById/{questionId}", _jsonOptions);
-        return result?.Data;
-    }
-
-    public async Task<QuestionFilterResult?> GetByFilter(QuestionFilterParams filterParams)
-    {
-        var url = $"api/question/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"api/question/GetByFilterPageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&ProductId={filterParams.ProductId}&UserId={filterParams.UserId}&Status={filterParams.Status}";
-
-        var result = await _client.GetFromJsonAsync<ApiResult<QuestionFilterResult>>(url, _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<QuestionFilterResult>(url);
+        return result.Data;
     }
 }

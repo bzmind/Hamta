@@ -1,7 +1,6 @@
 ﻿using Common.Query.BaseClasses;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
-using Shop.Query.Categories._Mappers;
 using Shop.Query.Products._DTOs;
 using Shop.Query.Products._Mappers;
 
@@ -21,7 +20,8 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
     public async Task<ProductDto?> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
         var productDtos =
-            await _shopContext.Products.Where(p => p.Id == request.ProductId)
+            await _shopContext.Products
+                .Where(p => p.Id == request.ProductId)
                 .Join(
                     _shopContext.Categories,
                     p => p.CategoryId,
@@ -45,38 +45,8 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
                     _shopContext.Colors,
                     tables => tables.Inventory.ColorId,
                     c => c.Id,
-                    (tables, color) => new ProductDto
-                    {
-                        Id = tables.Product.Id,
-                        CreationDate = tables.Product.CreationDate,
-                        CategoryId = tables.Product.CategoryId,
-                        Name = tables.Product.Name,
-                        EnglishName = tables.Product.EnglishName,
-                        Slug = tables.Product.Slug,
-                        Description = tables.Product.Description,
-                        AverageScore = tables.Product.AverageScore,
-                        MainImage = tables.Product.MainImage.Name,
-                        GalleryImages = tables.Product.GalleryImages.ToList().MapToProductImageDto(),
-                        CustomSpecifications = tables.Product.CustomSpecifications.ToList().MapToProductSpecificationDto(),
-                        CategorySpecifications = tables.Category.Specifications.ToList().MapToCategorySpecificationDto(),
-                        ExtraDescriptions = tables.Product.ExtraDescriptions.ToList().MapToExtraDescriptionDto(),
-                        ProductInventories = new List<ProductInventoryDto>
-                        {
-                            new()
-                            {
-                                Id = tables.Inventory.Id,
-                                CreationDate = tables.Inventory.CreationDate,
-                                ProductId = tables.Inventory.Id,
-                                Quantity = tables.Inventory.Quantity,
-                                Price = tables.Inventory.Price.Value,
-                                ColorName = color.Name,
-                                ColorCode = color.Code,
-                                IsAvailable = tables.Inventory.IsAvailable,
-                                DiscountPercentage = tables.Inventory.DiscountPercentage,
-                                IsDiscounted = tables.Inventory.IsDiscounted
-                            }
-                        }
-                    })
+                    (tables, color) => 
+                        tables.Product.MapToProductDto(tables.Category, tables.Inventory, color))
                 .ToListAsync(cancellationToken);
 
         var groupedProduct = productDtos.GroupBy(p => p.Id).Select(productGroup =>

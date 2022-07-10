@@ -8,97 +8,86 @@ using Shop.Application.Users.Create;
 
 namespace Shop.UI.Services.Users;
 
-public class UserService : IUserService
+public class UserService : BaseService, IUserService
 {
-    private readonly HttpClient _client;
-    private readonly JsonSerializerOptions _jsonOptions;
+    protected override string ApiEndpointName { get; set; } = "User";
 
-    public UserService(HttpClient client, JsonSerializerOptions jsonOptions)
+    public UserService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions)
     {
-        _client = client;
-        _jsonOptions = jsonOptions;
     }
 
-    public async Task<ApiResult?> Create(CreateUserCommand model)
+    public async Task<ApiResult> Create(CreateUserCommand model)
     {
-        var result = await _client.PostAsJsonAsync("api/user/Create", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult?> Edit(EditUserCommandViewModel model)
+    public async Task<ApiResult> Edit(EditUserCommandViewModel model)
     {
-        var result = await _client.PutAsJsonAsync("api/user/Edit", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("Edit", model);
     }
 
-    public async Task<ApiResult?> ResetPassword(ResetUserPasswordViewModel model)
+    public async Task<ApiResult> ResetPassword(ResetUserPasswordViewModel model)
     {
-        var result = await _client.PutAsJsonAsync("api/user/ResetPassword", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("ResetPassword", model);
     }
 
     public async Task<ApiResult<bool>> SetNewsletterSubscription(long userId)
     {
-        var result = await _client.PutAsync($"api/user/SetNewsletterSubscription/{userId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult<bool>>(_jsonOptions);
+        return await PutAsync<bool>($"SetNewsletterSubscription/{userId}");
     }
 
-    public async Task<ApiResult?> AddFavoriteItem(long productId)
+    public async Task<ApiResult> SetAvatar(long avatarId)
     {
-        var result = await _client.PutAsync($"api/user/AddFavoriteItem/{productId}", null);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsync($"SetAvatar/{avatarId}");
     }
 
-    public async Task<ApiResult?> AddRole(AddUserRoleCommand model)
+    public async Task<ApiResult> AddFavoriteItem(long productId)
     {
-        var result = await _client.PutAsJsonAsync("api/user/AddRole", model);
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsync($"AddFavoriteItem/{productId}");
     }
 
-    public async Task<ApiResult?> RemoveFavoriteItem(long favoriteItemId)
+    public async Task<ApiResult> AddRole(AddUserRoleCommand model)
     {
-        var result = await _client.DeleteAsync($"api/user/RemoveFavoriteItem/{favoriteItemId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await PutAsJsonAsync("AddRole", model);
     }
 
-    public async Task<ApiResult?> RemoveRole(long roleId)
+    public async Task<ApiResult> RemoveFavoriteItem(long favoriteItemId)
     {
-        var result = await _client.DeleteAsync($"api/user/RemoveRole/{roleId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"RemoveFavoriteItem/{favoriteItemId}");
     }
 
-    public async Task<ApiResult?> Remove(long userId)
+    public async Task<ApiResult> RemoveRole(long roleId)
     {
-        var result = await _client.DeleteAsync($"api/user/Remove/{userId}");
-        return await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
+        return await DeleteAsync($"RemoveRole/{roleId}");
     }
 
-    public async Task<UserDto?> GetById(long userId)
+    public async Task<ApiResult> Remove(long userId)
     {
-        var result = await _client.GetFromJsonAsync<ApiResult<UserDto>>($"api/user/GetById/{userId}", _jsonOptions);
-        return result?.Data;
+        return await DeleteAsync($"Remove/{userId}");
     }
 
-    public async Task<UserDto?> GetByEmailOrPhone(string emailOrPhone)
+    public async Task<UserDto> GetById(long userId)
     {
-        var result = await _client
-            .GetFromJsonAsync<ApiResult<UserDto>>($"api/user/GetByEmailOrPhone/{emailOrPhone}", _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<UserDto>($"GetById/{userId}");
+        return result.Data;
+    }
+
+    public async Task<UserDto> GetByEmailOrPhone(string emailOrPhone)
+    {
+        var result = await GetFromJsonAsync<UserDto>($"GetByEmailOrPhone/{emailOrPhone}");
+        return result.Data;
     }
 
     public async Task<ApiResult<LoginNextStep>> SearchByEmailOrPhone(string emailOrPhone)
     {
-        var result = await _client.GetAsync($"api/user/SearchByEmailOrPhone/{emailOrPhone}");
-        var jsonResult = await result.Content.ReadFromJsonAsync<ApiResult<LoginNextStep>>(_jsonOptions);
-        return jsonResult;
+        return await GetFromJsonAsync<LoginNextStep>($"SearchByEmailOrPhone/{emailOrPhone}");
     }
 
-    public async Task<UserFilterResult?> GetByFilter(UserFilterParams filterParams)
+    public async Task<UserFilterResult> GetByFilter(UserFilterParams filterParams)
     {
-        var url = $"api/user/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"GetByFilterPageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&Name={filterParams.Name}&PhoneNumber={filterParams.PhoneNumber}&Email={filterParams.Email}";
-
-        var result = await _client.GetFromJsonAsync<ApiResult<UserFilterResult>>(url, _jsonOptions);
-        return result?.Data;
+        var result = await GetFromJsonAsync<UserFilterResult>(url);
+        return result.Data;
     }
 }

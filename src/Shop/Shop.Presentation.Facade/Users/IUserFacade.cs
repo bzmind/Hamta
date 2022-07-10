@@ -18,6 +18,7 @@ public interface IUserFacade
     Task<OperationResult> Register(RegisterUserCommand command);
     Task<OperationResult> ResetPassword(ResetUserPasswordCommand command);
     Task<OperationResult<bool>> SetNewsletterSubscription(long userId);
+    Task<OperationResult> SetAvatar(long userId, long avatarId);
     Task<OperationResult> AddFavoriteItem(AddUserFavoriteItemCommand command);
     Task<OperationResult> RemoveFavoriteItem(RemoveUserFavoriteItemCommand command);
     Task<OperationResult> AddRole(AddUserRoleCommand command);

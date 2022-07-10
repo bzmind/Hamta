@@ -1,5 +1,6 @@
 ﻿using Dapper;
 using Microsoft.EntityFrameworkCore;
+using Shop.Domain.AvatarAggregate;
 using Shop.Domain.UserAggregate;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Users._DTOs;
@@ -8,7 +9,7 @@ namespace Shop.Query.Users._Mappers;
 
 internal static class UserMapper
 {
-    public static UserDto? MapToUserDto(this User? user)
+    public static UserDto? MapToUserDto(this User? user, Avatar avatar)
     {
         if (user == null)
             return null;
@@ -23,7 +24,13 @@ internal static class UserMapper
             Addresses = user.Addresses.ToList().MapToUserAddressDto(),
             PhoneNumber = user.PhoneNumber,
             Gender = user.Gender,
-            AvatarName = user.AvatarName,
+            Avatar = new AvatarDto
+            {
+                Id = avatar.Id,
+                CreationDate = avatar.CreationDate,
+                Name = avatar.Name,
+                Gender = avatar.Gender
+            },
             IsSubscribedToNewsletter = user.IsSubscribedToNewsletter,
             FavoriteItems = user.FavoriteItems.Select(fi => new UserFavoriteItemDto
             {
@@ -45,11 +52,11 @@ internal static class UserMapper
                 RoleTitle = ""
             }).ToList()
         };
-        
+
         return userDto;
     }
 
-    public static UserFilterDto? MapToUserFilterDto(this User? user)
+    public static UserFilterDto? MapToUserFilterDto(this User? user, Avatar avatar)
     {
         if (user == null)
             return null;
@@ -62,7 +69,7 @@ internal static class UserMapper
             Email = user.Email,
             PhoneNumber = user.PhoneNumber,
             Gender = user.Gender,
-            AvatarName = user.AvatarName,
+            AvatarName = avatar.Name,
             IsSubscribedToNewsletter = user.IsSubscribedToNewsletter,
             Roles = user.Roles.Select(r => new UserRoleDto
             {
