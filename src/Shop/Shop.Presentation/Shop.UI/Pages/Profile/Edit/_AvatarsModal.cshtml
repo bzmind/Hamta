@@ -21,7 +21,7 @@
                 {
                     <label class="avatar-single">
                         <input type="radio" name="radio"
-                               checked="@(currentUser.Avatar.Id == avatar.Id ? "checked" : null)" />
+                   checked="@(currentUser.Avatar.Id == avatar.Id ? "checked" : null)" />
                         <input type="hidden" value="@avatar.Id" />
                         <span class="d-block checkmark">
                             <img src="@ServerSettings.ServerAvatarsPath/@avatar.Name" alt="@($"{gender} avatar")" />
@@ -32,10 +32,9 @@
             <div class="w-100"></div>
         }
     </div>
-    <div class="form-element-row text-right m-0 mt-3">
+    <div class="form-element-row text-right m-0 mt-4">
         <button class="btn-element btn-success-element">
-            <i class="fad fa-user-edit"></i>
-            ذخیره تغییرات
+            ذخیره
         </button>
     </div>
 </form>

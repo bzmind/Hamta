@@ -30,7 +30,7 @@ public class SearchUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<SearchUser
                 NextStep = NextSteps.Password
             };
 
-        if (request.EmailOrPhone.IsPhone())
+        if (request.EmailOrPhone.IsIranPhone())
             return new LoginNextStep
             {
                 UserExists = false,

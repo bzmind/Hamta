@@ -87,7 +87,6 @@ public class IndexModel : BaseRazorPage
     public async Task<IActionResult> OnPostResetPassword(ResetUserPasswordViewModel model)
     {
         var result = await _userService.ResetPassword(model);
-
         if (result.IsSuccessful == false)
         {
             ModelState.Clear();
@@ -95,7 +94,7 @@ public class IndexModel : BaseRazorPage
             return RedirectToPage().WithModelStateOf(this);
         }
 
-        return RedirectToPage("../Auth/Login");
+        return RedirectToPage("../Index");
     }
 
     public async Task<IActionResult> OnPostSetNewsletterSubscription()

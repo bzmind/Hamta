@@ -33,6 +33,9 @@ public static class ValidationMessages
     public const string InvalidConfirmNewPassword = "رمز های عبور جدید با هم یکسان نیستند";
     public const string InvalidPrice = "مبلغ نامعتبر است";
     public const string InvalidGender = "جنسیت نامعتبر است";
+    public const string InvalidAvatar = "آواتار نامعتبر است";
+    public const string InvalidImage = "عکس نامعتبر است";
+    public const string InvalidFile = "فایل نامعتبر است";
 
     public const string EmailRegex = @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}";
     public const string IranPhoneRegex = @"^(?:0|98|\+98|\+980|098)?(9\d{9})$";

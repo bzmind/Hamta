@@ -8,9 +8,7 @@ public class ImageFileAttribute : ValidationAttribute, IClientModelValidator
 {
     public override bool IsValid(object? value)
     {
-        var fileInput = value as IFormFile;
-
-        if (fileInput == null)
+        if (value is not IFormFile fileInput)
             return true;
 
         return fileInput.IsImage();
