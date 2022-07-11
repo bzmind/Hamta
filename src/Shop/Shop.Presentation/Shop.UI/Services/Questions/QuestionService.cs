@@ -1,9 +1,9 @@
 ﻿using Common.Api;
 using Shop.Query.Questions._DTOs;
 using System.Text.Json;
-using Shop.API.CommandViewModels.Questions;
 using Shop.Application.Questions.RemoveReply;
 using Shop.Application.Questions.SetStatus;
+using Shop.API.ViewModels.Questions;
 
 namespace Shop.UI.Services.Questions;
 
@@ -13,7 +13,7 @@ public class QuestionService : BaseService, IQuestionService
 
     public QuestionService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult> Create(CreateQuestionCommandViewModel model)
+    public async Task<ApiResult> Create(CreateQuestionViewModel model)
     {
         return await PostAsJsonAsync("Create", model);
     }
@@ -23,7 +23,7 @@ public class QuestionService : BaseService, IQuestionService
         return await PutAsJsonAsync("SetStatus", model);
     }
 
-    public async Task<ApiResult> AddReply(AddReplyCommandViewModel model)
+    public async Task<ApiResult> AddReply(AddReplyViewModel model)
     {
         return await PutAsJsonAsync("AddReply", model);
     }

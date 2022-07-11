@@ -3,7 +3,7 @@ using MediatR;
 using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.DecreaseItemCount;
-using Shop.Application.Orders.IncreaseOrderItemCount;
+using Shop.Application.Orders.IncreaseItemCount;
 using Shop.Application.Orders.RemoveItem;
 using Shop.Application.Orders.SetStatus;
 using Shop.Query.Orders._DTOs;

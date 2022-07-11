@@ -20,61 +20,24 @@ namespace Shop.UI.SetupClasses;
 
 public static class UiBootstrapper
 {
+    private const string BaseAddress = "https://localhost:7087/api/";
+
     public static void RegisterUiDependencies(this IServiceCollection services)
     {
-        const string baseAddress = "https://localhost:7087";
-
-        services.AddHttpClient<IAvatarService, AvatarService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IAuthService, AuthService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<ICategoryService, CategoryService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<ICategoryService, CategoryService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<ICommentService, CommentService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IInventoryService, InventoryService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IOrderService, OrderService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IProductService, ProductService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IQuestionService, QuestionService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IRoleService, RoleService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IShippingService, ShippingService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IUserAddressService, UserAddressService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
-
-        services.AddHttpClient<IUserService, UserService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
-            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
+        services.AddHttpClientService<IAvatarService, AvatarService>();
+        services.AddHttpClientService<IAvatarService, AvatarService>();
+        services.AddHttpClientService<IAuthService, AuthService>();
+        services.AddHttpClientService<ICategoryService, CategoryService>();
+        services.AddHttpClientService<ICategoryService, CategoryService>();
+        services.AddHttpClientService<ICommentService, CommentService>();
+        services.AddHttpClientService<IInventoryService, InventoryService>();
+        services.AddHttpClientService<IOrderService, OrderService>();
+        services.AddHttpClientService<IProductService, ProductService>();
+        services.AddHttpClientService<IQuestionService, QuestionService>();
+        services.AddHttpClientService<IRoleService, RoleService>();
+        services.AddHttpClientService<IShippingService, ShippingService>();
+        services.AddHttpClientService<IUserAddressService, UserAddressService>();
+        services.AddHttpClientService<IUserService, UserService>();
 
         services.AddSingleton(new JsonSerializerOptions
         {
@@ -86,5 +49,14 @@ public static class UiBootstrapper
         services.AddScoped<HttpClientAuthorizationDelegateHandler>();
         services.AddScoped<IRazorToStringRenderer, RazorToStringRenderer>();
         services.AddScoped<IEmailSender, EmailSender>();
+    }
+
+    private static void AddHttpClientService<TService, TImplementation>(this IServiceCollection services)
+        where TService : class
+        where TImplementation : class, TService
+    {
+        services.AddHttpClient<TService, TImplementation>
+                (httpClient => httpClient.BaseAddress = new Uri(BaseAddress))
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
     }
 }

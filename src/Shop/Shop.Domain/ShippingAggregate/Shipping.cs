@@ -6,7 +6,7 @@ namespace Shop.Domain.ShippingAggregate;
 
 public class Shipping : BaseAggregateRoot
 {
-    public string Method { get; private set; }
+    public string Name { get; private set; }
     public Money Cost { get; private set; }
 
     private Shipping()
@@ -14,25 +14,25 @@ public class Shipping : BaseAggregateRoot
 
     }
 
-    public Shipping(string method, int shippingCost)
+    public Shipping(string name, int cost)
     {
-        Guard(method, shippingCost);
-        Method = method;
-        Cost = new Money(shippingCost);
+        Guard(name, cost);
+        Name = name;
+        Cost = new Money(cost);
     }
 
-    public void Edit(string shippingMethod, int shippingCost)
+    public void Edit(string name, int cost)
     {
-        Guard(shippingMethod, shippingCost);
-        Method = shippingMethod;
-        Cost = new Money(shippingCost);
+        Guard(name, cost);
+        Name = name;
+        Cost = new Money(cost);
     }
 
-    private void Guard(string shippingMethod, int shippingCost)
+    private void Guard(string name, int cost)
     {
-        NullOrEmptyDataDomainException.CheckString(shippingMethod, nameof(shippingMethod));
+        NullOrEmptyDataDomainException.CheckString(name, nameof(name));
 
-        if (shippingCost <= 0)
+        if (cost <= 0)
             throw new OutOfRangeValueDomainException("Shipping cost should be more than zero");
     }
 }

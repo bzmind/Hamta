@@ -18,61 +18,61 @@ public abstract class BaseService
 
     protected async Task<ApiResult> PostAsJsonAsync(string endpointAction, object model)
     {
-        var result = await _client.PostAsJsonAsync($"api/{ApiEndpointName}/{endpointAction}", model);
+        var result = await _client.PostAsJsonAsync($"{ApiEndpointName}/{endpointAction}", model);
         return await HandleResult(result);
     }
 
     protected async Task<ApiResult<TData>> PostAsJsonAsync<TData>(string endpointAction, object model)
     {
-        var result = await _client.PostAsJsonAsync($"api/{ApiEndpointName}/{endpointAction}", model);
+        var result = await _client.PostAsJsonAsync($"{ApiEndpointName}/{endpointAction}", model);
         return await HandleResult<TData>(result);
     }
 
     protected async Task<ApiResult> PostAsFormDataAsync(string endpointAction, HttpContent data)
     {
-        var result = await _client.PostAsync($"api/{ApiEndpointName}/{endpointAction}", data);
+        var result = await _client.PostAsync($"{ApiEndpointName}/{endpointAction}", data);
         return await HandleResult(result);
     }
 
     protected async Task<ApiResult<TData>> PostAsync<TData>(string endpointAction)
     {
-        var result = await _client.PostAsync($"api/{ApiEndpointName}/{endpointAction}", null);
+        var result = await _client.PostAsync($"{ApiEndpointName}/{endpointAction}", null);
         return await HandleResult<TData>(result);
     }
 
     protected async Task<ApiResult> PutAsJsonAsync(string endpointAction, object model)
     {
-        var result = await _client.PutAsJsonAsync($"api/{ApiEndpointName}/{endpointAction}", model);
+        var result = await _client.PutAsJsonAsync($"{ApiEndpointName}/{endpointAction}", model);
         return await HandleResult(result);
     }
 
     protected async Task<ApiResult> PutAsync(string endpointAction)
     {
-        var result = await _client.PutAsync($"api/{ApiEndpointName}/{endpointAction}", null);
+        var result = await _client.PutAsync($"{ApiEndpointName}/{endpointAction}", null);
         return await HandleResult(result);
     }
 
     protected async Task<ApiResult> PutAsFormDataAsync(string endpointAction, HttpContent data)
     {
-        var result = await _client.PutAsync($"api/{ApiEndpointName}/{endpointAction}", data);
+        var result = await _client.PutAsync($"{ApiEndpointName}/{endpointAction}", data);
         return await HandleResult(result);
     }
 
     protected async Task<ApiResult<TData>> PutAsync<TData>(string endpointAction)
     {
-        var result = await _client.PutAsync($"api/{ApiEndpointName}/{endpointAction}", null);
+        var result = await _client.PutAsync($"{ApiEndpointName}/{endpointAction}", null);
         return await HandleResult<TData>(result);
     }
 
     protected async Task<ApiResult> DeleteAsync(string endpointAction)
     {
-        var result = await _client.DeleteAsync($"api/{ApiEndpointName}/{endpointAction}");
+        var result = await _client.DeleteAsync($"{ApiEndpointName}/{endpointAction}");
         return await HandleResult(result);
     }
 
     protected async Task<ApiResult<TData>> GetFromJsonAsync<TData>(string endpointAction)
     {
-        var result = await _client.GetAsync($"api/{ApiEndpointName}/{endpointAction}");
+        var result = await _client.GetAsync($"{ApiEndpointName}/{endpointAction}");
         return await HandleResult<TData>(result);
     }
 

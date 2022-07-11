@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Auth;
-using Shop.Application.Users.AddToken;
-using Shop.Application.Users.Register;
-using Shop.Application.Users.RemoveToken;
+using Shop.Application.Users.Auth.Register;
+using Shop.Application.Users.Tokens.AddToken;
+using Shop.Application.Users.Tokens.RemoveToken;
 using Shop.Presentation.Facade.Users;
 using Shop.Presentation.Facade.Users.Tokens;
 using Shop.Query.Users._DTOs;
@@ -31,7 +31,7 @@ public class AuthController : BaseApiController
     }
 
     [HttpPost("Login")]
-    public async Task<ApiResult<LoginResponse?>> Login(LoginViewModel model)
+    public async Task<ApiResult<LoginResponse?>> Login(LoginUserViewModel model)
     {
         var user = await _userFacade.GetByEmailOrPhone(model.EmailOrPhone);
 
@@ -48,7 +48,7 @@ public class AuthController : BaseApiController
     }
 
     [HttpPost("Register")]
-    public async Task<ApiResult> Register(RegisterViewModel model)
+    public async Task<ApiResult> Register(RegisterUserViewModel model)
     {
         var result = await _userFacade.Register(new RegisterUserCommand(model.FullName, model.Gender,
             model.PhoneNumber, model.Password));

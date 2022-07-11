@@ -65,7 +65,7 @@ public class LoginModel : BaseRazorPage
         TempData["EmailOrPhone"] = EmailOrPhone;
 
         if (result.Data.NextStep is NextSteps.Register)
-            return await SuccessResultWithPageHtml("_Register", new RegisterViewModel());
+            return await SuccessResultWithPageHtml("_Register", new RegisterUserViewModel());
 
         return await SuccessResultWithPageHtml("_Password", new PasswordModel());
     }
@@ -77,21 +77,21 @@ public class LoginModel : BaseRazorPage
         if (string.IsNullOrWhiteSpace(emailOrPhone))
             return AjaxRedirectToPageResult("Login");
 
-        return await LoginUserAndAddTokenCookies(new LoginViewModel
+        return await LoginUserAndAddTokenCookies(new LoginUserViewModel
         {
             EmailOrPhone = emailOrPhone,
             Password = model.Password
         });
     }
 
-    public async Task<IActionResult> OnPostRegister(RegisterViewModel model)
+    public async Task<IActionResult> OnPostRegister(RegisterUserViewModel model)
     {
         var emailOrPhone = TempData["EmailOrPhone"]?.ToString();
 
         if (string.IsNullOrWhiteSpace(emailOrPhone) || emailOrPhone.IsEmail())
             return AjaxRedirectToPageResult("Login");
 
-        var registerResult = await _authService.Register(new RegisterViewModel
+        var registerResult = await _authService.Register(new RegisterUserViewModel
         {
             FullName = model.FullName,
             Gender = model.Gender,
@@ -106,16 +106,16 @@ public class LoginModel : BaseRazorPage
             return AjaxErrorMessageResult(registerResult);
         }
 
-        return await LoginUserAndAddTokenCookies(new LoginViewModel
+        return await LoginUserAndAddTokenCookies(new LoginUserViewModel
         {
             EmailOrPhone = emailOrPhone,
             Password = model.Password
         });
     }
 
-    private async Task<IActionResult> LoginUserAndAddTokenCookies(LoginViewModel model)
+    private async Task<IActionResult> LoginUserAndAddTokenCookies(LoginUserViewModel model)
     {
-        var loginResult = await _authService.Login(new LoginViewModel
+        var loginResult = await _authService.Login(new LoginUserViewModel
         {
             EmailOrPhone = model.EmailOrPhone,
             Password = model.Password

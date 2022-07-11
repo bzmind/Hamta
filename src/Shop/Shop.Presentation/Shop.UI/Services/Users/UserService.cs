@@ -1,10 +1,10 @@
 ﻿using Common.Api;
 using Shop.Query.Users._DTOs;
 using System.Text.Json;
-using Shop.API.CommandViewModels.Users;
-using Shop.API.ViewModels.Users;
-using Shop.Application.Users.AddRole;
 using Shop.Application.Users.Create;
+using Shop.API.ViewModels.Users;
+using Shop.Application.Users.Roles.AddRole;
+using Shop.API.ViewModels.Users.Auth;
 
 namespace Shop.UI.Services.Users;
 
@@ -21,7 +21,7 @@ public class UserService : BaseService, IUserService
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> Edit(EditUserCommandViewModel model)
+    public async Task<ApiResult> Edit(EditUserViewModel model)
     {
         return await PutAsJsonAsync("Edit", model);
     }

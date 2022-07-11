@@ -12,7 +12,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Comments;
 using Shop.Query.Comments._DTOs;
 using System.Net;
-using Shop.API.CommandViewModels.Comments;
+using Shop.API.ViewModels.Comments;
 
 namespace Shop.API.Controllers;
 
@@ -29,7 +29,7 @@ public class CommentController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.CommentManager)]
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateCommentCommandViewModel model)
+    public async Task<ApiResult<long>> Create(CreateCommentViewModel model)
     {
         var command = _mapper.Map<CreateCommentCommand>(model);
         command.UserId = User.GetUserId();

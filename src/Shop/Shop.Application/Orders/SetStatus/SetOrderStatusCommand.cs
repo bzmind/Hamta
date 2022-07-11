@@ -7,7 +7,7 @@ using Shop.Domain.OrderAggregate.Repository;
 
 namespace Shop.Application.Orders.SetStatus;
 
-public record SetOrderStatusCommand(long UserId, Order.OrderStatus OrderStatus) : IBaseCommand;
+public record SetOrderStatusCommand(long UserId, Order.OrderStatus Status) : IBaseCommand;
 
 public class SetOrderStatusCommandHandler : IBaseCommandHandler<SetOrderStatusCommand>
 {
@@ -25,7 +25,7 @@ public class SetOrderStatusCommandHandler : IBaseCommandHandler<SetOrderStatusCo
         if (order == null)
             return OperationResult.NotFound();
         
-        order.SetStatus(request.OrderStatus);
+        order.SetStatus(request.Status);
 
         await _orderRepository.SaveAsync();
         return OperationResult.Success();
@@ -36,7 +36,7 @@ public class SetOrderStatusCommandValidator : AbstractValidator<SetOrderStatusCo
 {
     public SetOrderStatusCommandValidator()
     {
-        RuleFor(o => o.OrderStatus)
+        RuleFor(o => o.Status)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("وضعیت سفارش"))
             .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("وضعیت سفارش"));
     }

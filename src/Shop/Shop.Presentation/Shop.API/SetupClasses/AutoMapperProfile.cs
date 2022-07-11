@@ -1,11 +1,11 @@
 ﻿using AutoMapper;
-using Shop.API.CommandViewModels.Comments;
-using Shop.API.CommandViewModels.Orders;
-using Shop.API.CommandViewModels.Users.Addresses;
+using Shop.API.ViewModels.Comments;
+using Shop.API.ViewModels.Orders;
+using Shop.API.ViewModels.Users.Addresses;
 using Shop.Application.Comments.Create;
-using Shop.Application.Orders.IncreaseOrderItemCount;
-using Shop.Application.Users.CreateAddress;
-using Shop.Application.Users.EditAddress;
+using Shop.Application.Orders.IncreaseItemCount;
+using Shop.Application.Users.Addresses.CreateAddress;
+using Shop.Application.Users.Addresses.EditAddress;
 
 namespace Shop.API.SetupClasses;
 
@@ -13,9 +13,9 @@ public class AutoMapperProfile : Profile
 {
     public AutoMapperProfile()
     {
-        CreateMap<CreateCommentCommand, CreateCommentCommandViewModel>().ReverseMap();
-        CreateMap<CreateUserAddressCommand, CreateUserAddressCommandViewModel>().ReverseMap();
-        CreateMap<EditUserAddressCommand, EditUserAddressCommandViewModel>().ReverseMap();
-        CreateMap<IncreaseOrderItemCountCommand, IncreaseOrderItemCountCommandViewModel>().ReverseMap();
+        CreateMap<CreateCommentCommand, CreateCommentViewModel>().ReverseMap();
+        CreateMap<CreateUserAddressCommand, CreateUserAddressViewModel>().ReverseMap();
+        CreateMap<EditUserAddressCommand, EditUserAddressViewModel>().ReverseMap();
+        CreateMap<IncreaseOrderItemCountCommand, IncreaseOrderItemCountViewModel>().ReverseMap();
     }
 }

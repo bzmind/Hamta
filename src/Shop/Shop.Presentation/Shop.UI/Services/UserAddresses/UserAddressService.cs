@@ -1,7 +1,7 @@
 ﻿using Common.Api;
 using Shop.Query.Users._DTOs;
 using System.Text.Json;
-using Shop.API.CommandViewModels.Users.Addresses;
+using Shop.API.ViewModels.Users.Addresses;
 
 namespace Shop.UI.Services.UserAddresses;
 
@@ -11,12 +11,12 @@ public class UserAddressService : BaseService, IUserAddressService
 
     public UserAddressService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult> Create(CreateUserAddressCommandViewModel model)
+    public async Task<ApiResult> Create(CreateUserAddressViewModel model)
     {
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> Edit(EditUserAddressCommandViewModel model)
+    public async Task<ApiResult> Edit(EditUserAddressViewModel model)
     {
         return await PutAsJsonAsync("Edit", model);
     }

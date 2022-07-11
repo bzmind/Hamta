@@ -1,8 +1,8 @@
 ﻿using Common.Api;
-using Shop.API.CommandViewModels.Users;
 using Shop.API.ViewModels.Users;
-using Shop.Application.Users.AddRole;
+using Shop.API.ViewModels.Users.Auth;
 using Shop.Application.Users.Create;
+using Shop.Application.Users.Roles.AddRole;
 using Shop.Query.Users._DTOs;
 
 namespace Shop.UI.Services.Users;
@@ -10,7 +10,7 @@ namespace Shop.UI.Services.Users;
 public interface IUserService
 {
     Task<ApiResult> Create(CreateUserCommand model);
-    Task<ApiResult> Edit(EditUserCommandViewModel model);
+    Task<ApiResult> Edit(EditUserViewModel model);
     Task<ApiResult> ResetPassword(ResetUserPasswordViewModel model);
     Task<ApiResult<bool>> SetNewsletterSubscription(long userId);
     Task<ApiResult> SetAvatar(long avatarId);

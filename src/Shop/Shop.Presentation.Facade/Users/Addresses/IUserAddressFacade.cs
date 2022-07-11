@@ -1,8 +1,8 @@
 ﻿using Common.Application;
-using Shop.Application.Users.ActivateAddress;
-using Shop.Application.Users.CreateAddress;
-using Shop.Application.Users.EditAddress;
-using Shop.Application.Users.RemoveAddress;
+using Shop.Application.Users.Addresses.ActivateAddress;
+using Shop.Application.Users.Addresses.CreateAddress;
+using Shop.Application.Users.Addresses.EditAddress;
+using Shop.Application.Users.Addresses.RemoveAddress;
 using Shop.Query.Users._DTOs;
 
 namespace Shop.Presentation.Facade.Users.Addresses;

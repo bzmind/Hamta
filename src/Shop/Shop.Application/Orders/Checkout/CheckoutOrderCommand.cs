@@ -19,7 +19,8 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
     private readonly IUserRepository _userRepository;
     private readonly IShippingRepository _shippingRepository; 
 
-    public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IInventoryRepository inventoryRepository, IUserRepository userRepository, IShippingRepository shippingRepository)
+    public CheckoutOrderCommandHandler(IOrderRepository orderRepository, IInventoryRepository inventoryRepository,
+        IUserRepository userRepository, IShippingRepository shippingRepository)
     {
         _orderRepository = orderRepository;
         _inventoryRepository = inventoryRepository;
@@ -51,7 +52,7 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
         if (shipping == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("روش ارسال"));
 
-        order.Checkout(address, shipping.Method, shipping.Cost.Value);
+        order.Checkout(address, shipping.Name, shipping.Cost.Value);
 
         var inventories = await _inventoryRepository.GetInventoriesForOrderItems(order.Items.ToList());
 

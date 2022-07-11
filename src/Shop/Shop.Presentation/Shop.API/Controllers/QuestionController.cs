@@ -11,7 +11,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Questions;
 using Shop.Query.Questions._DTOs;
 using System.Net;
-using Shop.API.CommandViewModels.Questions;
+using Shop.API.ViewModels.Questions;
 
 namespace Shop.API.Controllers;
 
@@ -26,7 +26,7 @@ public class QuestionController : BaseApiController
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateQuestionCommandViewModel model)
+    public async Task<ApiResult<long>> Create(CreateQuestionViewModel model)
     {
         var command = new CreateQuestionCommand(User.GetUserId(), model.ProductId, model.Description);
         var result = await _questionFacade.Create(command);
@@ -43,7 +43,7 @@ public class QuestionController : BaseApiController
     }
 
     [HttpPut("AddReply")]
-    public async Task<ApiResult> AddReply(AddReplyCommandViewModel model)
+    public async Task<ApiResult> AddReply(AddReplyViewModel model)
     {
         var command = new AddReplyCommand(User.GetUserId(), model.QuestionId, model.Description);
         var result = await _questionFacade.AddReply(command);

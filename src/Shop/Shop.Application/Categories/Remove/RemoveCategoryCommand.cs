@@ -5,7 +5,7 @@ using Shop.Domain.CategoryAggregate.Repository;
 
 namespace Shop.Application.Categories.Remove;
 
-public record RemoveCategoryCommand(long SubCategoryId) : IBaseCommand;
+public record RemoveCategoryCommand(long CategoryId) : IBaseCommand;
 
 public class RemoveCategoryCommandHandler : IBaseCommandHandler<RemoveCategoryCommand>
 {
@@ -18,7 +18,7 @@ public class RemoveCategoryCommandHandler : IBaseCommandHandler<RemoveCategoryCo
 
     public async Task<OperationResult> Handle(RemoveCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = await _categoryRepository.RemoveCategory(request.SubCategoryId);
+        var category = await _categoryRepository.RemoveCategory(request.CategoryId);
 
         if (!category)
             return OperationResult.Error(ValidationMessages.FieldCantBeRemoved("دسته بندی"));

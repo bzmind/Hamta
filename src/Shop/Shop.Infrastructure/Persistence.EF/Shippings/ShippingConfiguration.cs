@@ -16,7 +16,7 @@ public class ShippingConfiguration : IEntityTypeConfiguration<Shipping>
         builder.Property(shipping => shipping.CreationDate)
             .HasColumnType("datetime2(0)");
 
-        builder.Property(shipping => shipping.Method)
+        builder.Property(shipping => shipping.Name)
             .HasColumnName("Name")
             .IsRequired()
             .HasMaxLength(100);

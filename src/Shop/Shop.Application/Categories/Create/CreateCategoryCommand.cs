@@ -8,8 +8,8 @@ using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories.Create;
 
-public record CreateCategoryCommand(string Title, string Slug, List<Specification>? Specifications)
-    : IBaseCommand<long>;
+public record CreateCategoryCommand(string Title, string Slug,
+    List<Specification>? Specifications) : IBaseCommand<long>;
 
 public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand, long>
 {

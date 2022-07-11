@@ -3,19 +3,19 @@ using Common.Api.Attributes;
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels.Users;
-using Shop.Application.Users.AddFavoriteItem;
-using Shop.Application.Users.AddRole;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
-using Shop.Application.Users.RemoveFavoriteItem;
-using Shop.Application.Users.RemoveRole;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Users;
 using Shop.Query.Users._DTOs;
 using System.Net;
-using Shop.API.CommandViewModels.Users;
-using Shop.Application.Users.ResetPassword;
+using Shop.API.ViewModels.Users;
+using Shop.Application.Users.Auth.ResetPassword;
+using Shop.Application.Users.FavoriteItems.AddFavoriteItem;
+using Shop.Application.Users.FavoriteItems.RemoveFavoriteItem;
+using Shop.Application.Users.Roles.AddRole;
+using Shop.Application.Users.Roles.RemoveRole;
+using Shop.API.ViewModels.Users.Auth;
 
 namespace Shop.API.Controllers;
 
@@ -39,7 +39,7 @@ public class UserController : BaseApiController
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditUserCommandViewModel model)
+    public async Task<ApiResult> Edit(EditUserViewModel model)
     {
         var command = new EditUserCommand(User.GetUserId(), model.FullName, model.Gender, model.Email,
             model.PhoneNumber);

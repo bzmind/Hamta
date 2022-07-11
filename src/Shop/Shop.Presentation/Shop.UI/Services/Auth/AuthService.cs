@@ -16,12 +16,12 @@ public class AuthService : BaseService, IAuthService
         _httpContextAccessor = httpContextAccessor;
     }
 
-    public async Task<ApiResult<LoginResponse>> Login(LoginViewModel model)
+    public async Task<ApiResult<LoginResponse>> Login(LoginUserViewModel model)
     {
         return await PostAsJsonAsync<LoginResponse>("Login", model);
     }
 
-    public async Task<ApiResult> Register(RegisterViewModel model)
+    public async Task<ApiResult> Register(RegisterUserViewModel model)
     {
         return await PostAsJsonAsync<LoginResponse>("Register", model);
     }

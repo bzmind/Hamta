@@ -7,7 +7,7 @@ using Shop.Domain.ShippingAggregate.Repository;
 
 namespace Shop.Application.Shippings.Create;
 
-public record CreateShippingCommand(string ShippingName, int ShippingCost) : IBaseCommand<long>;
+public record CreateShippingCommand(string Name, int Cost) : IBaseCommand<long>;
 
 public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCommand, long>
 {
@@ -20,7 +20,7 @@ public class CreateShippingCommandHandler : IBaseCommandHandler<CreateShippingCo
 
     public async Task<OperationResult<long>> Handle(CreateShippingCommand request, CancellationToken cancellationToken)
     {
-        var shipping = new Shipping(request.ShippingName, request.ShippingCost);
+        var shipping = new Shipping(request.Name, request.Cost);
 
         _shippingRepository.Add(shipping);
         await _shippingRepository.SaveAsync();
@@ -32,11 +32,11 @@ public class CreateShippingCommandValidator : AbstractValidator<CreateShippingCo
 {
     public CreateShippingCommandValidator()
     {
-        RuleFor(s => s.ShippingName)
+        RuleFor(s => s.Name)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("نام"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام"));
 
-        RuleFor(s => s.ShippingCost)
+        RuleFor(s => s.Cost)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("هزینه"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("هزینه"))
             .GreaterThan(0).WithMessage(ValidationMessages.PriceMinAmount("هزینه", 0));

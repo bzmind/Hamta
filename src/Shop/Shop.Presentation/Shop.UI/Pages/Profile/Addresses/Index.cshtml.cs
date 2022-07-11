@@ -1,15 +1,25 @@
+using Common.Api.Utility;
+using Microsoft.AspNetCore.Mvc;
+using Shop.Query.Users._DTOs;
+using Shop.UI.Services.UserAddresses;
 using Shop.UI.SetupClasses.RazorUtility;
 
 namespace Shop.UI.Pages.Profile.Addresses;
 
 public class IndexModel : BaseRazorPage
 {
-    public IndexModel(IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
+    private readonly IUserAddressService _userAddressService;
+
+    public IndexModel(IRazorToStringRenderer razorToStringRenderer,
+        IUserAddressService userAddressService) : base(razorToStringRenderer)
     {
-        
+        _userAddressService = userAddressService;
     }
 
-    public void OnGet()
+    public List<UserAddressDto> Addresses { get; set; }
+
+    public async Task OnGet()
     {
+        Addresses = await _userAddressService.GetAll(User.GetUserId());
     }
 }

@@ -39,7 +39,7 @@ public class AvatarService : BaseService, IAvatarService
 
     public async Task<List<AvatarDto>> GetAll()
     {
-        var result = await GetFromJsonAsync<List<AvatarDto>>($"GetAll");
+        var result = await GetFromJsonAsync<List<AvatarDto>>("GetAll");
         return result.Data;
     }
 }
