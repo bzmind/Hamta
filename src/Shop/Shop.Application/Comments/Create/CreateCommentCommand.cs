@@ -13,12 +13,12 @@ public class CreateCommentCommand : IBaseCommand<long>
     public long UserId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public List<string> PositivePoints { get; set; }
-    public List<string> NegativePoints { get; set; }
+    public List<string>? PositivePoints { get; set; }
+    public List<string>? NegativePoints { get; set; }
     public Comment.CommentRecommendation Recommendation { get; set; }
 
     public CreateCommentCommand(long productId, long userId, string title, string description,
-        List<string> positivePoints, List<string> negativePoints, Comment.CommentRecommendation recommendation)
+        List<string>? positivePoints, List<string>? negativePoints, Comment.CommentRecommendation recommendation)
     {
         ProductId = productId;
         UserId = userId;
@@ -46,10 +46,10 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
 
         await _commentRepository.AddAsync(comment);
 
-        if (request.PositivePoints.Count > 0)
+        if (request.PositivePoints != null && request.PositivePoints.Any())
             comment.SetPositivePoints(request.PositivePoints);
 
-        if (request.NegativePoints.Count > 0)
+        if (request.NegativePoints != null && request.NegativePoints.Any())
             comment.SetNegativePoints(request.NegativePoints);
 
         _commentRepository.Add(comment);

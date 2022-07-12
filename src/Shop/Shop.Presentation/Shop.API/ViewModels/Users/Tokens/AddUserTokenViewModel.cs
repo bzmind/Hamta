@@ -1,7 +1,11 @@
-﻿namespace Shop.API.ViewModels.Users.Tokens;
+﻿using System.ComponentModel.DataAnnotations;
+using Common.Application.Utility.Validation;
+
+namespace Shop.API.ViewModels.Users.Tokens;
 
 public class AddUserTokenViewModel
 {
+    [Required(ErrorMessage = ValidationMessages.IdRequired)]
     public long UserId { get; set; }
     public string JwtToken { get; set; }
     public string RefreshToken { get; set; }

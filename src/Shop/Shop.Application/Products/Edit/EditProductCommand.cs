@@ -12,7 +12,7 @@ namespace Shop.Application.Products.Edit;
 
 public record EditProductCommand(long ProductId, long CategoryId, string Name, string? EnglishName,
     string Slug, string Description, IFormFile? MainImage, List<IFormFile>? GalleryImages,
-    List<Specification>? CustomSpecifications, Dictionary<string, string>? ExtraDescriptions) : IBaseCommand;
+    List<SpecificationDto>? CustomSpecifications, Dictionary<string, string>? ExtraDescriptions) : IBaseCommand;
 
 public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
 {

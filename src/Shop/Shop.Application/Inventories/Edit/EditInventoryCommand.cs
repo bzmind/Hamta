@@ -44,7 +44,7 @@ public class EditInventoryCommandValidator : AbstractValidator<CreateInventoryCo
         RuleFor(i => i.Price)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("قیمت"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("قیمت"))
-            .GreaterThan(0).WithMessage(ValidationMessages.PriceMinAmount("قیمت", 0));
+            .GreaterThan(0).WithMessage(ValidationMessages.TomanMinAmount("قیمت", 0));
 
         RuleFor(i => i.ColorId)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("رنگ"))

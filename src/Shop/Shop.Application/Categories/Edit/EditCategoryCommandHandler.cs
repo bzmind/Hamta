@@ -9,14 +9,15 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.Edit;
 
 public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
-    List<Specification>? Specifications) : IBaseCommand;
+    List<SpecificationDto>? Specifications) : IBaseCommand;
 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
     private readonly ICategoryRepository _categoryRepository;
     private readonly ICategoryDomainService _categoryDomainService;
 
-    public EditCategoryCommandHandler(ICategoryRepository categoryRepository, ICategoryDomainService categoryDomainService)
+    public EditCategoryCommandHandler(ICategoryRepository categoryRepository,
+        ICategoryDomainService categoryDomainService)
     {
         _categoryRepository = categoryRepository;
         _categoryDomainService = categoryDomainService;

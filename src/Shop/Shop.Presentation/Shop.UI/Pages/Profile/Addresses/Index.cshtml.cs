@@ -1,5 +1,4 @@
 using Common.Api.Utility;
-using Microsoft.AspNetCore.Mvc;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Services.UserAddresses;
 using Shop.UI.SetupClasses.RazorUtility;

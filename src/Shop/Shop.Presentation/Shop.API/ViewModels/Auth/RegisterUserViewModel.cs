@@ -9,6 +9,7 @@ public class RegisterUserViewModel
 {
     [Display(Name = "نام و نام خانوادگی")]
     [Required(ErrorMessage = ValidationMessages.FullNameRequired)]
+    [MaxLength(30, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public string FullName { get; set; }
 
     [Display(Name = "جنسیت")]
@@ -19,17 +20,22 @@ public class RegisterUserViewModel
     [Display(Name = "شماره موبایل")]
     [Required(ErrorMessage = ValidationMessages.PhoneNumberRequired)]
     [IranPhone(ErrorMessage = ValidationMessages.InvalidPhoneNumber)]
+    [MinLength(10, ErrorMessage = "{0} باید حداقل 10 کاراکتر باشد")]
+    [MaxLength(11, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public string PhoneNumber { get; set; }
 
     [Display(Name = "رمز عبور")]
     [Required(ErrorMessage = ValidationMessages.PasswordRequired)]
-    [MinLength(8, ErrorMessage = "{0} باید بیشتر از 7 کاراکتر باشد")]
+    [MinLength(8, ErrorMessage = "{0} باید حداقل 8 کاراکتر باشد")]
+    [MaxLength(50, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     [DataType(DataType.Password)]
     public string Password { get; set; }
 
     [Display(Name = "تکرار رمز عبور")]
     [Required(ErrorMessage = ValidationMessages.ConfirmPasswordRequired)]
     [Compare(nameof(Password), ErrorMessage = ValidationMessages.InvalidConfirmPassword)]
+    [MinLength(8, ErrorMessage = "{0} باید حداقل 8 کاراکتر باشد")]
+    [MaxLength(50, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     [DataType(DataType.Password)]
     public string ConfirmPassword { get; set; }
 }

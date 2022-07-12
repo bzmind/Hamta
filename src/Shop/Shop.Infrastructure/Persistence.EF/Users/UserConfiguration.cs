@@ -18,7 +18,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
         builder.Property(user => user.FullName)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(30);
 
         builder.Property(user => user.Email)
             .HasMaxLength(250);
@@ -54,7 +54,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
             options.Property(address => address.FullName)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(30);
 
             options.OwnsOne(address => address.PhoneNumber, config =>
             {
@@ -66,11 +66,11 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 
             options.Property(address => address.Province)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(30);
 
             options.Property(address => address.City)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(30);
 
             options.Property(address => address.FullAddress)
                 .IsRequired()

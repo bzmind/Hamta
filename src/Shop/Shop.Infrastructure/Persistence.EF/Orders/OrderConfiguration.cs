@@ -36,7 +36,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
             options.Property(address => address.FullName)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(30);
 
             options.OwnsOne(address => address.PhoneNumber, config =>
             {
@@ -48,11 +48,11 @@ public class OrderConfiguration : IEntityTypeConfiguration<Order>
 
             options.Property(address => address.Province)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(30);
 
             options.Property(address => address.City)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(30);
 
             options.Property(address => address.FullAddress)
                 .IsRequired()

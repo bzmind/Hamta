@@ -11,7 +11,7 @@ public static class StringCheckers
 
     public static bool IsIranPhone(this string input)
     {
-        var r = new Regex(@"^(?:0|98|\+98|\+980|098)?(9\d{9})$");
-        return r.IsMatch(input) && input.Length == 11;
+        var r = new Regex(@"^(?:0)?(9\d{9})$");
+        return r.IsMatch(input) && input.Length is >= 10 and <= 11;
     }
 }

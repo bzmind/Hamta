@@ -6,7 +6,7 @@ using Shop.Domain.InventoryAggregate.Repository;
 
 namespace Shop.Application.Inventories.IncreaseQuantity;
 
-public record IncreaseInventoryQuantityCommand(long InventoryId, int Amount) : IBaseCommand;
+public record IncreaseInventoryQuantityCommand(long InventoryId, int Quantity) : IBaseCommand;
 
 public class IncreaseInventoryQuantityCommandHandler : IBaseCommandHandler<IncreaseInventoryQuantityCommand>
 {
@@ -24,7 +24,7 @@ public class IncreaseInventoryQuantityCommandHandler : IBaseCommandHandler<Incre
         if (inventory == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("انبار"));
 
-        inventory.IncreaseQuantity(request.Amount);
+        inventory.IncreaseQuantity(request.Quantity);
 
         await _inventoryRepository.SaveAsync();
         return OperationResult.Success();
@@ -35,7 +35,7 @@ public class IncreaseInventoryQuantityCommandValidator : AbstractValidator<Incre
 {
     public IncreaseInventoryQuantityCommandValidator()
     {
-        RuleFor(i => i.Amount)
+        RuleFor(i => i.Quantity)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("تعداد"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("تعداد"))
             .GreaterThanOrEqualTo(1).WithMessage(ValidationMessages.FieldGreaterThanOrEqualTo("تعداد", 1));

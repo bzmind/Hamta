@@ -4,9 +4,10 @@ public static class ValidationMessages
 {
     public const string Required = "وارد کردن این فیلد اجباری است";
     public const string NotFound = "اطلاعات درخواستی یافت نشد";
-    public const string MaxCharactersLength = "تعداد کاراکتر ها بیشتر از حد مجاز است";
-    public const string MinCharactersLength = "تعداد کاراکتر ها کمتر از حد مجاز است";
+    public const string MaxCharactersLength = "تعداد کاراکتر های وارد شده بیشتر از حد مجاز است";
+    public const string MinCharactersLength = "تعداد کاراکتر های وارد شده کمتر از حد مجاز است";
 
+    public const string IdRequired = "لطفا آیدی را وارد کنید";
     public const string NameRequired = "لطفا نام را وارد کنید";
     public const string FamilyNameRequired = "لطفا نام خانوادگی را وارد کنید";
     public const string FullNameRequired = "لطفا نام و نام خانوادگی را وارد کنید";
@@ -19,6 +20,21 @@ public static class ValidationMessages
     public const string ConfirmNewPasswordRequired = "لطفا تکرار رمز عبور جدید را وارد کنید";
     public const string EmailOrPhoneRequired = "لطفا شماره موبایل یا ایمیل را وارد کنید";
     public const string GenderRequired = "لطفا جنسیت را انتخاب کنید";
+    public const string AvatarRequired = "لطفا عکس آواتار را وارد کنید";
+    public const string TitleRequired = "لطفا عنوان را وارد کنید";
+    public const string DescriptionRequired = "لطفا توضیح را وارد کنید";
+    public const string SlugRequired = "لطفا اسلاگ را وارد کنید";
+    public const string ColorNameRequired = "لطفا نام رنگ را وارد کنید";
+    public const string ColorCodeRequired = "لطفا کد رنگ را وارد کنید";
+    public const string CommentRecommendationRequired = "لطفا پیشنهاد خود را وارد کنید";
+    public const string CommentStatusRequired = "لطفا وضعیت نظر را وارد کنید";
+    public const string OrderStatusRequired = "لطفا وضعیت سفارش را وارد کنید";
+    public const string QuestionStatusRequired = "لطفا وضعیت سوال را وارد کنید";
+    public const string QuantityRequired = "لطفا تعداد را وارد کنید";
+    public const string PriceRequired = "لطفا قیمت را وارد کنید";
+    public const string ProductNameRequired = "لطفا نام محصول را وارد کنید";
+    public const string ProductEnglishNameRequired = "لطفا نام انگلیسی محصول را وارد کنید";
+    public const string PermissionsRequired = "لطفا مجوز ها را وارد کنید";
 
     public const string InvalidName = "نام نامعتبر است";
     public const string InvalidFamilyName = "نام خانوادگی نامعتبر است";
@@ -35,10 +51,19 @@ public static class ValidationMessages
     public const string InvalidGender = "جنسیت نامعتبر است";
     public const string InvalidAvatar = "آواتار نامعتبر است";
     public const string InvalidImage = "عکس نامعتبر است";
-    public const string InvalidFile = "فایل نامعتبر است";
+    public const string InvalidTitle = "عنوان نامعتبر است";
+    public const string InvalidDescription = "توضیح نامعتبر است";
+    public const string InvalidColorName = "نام رنگ نامعتبر است";
+    public const string InvalidColorCode = "کد رنگ نامعتبر است";
+    public const string InvalidCommentRecommendation = "پیشنهاد نامعتبر است";
+    public const string InvalidList = "لیست نامعتبر است";
+    public const string InvalidCommentStatus = "وضعیت نظر نامعتبر است";
+    public const string InvalidOrderStatus = "وضعیت سفارش نامعتبر است";
+    public const string InvalidQuestionStatus = "وضعیت سوال نامعتبر است";
+    public const string InvalidPermissions = "مجوز ها نامعتبر هستند";
 
     public const string EmailRegex = @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}";
-    public const string IranPhoneRegex = @"^(?:0|98|\+98|\+980|098)?(9\d{9})$";
+    public const string IranPhoneRegex = @"^(?:0)?(9\d{9})$";
     public const string EmailOrPhoneRegex = EmailRegex + "|" + IranPhoneRegex;
 
     /// <summary>
@@ -55,7 +80,7 @@ public static class ValidationMessages
 
 
     /// <summary>
-    /// <example>Example: نام} باید بیشتر یا مساوی {3} باشد}</example>
+    /// <example>Example: امتیاز} باید بیشتر یا مساوی {3} باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxLength"></param>
@@ -63,7 +88,7 @@ public static class ValidationMessages
         => $"{field} باید بیشتر یا مساوی {maxLength} باشد";
 
     /// <summary>
-    /// <example>Example: نام} باید کمتر یا مساوی {3} باشد}</example>
+    /// <example>Example: امتیاز} باید کمتر یا مساوی {3} باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxLength"></param>
@@ -151,19 +176,35 @@ public static class ValidationMessages
         => $"{field} باید بیشتر از {minLength} عدد باشد";
 
     /// <summary>
+    /// <example>Example: تخفیف} باید کمتر یا مساوی {100} درصد باشد}</example>
+    /// </summary>
+    /// <param name="field"></param>
+    /// <param name="maxPercentage"></param>
+    public static string FieldPercentageLessThanOrEqualTo(string field, int maxPercentage)
+        => $"{field} باید کمتر از {maxPercentage} درصد باشد";
+
+    /// <summary>
     /// <example>Example: تخفیف} باید کمتر از {100} درصد باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxPercentage"></param>
-    public static string DiscountMaxPercentage(string field, int maxPercentage)
+    public static string FieldPercentageLessThan(string field, int maxPercentage)
         => $"{field} باید کمتر از {maxPercentage} درصد باشد";
+
+    /// <summary>
+    /// <example>Example: تخفیف} باید بیشتر یا مساوی {0} درصد باشد}</example>
+    /// </summary>
+    /// <param name="field"></param>
+    /// <param name="minPercentage"></param>
+    public static string FieldPercentageGreaterThanOrEqualTo(string field, int minPercentage)
+        => $"{field} باید بیشتر از {minPercentage} درصد باشد";
 
     /// <summary>
     /// <example>Example: تخفیف} باید بیشتر از {0} درصد باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="minPercentage"></param>
-    public static string DiscountMinPercentage(string field, int minPercentage)
+    public static string FieldPercentageGreaterThan(string field, int minPercentage)
         => $"{field} باید بیشتر از {minPercentage} درصد باشد";
 
     /// <summary>
@@ -171,7 +212,7 @@ public static class ValidationMessages
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxAmount"></param>
-    public static string PriceMaxAmount(string field, int maxAmount)
+    public static string TomanMaxAmount(string field, int maxAmount)
         => $"{field} باید کمتر از {maxAmount:C0} درصد باشد";
 
     /// <summary>
@@ -179,7 +220,7 @@ public static class ValidationMessages
     /// </summary>
     /// <param name="field"></param>
     /// <param name="minAmount"></param>
-    public static string PriceMinAmount(string field, int minAmount)
+    public static string TomanMinAmount(string field, int minAmount)
         => $"{field} باید بیشتر از {minAmount:C0} درصد باشد";
 
     /// <summary>

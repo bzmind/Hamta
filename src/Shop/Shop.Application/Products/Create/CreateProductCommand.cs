@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.FileUtility;
 using Common.Application.Utility.Validation;
+using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Shop.Domain.ProductAggregate;
@@ -12,7 +13,7 @@ namespace Shop.Application.Products.Create;
 
 public record CreateProductCommand(long CategoryId, string Name, string? EnglishName, string Slug,
     string? Description, IFormFile MainImage, List<IFormFile> GalleryImages,
-    List<Specification>? CustomSpecifications, Dictionary<string, string>? ExtraDescriptions) : IBaseCommand<long>;
+    List<SpecificationDto>? CustomSpecifications, Dictionary<string, string>? ExtraDescriptions) : IBaseCommand<long>;
 
 public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductCommand, long>
 {
@@ -87,10 +88,16 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 
         RuleFor(p => p.MainImage)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"))
+            .JustImageFile();
 
         RuleFor(p => p.GalleryImages)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"));
+
+        RuleForEach(p => p.GalleryImages)
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"))
+            .JustImageFile();
     }
 }

@@ -19,7 +19,7 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
         builder.Property(category => category.Title)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(30);
 
         builder.Property(category => category.Slug)
             .IsRequired()
@@ -43,11 +43,11 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
 
             options.Property(specification => specification.Title)
                 .IsRequired()
-                .HasMaxLength(100);
+                .HasMaxLength(50);
 
             options.Property(specification => specification.Description)
                 .IsRequired()
-                .HasMaxLength(500);
+                .HasMaxLength(300);
         });
     }
 }

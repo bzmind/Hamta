@@ -37,7 +37,7 @@ public class SetInventoryDiscountPercentageCommandValidator : AbstractValidator<
         RuleFor(i => i.DiscountPercentage)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("تخفیف"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("تخفیف"))
-            .GreaterThanOrEqualTo(1).WithMessage(ValidationMessages.DiscountMinPercentage("تخفیف", 1))
-            .LessThanOrEqualTo(100).WithMessage(ValidationMessages.DiscountMaxPercentage("تخفیف", 100));
+            .GreaterThan(0).WithMessage(ValidationMessages.FieldPercentageGreaterThan("تخفیف", 0))
+            .LessThanOrEqualTo(100).WithMessage(ValidationMessages.FieldPercentageLessThanOrEqualTo("تخفیف", 100));
     }
 }

@@ -11,10 +11,10 @@ public class Money : BaseValueObject
 
     }
 
-    public Money(int toomanPrice)
+    public Money(int tomanPrice)
     {
-        Guard(toomanPrice);
-        Value = toomanPrice;
+        Guard(tomanPrice);
+        Value = tomanPrice;
     }
 
     public static Money operator +(Money firstMoney, Money secondMoney)
@@ -30,6 +30,6 @@ public class Money : BaseValueObject
     private void Guard(int value)
     {
         if (value < 0)
-            throw new InvalidDataDomainException("Invalid value: price can't be negative");
+            throw new InvalidDataDomainException("Price value can't be less than zero");
     }
 }

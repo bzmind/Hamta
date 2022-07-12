@@ -6,7 +6,7 @@ using Shop.Domain.InventoryAggregate.Repository;
 
 namespace Shop.Application.Inventories.DecreaseQuantity;
 
-public record DecreaseInventoryQuantityCommand(long InventoryId, int Amount) : IBaseCommand;
+public record DecreaseInventoryQuantityCommand(long InventoryId, int Quantity) : IBaseCommand;
 
 public class DecreaseInventoryQuantityCommandHandler : IBaseCommandHandler<DecreaseInventoryQuantityCommand>
 {
@@ -20,11 +20,10 @@ public class DecreaseInventoryQuantityCommandHandler : IBaseCommandHandler<Decre
     public async Task<OperationResult> Handle(DecreaseInventoryQuantityCommand request, CancellationToken cancellationToken)
     {
         var inventory = await _inventoryRepository.GetAsTrackingAsync(request.InventoryId);
-
         if (inventory == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("انبار"));
 
-        inventory.DecreaseQuantity(request.Amount);
+        inventory.DecreaseQuantity(request.Quantity);
 
         await _inventoryRepository.SaveAsync();
         return OperationResult.Success();
@@ -35,9 +34,9 @@ public class DecreaseInventoryQuantityCommandValidator : AbstractValidator<Decre
 {
     public DecreaseInventoryQuantityCommandValidator()
     {
-        RuleFor(i => i.Amount)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("تعداد"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("تعداد"))
-            .GreaterThanOrEqualTo(1).WithMessage(ValidationMessages.FieldGreaterThanOrEqualTo("تعداد", 1));
+        RuleFor(i => i.Quantity)
+            .NotNull().WithMessage(ValidationMessages.FieldRequired(""))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired(""))
+            .GreaterThan(0).WithMessage(ValidationMessages.FieldQuantityMinNumber("", 0));
     }
 }

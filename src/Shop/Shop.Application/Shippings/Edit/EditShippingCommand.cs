@@ -42,6 +42,6 @@ public class EditShippingCommandValidator : AbstractValidator<EditShippingComman
         RuleFor(s => s.Cost)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("هزینه"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("هزینه"))
-            .GreaterThan(0).WithMessage(ValidationMessages.PriceMinAmount("هزینه", 0));
+            .GreaterThan(0).WithMessage(ValidationMessages.TomanMinAmount("هزینه", 0));
     }
 }

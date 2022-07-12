@@ -14,6 +14,30 @@ public class EnumNotNullOrZeroAttribute : ValidationAttribute, IClientModelValid
         var enumMembers = value.GetType().GetEnumNames();
 
         var valueExistInEnum = enumMembers.ToList().Any(m => m == value.ToString());
+        if (valueExistInEnum == false)
+            return new ValidationResult(ValidationMessages.InvalidGender);
+
+        return ValidationResult.Success;
+    }
+
+    public void AddValidation(ClientModelValidationContext context)
+    {
+        if (!context.Attributes.ContainsKey("data-val"))
+            context.Attributes.Add("data-val", "true");
+        context.Attributes.Add("data-val-enumNotNullOrZero", ErrorMessage);
+    }
+}
+
+public class EnumNotNullAttribute : ValidationAttribute, IClientModelValidator
+{
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    {
+        if (value == null)
+            return new ValidationResult(ValidationMessages.InvalidGender);
+
+        var enumMembers = value.GetType().GetEnumNames();
+
+        var valueExistInEnum = enumMembers.ToList().Any(m => m == value.ToString());
         if (valueExistInEnum)
             return ValidationResult.Success;
 
@@ -24,6 +48,6 @@ public class EnumNotNullOrZeroAttribute : ValidationAttribute, IClientModelValid
     {
         if (!context.Attributes.ContainsKey("data-val"))
             context.Attributes.Add("data-val", "true");
-        context.Attributes.Add("data-val-notNullEnum", ErrorMessage);
+        context.Attributes.Add("data-val-enumNotNull", ErrorMessage);
     }
 }

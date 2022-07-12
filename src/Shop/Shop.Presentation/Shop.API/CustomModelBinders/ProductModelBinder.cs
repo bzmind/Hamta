@@ -1,8 +1,9 @@
 ﻿using System.Reflection;
 using System.Text.Json;
-using Common.Application;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Shop.API.ViewModels;
+using Shop.Application;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 
@@ -18,7 +19,7 @@ internal class TempProductModel
     public string Description { get; set; }
     public IFormFile MainImage { get; set; }
     public List<IFormFile> GalleryImages { get; set; } = new();
-    public List<Specification> CustomSpecifications { get; set; } = new();
+    public List<SpecificationViewModel> CustomSpecifications { get; set; } = new();
     public Dictionary<string, string> ExtraDescriptions { get; set; } = new();
 }
 
@@ -73,8 +74,8 @@ public class ProductModelBinder : IModelBinder
 
         customSpecifications.Values.ToList().ForEach(spec =>
         {
-            var deserializedSpec = JsonSerializer.Deserialize(spec, typeof(Specification), options);
-            tempModel.CustomSpecifications.Add((Specification)deserializedSpec);
+            var deserializedSpec = JsonSerializer.Deserialize(spec, typeof(SpecificationViewModel), options);
+            tempModel.CustomSpecifications.Add((SpecificationViewModel)deserializedSpec);
         });
 
         var extraDescriptions = bindingContext.ValueProvider

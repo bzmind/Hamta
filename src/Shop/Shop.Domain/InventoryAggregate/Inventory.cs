@@ -40,14 +40,14 @@ public class Inventory : BaseAggregateRoot
         ColorId = colorId;
     }
 
-    public void IncreaseQuantity(int amount) => Quantity += amount;
+    public void IncreaseQuantity(int quantity) => Quantity += quantity;
 
-    public void DecreaseQuantity(int amount)
+    public void DecreaseQuantity(int quantity)
     {
-        if (Quantity - amount < 0)
-            throw new OperationNotAllowedDomainException("Inventory quantity can't be less than zero");
+        if (Quantity - quantity < 0)
+            throw new OperationNotAllowedDomainException("Inventory doesn't have enough quantity");
 
-        Quantity -= amount;
+        Quantity -= quantity;
     }
 
     public void SetDiscountPercentage(int discountPercentage)
@@ -75,6 +75,6 @@ public class Inventory : BaseAggregateRoot
     private void Guard(int count)
     {
         if (count < 0)
-            throw new OutOfRangeValueDomainException("Inventory products can't be less than zero");
+            throw new OutOfRangeValueDomainException("Inventory quantity should be more than zero");
     }
 }

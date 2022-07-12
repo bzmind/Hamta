@@ -33,7 +33,8 @@ public static class CustomFluentValidations
     }
 
     public static IRuleBuilderOptionsConditions<T, TProperty> JustImageFile<T, TProperty>
-        (this IRuleBuilder<T, TProperty> ruleBuilder, string errorMessage = ValidationMessages.InvalidImage)
+        (this IRuleBuilder<T, TProperty> ruleBuilder,
+            string errorMessage = ValidationMessages.InvalidImage)
         where TProperty : IFormFile?
     {
         return ruleBuilder.Custom((file, context) =>

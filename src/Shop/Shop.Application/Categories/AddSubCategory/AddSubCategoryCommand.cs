@@ -9,7 +9,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.AddSubCategory;
 
 public record AddSubCategoryCommand(long ParentId, string Title, string Slug,
-    List<Specification>? Specifications) : IBaseCommand<long>;
+    List<SpecificationDto>? Specifications) : IBaseCommand<long>;
 
 public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCommand, long>
 {

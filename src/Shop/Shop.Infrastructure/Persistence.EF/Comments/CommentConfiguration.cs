@@ -42,7 +42,7 @@ public class CommentConfiguration : IEntityTypeConfiguration<Comment>
                 .HasMaxLength(10);
 
             options.Property(hint => hint.Hint)
-                .HasMaxLength(200);
+                .HasMaxLength(100);
         });
 
         builder.Property(comment => comment.Status)

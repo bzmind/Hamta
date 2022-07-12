@@ -33,14 +33,14 @@ public class CreateInventoryCommandValidator : AbstractValidator<CreateInventory
     public CreateInventoryCommandValidator()
     {
         RuleFor(i => i.Quantity)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("تعداد محصولات"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("تعداد محصولات"))
-            .GreaterThan(0).WithMessage(ValidationMessages.FieldQuantityMinNumber("تعداد محصولات", 0));
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("محصولات"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("محصولات"))
+            .GreaterThan(0).WithMessage(ValidationMessages.FieldQuantityMinNumber("محصولات", 0));
 
         RuleFor(i => i.Price)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("قیمت"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("قیمت"))
-            .GreaterThan(0).WithMessage(ValidationMessages.PriceMinAmount("قیمت", 0));
+            .GreaterThan(0).WithMessage(ValidationMessages.TomanMinAmount("قیمت", 0));
 
         RuleFor(i => i.ColorId)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("رنگ"))
