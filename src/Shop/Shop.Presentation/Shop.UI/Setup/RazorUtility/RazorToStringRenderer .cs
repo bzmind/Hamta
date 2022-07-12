@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace Shop.UI.SetupClasses.RazorUtility;
+namespace Shop.UI.Setup.RazorUtility;
 
 public interface IRazorToStringRenderer
 {

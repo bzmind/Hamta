@@ -9,7 +9,7 @@ using Shop.Query.Users._DTOs;
 using Shop.UI.Models.Auth;
 using Shop.UI.Services.Auth;
 using Shop.UI.Services.Users;
-using Shop.UI.SetupClasses.RazorUtility;
+using Shop.UI.Setup.RazorUtility;
 
 namespace Shop.UI.Pages.Auth;
 

@@ -3,7 +3,7 @@ using System.Text.Json;
 using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Shop.API.SetupClasses;
+using Shop.API.Setup;
 using Shop.API.ViewModels;
 using Shop.API.ViewModels.Products;
 using Shop.Application;

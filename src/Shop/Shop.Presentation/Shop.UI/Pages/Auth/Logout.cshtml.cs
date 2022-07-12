@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Shop.UI.Services.Auth;
-using Shop.UI.SetupClasses.RazorUtility;
+using Shop.UI.Setup.RazorUtility;
 
 namespace Shop.UI.Pages.Auth;
 

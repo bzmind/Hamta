@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
-using Shop.UI.SetupClasses;
-using Shop.UI.SetupClasses.ModelStateExtensions;
 using System.Text;
+using Shop.UI.Setup;
+using Shop.UI.Setup.ModelStateExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
 

@@ -1,4 +1,8 @@
-﻿using Shop.UI.Services.Auth;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using Shop.Infrastructure.EmailService;
+using Shop.UI.Services.Auth;
+using Shop.UI.Services.Avatars;
 using Shop.UI.Services.Categories;
 using Shop.UI.Services.Comments;
 using Shop.UI.Services.Inventories;
@@ -9,14 +13,10 @@ using Shop.UI.Services.Roles;
 using Shop.UI.Services.Shippings;
 using Shop.UI.Services.UserAddresses;
 using Shop.UI.Services.Users;
-using Shop.UI.SetupClasses.RazorUtility;
-using System.Text.Json;
-using System.Text.Json.Serialization;
-using Shop.Infrastructure.EmailService;
-using Shop.UI.Services.Avatars;
-using Shop.UI.SetupClasses.HttpClient;
+using Shop.UI.Setup.HttpClient;
+using Shop.UI.Setup.RazorUtility;
 
-namespace Shop.UI.SetupClasses;
+namespace Shop.UI.Setup;
 
 public static class UiBootstrapper
 {

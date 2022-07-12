@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
-namespace Shop.UI.SetupClasses.ModelStateExtensions;
+namespace Shop.UI.Setup.ModelStateExtensions;
 
 public class SerializeModelStateFilter : IPageFilter
 {

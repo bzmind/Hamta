@@ -54,7 +54,7 @@ using Shop.Application.Users.Edit;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
 
-namespace Shop.API.SetupClasses;
+namespace Shop.API.Setup;
 
 public class AutoMapperProfile : Profile
 {

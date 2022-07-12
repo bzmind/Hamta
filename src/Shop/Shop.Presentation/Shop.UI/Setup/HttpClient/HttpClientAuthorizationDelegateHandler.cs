@@ -1,4 +1,4 @@
-﻿namespace Shop.UI.SetupClasses.HttpClient;
+﻿namespace Shop.UI.Setup.HttpClient;
 
 public class HttpClientAuthorizationDelegateHandler : DelegatingHandler
 {

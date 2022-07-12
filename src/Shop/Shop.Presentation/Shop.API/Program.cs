@@ -5,9 +5,9 @@ using Common.Api.Utility;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
-using Shop.API.SetupClasses;
 using Shop.Config;
 using System.Text.Json.Serialization;
+using Shop.API.Setup;
 
 var builder = WebApplication.CreateBuilder(args);
 const string CORSPolicyName = "ApiCORS";

@@ -1,7 +1,7 @@
 ﻿using AspNetCoreRateLimit;
 using Common.Api.Jwt;
 
-namespace Shop.API.SetupClasses;
+namespace Shop.API.Setup;
 
 public static class ApiBootstrapper
 {

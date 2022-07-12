@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 
-namespace Shop.UI.SetupClasses.ModelStateExtensions;
+namespace Shop.UI.Setup.ModelStateExtensions;
 
 public static class ModelStateSerializer
 {

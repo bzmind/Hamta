@@ -11,8 +11,8 @@ using Shop.API.ViewModels.Users.Auth;
 using Shop.Domain.UserAggregate;
 using Shop.UI.Services.Avatars;
 using Shop.UI.Services.Users;
-using Shop.UI.SetupClasses.ModelStateExtensions;
-using Shop.UI.SetupClasses.RazorUtility;
+using Shop.UI.Setup.ModelStateExtensions;
+using Shop.UI.Setup.RazorUtility;
 
 namespace Shop.UI.Pages.Profile.Edit;
 

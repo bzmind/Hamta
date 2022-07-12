@@ -22,8 +22,6 @@
 		<Folder Include="Services\Colors\" />
 		<Folder Include="Services\Categories\" />
 		<Folder Include="Services\Auth\" />
-		<Folder Include="SetupClasses\ServerSide\" />
-		<Folder Include="SetupClasses\RazorUtility\" />
 	</ItemGroup>
 
 	<ItemGroup>

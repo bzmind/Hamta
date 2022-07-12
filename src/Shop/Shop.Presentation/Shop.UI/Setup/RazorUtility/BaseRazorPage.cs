@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Newtonsoft.Json;
 
-namespace Shop.UI.SetupClasses.RazorUtility;
+namespace Shop.UI.Setup.RazorUtility;
 
 [ValidateAntiForgeryToken]
 public class BaseRazorPage : PageModel

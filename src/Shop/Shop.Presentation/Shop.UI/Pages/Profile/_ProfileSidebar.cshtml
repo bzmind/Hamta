@@ -1,6 +1,6 @@
 ﻿@using Common.Api.Utility
 @using Shop.UI.Services.Users
-@using Shop.UI.SetupClasses.ServerSide
+@using Shop.UI.Setup.ServerSide
 @inject IUserService UserService
 @{
     var currentUser = await UserService.GetById(User.GetUserId());

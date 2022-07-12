@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 
-namespace Shop.UI.SetupClasses.ModelStateExtensions;
+namespace Shop.UI.Setup.ModelStateExtensions;
 
 public static class KeepTempDataResultExtensions
 {

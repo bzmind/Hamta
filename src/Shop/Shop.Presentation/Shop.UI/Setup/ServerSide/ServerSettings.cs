@@ -1,6 +1,6 @@
 ﻿using Common.Application.Utility.FileUtility;
 
-namespace Shop.UI.SetupClasses.ServerSide;
+namespace Shop.UI.Setup.ServerSide;
 
 public static class ServerSettings
 {

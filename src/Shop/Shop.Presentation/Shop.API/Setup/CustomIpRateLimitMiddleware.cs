@@ -1,10 +1,10 @@
-﻿using AspNetCoreRateLimit;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using AspNetCoreRateLimit;
 using Common.Api;
 using Microsoft.Extensions.Options;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 
-namespace Shop.API.SetupClasses;
+namespace Shop.API.Setup;
 
 public class CustomIpRateLimitMiddleware : IpRateLimitMiddleware
 {

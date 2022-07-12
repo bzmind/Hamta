@@ -1,7 +1,7 @@
 using Common.Api.Utility;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Services.UserAddresses;
-using Shop.UI.SetupClasses.RazorUtility;
+using Shop.UI.Setup.RazorUtility;
 
 namespace Shop.UI.Pages.Profile.Addresses;
 
