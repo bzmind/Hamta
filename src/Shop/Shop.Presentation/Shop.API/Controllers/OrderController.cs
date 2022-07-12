@@ -11,6 +11,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Orders;
 using Shop.Query.Orders._DTOs;
 using System.Net;
+using AutoMapper;
 using Shop.API.ViewModels.Orders;
 
 namespace Shop.API.Controllers;
@@ -19,16 +20,19 @@ namespace Shop.API.Controllers;
 public class OrderController : BaseApiController
 {
     private readonly IOrderFacade _orderFacade;
+    private readonly IMapper _mapper;
 
-    public OrderController(IOrderFacade orderFacade)
+    public OrderController(IOrderFacade orderFacade, IMapper mapper)
     {
         _orderFacade = orderFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("AddItem")]
     public async Task<ApiResult<long>> AddItem(AddOrderItemViewModel model)
     {
-        var command = new AddOrderItemCommand(User.GetUserId(), model.InventoryId, model.Quantity);
+        var command = _mapper.Map<AddOrderItemCommand>(model);
+        command.UserId = User.GetUserId();
         var result = await _orderFacade.AddItem(command);
         var resultUrl = Url.Action("AddItem", "Order", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
@@ -37,7 +41,8 @@ public class OrderController : BaseApiController
     [HttpPut("Checkout")]
     public async Task<ApiResult> Checkout(CheckoutOrderViewModel model)
     {
-        var command = new CheckoutOrderCommand(User.GetUserId(), model.UserAddressId, model.ShippingMethodId);
+        var command = _mapper.Map<CheckoutOrderCommand>(model);
+        command.UserId = User.GetUserId();
         var result = await _orderFacade.Checkout(command);
         return CommandResult(result);
     }
@@ -58,8 +63,9 @@ public class OrderController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.OrderManager)]
     [HttpPut("SetStatus")]
-    public async Task<ApiResult> SetStatus(SetOrderStatusCommand command)
+    public async Task<ApiResult> SetStatus(SetOrderStatusViewModel model)
     {
+        var command = _mapper.Map<SetOrderStatusCommand>(model);
         var result = await _orderFacade.SetStatus(command);
         return CommandResult(result);
     }

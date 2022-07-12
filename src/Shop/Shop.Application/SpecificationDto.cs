@@ -1,6 +1,6 @@
 ﻿namespace Shop.Application;
 
-internal class SpecificationDto
+public class SpecificationDto
 {
     public string Title { get; set; }
     public string Description { get; set; }

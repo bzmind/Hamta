@@ -8,6 +8,8 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Shippings;
 using Shop.Query.Shippings._DTOs;
 using System.Net;
+using AutoMapper;
+using Shop.API.ViewModels.Shippings;
 
 namespace Shop.API.Controllers;
 
@@ -15,23 +17,27 @@ namespace Shop.API.Controllers;
 public class ShippingController : BaseApiController
 {
     private readonly IShippingFacade _shippingFacade;
+    private readonly IMapper _mapper;
 
-    public ShippingController(IShippingFacade shippingFacade)
+    public ShippingController(IShippingFacade shippingFacade, IMapper mapper)
     {
         _shippingFacade = shippingFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateShippingCommand command)
+    public async Task<ApiResult<long>> Create(CreateShippingViewModel model)
     {
+        var command = _mapper.Map<CreateShippingCommand>(model);
         var result = await _shippingFacade.Create(command);
         var resultUrl = Url.Action("Create", "Shipping", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditShippingCommand command)
+    public async Task<ApiResult> Edit(EditShippingViewModel model)
     {
+        var command = _mapper.Map<EditShippingCommand>(model);
         var result = await _shippingFacade.Edit(command);
         return CommandResult(result);
     }

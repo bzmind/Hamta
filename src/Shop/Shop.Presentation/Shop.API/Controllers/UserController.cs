@@ -9,6 +9,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Users;
 using Shop.Query.Users._DTOs;
 using System.Net;
+using AutoMapper;
 using Shop.API.ViewModels.Users;
 using Shop.Application.Users.Auth.ResetPassword;
 using Shop.Application.Users.FavoriteItems.AddFavoriteItem;
@@ -16,6 +17,7 @@ using Shop.Application.Users.FavoriteItems.RemoveFavoriteItem;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
 using Shop.API.ViewModels.Users.Auth;
+using Shop.API.ViewModels.Users.Roles;
 
 namespace Shop.API.Controllers;
 
@@ -23,16 +25,19 @@ namespace Shop.API.Controllers;
 public class UserController : BaseApiController
 {
     private readonly IUserFacade _userFacade;
+    private readonly IMapper _mapper;
 
-    public UserController(IUserFacade userFacade)
+    public UserController(IUserFacade userFacade, IMapper mapper)
     {
         _userFacade = userFacade;
+        _mapper = mapper;
     }
 
     [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateUserCommand command)
+    public async Task<ApiResult<long>> Create(CreateUserViewModel model)
     {
+        var command = _mapper.Map<CreateUserCommand>(model);
         var result = await _userFacade.Create(command);
         var resultUrl = Url.Action("Create", "User", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
@@ -41,8 +46,8 @@ public class UserController : BaseApiController
     [HttpPut("Edit")]
     public async Task<ApiResult> Edit(EditUserViewModel model)
     {
-        var command = new EditUserCommand(User.GetUserId(), model.FullName, model.Gender, model.Email,
-            model.PhoneNumber);
+        var command = _mapper.Map<EditUserCommand>(model);
+        command.UserId = User.GetUserId();
         var result = await _userFacade.Edit(command);
         return CommandResult(result);
     }
@@ -50,7 +55,8 @@ public class UserController : BaseApiController
     [HttpPut("ResetPassword")]
     public async Task<ApiResult> ResetPassword(ResetUserPasswordViewModel model)
     {
-        var command = new ResetUserPasswordCommand(User.GetUserId(), model.CurrentPassword, model.NewPassword);
+        var command = _mapper.Map<ResetUserPasswordCommand>(model);
+        command.UserId = User.GetUserId();
         var result = await _userFacade.ResetPassword(command);
         return CommandResult(result);
     }
@@ -79,8 +85,9 @@ public class UserController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpPut("AddRole")]
-    public async Task<ApiResult> AddRole(AddUserRoleCommand command)
+    public async Task<ApiResult> AddRole(AddUserRoleViewModel model)
     {
+        var command = _mapper.Map<AddUserRoleCommand>(model);
         var result = await _userFacade.AddRole(command);
         return CommandResult(result);
     }
@@ -95,8 +102,9 @@ public class UserController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.UserManager)]
     [HttpDelete("RemoveRole/{roleId}")]
-    public async Task<ApiResult> RemoveRole(RemoveUserRoleCommand command)
+    public async Task<ApiResult> RemoveRole(RemoveUserRoleViewModel model)
     {
+        var command = _mapper.Map<RemoveUserRoleCommand>(model);
         var result = await _userFacade.RemoveRole(command);
         return CommandResult(result);
     }

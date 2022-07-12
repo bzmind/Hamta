@@ -10,6 +10,8 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Inventories;
 using Shop.Query.Inventories._DTOs;
 using System.Net;
+using AutoMapper;
+using Shop.API.ViewModels.Inventories;
 
 namespace Shop.API.Controllers;
 
@@ -17,44 +19,51 @@ namespace Shop.API.Controllers;
 public class InventoryController : BaseApiController
 {
     private readonly IInventoryFacade _inventoryFacade;
+    private readonly IMapper _mapper;
 
-    public InventoryController(IInventoryFacade inventoryFacade)
+    public InventoryController(IInventoryFacade inventoryFacade, IMapper mapper)
     {
         _inventoryFacade = inventoryFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateInventoryCommand command)
+    public async Task<ApiResult<long>> Create(CreateInventoryViewModel model)
     {
+        var command = _mapper.Map<CreateInventoryCommand>(model);
         var result = await _inventoryFacade.Create(command);
         var resultUrl = Url.Action("Create", "Inventory", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditInventoryCommand command)
+    public async Task<ApiResult> Edit(EditInventoryViewModel model)
     {
+        var command = _mapper.Map<EditInventoryCommand>(model);
         var result = await _inventoryFacade.Edit(command);
         return CommandResult(result);
     }
 
     [HttpPut("IncreaseQuantity")]
-    public async Task<ApiResult> IncreaseQuantity(IncreaseInventoryQuantityCommand command)
+    public async Task<ApiResult> IncreaseQuantity(IncreaseInventoryQuantityViewModel model)
     {
+        var command = _mapper.Map<IncreaseInventoryQuantityCommand>(model);
         var result = await _inventoryFacade.IncreaseQuantity(command);
         return CommandResult(result);
     }
 
     [HttpPut("DecreaseQuantity")]
-    public async Task<ApiResult> DecreaseQuantity(DecreaseInventoryQuantityCommand command)
+    public async Task<ApiResult> DecreaseQuantity(DecreaseInventoryQuantityViewModel model)
     {
+        var command = _mapper.Map<DecreaseInventoryQuantityCommand>(model);
         var result = await _inventoryFacade.DecreaseQuantity(command);
         return CommandResult(result);
     }
 
     [HttpPut("SetDiscountPercentage")]
-    public async Task<ApiResult> SetDiscountPercentage(SetInventoryDiscountPercentageCommand command)
+    public async Task<ApiResult> SetDiscountPercentage(SetInventoryDiscountPercentageViewModel model)
     {
+        var command = _mapper.Map<SetInventoryDiscountPercentageCommand>(model);
         var result = await _inventoryFacade.SetDiscountPercentage(command);
         return CommandResult(result);
     }

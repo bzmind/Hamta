@@ -7,7 +7,7 @@ using Shop.Domain.CommentAggregate.Repository;
 
 namespace Shop.Application.Comments.SetStatus;
 
-public record SetCommentStatusCommand(long CommentId, Comment.CommentStatus Status) : IBaseCommand;
+public record SetCommentStatusCommand(long Id, Comment.CommentStatus Status) : IBaseCommand;
 
 public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStatusCommand>
 {
@@ -20,7 +20,7 @@ public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStat
 
     public async Task<OperationResult> Handle(SetCommentStatusCommand request, CancellationToken cancellationToken)
     {
-        var comment = await _commentRepository.GetAsTrackingAsync(request.CommentId);
+        var comment = await _commentRepository.GetAsTrackingAsync(request.Id);
 
         if (comment == null)
             return OperationResult.NotFound();
@@ -36,12 +36,12 @@ public class SetCommentStatusCommandValidator : AbstractValidator<SetCommentStat
 {
     public SetCommentStatusCommandValidator()
     {
-        RuleFor(c => c.CommentId)
+        RuleFor(c => c.Id)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("آیدی"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آیدی"));
 
         RuleFor(c => c.Status)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("وضعیت"))
-            .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("وضعیت"));
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("وضعیت نظر"))
+            .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("وضعیت نظر"));
     }
 }

@@ -7,8 +7,8 @@ using Shop.Domain.InventoryAggregate.Repository;
 
 namespace Shop.Application.Inventories.Edit;
 
-public record EditInventoryCommand(long InventoryId, long ProductId, int Quantity, int Price, long ColorId)
-    : IBaseCommand;
+public record EditInventoryCommand(long InventoryId, long ProductId, int Quantity, int Price,
+        long ColorId) : IBaseCommand;
 
 public class EditInventoryCommandHandler : IBaseCommandHandler<EditInventoryCommand>
 {

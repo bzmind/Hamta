@@ -11,6 +11,7 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Questions;
 using Shop.Query.Questions._DTOs;
 using System.Net;
+using AutoMapper;
 using Shop.API.ViewModels.Questions;
 
 namespace Shop.API.Controllers;
@@ -19,16 +20,19 @@ namespace Shop.API.Controllers;
 public class QuestionController : BaseApiController
 {
     private readonly IQuestionFacade _questionFacade;
+    private readonly IMapper _mapper;
 
-    public QuestionController(IQuestionFacade questionFacade)
+    public QuestionController(IQuestionFacade questionFacade, IMapper mapper)
     {
         _questionFacade = questionFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Create")]
     public async Task<ApiResult<long>> Create(CreateQuestionViewModel model)
     {
-        var command = new CreateQuestionCommand(User.GetUserId(), model.ProductId, model.Description);
+        var command = _mapper.Map<CreateQuestionCommand>(model);
+        command.UserId = User.GetUserId();
         var result = await _questionFacade.Create(command);
         var resultUrl = Url.Action("Create", "Question", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
@@ -36,8 +40,9 @@ public class QuestionController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.QuestionManager)]
     [HttpPut("SetStatus")]
-    public async Task<ApiResult> SetStatus(SetQuestionStatusCommand command)
+    public async Task<ApiResult> SetStatus(SetQuestionStatusViewModel model)
     {
+        var command = _mapper.Map<SetQuestionStatusCommand>(model);
         var result = await _questionFacade.SetStatus(command);
         return CommandResult(result);
     }
@@ -45,14 +50,16 @@ public class QuestionController : BaseApiController
     [HttpPut("AddReply")]
     public async Task<ApiResult> AddReply(AddReplyViewModel model)
     {
-        var command = new AddReplyCommand(User.GetUserId(), model.QuestionId, model.Description);
+        var command = _mapper.Map<AddReplyCommand>(model);
+        command.UserId = User.GetUserId();
         var result = await _questionFacade.AddReply(command);
         return CommandResult(result);
     }
 
     [HttpPut("RemoveReply")]
-    public async Task<ApiResult> RemoveReply(RemoveReplyCommand command)
+    public async Task<ApiResult> RemoveReply(RemoveReplyViewModel model)
     {
+        var command = _mapper.Map<RemoveReplyCommand>(model);
         var result = await _questionFacade.RemoveReply(command);
         return CommandResult(result);
     }

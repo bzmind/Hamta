@@ -1,7 +1,9 @@
 ﻿using System.Net;
+using AutoMapper;
 using Common.Api;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shop.API.ViewModels.Avatars;
 using Shop.Application.Avatars.Create;
 using Shop.Domain.AvatarAggregate;
 using Shop.Presentation.Facade.Avatars;
@@ -12,15 +14,18 @@ namespace Shop.API.Controllers;
 public class AvatarController : BaseApiController
 {
     private readonly IAvatarFacade _avatarFacade;
+    private readonly IMapper _mapper;
 
-    public AvatarController(IAvatarFacade avatarFacade)
+    public AvatarController(IAvatarFacade avatarFacade, IMapper mapper)
     {
         _avatarFacade = avatarFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create([FromForm] CreateAvatarCommand command)
+    public async Task<ApiResult<long>> Create([FromForm] CreateAvatarViewModel model)
     {
+        var command = _mapper.Map<CreateAvatarCommand>(model);
         var result = await _avatarFacade.Create(command);
         var resultUrl = Url.Action("Create", "Avatar", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);

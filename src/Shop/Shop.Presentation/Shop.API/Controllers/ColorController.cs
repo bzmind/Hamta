@@ -8,6 +8,8 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Colors;
 using Shop.Query.Colors._DTOs;
 using System.Net;
+using AutoMapper;
+using Shop.API.ViewModels.Colors;
 
 namespace Shop.API.Controllers;
 
@@ -15,23 +17,27 @@ namespace Shop.API.Controllers;
 public class ColorController : BaseApiController
 {
     private readonly IColorFacade _colorFacade;
+    private readonly IMapper _mapper;
 
-    public ColorController(IColorFacade colorFacade)
+    public ColorController(IColorFacade colorFacade, IMapper mapper)
     {
         _colorFacade = colorFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateColorCommand command)
+    public async Task<ApiResult<long>> Create(CreateColorViewModel model)
     {
+        var command = _mapper.Map<CreateColorCommand>(model);
         var result = await _colorFacade.Create(command);
         var resultUrl = Url.Action("Create", "Color", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditColorCommand command)
+    public async Task<ApiResult> Edit(EditColorViewModel model)
     {
+        var command = _mapper.Map<EditColorCommand>(model);
         var result = await _colorFacade.Edit(command);
         return CommandResult(result);
     }

@@ -40,8 +40,9 @@ public class CommentController : BaseApiController
 
     [CheckPermission(RolePermission.Permissions.CommentManager)]
     [HttpPut("SetStatus")]
-    public async Task<ApiResult> SetStatus(SetCommentStatusCommand command)
+    public async Task<ApiResult> SetStatus(SetCommentStatusViewModel model)
     {
+        var command = _mapper.Map<SetCommentStatusCommand>(model);
         var result = await _commentFacade.SetStatus(command);
         return CommandResult(result);
     }

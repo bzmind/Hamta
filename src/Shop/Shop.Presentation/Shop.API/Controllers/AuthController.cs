@@ -1,4 +1,5 @@
-﻿using Common.Api;
+﻿using AutoMapper;
+using Common.Api;
 using Common.Api.Jwt;
 using Common.Application;
 using Common.Application.Utility.Security;
@@ -22,12 +23,15 @@ public class AuthController : BaseApiController
     private readonly IUserFacade _userFacade;
     private readonly IUserTokenFacade _userTokenFacade;
     private readonly IConfiguration _configuration;
+    private readonly IMapper _mapper;
 
-    public AuthController(IUserFacade userFacade, IConfiguration configuration, IUserTokenFacade userTokenFacade)
+    public AuthController(IUserFacade userFacade, IConfiguration configuration,
+        IUserTokenFacade userTokenFacade, IMapper mapper)
     {
         _userFacade = userFacade;
         _configuration = configuration;
         _userTokenFacade = userTokenFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Login")]
@@ -50,8 +54,8 @@ public class AuthController : BaseApiController
     [HttpPost("Register")]
     public async Task<ApiResult> Register(RegisterUserViewModel model)
     {
-        var result = await _userFacade.Register(new RegisterUserCommand(model.FullName, model.Gender,
-            model.PhoneNumber, model.Password));
+        var command = _mapper.Map<RegisterUserCommand>(model);
+        var result = await _userFacade.Register(command);
         return CommandResult(result);
     }
 

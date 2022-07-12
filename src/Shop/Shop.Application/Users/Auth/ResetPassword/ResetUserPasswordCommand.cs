@@ -7,7 +7,12 @@ using Shop.Domain.UserAggregate.Repository;
 
 namespace Shop.Application.Users.Auth.ResetPassword;
 
-public record ResetUserPasswordCommand(long UserId, string CurrentPassword, string NewPassword) : IBaseCommand;
+public class ResetUserPasswordCommand : IBaseCommand
+{
+    public long UserId { get; set; }
+    public string CurrentPassword { get; set; }
+    public string NewPassword { get; set; }
+}
 
 public class ResetUserPasswordCommandHandler : IBaseCommandHandler<ResetUserPasswordCommand>
 {

@@ -8,6 +8,8 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Roles;
 using Shop.Query.Roles._DTOs;
 using System.Net;
+using AutoMapper;
+using Shop.API.ViewModels.Roles;
 
 namespace Shop.API.Controllers;
 
@@ -15,30 +17,35 @@ namespace Shop.API.Controllers;
 public class RoleController : BaseApiController
 {
     private readonly IRoleFacade _roleFacade;
+    private readonly IMapper _mapper;
 
-    public RoleController(IRoleFacade roleFacade)
+    public RoleController(IRoleFacade roleFacade, IMapper mapper)
     {
         _roleFacade = roleFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateRoleCommand command)
+    public async Task<ApiResult<long>> Create(CreateRoleViewModel model)
     {
+        var command = _mapper.Map<CreateRoleCommand>(model);
         var result = await _roleFacade.Create(command);
         var resultUrl = Url.Action("Create", "Role", new { Id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
     [HttpPut("AddPermissions")]
-    public async Task<ApiResult> AddPermission(AddRolePermissionCommand command)
+    public async Task<ApiResult> AddPermission(AddRolePermissionViewModel model)
     {
+        var command = _mapper.Map<AddRolePermissionCommand>(model);
         var result = await _roleFacade.AddPermission(command);
         return CommandResult(result);
     }
 
     [HttpPut("RemovePermissions")]
-    public async Task<ApiResult> RemovePermission(RemoveRolePermissionCommand command)
+    public async Task<ApiResult> RemovePermission(RemoveRolePermissionViewModel model)
     {
+        var command = _mapper.Map<RemoveRolePermissionCommand>(model);
         var result = await _roleFacade.RemovePermission(command);
         return CommandResult(result);
     }

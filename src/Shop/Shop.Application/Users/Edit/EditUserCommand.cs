@@ -10,8 +10,14 @@ using Shop.Domain.UserAggregate.Services;
 
 namespace Shop.Application.Users.Edit;
 
-public record EditUserCommand(long UserId, string FullName, User.UserGender Gender, string Email,
-    string PhoneNumber) : IBaseCommand;
+public class EditUserCommand : IBaseCommand
+{
+    public long UserId { get; set; }
+    public string FullName { get; set; }
+    public User.UserGender Gender { get; set; }
+    public string Email { get; set; }
+    public string PhoneNumber { get; set; }
+}
 
 public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>
 {

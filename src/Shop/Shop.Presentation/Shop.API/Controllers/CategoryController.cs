@@ -9,6 +9,8 @@ using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Categories;
 using Shop.Query.Categories._DTOs;
 using System.Net;
+using AutoMapper;
+using Shop.API.ViewModels.Categories;
 
 namespace Shop.API.Controllers;
 
@@ -16,31 +18,36 @@ namespace Shop.API.Controllers;
 public class CategoryController : BaseApiController
 {
     private readonly ICategoryFacade _categoryFacade;
+    private readonly IMapper _mapper;
 
-    public CategoryController(ICategoryFacade categoryFacade)
+    public CategoryController(ICategoryFacade categoryFacade, IMapper mapper)
     {
         _categoryFacade = categoryFacade;
+        _mapper = mapper;
     }
 
     [HttpPost("Create")]
-    public async Task<ApiResult<long>> Create(CreateCategoryCommand command)
+    public async Task<ApiResult<long>> Create(CreateCategoryViewModel model)
     {
+        var command = _mapper.Map<CreateCategoryCommand>(model);
         var result = await _categoryFacade.Create(command);
         var resultUrl = Url.Action("Create", "Category", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
     [HttpPost("AddSubCategory")]
-    public async Task<ApiResult<long>> AddSubCategory(AddSubCategoryCommand command)
+    public async Task<ApiResult<long>> AddSubCategory(AddSubCategoryViewModel model)
     {
+        var command = _mapper.Map<AddSubCategoryCommand>(model);
         var result = await _categoryFacade.AddSubCategory(command);
         var resultUrl = Url.Action("AddSubCategory", "Category", new { id = result.Data }, Request.Scheme);
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
     [HttpPut("Edit")]
-    public async Task<ApiResult> Edit(EditCategoryCommand command)
+    public async Task<ApiResult> Edit(EditCategoryViewModel model)
     {
+        var command = _mapper.Map<EditCategoryCommand>(model);
         var result = await _categoryFacade.Edit(command);
         return CommandResult(result);
     }

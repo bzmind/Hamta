@@ -9,8 +9,7 @@ public static class ApiBootstrapper
     {
         services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
         services.AddTransient<CustomJwtValidation>();
-
-        // Adding AspNetCoreRateLimit dependencies
+        // AspNetCoreRateLimit dependencies
         services.AddOptions();
         services.AddMemoryCache();
         services.Configure<IpRateLimitOptions>(configuration.GetSection("IpRateLimiting"));

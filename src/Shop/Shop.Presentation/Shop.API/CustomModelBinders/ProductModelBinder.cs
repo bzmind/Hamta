@@ -1,8 +1,11 @@
 ﻿using System.Reflection;
 using System.Text.Json;
+using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Shop.API.SetupClasses;
 using Shop.API.ViewModels;
+using Shop.API.ViewModels.Products;
 using Shop.Application;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
@@ -25,12 +28,15 @@ internal class TempProductModel
 
 public class ProductModelBinder : IModelBinder
 {
+    private IMapper _mapper;
+
     public Task BindModelAsync(ModelBindingContext bindingContext)
     {
+        _mapper = (IMapper)bindingContext.ActionContext.HttpContext.RequestServices.GetService(typeof(AutoMapperProfile));
         var tempModel = new TempProductModel();
 
-        Type type = tempModel.GetType();
-        List<PropertyInfo> tempModelProperties = new List<PropertyInfo>(type.GetProperties());
+        var type = tempModel.GetType();
+        var tempModelProperties = new List<PropertyInfo>(type.GetProperties());
 
         bindingContext.ModelMetadata.Properties.ToList().ForEach(property =>
         {
@@ -80,15 +86,19 @@ public class ProductModelBinder : IModelBinder
 
         var extraDescriptions = bindingContext.ValueProvider
             .GetValue(nameof(tempModel.ExtraDescriptions)).FirstValue;
-        var deserializedDesc = JsonSerializer
-            .Deserialize(extraDescriptions, typeof(Dictionary<string, string>), options);
-        tempModel.ExtraDescriptions = (Dictionary<string, string>)deserializedDesc;
-
-        if (bindingContext.ModelType == typeof(CreateProductCommand))
+        if (extraDescriptions != null)
         {
+            var deserializedDesc = JsonSerializer.Deserialize
+                (extraDescriptions, typeof(Dictionary<string, string>), options);
+            tempModel.ExtraDescriptions = (Dictionary<string, string>)deserializedDesc;
+        }
+
+        if (bindingContext.ModelType == typeof(CreateProductViewModel))
+        {
+            var specs = _mapper.Map<List<SpecificationDto>>(tempModel.CustomSpecifications);
             var model = new CreateProductCommand(tempModel.CategoryId, tempModel.Name, tempModel.EnglishName,
                 tempModel.Slug, tempModel.Description, tempModel.MainImage, tempModel.GalleryImages,
-                tempModel.CustomSpecifications, tempModel.ExtraDescriptions);
+                specs, tempModel.ExtraDescriptions);
 
             var validator = new CreateProductCommandValidator();
             var result = validator.Validate(model);
@@ -97,9 +107,10 @@ public class ProductModelBinder : IModelBinder
         }
         else if (bindingContext.ModelType == typeof(EditProductCommand))
         {
+            var specs = _mapper.Map<List<SpecificationDto>>(tempModel.CustomSpecifications);
             var model = new EditProductCommand(tempModel.ProductId, tempModel.CategoryId, tempModel.Name,
                 tempModel.EnglishName, tempModel.Slug, tempModel.Description, tempModel.MainImage,
-                tempModel.GalleryImages, tempModel.CustomSpecifications, tempModel.ExtraDescriptions);
+                tempModel.GalleryImages, specs, tempModel.ExtraDescriptions);
 
             var validator = new EditProductCommandValidator();
             var result = validator.Validate(model);
