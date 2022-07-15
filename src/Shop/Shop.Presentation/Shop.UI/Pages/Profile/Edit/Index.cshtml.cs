@@ -10,6 +10,7 @@ using Shop.API.ViewModels.Users;
 using Shop.API.ViewModels.Users.Auth;
 using Shop.Domain.UserAggregate;
 using Shop.UI.Services.Avatars;
+using Shop.UI.Services.UserAddresses;
 using Shop.UI.Services.Users;
 using Shop.UI.Setup.ModelStateExtensions;
 using Shop.UI.Setup.RazorUtility;
@@ -21,12 +22,15 @@ public class IndexModel : BaseRazorPage
 {
     private readonly IUserService _userService;
     private readonly IAvatarService _avatarService;
+    private readonly IUserAddressService _userAddressService;
 
     public IndexModel(IUserService userService, IAvatarService avatarService,
-        IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
+        IRazorToStringRenderer razorToStringRenderer,
+        IUserAddressService userAddressService) : base(razorToStringRenderer)
     {
         _userService = userService;
         _avatarService = avatarService;
+        _userAddressService = userAddressService;
     }
 
     [DisplayName("نام و نام خانوادگی")]
@@ -104,21 +108,19 @@ public class IndexModel : BaseRazorPage
         if (result.IsSuccessful == false)
         {
             MakeAlert(result);
-            if (result.MetaData.ApiStatusCode == ApiStatusCode.TooManyRequests)
-                Response.StatusCode = (int)result.MetaData.ApiStatusCode;
             return AjaxErrorMessageResult(result);
         }
 
         if (result.Data == false)
-            return await SuccessResultWithPageHtml("_NotSubscribedToNewsletter", null);
+            return await AjaxSuccessHtmlResultAsync("_NotSubscribedToNewsletter", null);
 
-        return await SuccessResultWithPageHtml("_SubscribedToNewsletter", null);
+        return await AjaxSuccessHtmlResultAsync("_SubscribedToNewsletter", null);
     }
 
-    public async Task<IActionResult> OnGetShowAvatarsModal()
+    public async Task<IActionResult> OnGetShowAvatarsPage()
     {
         var avatars = await _avatarService.GetAll();
-        return await SuccessResultWithPageHtml("_AvatarsModal", avatars);
+        return await AjaxSuccessHtmlResultAsync("_AvatarsModal", avatars);
     }
 
     public async Task<IActionResult> OnPostSetAvatar(long avatarId)

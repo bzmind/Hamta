@@ -1,0 +1,557 @@
+﻿@page
+@model Shop.UI.Pages.Admin.IndexModel
+@{
+}
+
+<div class="content-header row">
+</div>
+<section id="dashboard-analytics">
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <h4 class="card-title">آمار وب سایت</h4>
+          <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+        </div>
+        <div class="card-content">
+          <div class="card-body pb-1">
+            <div class="d-flex justify-content-around align-items-center flex-wrap">
+              <div class="user-analytics">
+                <i class="bx bx-user mr-25 align-middle"></i>
+                <span class="align-middle text-muted">کاربران</span>
+                <div class="d-flex">
+                  <div id="radial-success-chart"></div>
+                  <h3 class="mt-1 ml-50 primary-font">61K</h3>
+                </div>
+              </div>
+              <div class="sessions-analytics">
+                <i class="bx bx-trending-up align-middle mr-25"></i>
+                <span class="align-middle text-muted">جلسات</span>
+                <div class="d-flex">
+                  <div id="radial-warning-chart"></div>
+                  <h3 class="mt-1 ml-50 primary-font">92K</h3>
+                </div>
+              </div>
+              <div class="bounce-rate-analytics">
+                <i class="bx bx-pie-chart-alt align-middle mr-25"></i>
+                <span class="align-middle text-muted">نرخ نوسان</span>
+                <div class="d-flex">
+                  <div id="radial-danger-chart"></div>
+                  <h3 class="mt-1 ml-50 primary-font">72.6%</h3>
+                </div>
+              </div>
+            </div>
+            <div id="analytics-bar-chart"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <div class="col-xl-3 col-md-6 col-sm-12 dashboard-referral-impression">
+      <div class="row">
+        <!-- Referral Chart Starts-->
+        <div class="col-xl-12 col-12">
+          <div class="card">
+            <div class="card-content">
+              <div class="card-body text-center pb-0">
+                <h2 class="mt-n1 primary-font">32,690 تومان</h2>
+                <span class="text-muted">ارجاع</span> 40%
+                <div id="success-line-chart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-12 col-12">
+          <div class="card">
+            <div class="card-content">
+              <div class="card-body donut-chart-wrapper">
+                <div id="donut-chart" class="d-flex justify-content-center"></div>
+                <ul class="list-inline d-flex justify-content-around mb-0">
+                  <li> <span class="bullet bullet-xs bullet-warning mr-50"></span>جستجو</li>
+                  <li> <span class="bullet bullet-xs bullet-info mr-50"></span>ایمیل</li>
+                  <li> <span class="bullet bullet-xs bullet-primary mr-50"></span>اجتماعی</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-12 col-sm-12">
+      <div class="row">
+        <div class="col-xl-12 col-md-6 col-12">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between pb-xl-0 pt-xl-1">
+              <div class="conversion-title">
+                <h4 class="card-title mb-0">تبدیل</h4>
+                <p>
+
+                  60%
+                  <i class="bx bx-trending-up text-success font-size-small align-middle mr-25"></i>
+                </p>
+              </div>
+              <div class="conversion-rate">
+                <h2 class="primary-font">89k</h2>
+              </div>
+            </div>
+            <div class="card-content">
+              <div class="card-body text-center">
+                <div id="bar-negative-chart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-xl-12 col-md-6 col-12">
+          <div class="row">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center my-n50">
+                    <div class="avatar bg-rgba-primary m-0 p-25 mr-75 mr-xl-2">
+                      <div class="avatar-content">
+                        <i class="bx bx-user text-primary font-medium-2"></i>
+                      </div>
+                    </div>
+                    <div class="total-amount mt-n50">
+                      <h5 class="mb-0 primary-font">38,566</h5>
+                      <small class="text-muted">تبدیل</small>
+                    </div>
+                  </div>
+                  <div id="primary-line-chart"></div>
+                </div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card">
+                <div class="card-body d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center my-n50">
+                    <div class="avatar bg-rgba-warning m-0 p-25 mr-75 mr-xl-2">
+                      <div class="avatar-content">
+                        <i class="bx bx-dollar text-warning font-medium-2"></i>
+                      </div>
+                    </div>
+                    <div class="total-amount mt-n50">
+                      <h5 class="mb-0 primary-font">53,659</h5>
+                      <small class="text-muted">واریزی</small>
+                    </div>
+                  </div>
+                  <div id="warning-line-chart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xl-3 col-md-6 col-12 activity-card">
+      <div class="card">
+        <div class="card-header">
+          <h4 class="card-title">فعالیت</h4>
+        </div>
+        <div class="card-content">
+          <div class="card-body pt-1">
+            <div class="d-flex activity-content align-items-center">
+              <div class="avatar mt-25 bg-rgba-primary m-0 mr-75">
+                <div class="avatar-content">
+                  <i class="bx bx-bar-chart-alt-2 text-primary"></i>
+                </div>
+              </div>
+              <div class="activity-progress flex-grow-1">
+                <small class="text-muted d-inline-block align-top mb-75">مجموع فروش</small>
+                <small class="float-right">8,125 تومان</small>
+                <div class="progress progress-bar-primary progress-sm">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="50" style="width:50%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex activity-content align-items-center">
+              <div class="avatar mt-25 bg-rgba-success m-0 mr-75">
+                <div class="avatar-content">
+                  <i class="bx bx-dollar text-success"></i>
+                </div>
+              </div>
+              <div class="activity-progress flex-grow-1">
+                <small class="text-muted d-inline-block align-top mb-75">مقدار واریزی</small>
+                <small class="float-right">18,963 تومان</small>
+                <div class="progress progress-bar-success progress-sm">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="80" style="width:80%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex activity-content align-items-center">
+              <div class="avatar mt-25 bg-rgba-warning m-0 mr-75">
+                <div class="avatar-content">
+                  <i class="bx bx-stats text-warning"></i>
+                </div>
+              </div>
+              <div class="activity-progress flex-grow-1">
+                <small class="text-muted d-inline-block align-top mb-75">کل بودجه</small>
+                <small class="float-right">14,150 تومان</small>
+                <div class="progress progress-bar-warning progress-sm">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="60" style="width:60%"></div>
+                </div>
+              </div>
+            </div>
+            <div class="d-flex align-items-center mb-1">
+              <div class="avatar mt-25 bg-rgba-danger m-0 mr-75">
+                <div class="avatar-content">
+                  <i class="bx bx-check text-danger"></i>
+                </div>
+              </div>
+              <div class="activity-progress flex-grow-1">
+                <small class="text-muted d-inline-block align-top mb-75">وظایف انجام شده</small>
+                <small class="float-right">106</small>
+                <div class="progress progress-bar-danger progress-sm">
+                  <div class="progress-bar" role="progressbar" aria-valuenow="30" style="width:30%"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 profit-report-card">
+      <div class="row">
+        <div class="col-md-12 col-sm-6">
+          <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+              <h4 class="card-title">گزارش فروش</h4>
+              <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+            </div>
+            <div class="card-content">
+              <div class="card-body pb-0 d-flex justify-content-around">
+                <div class="d-inline-flex mr-xl-2 mt-50">
+                  <div id="profit-primary-chart"></div>
+                  <div class="profit-content ml-50 mt-50 mb-1">
+                    <h5 class="mb-25 primary-font">12.5K</h5>
+                    <small class="text-muted">1399</small>
+                  </div>
+                </div>
+                <div class="d-inline-flex mt-50">
+                  <div id="profit-info-chart"></div>
+                  <div class="profit-content ml-50 mt-50 mb-1">
+                    <h5 class="mb-25 primary-font">64.8K</h5>
+                    <small class="text-muted">1398</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-12 col-sm-6">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">ثبت نام ها</h4>
+            </div>
+            <div class="card-content">
+              <div class="card-body">
+                <div class="d-flex align-items-end justify-content-around mt-50 mb-25">
+                  <div class="registration-content mr-xl-2">
+                    <h4 class="mb-0 primary-font">56.3k</h4>
+                    <i class="bx bx-trending-up success align-middle"></i>
+                    <span class="text-success">12%</span>
+                  </div>
+                  <div id="registration-chart"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 sales-card">
+      <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+          <div class="card-title-content">
+            <h4 class="card-title mb-25">فروش‌ها</h4>
+            <small class="text-muted">محاسبه شده در 7 روز اخیر</small>
+          </div>
+          <i class="bx bx-dots-vertical-rounded font-medium-3 cursor-pointer"></i>
+        </div>
+        <div class="card-content">
+          <div class="card-body">
+            <div id="sales-chart" class="mb-2"></div>
+            <div class="d-flex justify-content-between my-1">
+              <div class="sales-info d-flex align-items-center">
+                <i class="bx bx-up-arrow-circle text-primary font-medium-5 mr-50"></i>
+                <div class="sales-info-content">
+                  <h6 class="mb-0 mt-n50 primary-font">بهترین فروش</h6>
+                  <small class="text-muted">یک شنبه</small>
+                </div>
+              </div>
+              <h6 class="mb-0 line-height-1 primary-font">28.6k</h6>
+            </div>
+            <div class="d-flex justify-content-between mt-2">
+              <div class="sales-info d-flex align-items-center">
+                <i class="bx bx-down-arrow-circle icon-light font-medium-5 mr-50"></i>
+                <div class="sales-info-content">
+                  <h6 class="mb-0 mt-n50 primary-font">کمترین فروش</h6>
+                  <small class="text-muted">پنج شنبه</small>
+                </div>
+              </div>
+              <h6 class="mb-0 line-height-1 primary-font">986k</h6>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-md-6 col-12 growth-card">
+      <div class="card">
+        <div class="card-body text-center">
+          <div class="dropdown">
+            <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButtonSec" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              1399
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButtonSec">
+              <a class="dropdown-item" href="#">1399</a>
+              <a class="dropdown-item" href="#">1398</a>
+              <a class="dropdown-item" href="#">1397</a>
+            </div>
+          </div>
+          <div id="growth-Chart" class="my-75"></div>
+          <h6 class="mb-0"> 62% رشد شرکت در 1398</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-7">
+      <div class="row">
+        <div class="col-12">
+          <div class="card widget-todo">
+            <div class="card-header border-bottom d-flex justify-content-between align-items-center flex-wrap">
+              <h4 class="card-title d-flex align-items-center mb-25 mb-sm-n50 mt-n50">
+                <i class="bx bx-check font-medium-5 pl-25 pr-75"></i>وظایف
+              </h4>
+              <ul class="list-inline d-flex mb-25 mb-sm-0">
+                <li class="d-flex align-items-center">
+                  <i class="bx bx-check-circle font-medium-3 mr-50"></i>
+                  <div class="dropdown">
+                    <div class="dropdown-toggle mr-1 cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                      همه وظایف
+                    </div>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" href="#">گزینه 1</a>
+                      <a class="dropdown-item" href="#">گزینه 2</a>
+                      <a class="dropdown-item" href="#">گزینه 3</a>
+                    </div>
+                  </div>
+                </li>
+                <li class="d-flex align-items-center">
+                  <i class="bx bx-sort mr-50 font-medium-3"></i>
+                  <div class="dropdown">
+                    <div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">همه وظایف</div>
+                    <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton2">
+                      <a class="dropdown-item" href="#">گزینه 1</a>
+                      <a class="dropdown-item" href="#">گزینه 2</a>
+                      <a class="dropdown-item" href="#">گزینه 3</a>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body px-0 py-1">
+              <ul class="widget-todo-list-wrapper" id="widget-todo-list">
+                <li class="widget-todo-item">
+                  <div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
+                    <div class="widget-todo-title-area d-flex align-items-center">
+                      <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i>
+                      <div class="checkbox checkbox-shadow">
+                        <input type="checkbox" class="checkbox__input" id="checkbox1">
+                        <label for="checkbox1"></label>
+                      </div>
+                      <span class="widget-todo-title mx-50">لورم ایپسوم متن ساختگی با تولید سادگی</span>
+                    </div>
+                    <div class="widget-todo-item-action d-flex align-items-center">
+                      <div class="badge badge-pill bg-rgba-success text-success mr-1">فرانت اند</div>
+                      <div class="avatar bg-rgba-primary m-0 mr-50">
+                        <div class="avatar-content">
+                          <span class="font-size-base text-primary">رآ</span>
+                        </div>
+                      </div>
+                      <div class="dropdown">
+                        <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#"><i class="bx bx-edit-alt mr-1"></i> ویرایش</a>
+                          <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> حذف</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="widget-todo-item">
+                  <div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
+                    <div class="widget-todo-title-area d-flex align-items-center">
+                      <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i>
+                      <div class="checkbox checkbox-shadow">
+                        <input type="checkbox" class="checkbox__input" id="checkbox2">
+                        <label for="checkbox2"></label>
+                      </div>
+                      <span class="widget-todo-title mx-50">لورم ایپسوم متن ساختگی با تولید سادگی</span>
+                    </div>
+                    <div class="widget-todo-item-action d-flex align-items-center">
+                      <div class="badge badge-pill bg-rgba-danger text-danger mr-1">بک اند</div>
+                      <div class="avatar m-0 mr-50">
+                        <img src="/admin/images/profile/user-uploads/social-2.jpg" alt="img placeholder" height="32" width="32">
+                      </div>
+                      <div class="dropdown">
+                        <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#"><i class="bx bx-edit-alt mr-1"></i> ویرایش</a>
+                          <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> حذف</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="widget-todo-item completed">
+                  <div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
+                    <div class="widget-todo-title-area d-flex align-items-center">
+                      <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i>
+                      <div class="checkbox checkbox-shadow">
+                        <input type="checkbox" class="checkbox__input" id="checkbox3" checked>
+                        <label for="checkbox3"></label>
+                      </div>
+                      <span class="widget-todo-title mx-50">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم</span>
+                    </div>
+                    <div class="widget-todo-item-action d-flex align-items-center">
+                      <div class="badge badge-pill bg-rgba-primary text-primary mr-1">UI/UX</div>
+                      <div class="avatar bg-rgba-primary m-0 mr-50">
+                        <div class="avatar-content">
+                          <span class="font-size-base text-primary">ج‌د</span>
+                        </div>
+                      </div>
+                      <div class="dropdown">
+                        <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#"><i class="bx bx-edit-alt mr-1"></i> ویرایش</a>
+                          <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> حذف</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="widget-todo-item">
+                  <div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
+                    <div class="widget-todo-title-area d-flex align-items-center">
+                      <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i>
+                      <div class="checkbox checkbox-shadow">
+                        <input type="checkbox" class="checkbox__input" id="checkbox4">
+                        <label for="checkbox4"></label>
+                      </div>
+                      <span class="widget-todo-title mx-50">لورم ایپسوم متن ساختگی با تولید سادگی</span>
+                    </div>
+                    <div class="widget-todo-item-action d-flex align-items-center">
+                      <div class="badge badge-pill bg-rgba-info text-info mr-1">طراحی</div>
+                      <div class="avatar m-0 mr-50">
+                        <img src="/admin/images/profile/user-uploads/user-05.jpg" alt="img placeholder" height="32" width="32">
+                      </div>
+                      <div class="dropdown">
+                        <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#"><i class="bx bx-edit-alt mr-1"></i> ویرایش</a>
+                          <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> حذف</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="widget-todo-item">
+                  <div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
+                    <div class="widget-todo-title-area d-flex align-items-center">
+                      <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i>
+                      <div class="checkbox checkbox-shadow">
+                        <input type="checkbox" class="checkbox__input" id="checkbox5">
+                        <label for="checkbox5"></label>
+                      </div>
+                      <span class="widget-todo-title mx-50">لورم ایپسوم متن ساختگی با تولید سادگی نامفهوم از صنعت چاپ</span>
+                    </div>
+                    <div class="widget-todo-item-action d-flex align-items-center">
+                      <div class="badge badge-pill bg-rgba-warning text-warning mr-1">Javascript</div>
+                      <div class="avatar bg-rgba-primary m-0 mr-50">
+                        <div class="avatar-content">
+                          <span class="font-size-base text-primary">اک</span>
+                        </div>
+                      </div>
+                      <div class="dropdown">
+                        <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#"><i class="bx bx-edit-alt mr-1"></i> ویرایش</a>
+                          <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> حذف</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="widget-todo-item">
+                  <div class="widget-todo-title-wrapper d-flex justify-content-between align-items-center mb-50">
+                    <div class="widget-todo-title-area d-flex align-items-center">
+                      <i class="bx bx-grid-vertical mr-25 font-medium-4 cursor-move"></i>
+                      <div class="checkbox checkbox-shadow">
+                        <input type="checkbox" class="checkbox__input" id="checkbox6">
+                        <label for="checkbox6"></label>
+                      </div>
+                      <span class="widget-todo-title mx-50">لورم ایپسوم متن ساختگی با</span>
+                    </div>
+                    <div class="widget-todo-item-action d-flex align-items-center">
+                      <div class="badge badge-pill bg-rgba-primary text-primary mr-1">UI/UX</div>
+                      <div class="avatar m-0 mr-50">
+                        <img src="/admin/images/profile/user-uploads/user-05.jpg" alt="img placeholder" height="32" width="32">
+                      </div>
+                      <div class="dropdown">
+                        <span class="bx bx-dots-vertical-rounded font-medium-3 dropdown-toggle nav-hide-arrow cursor-pointer icon-light" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" role="menu"></span>
+                        <div class="dropdown-menu">
+                          <a class="dropdown-item" href="#"><i class="bx bx-edit-alt mr-1"></i> ویرایش</a>
+                          <a class="dropdown-item" href="#"><i class="bx bx-trash mr-1"></i> حذف</a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card ">
+        <div class="card-header">
+          <h4 class="card-title">
+            خط زمانی سفارشات
+          </h4>
+        </div>
+        <div class="card-content">
+          <div class="card-body">
+            <ul class="widget-timeline mb-0">
+              <li class="timeline-items timeline-icon-primary active">
+                <div class="timeline-time">16 فروردین</div>
+                <h6 class="timeline-title">1938، سفارشات، 4220 میلیون تومان</h6>
+                <p class="timeline-text">2 ساعت پیش</p>
+                <div class="timeline-content">
+                  <img src="/admin/images/icon/pdf.png" alt="document" height="23" width="19" class="mr-50">Invoices.pdf
+                </div>
+              </li>
+              <li class="timeline-items timeline-icon-primary active">
+                <div class="timeline-time">17 فروردین</div>
+                <h6 class="timeline-title">12 صورتحساب پرداخت شد</h6>
+                <p class="timeline-text">25 دقیقه پیش</p>
+                <div class="timeline-content">
+                  <img src="/admin/images/icon/pdf.png" alt="document" height="23" width="19" class="mr-50">Invoices.pdf
+                </div>
+              </li>
+              <li class="timeline-items timeline-icon-primary active pb-0">
+                <div class="timeline-time">18 فروردین</div>
+                <h6 class="timeline-title">سفارش #37745 از فروردین</h6>
+                <p class="timeline-text">4 دقیقه پیش</p>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

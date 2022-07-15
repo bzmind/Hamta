@@ -1,9 +1,7 @@
 ﻿using Common.Api;
 using Shop.Query.Roles._DTOs;
 using System.Text.Json;
-using Shop.Application.Roles.AddPermission;
-using Shop.Application.Roles.Create;
-using Shop.Application.Roles.RemovePermission;
+using Shop.API.ViewModels.Roles;
 
 namespace Shop.UI.Services.Roles;
 
@@ -13,17 +11,17 @@ public class RoleService : BaseService, IRoleService
 
     public RoleService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult> Create(CreateRoleCommand model)
+    public async Task<ApiResult> Create(CreateRoleViewModel model)
     {
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> AddPermissions(AddRolePermissionCommand model)
+    public async Task<ApiResult> AddPermissions(AddRolePermissionViewModel model)
     {
         return await PutAsJsonAsync("AddPermissions", model);
     }
 
-    public async Task<ApiResult> RemovePermissions(RemoveRolePermissionCommand model)
+    public async Task<ApiResult> RemovePermissions(RemoveRolePermissionViewModel model)
     {
         return await PutAsJsonAsync("RemovePermissions", model);
     }
@@ -33,7 +31,7 @@ public class RoleService : BaseService, IRoleService
         return await DeleteAsync($"Remove/{roleId}");
     }
 
-    public async Task<RoleDto> GetById(long roleId)
+    public async Task<RoleDto?> GetById(long roleId)
     {
         var result = await GetFromJsonAsync<RoleDto>($"GetById/{roleId}");
         return result.Data;

@@ -12,6 +12,11 @@ public class ResetUserPasswordCommand : IBaseCommand
     public long UserId { get; set; }
     public string CurrentPassword { get; set; }
     public string NewPassword { get; set; }
+
+    private ResetUserPasswordCommand()
+    {
+
+    }
 }
 
 public class ResetUserPasswordCommandHandler : IBaseCommandHandler<ResetUserPasswordCommand>

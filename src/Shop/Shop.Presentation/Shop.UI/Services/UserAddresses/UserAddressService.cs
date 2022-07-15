@@ -31,7 +31,7 @@ public class UserAddressService : BaseService, IUserAddressService
         return await DeleteAsync($"Remove/{addressId}");
     }
 
-    public async Task<UserAddressDto> GetById(long addressId)
+    public async Task<UserAddressDto?> GetById(long addressId)
     {
         var result = await GetFromJsonAsync<UserAddressDto>($"GetById/{addressId}");
         return result.Data;

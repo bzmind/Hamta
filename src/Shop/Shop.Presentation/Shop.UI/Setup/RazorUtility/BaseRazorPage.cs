@@ -9,7 +9,7 @@ namespace Shop.UI.Setup.RazorUtility;
 public class BaseRazorPage : PageModel
 {
     private readonly IRazorToStringRenderer _razorToStringRenderer;
-        
+
     public BaseRazorPage(IRazorToStringRenderer razorToStringRenderer)
     {
         _razorToStringRenderer = razorToStringRenderer;
@@ -28,15 +28,35 @@ public class BaseRazorPage : PageModel
         HttpContext.Response.Cookies.Append("alert", model);
     }
 
-    protected ContentResult AjaxHtmlResult<T>(ApiResult<T> apiResult)
+    protected async Task<ContentResult> AjaxSuccessHtmlResultAsync(string pageName, object? pageModel)
     {
+        var successApiResult = ApiResult<string>.Success
+            (await _razorToStringRenderer.RenderToStringAsync(pageName, pageModel, PageContext));
+
         var model = new AjaxResult
         {
             IsHtml = true,
-            Message = apiResult.MetaData.Message,
-            Data = apiResult.Data,
-            StatusCode = apiResult.MetaData.ApiStatusCode
+            Message = successApiResult.MetaData.Message,
+            Data = successApiResult.Data,
+            StatusCode = successApiResult.MetaData.ApiStatusCode
         };
+
+        return Content(JsonConvert.SerializeObject(model));
+    }
+
+    protected ContentResult AjaxErrorMessageResult(string errorMessage,
+        ApiStatusCode statusCode = default)
+    {
+        var errorApiResult = ApiResult<string>.Error(errorMessage);
+        if (statusCode != default)
+            errorApiResult.MetaData.ApiStatusCode = statusCode;
+
+        var model = new AjaxResult
+        {
+            Message = errorApiResult.MetaData.Message,
+            StatusCode = errorApiResult.MetaData.ApiStatusCode
+        };
+
         return Content(JsonConvert.SerializeObject(model));
     }
 
@@ -47,6 +67,7 @@ public class BaseRazorPage : PageModel
             Message = apiResult.MetaData.Message,
             StatusCode = apiResult.MetaData.ApiStatusCode
         };
+
         return Content(JsonConvert.SerializeObject(model));
     }
 
@@ -61,6 +82,18 @@ public class BaseRazorPage : PageModel
             IsRedirection = true,
             RedirectPath = path
         };
+
+        return Content(JsonConvert.SerializeObject(model));
+    }
+
+    protected ContentResult AjaxEmptySuccessResult()
+    {
+        var successApiResult = ApiResult.Success();
+        var model = new AjaxResult
+        {
+            Message = successApiResult.MetaData.Message,
+            StatusCode = successApiResult.MetaData.ApiStatusCode
+        };
         return Content(JsonConvert.SerializeObject(model));
     }
 
@@ -72,11 +105,5 @@ public class BaseRazorPage : PageModel
         public string Message { get; set; }
         public object Data { get; set; }
         public ApiStatusCode StatusCode { get; set; }
-    }
-
-    protected async Task<ContentResult> SuccessResultWithPageHtml(string pageName, object? pageModel)
-    {
-        return AjaxHtmlResult(ApiResult<string>.Success
-            (await _razorToStringRenderer.RenderToStringAsync(pageName, pageModel, PageContext)));
     }
 }

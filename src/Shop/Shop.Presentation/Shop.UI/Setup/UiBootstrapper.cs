@@ -1,5 +1,6 @@
 ﻿using System.Text.Json;
 using System.Text.Json.Serialization;
+using Shop.API.Setup;
 using Shop.Infrastructure.EmailService;
 using Shop.UI.Services.Auth;
 using Shop.UI.Services.Avatars;
@@ -69,7 +70,8 @@ public static class UiBootstrapper
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 
         services.AddHttpClient<IUserAddressService, UserAddressService>
-            (httpClient => httpClient.BaseAddress = new Uri(baseAddress));
+            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 
         services.AddSingleton(new JsonSerializerOptions
         {
@@ -81,5 +83,6 @@ public static class UiBootstrapper
         services.AddScoped<HttpClientAuthorizationDelegateHandler>();
         services.AddScoped<IRazorToStringRenderer, RazorToStringRenderer>();
         services.AddScoped<IEmailSender, EmailSender>();
+        services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
     }
 }

@@ -3,11 +3,7 @@ using Shop.Query.Products._DTOs;
 using System.Text;
 using System.Text.Json;
 using Common.Application.Utility.Validation.CustomAttributes;
-using Shop.Application.Products.AddScore;
-using Shop.Application.Products.Create;
-using Shop.Application.Products.Edit;
-using Shop.Application.Products.RemoveGalleryImage;
-using Shop.Application.Products.ReplaceMainImage;
+using Shop.API.ViewModels.Products;
 
 namespace Shop.UI.Services.Products;
 
@@ -17,7 +13,7 @@ public class ProductService : BaseService, IProductService
 
     public ProductService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult> Create(CreateProductCommand model)
+    public async Task<ApiResult> Create(CreateProductViewModel model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.CategoryId.ToString()), "CategoryId");
@@ -48,7 +44,7 @@ public class ProductService : BaseService, IProductService
         return await PostAsFormDataAsync("Create", formData);
     }
 
-    public async Task<ApiResult> Edit(EditProductCommand model)
+    public async Task<ApiResult> Edit(EditProductViewModel model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
@@ -80,7 +76,7 @@ public class ProductService : BaseService, IProductService
         return await PutAsFormDataAsync("Edit", formData);
     }
 
-    public async Task<ApiResult> ReplaceMainImage(ReplaceProductMainImageCommand model)
+    public async Task<ApiResult> ReplaceMainImage(ReplaceProductMainImageViewModel model)
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
@@ -91,12 +87,12 @@ public class ProductService : BaseService, IProductService
         return await PutAsFormDataAsync("ReplaceMainImage", formData);
     }
 
-    public async Task<ApiResult> AddScore(AddProductScoreCommand model)
+    public async Task<ApiResult> AddScore(AddProductScoreViewModel model)
     {
         return await PutAsJsonAsync("AddScore", model);
     }
 
-    public async Task<ApiResult> RemoveGalleryImage(RemoveProductGalleryImageCommand model)
+    public async Task<ApiResult> RemoveGalleryImage(RemoveProductGalleryImageViewModel model)
     {
         return await PutAsJsonAsync("RemoveGalleryImage", model);
     }
@@ -106,7 +102,7 @@ public class ProductService : BaseService, IProductService
         return await DeleteAsync($"Remove/{productId}");
     }
 
-    public async Task<ProductDto> GetById(long productId)
+    public async Task<ProductDto?> GetById(long productId)
     {
         var result = await GetFromJsonAsync<ProductDto>($"GetById/{productId}");
         return result.Data;

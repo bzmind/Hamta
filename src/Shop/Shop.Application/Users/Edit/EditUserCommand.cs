@@ -17,6 +17,11 @@ public class EditUserCommand : IBaseCommand
     public User.UserGender Gender { get; set; }
     public string Email { get; set; }
     public string PhoneNumber { get; set; }
+
+    private EditUserCommand()
+    {
+
+    }
 }
 
 public class EditUserCommandHandler : IBaseCommandHandler<EditUserCommand>

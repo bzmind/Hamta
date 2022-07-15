@@ -30,6 +30,7 @@ public class CreateUserAddressViewModel
     [Display(Name = "آدرس کامل")]
     [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
     [MaxLength(300, ErrorMessage = ValidationMessages.MaxCharactersLength)]
+    [DataType(DataType.MultilineText)]
     public string FullAddress { get; set; }
 
     [Display(Name = "کد پستی")]

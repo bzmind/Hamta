@@ -1,15 +1,14 @@
 ﻿using Common.Api;
-using Shop.Application.Colors.Create;
-using Shop.Application.Colors.Edit;
+using Shop.API.ViewModels.Colors;
 using Shop.Query.Colors._DTOs;
 
 namespace Shop.UI.Services.Colors;
 
 public interface IColorService
 {
-    Task<ApiResult> Create(CreateColorCommand model);
-    Task<ApiResult> Edit(EditColorCommand model);
+    Task<ApiResult> Create(CreateColorViewModel model);
+    Task<ApiResult> Edit(EditColorViewModel model);
 
-    Task<ColorDto> GetById(long colorId);
+    Task<ColorDto?> GetById(long colorId);
     Task<List<ColorDto>> GetByFilter(ColorFilterParams filterParams);
 }

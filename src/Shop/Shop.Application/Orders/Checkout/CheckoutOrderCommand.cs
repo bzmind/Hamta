@@ -15,6 +15,11 @@ public class CheckoutOrderCommand : IBaseCommand
     public long UserId { get; set; }
     public long UserAddressId { get; set; }
     public long ShippingMethodId { get; set; }
+
+    private CheckoutOrderCommand()
+    {
+
+    }
 }
 
 public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderCommand>

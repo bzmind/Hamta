@@ -2,7 +2,9 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
 using Common.Application.Utility.Validation.CustomFluentValidations;
+using Common.Domain.ValueObjects;
 using FluentValidation;
+using Shop.Domain.UserAggregate;
 using Shop.Domain.UserAggregate.Repository;
 
 namespace Shop.Application.Users.Addresses.CreateAddress;
@@ -17,16 +19,9 @@ public class CreateUserAddressCommand : IBaseCommand
     public string FullAddress { get; set; }
     public string PostalCode { get; set; }
 
-    public CreateUserAddressCommand(long userId, string fullName, string phoneNumber,
-        string province, string city, string fullAddress, string postalCode)
+    private CreateUserAddressCommand()
     {
-        UserId = userId;
-        FullName = fullName;
-        PhoneNumber = phoneNumber;
-        Province = province;
-        City = city;
-        FullAddress = fullAddress;
-        PostalCode = postalCode;
+        
     }
 }
 
@@ -46,8 +41,13 @@ public class CreateUserAddressCommandHandler : IBaseCommandHandler<CreateUserAdd
         if (user == null)
             return OperationResult.NotFound();
 
-        user.AddAddress(request.UserId, request.FullName, request.PhoneNumber, request.Province,
-            request.City, request.FullAddress, request.PostalCode);
+        var newAddress = new UserAddress(request.UserId, request.FullName, new PhoneNumber(request.PhoneNumber),
+            request.Province, request.City, request.FullAddress, request.PostalCode);
+
+        if (user.Addresses.ToList().Count == 0 || !user.Addresses.Any(a => a.IsActive))
+            newAddress.SetAddressActivation(true);
+
+        user.AddAddress(newAddress);
 
         await _userRepository.SaveAsync();
         return OperationResult.Success();

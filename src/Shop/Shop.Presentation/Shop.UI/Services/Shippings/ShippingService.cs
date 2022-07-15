@@ -1,8 +1,7 @@
 ﻿using Common.Api;
 using Shop.Query.Shippings._DTOs;
 using System.Text.Json;
-using Shop.Application.Shippings.Create;
-using Shop.Application.Shippings.Edit;
+using Shop.API.ViewModels.Shippings;
 
 namespace Shop.UI.Services.Shippings;
 
@@ -12,12 +11,12 @@ public class ShippingService : BaseService, IShippingService
 
     public ShippingService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult> Create(CreateShippingCommand model)
+    public async Task<ApiResult> Create(CreateShippingViewModel model)
     {
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> Edit(EditShippingCommand model)
+    public async Task<ApiResult> Edit(EditShippingViewModel model)
     {
         return await PutAsJsonAsync("Edit", model);
     }
@@ -27,7 +26,7 @@ public class ShippingService : BaseService, IShippingService
         return await DeleteAsync($"Remove/{shippingId}");
     }
 
-    public async Task<ShippingDto> GetById(long shippingId)
+    public async Task<ShippingDto?> GetById(long shippingId)
     {
         var result = await GetFromJsonAsync<ShippingDto>($"GetById/{shippingId}");
         return result.Data;

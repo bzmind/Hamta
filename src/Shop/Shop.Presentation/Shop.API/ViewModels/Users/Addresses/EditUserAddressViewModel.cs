@@ -7,7 +7,7 @@ namespace Shop.API.ViewModels.Users.Addresses;
 public class EditUserAddressViewModel
 {
     [Required(ErrorMessage = ValidationMessages.IdRequired)]
-    public long AddressId { get; set; }
+    public long Id { get; set; }
 
     [Display(Name = "نام و نام خانوادگی")]
     [Required(ErrorMessage = ValidationMessages.FullNameRequired)]

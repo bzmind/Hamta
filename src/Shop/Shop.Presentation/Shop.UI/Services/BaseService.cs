@@ -101,7 +101,10 @@ public abstract class BaseService
         }
         catch (Exception e)
         {
-            var resultError = await result.Content.ReadAsStringAsync();
+            var resultError = e.Message +
+                              Environment.NewLine +
+                              Environment.NewLine +
+                              result;
             finalResult = ApiResult<TData>.Error(resultError);
         }
 

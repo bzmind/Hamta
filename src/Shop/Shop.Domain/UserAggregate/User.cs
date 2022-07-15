@@ -70,11 +70,9 @@ public class User : BaseAggregateRoot
         return new User(fullName, gender, phoneNumber, password, avatarId, userDomainService);
     }
 
-    public void AddAddress(long userId, string fullName, string phoneNumber, string province,
-        string city, string fullAddress, string postalCode)
+    public void AddAddress(UserAddress address)
     {
-        _addresses.Add(new UserAddress(userId, fullName, new PhoneNumber(phoneNumber), province, city, fullAddress,
-            postalCode));
+        _addresses.Add(address);
     }
 
     public void EditAddress(long addressId, string fullName, string phoneNumber, string province,
@@ -95,6 +93,7 @@ public class User : BaseAggregateRoot
         if (address == null)
             throw new InvalidDataDomainException("Address not found");
 
+        _addresses.ForEach(a => a.SetAddressActivation(false));
         address.SetAddressActivation(activate);
     }
 

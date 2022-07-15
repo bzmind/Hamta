@@ -1,0 +1,45 @@
+﻿@page
+@using Shop.UI.Setup.ServerSide
+@model Shop.UI.Pages.Admin.Avatars.IndexModel
+@{
+}
+
+<section>
+  <h5 class="mb-1">مدیریت آواتار ها</h5>
+  <a asp-page-handler="AddAvatar" class="btn btn-primary mb-1">افزودن آواتار</a>
+  <div class="table-responsive card card-content">
+    <table class="table table-striped mb-0">
+      <thead>
+      <tr>
+        <th>ID</th>
+        <th>عکس</th>
+        <th>جنسیت</th>
+        <th>تاریخ ایجاد</th>
+        <th>عملیات</th>
+      </tr>
+      </thead>
+      <tbody>
+      @foreach (var avatar in Model.Avatars)
+      {
+        <tr>
+          <td>@avatar.Id</td>
+          <td>
+            <img class="avatar-img" width="50" src="@ServerSettings.GetAvatarPath(avatar.Name)" />
+          </td>
+          <td>@avatar.Gender</td>
+          <td>@avatar.CreationDate</td>
+          <td>
+            <a href="#">حذف</a>
+          </td>
+        </tr>
+      }
+      @if (!Model.Avatars.Any())
+      {
+        <tr>
+          <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+</section>

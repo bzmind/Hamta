@@ -117,7 +117,7 @@ public class AuthController : BaseApiController
             JwtTokenBuilder.JwtTokenExpirationDate, JwtTokenBuilder.RefreshTokenExpirationDate, device));
 
         if (result.StatusCode != OperationStatusCode.Success)
-            return OperationResult<LoginResponse>.Error();
+            return OperationResult<LoginResponse>.Error(result.Message);
 
         return OperationResult<LoginResponse>.Success(new LoginResponse
         {

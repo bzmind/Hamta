@@ -19,9 +19,9 @@
                     <form method="post">
                         <div class="form-element-row">
                             <button type="button" id="edit-avatar-btn"
-                                    onclick="openAvatarsModal('@Url.Page("Index", "ShowAvatarsModal")', 'انتخاب آواتار')">
+                                    onclick="openModal('@Url.Page("Index", "ShowAvatarsPage")', 'انتخاب آواتار')">
                                 <i class="far fa-camera"></i>
-                                <img src="@ServerSettings.ServerAvatarsPath/@Model?.AvatarName" alt="avatarId">
+                                <img src="@ServerSettings.GetAvatarPath(Model.AvatarName)" alt="avatarId">
                             </button>
                         </div>
                         @Html.EditorFor(m => m.FullName)
@@ -31,14 +31,15 @@
                         <div class="form-element-row text-right m-0 mt-3">
                             <button class="btn-element btn-success-element">
                                 <i class="fad fa-user-edit"></i>
-                                ذخیره تغییرات
+                                ذخیره
                             </button>
                         </div>
                     </form>
                 </section>
                 <section class="shadow-around p-3 mt-3">
                     <div class="row align-items-center">
-                        <div class="col-md-12 form-element-row position-relative widget widget-newsletter m-0">
+                        <div class="col-md-12 form-element-row position-relative widget widget-newsletter m-0"
+                             id="newsletter">
                             @if (Model?.IsSubscribedToNewsletter == false)
                             {
                                 <partial name="_NotSubscribedToNewsletter" />

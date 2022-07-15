@@ -1,0 +1,29 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model Shop.API.ViewModels.Users.Addresses.EditUserAddressViewModel
+
+<form method="post" asp-page-handler="EditAddress" onsubmit="return submitThisFormWithAjax(event, '')">
+    @Html.HiddenFor(m => m.Id)
+    <div class="row">
+        <div class="col-lg-6 mb-3">
+            @Html.EditorFor(m => m.FullName)
+        </div>
+        <div class="col-lg-6 mb-3">
+            @Html.EditorFor(m => m.PhoneNumber)
+        </div>
+        <div class="col-lg-6 mb-3">
+            @Html.EditorFor(m => m.Province)
+        </div>
+        <div class="col-lg-6 mb-3">
+            @Html.EditorFor(m => m.City)
+        </div>
+        <div class="col-lg-6 mb-3">
+            @Html.EditorFor(m => m.PostalCode)
+        </div>
+        <div class="col-12 mb-3">
+            @Html.EditorFor(m => m.FullAddress)
+        </div>
+    </div>
+    <button class="btn btn-primary">
+        ذخیره تغییرات <i class="fad fa-money-check-edit"></i>
+    </button>
+</form>

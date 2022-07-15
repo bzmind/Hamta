@@ -1,8 +1,6 @@
 ﻿using Common.Api;
 using Shop.Query.Questions._DTOs;
 using System.Text.Json;
-using Shop.Application.Questions.RemoveReply;
-using Shop.Application.Questions.SetStatus;
 using Shop.API.ViewModels.Questions;
 
 namespace Shop.UI.Services.Questions;
@@ -18,7 +16,7 @@ public class QuestionService : BaseService, IQuestionService
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> SetStatus(SetQuestionStatusCommand model)
+    public async Task<ApiResult> SetStatus(SetQuestionStatusViewModel model)
     {
         return await PutAsJsonAsync("SetStatus", model);
     }
@@ -28,7 +26,7 @@ public class QuestionService : BaseService, IQuestionService
         return await PutAsJsonAsync("AddReply", model);
     }
 
-    public async Task<ApiResult> RemoveReply(RemoveReplyCommand model)
+    public async Task<ApiResult> RemoveReply(RemoveReplyViewModel model)
     {
         return await PutAsJsonAsync("RemoveReply", model);
     }
@@ -38,7 +36,7 @@ public class QuestionService : BaseService, IQuestionService
         return await DeleteAsync($"Remove/{questionId}");
     }
 
-    public async Task<QuestionDto> GetById(long questionId)
+    public async Task<QuestionDto?> GetById(long questionId)
     {
         var result = await GetFromJsonAsync<QuestionDto>($"GetById/{questionId}");
         return result.Data;

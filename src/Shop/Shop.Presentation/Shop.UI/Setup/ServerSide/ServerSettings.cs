@@ -7,18 +7,18 @@ public static class ServerSettings
     public static string ServerPath =>
         "https://localhost:7087";
 
-    public static string ServerAvatarsPath =>
-        $"{ServerPath}/{Directories.UserAvatars}".Replace("wwwroot/", "");
+    public static string GetAvatarPath(string name) =>
+        $"{ServerPath}/{Directories.UserAvatars}/{name}".Replace("wwwroot/", "");
 
-    public static string ServerBannerImagesPath =>
-        $"{ServerPath}/{Directories.BannerImages}".Replace("wwwroot/", "");
+    public static string GetBannerImagePath(string name) =>
+        $"{ServerPath}/{Directories.BannerImages}/{name}".Replace("wwwroot/", "");
 
-    public static string ServerProductGalleryImagesPath =>
-        $"{ServerPath}/{Directories.ProductGalleryImages}".Replace("wwwroot/", "");
+    public static string GetProductGalleryImagePath(string name) =>
+        $"{ServerPath}/{Directories.ProductGalleryImages}/{name}".Replace("wwwroot/", "");
 
-    public static string ServerProductMainImagesPath =>
-        $"{ServerPath}/{Directories.ProductMainImages}".Replace("wwwroot/", "");
+    public static string GetProductMainImagePath(string name) =>
+        $"{ServerPath}/{Directories.ProductMainImages}/{name}".Replace("wwwroot/", "");
 
-    public static string ServerSliderImagesPath =>
-        $"{ServerPath}/{Directories.SliderImages}".Replace("wwwroot/", "");
+    public static string GetSliderImagePath(string name) =>
+        $"{ServerPath}/{Directories.SliderImages}/{name}".Replace("wwwroot/", "");
 }

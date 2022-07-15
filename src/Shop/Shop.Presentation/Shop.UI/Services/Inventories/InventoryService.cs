@@ -1,11 +1,7 @@
 ﻿using Common.Api;
 using Shop.Query.Inventories._DTOs;
 using System.Text.Json;
-using Shop.Application.Inventories.Create;
-using Shop.Application.Inventories.DecreaseQuantity;
-using Shop.Application.Inventories.Edit;
-using Shop.Application.Inventories.IncreaseQuantity;
-using Shop.Application.Inventories.SetDiscountPercentage;
+using Shop.API.ViewModels.Inventories;
 
 namespace Shop.UI.Services.Inventories;
 
@@ -15,27 +11,27 @@ public class InventoryService : BaseService, IInventoryService
 
     public InventoryService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
     
-    public async Task<ApiResult> Create(CreateInventoryCommand model)
+    public async Task<ApiResult> Create(CreateInventoryViewModel model)
     {
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> Edit(EditInventoryCommand model)
+    public async Task<ApiResult> Edit(EditInventoryViewModel model)
     {
         return await PutAsJsonAsync("Edit", model);
     }
 
-    public async Task<ApiResult> IncreaseQuantity(IncreaseInventoryQuantityCommand model)
+    public async Task<ApiResult> IncreaseQuantity(IncreaseInventoryQuantityViewModel model)
     {
         return await PutAsJsonAsync("IncreaseQuantity", model);
     }
 
-    public async Task<ApiResult> DecreaseQuantity(DecreaseInventoryQuantityCommand model)
+    public async Task<ApiResult> DecreaseQuantity(DecreaseInventoryQuantityViewModel model)
     {
         return await PutAsJsonAsync("DecreaseQuantity", model);
     }
 
-    public async Task<ApiResult> SetDiscountPercentage(SetInventoryDiscountPercentageCommand model)
+    public async Task<ApiResult> SetDiscountPercentage(SetInventoryDiscountPercentageViewModel model)
     {
         return await PutAsJsonAsync("SetDiscountPercentage", model);
     }
@@ -50,7 +46,7 @@ public class InventoryService : BaseService, IInventoryService
         return await DeleteAsync($"Remove/{inventoryId}");
     }
 
-    public async Task<InventoryDto> GetById(long inventoryId)
+    public async Task<InventoryDto?> GetById(long inventoryId)
     {
         var result = await GetFromJsonAsync<InventoryDto>($"GetById/{inventoryId}");
         return result.Data;

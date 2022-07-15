@@ -13,6 +13,11 @@ public class AddOrderItemCommand : IBaseCommand<long>
     public long UserId { get; set; }
     public long InventoryId { get; set; }
     public int Quantity { get; set; }
+
+    private AddOrderItemCommand()
+    {
+
+    }
 }
 
 public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemCommand, long>

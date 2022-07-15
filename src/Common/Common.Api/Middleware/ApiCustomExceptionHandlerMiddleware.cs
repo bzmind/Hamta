@@ -60,9 +60,14 @@ public class ApiCustomExceptionHandlerMiddleware
             exceptionMessage = exception.Message;
 
             if (_environment.IsDevelopment())
+            {
                 exceptionMessage = exception.Message + Environment.NewLine +
                                    exception.InnerException + Environment.NewLine +
                                    exception.StackTrace;
+
+                if (exceptionMessage.Length > 3000)
+                    exceptionMessage = exception.Message;
+            }
         }
 
         async Task WriteToResponseAsync()

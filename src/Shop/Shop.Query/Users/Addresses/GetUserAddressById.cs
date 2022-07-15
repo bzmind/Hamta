@@ -4,7 +4,7 @@ using Shop.Query.Users._DTOs;
 
 namespace Shop.Query.Users.Addresses;
 
-public record GetUserAddressByIdQuery(long AddressId) : IBaseQuery<UserAddressDto?>;
+public record GetUserAddressByIdQuery(long Id) : IBaseQuery<UserAddressDto?>;
 
 public class GetUserAddressByIdQueryHandler : IBaseQueryHandler<GetUserAddressByIdQuery, UserAddressDto?>
 {
@@ -18,8 +18,8 @@ public class GetUserAddressByIdQueryHandler : IBaseQueryHandler<GetUserAddressBy
     public async Task<UserAddressDto?> Handle(GetUserAddressByIdQuery request, CancellationToken cancellationToken)
     {
         using var connection = _dapperContext.CreateConnection();
-        var sql = $@"SELECT TOP 1 * FROM {_dapperContext.UserAddresses} WHERE Id = @AddressId";
+        var sql = $@"SELECT TOP 1 * FROM {_dapperContext.UserAddresses} WHERE Id = @Id";
         return await connection
-            .QueryFirstOrDefaultAsync<UserAddressDto>(sql, new { request.AddressId });
+            .QueryFirstOrDefaultAsync<UserAddressDto>(sql, new { request.Id });
     }
 }

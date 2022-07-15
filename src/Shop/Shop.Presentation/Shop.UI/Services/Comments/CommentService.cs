@@ -1,7 +1,6 @@
 ﻿using Common.Api;
 using Shop.Query.Comments._DTOs;
 using System.Text.Json;
-using Shop.Application.Comments.SetStatus;
 using Shop.API.ViewModels.Comments;
 
 namespace Shop.UI.Services.Comments;
@@ -17,7 +16,7 @@ public class CommentService : BaseService, ICommentService
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> SetStatus(SetCommentStatusCommand model)
+    public async Task<ApiResult> SetStatus(SetCommentStatusViewModel model)
     {
         return await PutAsJsonAsync("SetStatus", model);
     }
@@ -37,7 +36,7 @@ public class CommentService : BaseService, ICommentService
         return await DeleteAsync($"Remove/{commentId}");
     }
 
-    public async Task<CommentDto> GetById(long commentId)
+    public async Task<CommentDto?> GetById(long commentId)
     {
         var result = await GetFromJsonAsync<CommentDto>($"Remove/{commentId}");
         return result.Data;

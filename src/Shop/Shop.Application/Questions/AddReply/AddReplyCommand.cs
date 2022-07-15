@@ -11,6 +11,11 @@ public class AddReplyCommand : IBaseCommand
     public long UserId { get; set; }
     public long QuestionId { get; set; }
     public string Description { get; set; }
+
+    private AddReplyCommand()
+    {
+
+    }
 }
 
 public class AddReplyCommandHandler : IBaseCommandHandler<AddReplyCommand>

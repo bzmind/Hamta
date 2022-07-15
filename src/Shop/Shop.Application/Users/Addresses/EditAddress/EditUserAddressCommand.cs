@@ -10,7 +10,7 @@ namespace Shop.Application.Users.Addresses.EditAddress;
 public class EditUserAddressCommand : IBaseCommand
 {
     public long UserId { get; set; }
-    public long AddressId { get; set; }
+    public long Id { get; set; }
     public string FullName { get; set; }
     public string PhoneNumber { get; set; }
     public string Province { get; set; }
@@ -18,17 +18,9 @@ public class EditUserAddressCommand : IBaseCommand
     public string FullAddress { get; set; }
     public string PostalCode { get; set; }
 
-    public EditUserAddressCommand(long userId, long addressId, string fullName, string phoneNumber,
-        string province, string city, string fullAddress, string postalCode)
+    private EditUserAddressCommand()
     {
-        UserId = userId;
-        AddressId = addressId;
-        FullName = fullName;
-        PhoneNumber = phoneNumber;
-        Province = province;
-        City = city;
-        FullAddress = fullAddress;
-        PostalCode = postalCode;
+
     }
 }
 
@@ -46,9 +38,9 @@ public class EditUserAddressCommandHandler : IBaseCommandHandler<EditUserAddress
         var user = await _userRepository.GetAsTrackingAsync(request.UserId);
 
         if (user == null)
-            return OperationResult.NotFound();
+            return OperationResult.NotFound(ValidationMessages.FieldNotFound("کاربر"));
 
-        user.EditAddress(request.AddressId, request.FullName, request.PhoneNumber, request.Province,
+        user.EditAddress(request.Id, request.FullName, request.PhoneNumber, request.Province,
             request.City, request.FullAddress, request.PostalCode);
 
         await _userRepository.SaveAsync();

@@ -1,10 +1,9 @@
 ﻿using Common.Api;
 using Shop.Query.Users._DTOs;
 using System.Text.Json;
-using Shop.Application.Users.Create;
 using Shop.API.ViewModels.Users;
-using Shop.Application.Users.Roles.AddRole;
 using Shop.API.ViewModels.Users.Auth;
+using Shop.API.ViewModels.Users.Roles;
 
 namespace Shop.UI.Services.Users;
 
@@ -16,7 +15,7 @@ public class UserService : BaseService, IUserService
     {
     }
 
-    public async Task<ApiResult> Create(CreateUserCommand model)
+    public async Task<ApiResult> Create(CreateUserViewModel model)
     {
         return await PostAsJsonAsync("Create", model);
     }
@@ -46,7 +45,7 @@ public class UserService : BaseService, IUserService
         return await PutAsync($"AddFavoriteItem/{productId}");
     }
 
-    public async Task<ApiResult> AddRole(AddUserRoleCommand model)
+    public async Task<ApiResult> AddRole(AddUserRoleViewModel model)
     {
         return await PutAsJsonAsync("AddRole", model);
     }
@@ -66,13 +65,13 @@ public class UserService : BaseService, IUserService
         return await DeleteAsync($"Remove/{userId}");
     }
 
-    public async Task<UserDto> GetById(long userId)
+    public async Task<UserDto?> GetById(long userId)
     {
         var result = await GetFromJsonAsync<UserDto>($"GetById/{userId}");
         return result.Data;
     }
 
-    public async Task<UserDto> GetByEmailOrPhone(string emailOrPhone)
+    public async Task<UserDto?> GetByEmailOrPhone(string emailOrPhone)
     {
         var result = await GetFromJsonAsync<UserDto>($"GetByEmailOrPhone/{emailOrPhone}");
         return result.Data;

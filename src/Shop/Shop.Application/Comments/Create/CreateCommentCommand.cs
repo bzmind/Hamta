@@ -17,16 +17,9 @@ public class CreateCommentCommand : IBaseCommand<long>
     public List<string>? NegativePoints { get; set; }
     public Comment.CommentRecommendation Recommendation { get; set; }
 
-    public CreateCommentCommand(long productId, long userId, string title, string description,
-        List<string>? positivePoints, List<string>? negativePoints, Comment.CommentRecommendation recommendation)
+    private CreateCommentCommand()
     {
-        ProductId = productId;
-        UserId = userId;
-        Title = title;
-        Description = description;
-        PositivePoints = positivePoints;
-        NegativePoints = negativePoints;
-        Recommendation = recommendation;
+
     }
 }
 

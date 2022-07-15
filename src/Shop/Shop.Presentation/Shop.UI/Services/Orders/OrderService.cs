@@ -1,7 +1,6 @@
 ﻿using Common.Api;
 using Shop.Query.Orders._DTOs;
 using System.Text.Json;
-using Shop.Application.Orders.SetStatus;
 using Shop.API.ViewModels.Orders;
 using Shop.API.ViewModels.Comments;
 
@@ -33,7 +32,7 @@ public class OrderService : BaseService, IOrderService
         return await PutAsync($"DecreaseItemCount/{orderItemId}");
     }
 
-    public async Task<ApiResult> SetStatus(SetOrderStatusCommand model)
+    public async Task<ApiResult> SetStatus(SetOrderStatusViewModel model)
     {
         return await PutAsJsonAsync("SetStatus", model);
     }
@@ -43,7 +42,7 @@ public class OrderService : BaseService, IOrderService
         return await DeleteAsync($"Remove/{orderItemId}");
     }
 
-    public async Task<OrderDto> GetById(long orderId)
+    public async Task<OrderDto?> GetById(long orderId)
     {
         var result = await GetFromJsonAsync<OrderDto>($"GetById/{orderId}");
         return result.Data;

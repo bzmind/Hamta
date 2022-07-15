@@ -9,6 +9,19 @@ public class ApiResult
     public bool IsSuccessful { get; set; }
     public MetaData MetaData { get; set; }
 
+    public static ApiResult Success(string message = SuccessMessage)
+    {
+        return new ApiResult
+        {
+            IsSuccessful = true,
+            MetaData = new MetaData
+            {
+                ApiStatusCode = ApiStatusCode.Success,
+                Message = SuccessMessage
+            }
+        };
+    }
+
     public static ApiResult Error(string errorMessage)
     {
         return new ApiResult

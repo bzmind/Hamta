@@ -11,13 +11,13 @@
         <div class="banner mb-3">
             <a href="#">
                 <img src="/assets/images/banner/banner-profile-sidebar.jpg"
-                     class="box-shaow-unset has-border" alt="...">
+                     class="box-shaow-unset has-border" alt="banner">
             </a>
         </div>
         <div class="profile-sidebar shadow-around">
             <div class="d-flex align-items-center">
                 <div class="profile-avatar">
-                    <img src="@ServerSettings.ServerAvatarsPath/@currentUser.Avatar.Name" alt="avatarId">
+                    <img src="@ServerSettings.GetAvatarPath(currentUser.Avatar.Name)" alt="avatarId">
                 </div>
                 <div class="profile-info">
                     <div class="d-block">
@@ -52,25 +52,25 @@
                     <li>
                         <a href="#">
                             <i class="far fa-clock"></i>
-                            بازدیدهای اخیر
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/profile/comments">
-                            <i class="far fa-comment-alt-lines"></i>
-                            نظرات
+                            بازدید های اخیر
                         </a>
                     </li>
                     <li>
                         <a href="/profile/addresses">
                             <i class="far fa-map-marked"></i>
-                            نشانی ها
+                            آدرس ها
                         </a>
                     </li>
                     <li>
                         <a href="#">
                             <i class="far fa-envelope"></i>
                             پیغام ها
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/profile/comments">
+                            <i class="far fa-comment-alt-lines"></i>
+                            نظرات
                         </a>
                     </li>
                     <li>

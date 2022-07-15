@@ -12,6 +12,11 @@ public class CreateQuestionCommand : IBaseCommand<long>
     public long UserId { get; set; }
     public long ProductId { get; set; }
     public string Description { get; set; }
+
+    private CreateQuestionCommand()
+    {
+
+    }
 }
 
 public class CreateQuestionCommandHandler : IBaseCommandHandler<CreateQuestionCommand, long>

@@ -1,9 +1,7 @@
 ﻿using Common.Api;
 using Shop.Query.Categories._DTOs;
 using System.Text.Json;
-using Shop.Application.Categories.AddSubCategory;
-using Shop.Application.Categories.Create;
-using Shop.Application.Categories.Edit;
+using Shop.API.ViewModels.Categories;
 
 namespace Shop.UI.Services.Categories;
 
@@ -13,17 +11,17 @@ public class CategoryService : BaseService, ICategoryService
 
     public CategoryService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult> Create(CreateCategoryCommand model)
+    public async Task<ApiResult> Create(CreateCategoryViewModel model)
     {
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> AddSubCategory(AddSubCategoryCommand model)
+    public async Task<ApiResult> AddSubCategory(AddSubCategoryViewModel model)
     {
         return await PostAsJsonAsync("AddSubcategory", model);
     }
 
-    public async Task<ApiResult> Edit(EditCategoryCommand model)
+    public async Task<ApiResult> Edit(EditCategoryViewModel model)
     {
         return await PutAsJsonAsync("Edit", model);
     }
@@ -33,7 +31,7 @@ public class CategoryService : BaseService, ICategoryService
         return await DeleteAsync($"Remove/{categoryId}");
     }
 
-    public async Task<CategoryDto> GetById(long categoryId)
+    public async Task<CategoryDto?> GetById(long categoryId)
     {
         var result = await GetFromJsonAsync<CategoryDto>($"GetById/{categoryId}");
         return result.Data;

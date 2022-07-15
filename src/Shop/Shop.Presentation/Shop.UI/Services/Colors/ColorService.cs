@@ -1,8 +1,7 @@
 ﻿using Common.Api;
 using Shop.Query.Colors._DTOs;
 using System.Text.Json;
-using Shop.Application.Colors.Create;
-using Shop.Application.Colors.Edit;
+using Shop.API.ViewModels.Colors;
 
 namespace Shop.UI.Services.Colors;
 
@@ -12,17 +11,17 @@ public class ColorService : BaseService, IColorService
     
     public ColorService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult> Create(CreateColorCommand model)
+    public async Task<ApiResult> Create(CreateColorViewModel model)
     {
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> Edit(EditColorCommand model)
+    public async Task<ApiResult> Edit(EditColorViewModel model)
     {
         return await PutAsJsonAsync("Edit", model);
     }
 
-    public async Task<ColorDto> GetById(long colorId)
+    public async Task<ColorDto?> GetById(long colorId)
     {
         var result = await GetFromJsonAsync<ColorDto>($"GetById/{colorId}");
         return result.Data;

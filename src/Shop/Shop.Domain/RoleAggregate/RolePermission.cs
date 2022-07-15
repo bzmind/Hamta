@@ -9,6 +9,7 @@ public class RolePermission : BaseEntity
 
     public enum Permissions
     {
+        AvatarManager,
         CategoryManager,
         ColorManager,
         CommentManager,
@@ -18,6 +19,7 @@ public class RolePermission : BaseEntity
         QuestionManager,
         RoleManager,
         ShippingManager,
+        UserAddressManager,
         UserManager
     }
 

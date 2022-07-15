@@ -1,5 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
+using Common.Application.Utility.Validation;
 using Shop.Domain.UserAggregate.Repository;
 
 namespace Shop.Application.Users.Addresses.RemoveAddress;
@@ -20,7 +21,14 @@ public class RemoveUserAddressCommandHandler : IBaseCommandHandler<RemoveUserAdd
         var user = await _userRepository.GetAsTrackingAsync(request.UserId);
 
         if (user == null)
-            return OperationResult.NotFound();
+            return OperationResult.NotFound(ValidationMessages.FieldNotFound("کاربر"));
+
+        var address = user.Addresses.SingleOrDefault(a => a.IsActive);
+        if (address != null && address.Id == request.AddressId)
+        {
+            var addresses = user.Addresses.OrderByDescending(a => a.Id);
+            addresses.First().SetAddressActivation(true);
+        }
 
         user.RemoveAddress(request.AddressId);
 

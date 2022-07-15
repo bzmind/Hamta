@@ -7,6 +7,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="wwwroot\admin\images\ico\favicon.ico" />
+	</ItemGroup>
+
+	<ItemGroup>
 		<Folder Include="Pages\Profile\Comments\" />
 		<Folder Include="Pages\Profile\Favorites\" />
 		<Folder Include="Services\Avatars\" />
@@ -25,6 +29,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="wwwroot\admin\images\ico\favicon.ico" />
 		<None Include="wwwroot\favicon.ico" />
 	</ItemGroup>
 
@@ -34,6 +39,14 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\Shop.API\Shop.API.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Pages\Admin\Avatars\_Add.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Pages\Admin\Avatars\_Add.cshtml" />
 	</ItemGroup>
 
 </Project>

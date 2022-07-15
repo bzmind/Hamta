@@ -53,6 +53,7 @@ using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
+using Shop.Query.Users._DTOs;
 
 namespace Shop.API.Setup;
 
@@ -100,5 +101,6 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateUserCommand, CreateUserViewModel>().ReverseMap();
         CreateMap<EditUserCommand, EditUserViewModel>().ReverseMap();
         CreateMap<SpecificationDto, SpecificationViewModel>().ReverseMap();
+        CreateMap<UserAddressDto, EditUserAddressViewModel>().ReverseMap();
     }
 }
