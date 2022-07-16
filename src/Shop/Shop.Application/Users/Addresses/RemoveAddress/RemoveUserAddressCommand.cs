@@ -23,11 +23,11 @@ public class RemoveUserAddressCommandHandler : IBaseCommandHandler<RemoveUserAdd
         if (user == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("کاربر"));
 
-        var address = user.Addresses.SingleOrDefault(a => a.IsActive);
+        var address = user.Addresses.FirstOrDefault(a => a.IsActive);
         if (address != null && address.Id == request.AddressId)
         {
             var addresses = user.Addresses.OrderByDescending(a => a.Id);
-            addresses.First().SetAddressActivation(true);
+            addresses.First(a => a.Id != request.AddressId).SetAddressActivation(true);
         }
 
         user.RemoveAddress(request.AddressId);

@@ -71,7 +71,7 @@ public class BaseRazorPage : PageModel
         return Content(JsonConvert.SerializeObject(model));
     }
 
-    protected ContentResult AjaxRedirectToPageResult(string page)
+    protected ContentResult AjaxRedirectToPageResult(string page = "Index")
     {
         var path = Url.PageLink(page);
         if (string.IsNullOrWhiteSpace(path))

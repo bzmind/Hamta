@@ -41,12 +41,4 @@
 		<ProjectReference Include="..\Shop.API\Shop.API.csproj" />
 	</ItemGroup>
 
-	<ItemGroup>
-	  <UpToDateCheckInput Remove="Pages\Admin\Avatars\_Add.cshtml" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <_ContentIncludedByDefault Remove="Pages\Admin\Avatars\_Add.cshtml" />
-	</ItemGroup>
-
 </Project>

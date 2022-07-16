@@ -24,7 +24,7 @@
                    checked="@(currentUser.Avatar.Id == avatar.Id ? "checked" : null)" />
                         <input type="hidden" value="@avatar.Id" />
                         <span class="d-block checkmark">
-                            <img src="@ServerSettings.GetAvatarPath(currentUser.Avatar.Name)"
+                            <img src="@ServerSettings.GetAvatarPath(avatar.Name)"
                                  alt="@($"{gender} avatar")" />
                         </span>
                     </label>

@@ -1,5 +1,14 @@
 ﻿@model Shop.API.ViewModels.Avatars.CreateAvatarViewModel
 
-<form method="post" asp-page-handler="AddAvatar">
-
+<form method="post" asp-page="Index" onsubmit="return submitThisFormWithAjax(event, '')">
+  @Html.EditorFor(m => m.AvatarFile)
+  @Html.EditorFor(m => m.Gender)
+  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+    <i class="bx bx-x d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">بستن</span>
+  </button>
+  <button type="submit" class="btn btn-primary ml-1">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">ایجاد</span>
+  </button>
 </form>

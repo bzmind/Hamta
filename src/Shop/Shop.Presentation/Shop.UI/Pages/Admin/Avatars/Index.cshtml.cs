@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+using Shop.API.ViewModels.Avatars;
 using Shop.Query.Avatars._DTOs;
 using Shop.UI.Services.Avatars;
 using Shop.UI.Setup.RazorUtility;
@@ -22,5 +22,34 @@ public class IndexModel : BaseRazorPage
     public async Task OnGet()
     {
         Avatars = await _avatarService.GetAll();
+    }
+
+    public async Task<IActionResult> OnPost(CreateAvatarViewModel viewModel)
+    {
+        var result = await _avatarService.Create(viewModel);
+        if (!result.IsSuccessful)
+        {
+            MakeAlert(result);
+            return AjaxErrorMessageResult(result);
+        }
+
+        return AjaxRedirectToPageResult();
+    }
+
+    public async Task<IActionResult> OnGetShowAddPage()
+    {
+        return await AjaxSuccessHtmlResultAsync("_Add", new CreateAvatarViewModel());
+    }
+
+    public async Task<IActionResult> OnPostRemoveAvatar(long avatarId)
+    {
+        var result = await _avatarService.Remove(avatarId);
+        if (!result.IsSuccessful)
+        {
+            MakeAlert(result);
+            return AjaxErrorMessageResult(result);
+        }
+
+        return AjaxRedirectToPageResult();
     }
 }

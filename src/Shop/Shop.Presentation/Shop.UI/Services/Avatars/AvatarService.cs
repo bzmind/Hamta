@@ -16,7 +16,7 @@ public class AvatarService : BaseService, IAvatarService
     {
         var formData = new MultipartFormDataContent();
         formData.Add(new StreamContent(model.AvatarFile.OpenReadStream()), "AvatarFile", model.AvatarFile.FileName);
-        formData.Add(new StringContent(model.Gender.ToString()));
+        formData.Add(new StringContent(model.Gender.ToString()), "Gender");
         return await PostAsFormDataAsync("Create", formData);
     }
 

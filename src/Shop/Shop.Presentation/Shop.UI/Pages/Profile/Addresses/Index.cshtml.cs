@@ -35,7 +35,7 @@ public class IndexModel : BaseRazorPage
     public async Task<IActionResult> OnPost(CreateUserAddressViewModel model)
     {
         var result = await _userAddressService.Create(model);
-        return AjaxRedirectToPageResult("Index");
+        return AjaxRedirectToPageResult();
     }
 
     public async Task<IActionResult> OnGetShowAddPage()
@@ -64,7 +64,7 @@ public class IndexModel : BaseRazorPage
             MakeAlert(result);
             return AjaxErrorMessageResult(result);
         }
-        return AjaxRedirectToPageResult("Index");
+        return AjaxRedirectToPageResult();
     }
 
     public async Task<IActionResult> OnPostRemoveAddress(long addressId)
@@ -73,12 +73,12 @@ public class IndexModel : BaseRazorPage
         if (result.IsSuccessful == false)
         {
             MakeAlert(result);
-            return RedirectToPage().WithModelStateOf(this);
+            return AjaxErrorMessageResult(result);
         }
-        return RedirectToPage();
+        return AjaxRedirectToPageResult();
     }
 
-    public async Task<IActionResult> OnGetActivateAddress(long addressId)
+    public async Task<IActionResult> OnPostActivateAddress(long addressId)
     {
         var result = await _userAddressService.Activate(addressId);
         if (result.IsSuccessful == false)
@@ -86,7 +86,6 @@ public class IndexModel : BaseRazorPage
             MakeAlert(result);
             return AjaxErrorMessageResult(result);
         }
-
         return AjaxEmptySuccessResult();
     }
 }

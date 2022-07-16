@@ -132,6 +132,6 @@ public class IndexModel : BaseRazorPage
             return AjaxErrorMessageResult(result);
         }
 
-        return AjaxRedirectToPageResult("Index");
+        return AjaxRedirectToPageResult();
     }
 }
