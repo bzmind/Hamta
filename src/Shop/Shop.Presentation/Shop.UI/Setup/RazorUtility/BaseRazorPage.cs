@@ -44,8 +44,7 @@ public class BaseRazorPage : PageModel
         return Content(JsonConvert.SerializeObject(model));
     }
 
-    protected ContentResult AjaxErrorMessageResult(string errorMessage,
-        ApiStatusCode statusCode = default)
+    protected ContentResult AjaxErrorMessageResult(string errorMessage, ApiStatusCode statusCode = default)
     {
         var errorApiResult = ApiResult<string>.Error(errorMessage);
         if (statusCode != default)

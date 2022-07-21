@@ -2,5 +2,5 @@
 
 public interface ICategoryDomainService
 {
-    bool IsDuplicateSlug(string slug);
+    bool IsDuplicateSlug(long id, string slug);
 }

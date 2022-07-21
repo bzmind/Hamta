@@ -29,16 +29,13 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
 
         await _categoryRepository.AddAsync(newSubCategory);
 
-        if (request.Specifications != null && request.Specifications.Any())
-        {
-            var specifications = new List<CategorySpecification>();
+        var specifications = new List<CategorySpecification>();
 
-            request.Specifications.ToList().ForEach(specification =>
-                specifications.Add(new CategorySpecification(newSubCategory.Id, specification.Title,
-                    specification.Description, specification.IsImportantFeature)));
+        request.Specifications.ToList().ForEach(specification =>
+            specifications.Add(new CategorySpecification(newSubCategory.Id, specification.Title,
+                specification.Description, specification.IsImportantFeature)));
 
-            newSubCategory.SetSpecifications(specifications);
-        }
+        newSubCategory.SetSpecifications(specifications);
 
         var parentCategory = await _categoryRepository.GetAsTrackingAsync(request.ParentId);
 

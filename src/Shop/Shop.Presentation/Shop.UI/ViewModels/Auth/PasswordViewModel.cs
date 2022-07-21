@@ -1,9 +1,9 @@
-﻿using Common.Application.Utility.Validation;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using Common.Application.Utility.Validation;
 
-namespace Shop.UI.Models.Auth;
+namespace Shop.UI.ViewModels.Auth;
 
-public class PasswordModel
+public class PasswordViewModel
 {
     [Display(Name = "رمز عبور")]
     [Required(ErrorMessage = ValidationMessages.PasswordRequired)]

@@ -52,7 +52,7 @@ public class Category : BaseAggregateRoot
         NullOrEmptyDataDomainException.CheckString(title, nameof(title));
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));
 
-        if (categoryDomainService.IsDuplicateSlug(slug))
+        if (categoryDomainService.IsDuplicateSlug(Id, slug))
             throw new SlugAlreadyExistsDomainException("Slug is already used");
     }
 }

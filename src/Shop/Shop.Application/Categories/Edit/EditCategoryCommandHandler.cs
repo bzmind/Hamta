@@ -32,14 +32,11 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
 
         category.Edit(request.ParentId, request.Title, request.Slug, _categoryDomainService);
 
-        if (request.Specifications != null && request.Specifications.Any())
-        {
-            var specifications = new List<CategorySpecification>();
-            request.Specifications.ToList().ForEach(specification =>
-                specifications.Add(new CategorySpecification(category.Id, specification.Title,
-                    specification.Description, specification.IsImportantFeature)));
-            category.SetSpecifications(specifications);
-        }
+        var specifications = new List<CategorySpecification>();
+        request.Specifications.ToList().ForEach(specification =>
+            specifications.Add(new CategorySpecification(category.Id, specification.Title,
+                specification.Description, specification.IsImportantFeature)));
+        category.SetSpecifications(specifications);
 
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();

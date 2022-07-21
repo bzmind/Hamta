@@ -12,8 +12,13 @@ public class CategoryDomainService : ICategoryDomainService
         _categoryRepository = categoryRepository;
     }
 
-    public bool IsDuplicateSlug(string slug)
+    public bool IsDuplicateSlug(long id, string slug)
     {
-        return _categoryRepository.Exists(c => c.Slug == slug);
+        var category = _categoryRepository.GetCategoryBySlug(slug);
+        if (category == null)
+            return false;
+        if (category.Id == id)
+            return false;
+        return true;
     }
 }

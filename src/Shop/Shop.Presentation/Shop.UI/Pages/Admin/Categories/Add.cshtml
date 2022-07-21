@@ -1,0 +1,45 @@
+﻿@page "{parentId?}"
+@model Shop.UI.Pages.Admin.Categories.AddModel
+@{
+}
+
+<form method="post" data-repeater-container="">
+  @Html.EditorFor(m => m.Title)
+  @Html.EditorFor(m => m.Slug)
+  <h6 class="card-title mb-0">
+    @Html.DisplayNameFor(m => m.Specifications)
+  </h6>
+  <div class="row">
+    <div class="col-12">
+      <div class="card card-body">
+        <div data-repeater-list="">
+          <div data-repeater-item="">
+            <div class="row justify-content-between align-items-center">
+              <div class="col-11">
+                @Html.EditorFor(m => m.Specifications)
+              </div>
+              <div class="col-1">
+                <button class="btn btn-icon rounded-circle btn-danger" data-repeater-remove="" type="button">
+                  <i class="bx bx-trash"></i>
+                </button>
+              </div>
+            </div>
+            <hr>
+          </div>
+        </div>
+        <div class="form-group m-0">
+          <div class="col p-0">
+            <button class="btn btn-primary" data-repeater-create="" type="button">
+              <i class="bx bx-plus"></i>
+              افزودن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-primary">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">ایجاد</span>
+  </button>
+</form>

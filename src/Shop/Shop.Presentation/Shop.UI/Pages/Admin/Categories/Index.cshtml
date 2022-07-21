@@ -1,0 +1,131 @@
+﻿@page "{handler?}"
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Shop.UI.TagHelpers
+@using Shop.UI.ViewModels.Categories
+@model Shop.UI.Pages.Admin.Categories.IndexModel
+@{
+  ViewData["Title"] = "مدیریت دسته بندی ها";
+
+  const int textIndentationDefaultSize = 10;
+  var textIndentation = textIndentationDefaultSize;
+  var depth = 1;
+  async Task AddSubCategories(CategoryViewModel parentCategory)
+  {
+    for (var i = 0; i < parentCategory.SubCategories.Count; i++)
+    {
+      var hasSubCategory = parentCategory.SubCategories[i].SubCategories.Any();
+      <tr class="children" style="display: none;"
+      data-depth="@depth" data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
+        <td style="text-indent: @($"{textIndentation}px")">
+          @for (var t = 0; t < depth; t++)
+          {
+            <span class="indentation-lines"
+            style="right: calc(2rem + @($"{t * textIndentationDefaultSize}px"))"></span>
+          }
+          @parentCategory.SubCategories[i].Title
+          @if (hasSubCategory)
+          {
+            <i class="bx bx-caret-up"></i>
+          }
+        </td>
+        <td style="text-indent: @($"{textIndentation}px"); user-select: none">
+          @for (var t = 0; t < depth; t++)
+          {
+            <span class="indentation-lines"
+            style="right: calc(2rem + @($"{t * textIndentationDefaultSize}px"))"></span>
+          }
+          @parentCategory.SubCategories[i].Slug
+          @if (hasSubCategory)
+          {
+            <i class="bx bx-caret-up"></i>
+          }
+        </td>
+        <td>
+          <a asp-page="Add" asp-route-parentId="@parentCategory.SubCategories[i].Id"
+       class="btn-sm badge-pill bg-rgba-success text-success">
+            افزودن زیرگروه
+          </a>
+          <a asp-page="Edit" asp-route-categoryId="@parentCategory.SubCategories[i].Id"
+       class="btn-sm badge-pill bg-rgba-primary text-primary">
+            ویرایش
+          </a>
+          <delete url="@Url.Page("Index", "RemoveCategory", new { categoryId = parentCategory.SubCategories[i].Id })"
+            class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+            حذف
+          </delete>
+        </td>
+      </tr>
+      if (hasSubCategory)
+      {
+        depth++;
+        textIndentation += textIndentationDefaultSize;
+        await AddSubCategories(parentCategory.SubCategories[i]);
+        if (i + 1 == parentCategory.SubCategories.Count)
+        {
+          depth--;
+          textIndentation = textIndentationDefaultSize * depth;
+        }
+      }
+      else if (i + 1 == parentCategory.SubCategories.Count)
+      {
+        depth--;
+        textIndentation = textIndentationDefaultSize * depth;
+        return;
+      }
+    }
+  }
+}
+
+<section>
+  <h5 class="mb-1">@ViewData["Title"]</h5>
+  <a asp-page="Add" class="btn btn-primary mb-1">افزودن دسته بندی</a>
+  <div class="table-responsive card card-content">
+    <table class="table mb-0">
+      <thead>
+        <tr>
+          <th>@Html.DisplayNameFor(m => m.Categories.First().Title)</th>
+          <th>@Html.DisplayNameFor(m => m.Categories.First().Slug)</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var category in Model.Categories)
+        {
+          var hasSubCategory = category.SubCategories.Any();
+          <tr class="parent" data-depth="0"
+            data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
+            <td>
+              @category.Title
+              @if (hasSubCategory)
+              {
+                <i class="bx bx-caret-up"></i>
+              }
+            </td>
+            <td style="user-select: none">
+              @category.Slug
+              @if (hasSubCategory)
+              {
+                <i class="bx bx-caret-up"></i>
+              }
+            </td>
+            <td>
+              <a asp-page="Add" asp-route-parentId="@category.Id"
+               class="btn-sm badge-pill bg-rgba-success text-success">
+                افزودن زیرگروه
+              </a>
+              <a asp-page="Edit" asp-route-categoryId="@category.Id"
+               class="btn-sm badge-pill bg-rgba-primary text-primary">
+                ویرایش
+              </a>
+              <delete url="@Url.Page("Index", "RemoveCategory", new { categoryId = category.Id })"
+                    class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+                حذف
+              </delete>
+            </td>
+          </tr>
+          @if (hasSubCategory) await AddSubCategories(category);
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

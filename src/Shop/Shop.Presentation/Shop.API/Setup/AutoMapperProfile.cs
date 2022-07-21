@@ -53,6 +53,7 @@ using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
+using Shop.Query.Categories._DTOs;
 using Shop.Query.Users._DTOs;
 
 namespace Shop.API.Setup;
@@ -102,5 +103,11 @@ public class AutoMapperProfile : Profile
         CreateMap<EditUserCommand, EditUserViewModel>().ReverseMap();
         CreateMap<SpecificationDto, SpecificationViewModel>().ReverseMap();
         CreateMap<UserAddressDto, EditUserAddressViewModel>().ReverseMap();
+        CreateMap<CategorySpecificationDto, SpecificationViewModel>().ReverseMap()
+            .ForMember(dto => dto.Id, options => options.Ignore())
+            .ForMember(dto => dto.CreationDate, options => options.Ignore())
+            .ForMember(dto => dto.CategoryId, options => options.Ignore());
+        CreateMap<CategoryDto, EditCategoryViewModel>().ReverseMap()
+            .ForMember(dto => dto.SubCategories, options => options.Ignore());
     }
 }

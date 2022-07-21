@@ -6,10 +6,10 @@ using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Auth;
 using Shop.Query.Users._DTOs;
-using Shop.UI.Models.Auth;
 using Shop.UI.Services.Auth;
 using Shop.UI.Services.Users;
 using Shop.UI.Setup.RazorUtility;
+using Shop.UI.ViewModels.Auth;
 
 namespace Shop.UI.Pages.Auth;
 
@@ -67,10 +67,10 @@ public class LoginModel : BaseRazorPage
         if (result.Data.NextStep is NextSteps.Register)
             return await AjaxSuccessHtmlResultAsync("_Register", new RegisterUserViewModel());
 
-        return await AjaxSuccessHtmlResultAsync("_Password", new PasswordModel());
+        return await AjaxSuccessHtmlResultAsync("_Password", new PasswordViewModel());
     }
 
-    public async Task<IActionResult> OnPostPassword(PasswordModel model)
+    public async Task<IActionResult> OnPostPassword(PasswordViewModel viewModel)
     {
         var emailOrPhone = TempData["EmailOrPhone"]?.ToString();
 
@@ -80,7 +80,7 @@ public class LoginModel : BaseRazorPage
         return await LoginUserAndAddTokenCookies(new LoginUserViewModel
         {
             EmailOrPhone = emailOrPhone,
-            Password = model.Password
+            Password = viewModel.Password
         });
     }
 

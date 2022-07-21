@@ -4,5 +4,6 @@ namespace Shop.Domain.CategoryAggregate.Repository;
 
 public interface ICategoryRepository : IBaseRepository<Category>
 {
+    Category? GetCategoryBySlug(string slug);
     Task<bool> RemoveCategory(long categoryId);
 }
