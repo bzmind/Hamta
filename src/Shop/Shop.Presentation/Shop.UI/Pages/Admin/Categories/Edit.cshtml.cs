@@ -42,7 +42,7 @@ public class EditModel : BaseRazorPage
     [DisplayName("مشخصات")]
     public List<SpecificationViewModel> Specifications { get; set; }
 
-    public async Task<IActionResult> OnGet([FromRoute] long categoryId)
+    public async Task<IActionResult> OnGet(long categoryId)
     {
         var category = await _categoryService.GetById(categoryId);
         if (category == null)

@@ -1,8 +1,10 @@
 ﻿@page "{parentId?}"
 @model Shop.UI.Pages.Admin.Categories.AddModel
 @{
+  ViewData["Title"] = "افزودن دسته بندی";
 }
 
+<h5 class="mb-1">@ViewData["Title"]</h5>
 <form method="post" data-repeater-container="">
   @Html.EditorFor(m => m.Title)
   @Html.EditorFor(m => m.Slug)
@@ -18,7 +20,7 @@
               <div class="col-11">
                 @Html.EditorFor(m => m.Specifications)
               </div>
-              <div class="col-1">
+              <div class="col-1 d-flex justify-content-center">
                 <button class="btn btn-icon rounded-circle btn-danger" data-repeater-remove="" type="button">
                   <i class="bx bx-trash"></i>
                 </button>
@@ -38,8 +40,9 @@
       </div>
     </div>
   </div>
-  <button type="submit" class="btn btn-primary">
+  <button type="submit" class="btn btn-success">
     <i class="bx bx-check d-block d-sm-none"></i>
-    <span class="d-none d-sm-block">ایجاد</span>
+    ایجاد
   </button>
+  <cancel></cancel>
 </form>

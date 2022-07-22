@@ -25,10 +25,10 @@
           @parentCategory.SubCategories[i].Title
           @if (hasSubCategory)
           {
-            <i class="bx bx-caret-up"></i>
+            <i class="bx bx-caret-down"></i>
           }
         </td>
-        <td style="text-indent: @($"{textIndentation}px"); user-select: none">
+        <td style="text-indent: @($"{textIndentation}px");">
           @for (var t = 0; t < depth; t++)
           {
             <span class="indentation-lines"
@@ -37,7 +37,7 @@
           @parentCategory.SubCategories[i].Slug
           @if (hasSubCategory)
           {
-            <i class="bx bx-caret-up"></i>
+            <i class="bx bx-caret-down"></i>
           }
         </td>
         <td>
@@ -78,7 +78,7 @@
 
 <section>
   <h5 class="mb-1">@ViewData["Title"]</h5>
-  <a asp-page="Add" class="btn btn-primary mb-1">افزودن دسته بندی</a>
+  <a asp-page="Add" class="btn btn-success mb-1">افزودن دسته بندی</a>
   <div class="table-responsive card card-content">
     <table class="table mb-0">
       <thead>
@@ -98,14 +98,14 @@
               @category.Title
               @if (hasSubCategory)
               {
-                <i class="bx bx-caret-up"></i>
+                <i class="bx bx-caret-down"></i>
               }
             </td>
-            <td style="user-select: none">
+            <td>
               @category.Slug
               @if (hasSubCategory)
               {
-                <i class="bx bx-caret-up"></i>
+                <i class="bx bx-caret-down"></i>
               }
             </td>
             <td>

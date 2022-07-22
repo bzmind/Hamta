@@ -37,7 +37,7 @@ public class AddModel : BaseRazorPage
     {
     }
 
-    public async Task<IActionResult> OnPost([FromRoute] long? parentId)
+    public async Task<IActionResult> OnPost(long? parentId)
     {
         if (parentId != null)
         {
