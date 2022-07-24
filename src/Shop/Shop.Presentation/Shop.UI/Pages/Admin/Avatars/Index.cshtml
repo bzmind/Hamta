@@ -8,7 +8,7 @@
 <section>
   <h5 class="mb-1">@ViewData["Title"]</h5>
   <open-modal url="@Url.Page("Index", "ShowAddPage")" modal-title="افزودن آواتار"
-              modal-size="modal-sm" class="btn btn-primary mb-1">افزودن آواتار</open-modal>
+              modal-size="modal-sm" class="btn btn-success mb-1">افزودن آواتار</open-modal>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
@@ -23,11 +23,14 @@
         {
           <tr>
             <td>
-              <img class="avatar-img" width="50" height="50" src="@ServerSettings.GetAvatarPath(avatar.Name)" />
+              <img class="avatar-img" width="50" height="50" src="@ServerSettings.GetAvatarPath(avatar.Name)" alt="avatar"/>
             </td>
             <td>@avatar.Gender</td>
             <td>
-              <delete url="@Url.Page("Index", "RemoveAvatar", new { avatarId = avatar.Id })">حذف</delete>
+              <delete url="@Url.Page("Index", "RemoveAvatar", new { avatarId = avatar.Id })"
+                      class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+                حذف
+              </delete>
             </td>
           </tr>
         }

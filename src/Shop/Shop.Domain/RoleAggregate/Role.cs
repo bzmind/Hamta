@@ -26,29 +26,9 @@ public class Role : BaseAggregateRoot
     {
         Guard(title);
         Title = title;
-        _permissions.Clear();
         _permissions = permissions;
     }
 
-    public void AddPermissions(List<RolePermission> permissions)
-    {
-        permissions.ForEach(rp =>
-        {
-            if (_permissions.Select(p => p.Permission).ToList().Contains(rp.Permission))
-                throw new OperationNotAllowedDomainException("Permission already exists");
-
-            _permissions.Add(rp);
-        });
-    }
-
-    public void RemovePermissions(List<RolePermission> permissions)
-    {
-        var permissionsToDelete = _permissions
-            .Where(p => permissions.Select(rp => rp.Permission).ToList().Contains(p.Permission)).ToList();
-
-        permissionsToDelete.ForEach(p => _permissions.Remove(p));
-    }
-    
     private void Guard(string title)
     {
         NullOrEmptyDataDomainException.CheckString(title, nameof(title));

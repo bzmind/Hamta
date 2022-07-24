@@ -8,10 +8,13 @@ namespace Shop.API.ViewModels.Roles;
 
 public class CreateRoleViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [DisplayName("عنوان")]
+    [Required(ErrorMessage = ValidationMessages.TitleRequired)]
+    [MaxLength(50, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public string Title { get; set; }
 
     [DisplayName("مجوز ها")]
+    [Required(ErrorMessage = ValidationMessages.PermissionsRequired)]
     [ListNotEmpty(ErrorMessage = ValidationMessages.PermissionsRequired)]
     public List<RolePermission.Permissions> Permissions { get; set; }
 }

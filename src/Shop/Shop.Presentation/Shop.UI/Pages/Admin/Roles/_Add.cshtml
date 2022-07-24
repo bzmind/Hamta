@@ -1,0 +1,24 @@
+﻿@using Shop.Domain.RoleAggregate
+@model Shop.API.ViewModels.Roles.CreateRoleViewModel
+
+<form method="post" asp-page="Index" onsubmit="return submitThisFormWithAjax(event, '')">
+  @Html.EditorFor(m => m.Title)
+  <label asp-for="@Model.Permissions"></label>
+  <div class="form-group">
+    <select class="form-control select2" asp-for="Permissions" multiple="">
+      @foreach (var permission in Enum.GetNames(typeof(RolePermission.Permissions)))
+      {
+        <option value="@permission">@permission</option>
+      }
+    </select>
+    <span asp-validation-for="@Model.Permissions" class="d-block"></span>
+  </div>
+  <button type="submit" class="btn btn-success">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">ایجاد</span>
+  </button>
+  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+    <i class="bx bx-x d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">بستن</span>
+  </button>
+</form>

@@ -1,9 +1,8 @@
 ﻿using Common.Application;
 using MediatR;
-using Shop.Application.Roles.AddPermission;
 using Shop.Application.Roles.Create;
+using Shop.Application.Roles.Edit;
 using Shop.Application.Roles.Remove;
-using Shop.Application.Roles.RemovePermission;
 using Shop.Query.Roles._DTOs;
 using Shop.Query.Roles.GetById;
 using Shop.Query.Roles.GetList;
@@ -24,12 +23,7 @@ public class RoleFacade : IRoleFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> AddPermission(AddRolePermissionCommand command)
-    {
-        return await _mediator.Send(command);
-    }
-
-    public async Task<OperationResult> RemovePermission(RemoveRolePermissionCommand command)
+    public async Task<OperationResult> Edit(EditRoleCommand command)
     {
         return await _mediator.Send(command);
     }

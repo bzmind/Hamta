@@ -16,14 +16,9 @@ public class RoleService : BaseService, IRoleService
         return await PostAsJsonAsync("Create", model);
     }
 
-    public async Task<ApiResult> AddPermissions(AddRolePermissionViewModel model)
+    public async Task<ApiResult> Edit(EditRoleViewModel model)
     {
-        return await PutAsJsonAsync("AddPermissions", model);
-    }
-
-    public async Task<ApiResult> RemovePermissions(RemoveRolePermissionViewModel model)
-    {
-        return await PutAsJsonAsync("RemovePermissions", model);
+        return await PutAsJsonAsync("Edit", model);
     }
 
     public async Task<ApiResult> Remove(long roleId)
@@ -39,7 +34,7 @@ public class RoleService : BaseService, IRoleService
 
     public async Task<List<RoleDto>> GetAll()
     {
-        var result = await GetFromJsonAsync<List<RoleDto>>("api/role/GetAll");
+        var result = await GetFromJsonAsync<List<RoleDto>>("GetAll");
         return result.Data;
     }
 }

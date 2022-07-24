@@ -7,8 +7,7 @@ namespace Shop.UI.Services.Roles;
 public interface IRoleService
 {
     Task<ApiResult> Create(CreateRoleViewModel model);
-    Task<ApiResult> AddPermissions(AddRolePermissionViewModel model);
-    Task<ApiResult> RemovePermissions(RemoveRolePermissionViewModel model);
+    Task<ApiResult> Edit(EditRoleViewModel model);
     Task<ApiResult> Remove(long roleId);
 
     Task<RoleDto?> GetById(long roleId);

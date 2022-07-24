@@ -40,9 +40,8 @@ using Shop.Application.Questions.AddReply;
 using Shop.Application.Questions.Create;
 using Shop.Application.Questions.RemoveReply;
 using Shop.Application.Questions.SetStatus;
-using Shop.Application.Roles.AddPermission;
 using Shop.Application.Roles.Create;
-using Shop.Application.Roles.RemovePermission;
+using Shop.Application.Roles.Edit;
 using Shop.Application.Shippings.Create;
 using Shop.Application.Shippings.Edit;
 using Shop.Application.Users.Addresses.CreateAddress;
@@ -54,6 +53,7 @@ using Shop.Application.Users.Edit;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
 using Shop.Query.Categories._DTOs;
+using Shop.Query.Roles._DTOs;
 using Shop.Query.Users._DTOs;
 
 namespace Shop.API.Setup;
@@ -88,9 +88,8 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateQuestionCommand, CreateQuestionViewModel>().ReverseMap();
         CreateMap<RemoveReplyCommand, RemoveReplyViewModel>().ReverseMap();
         CreateMap<SetQuestionStatusCommand, SetQuestionStatusViewModel>().ReverseMap();
-        CreateMap<AddRolePermissionCommand, AddRolePermissionViewModel>().ReverseMap();
+        CreateMap<EditRoleCommand, EditRoleViewModel>().ReverseMap();
         CreateMap<CreateRoleCommand, CreateRoleViewModel>().ReverseMap();
-        CreateMap<RemoveRolePermissionCommand, RemoveRolePermissionViewModel>().ReverseMap();
         CreateMap<CreateShippingCommand, CreateShippingViewModel>().ReverseMap();
         CreateMap<EditShippingCommand, EditShippingViewModel>().ReverseMap();
         CreateMap<CreateUserAddressCommand, CreateUserAddressViewModel>().ReverseMap();
@@ -103,6 +102,7 @@ public class AutoMapperProfile : Profile
         CreateMap<EditUserCommand, EditUserViewModel>().ReverseMap();
         CreateMap<SpecificationDto, SpecificationViewModel>().ReverseMap();
         CreateMap<UserAddressDto, EditUserAddressViewModel>().ReverseMap();
+        CreateMap<RoleDto, EditRoleViewModel>().ReverseMap();
         CreateMap<CategorySpecificationDto, SpecificationViewModel>().ReverseMap()
             .ForMember(dto => dto.Id, options => options.Ignore())
             .ForMember(dto => dto.CreationDate, options => options.Ignore())

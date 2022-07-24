@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Users.Addresses;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Services.UserAddresses;
-using Shop.UI.Setup.ModelStateExtensions;
 using Shop.UI.Setup.RazorUtility;
 
 namespace Shop.UI.Pages.Profile.Addresses;

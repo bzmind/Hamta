@@ -1,14 +1,22 @@
 ﻿@model Shop.API.ViewModels.Avatars.CreateAvatarViewModel
 
 <form method="post" asp-page="Index" onsubmit="return submitThisFormWithAjax(event, '')">
-  @Html.EditorFor(m => m.AvatarFile)
+  <div class="form-group d-flex align-items-center justify-content-center flex-column">
+    <label asp-for="@Model.AvatarFile">انتخاب آواتار</label>
+    <label class="custom-file avatar-file-label" for="@Model.AvatarFile">
+      <i class="bx bxs-camera"></i>
+      <img class="avatar-preview" alt="avatar" style="display: none" src="/assets/images/avatar/avatar.png"/>
+      <input type="file" class="custom-file-input avatar-file-input" asp-for="@Model.AvatarFile">
+    </label>
+    <span asp-validation-for="@Model.AvatarFile" class="d-block"></span>
+  </div>
   @Html.EditorFor(m => m.Gender)
+  <button type="submit" class="btn btn-success">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">ایجاد</span>
+  </button>
   <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
     <i class="bx bx-x d-block d-sm-none"></i>
     <span class="d-none d-sm-block">بستن</span>
-  </button>
-  <button type="submit" class="btn btn-primary ml-1">
-    <i class="bx bx-check d-block d-sm-none"></i>
-    <span class="d-none d-sm-block">ایجاد</span>
   </button>
 </form>

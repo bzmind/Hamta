@@ -1,8 +1,5 @@
 ﻿using AutoMapper;
-using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels.Categories;
-using Shop.Query.Categories._DTOs;
 using Shop.UI.Services.Categories;
 using Shop.UI.Setup.RazorUtility;
 using Shop.UI.ViewModels.Categories;

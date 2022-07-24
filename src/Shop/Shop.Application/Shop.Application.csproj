@@ -29,8 +29,6 @@
     <Folder Include="Questions\Remove\" />
     <Folder Include="Questions\RemoveReply\" />
     <Folder Include="Roles\Remove\" />
-    <Folder Include="Roles\RemovePermission\" />
-    <Folder Include="Roles\AddPermission\" />
     <Folder Include="Roles\Create\" />
     <Folder Include="Users\SetAvatar\" />
     <Folder Include="Users\Roles\RemoveRole\" />

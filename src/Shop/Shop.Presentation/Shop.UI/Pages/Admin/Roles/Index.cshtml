@@ -1,0 +1,48 @@
+﻿@page "{handler?}"
+@using Shop.UI.TagHelpers
+@model Shop.UI.Pages.Admin.Roles.IndexModel
+@{
+  ViewData["Title"] = "مدیریت نقش ها";
+}
+
+<section>
+  <h5 class="mb-1">@ViewData["Title"]</h5>
+  <open-modal url="@Url.Page("Index", "ShowAddPage")" modal-title="افزودن نقش"
+              modal-size="modal-md" class="btn btn-success mb-1">افزودن نقش</open-modal>
+  <div class="table-responsive card card-content">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>عنوان</th>
+          <th>مجوز ها</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var role in Model.Roles)
+        {
+          <tr>
+            <td>@role.Title</td>
+            <td class="d-flex flex-wrap-reverse">
+              @foreach (var permission in role.Permissions)
+              {
+                  <div class="badge-pill bg-rgba-info text-info permission-badges">@permission</div>
+              }
+            </td>
+            <td style="width: 17%">
+              <open-modal url="@Url.Page("Index", "ShowEditPage", new { roleId = role.Id })"
+                          class="btn-sm badge-pill bg-rgba-primary text-primary border-0"
+                          modal-title="ویرایش نقش" modal-size="modal-md">
+                ویرایش
+              </open-modal>
+              <delete url="@Url.Page("Index", "RemoveRole", new { roleId = role.Id })"
+                      class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+                حذف
+              </delete>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

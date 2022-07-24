@@ -1,15 +1,14 @@
 ﻿using Common.Api;
 using Common.Api.Attributes;
 using Microsoft.AspNetCore.Mvc;
-using Shop.Application.Roles.AddPermission;
 using Shop.Application.Roles.Create;
-using Shop.Application.Roles.RemovePermission;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Roles;
 using Shop.Query.Roles._DTOs;
 using System.Net;
 using AutoMapper;
 using Shop.API.ViewModels.Roles;
+using Shop.Application.Roles.Edit;
 
 namespace Shop.API.Controllers;
 
@@ -34,19 +33,11 @@ public class RoleController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpPut("AddPermissions")]
-    public async Task<ApiResult> AddPermission(AddRolePermissionViewModel model)
+    [HttpPut("Edit")]
+    public async Task<ApiResult> Edit(EditRoleViewModel model)
     {
-        var command = _mapper.Map<AddRolePermissionCommand>(model);
-        var result = await _roleFacade.AddPermission(command);
-        return CommandResult(result);
-    }
-
-    [HttpPut("RemovePermissions")]
-    public async Task<ApiResult> RemovePermission(RemoveRolePermissionViewModel model)
-    {
-        var command = _mapper.Map<RemoveRolePermissionCommand>(model);
-        var result = await _roleFacade.RemovePermission(command);
+        var command = _mapper.Map<EditRoleCommand>(model);
+        var result = await _roleFacade.Edit(command);
         return CommandResult(result);
     }
 
@@ -65,7 +56,7 @@ public class RoleController : BaseApiController
     }
 
     [HttpGet("GetAll")]
-    public async Task<ApiResult<List<RoleDto>>> GetByFilter()
+    public async Task<ApiResult<List<RoleDto>>> GetAll()
     {
         var result = await _roleFacade.GetAll();
         return QueryResult(result);
