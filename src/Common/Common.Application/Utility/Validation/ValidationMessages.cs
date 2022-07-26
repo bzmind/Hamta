@@ -35,6 +35,9 @@ public static class ValidationMessages
     public const string ProductNameRequired = "لطفا نام محصول را وارد کنید";
     public const string ProductEnglishNameRequired = "لطفا نام انگلیسی محصول را وارد کنید";
     public const string PermissionsRequired = "لطفا مجوز ها را وارد کنید";
+    public const string NationalCodeRequired = "لطفا کدملی را وارد کنید";
+    public const string ShopNameRequired = "لطفا نام فروشگاه را وارد کنید";
+    public const string StatusRequired = "لطفا وضعیت را وارد کنید";
 
     public const string InvalidName = "نام نامعتبر است";
     public const string InvalidFamilyName = "نام خانوادگی نامعتبر است";
@@ -61,10 +64,14 @@ public static class ValidationMessages
     public const string InvalidOrderStatus = "وضعیت سفارش نامعتبر است";
     public const string InvalidQuestionStatus = "وضعیت سوال نامعتبر است";
     public const string InvalidPermissions = "مجوز ها نامعتبر هستند";
+    public const string InvalidNationalCode = "کدملی نامعتبر است";
+    public const string ShopNameNationalCode = "نام فروشگاه نامعتبر است";
+    public const string StatusNationalCode = "وضعیت نامعتبر است";
 
     public const string EmailRegex = @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}";
     public const string IranPhoneRegex = @"^(?:0)?(9\d{9})$";
     public const string EmailOrPhoneRegex = EmailRegex + "|" + IranPhoneRegex;
+    public const string OnlyNumberRegex = @"^\d+$";
 
     /// <summary>
     /// <example>Example: نام} را وارد کنید}</example>
@@ -160,7 +167,7 @@ public static class ValidationMessages
         => $"{field} باید بیشتر از {minLength} رقم باشد";
 
     /// <summary>
-    /// <example>Example: تعداد {محصولات} باید کمتر از {0} عدد باشد</example>
+    /// <example>Example: محصولات} باید کمتر از {0} عدد باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxLength"></param>
@@ -168,20 +175,20 @@ public static class ValidationMessages
         => $"{field} باید کمتر از {maxLength} عدد باشد";
 
     /// <summary>
-    /// <example>Example: تعداد {محصولات} باید بیشتر از {0} عدد باشد</example>
+    /// <example>Example: محصولات} باید بیشتر از {0} عدد باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="minLength"></param>
     public static string FieldQuantityMinNumber(string field, int minLength)
         => $"{field} باید بیشتر از {minLength} عدد باشد";
-
+    
     /// <summary>
-    /// <example>Example: تخفیف} باید کمتر یا مساوی {100} درصد باشد}</example>
+    /// <example>Example: تخفیف} حداکثر می‌تواند {100} درصد باشد}</example>
     /// </summary>
     /// <param name="field"></param>
     /// <param name="maxPercentage"></param>
-    public static string FieldPercentageLessThanOrEqualTo(string field, int maxPercentage)
-        => $"{field} باید کمتر از {maxPercentage} درصد باشد";
+    public static string FieldPercentageMaximum(string field, int maxPercentage)
+        => $"{field} حداکثر می‌تواند {maxPercentage} درصد باشد";
 
     /// <summary>
     /// <example>Example: تخفیف} باید کمتر از {100} درصد باشد}</example>

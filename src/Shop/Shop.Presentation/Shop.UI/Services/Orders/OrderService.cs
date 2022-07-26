@@ -50,7 +50,7 @@ public class OrderService : BaseService, IOrderService
 
     public async Task<OrderFilterResult> GetByFilter(OrderFilterParams filterParams)
     {
-        var url = $"api/order/GetByFilterPageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"api/order/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&StartDate={filterParams.StartDate}" +
                   $"&EndDate={filterParams.EndDate}&Status={filterParams.Status}";
         var result = await GetFromJsonAsync<OrderFilterResult>(url);

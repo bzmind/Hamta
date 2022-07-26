@@ -7,7 +7,8 @@ public class DapperContext
 {
     public string Categories => "[category].Categories";
     public string CategorySpecifications => "[category].Specifications";
-    public string Inventories => "[inventory].Inventories";
+    public string Sellers => "[seller].Sellers";
+    public string SellerInventories => "[seller].Inventories";
     public string Users => "[user].Users";
     public string UserAddresses => "[user].Addresses";
     public string UserFavoriteItems => "[user].FavoriteItems";

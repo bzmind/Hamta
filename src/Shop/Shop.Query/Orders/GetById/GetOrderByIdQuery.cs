@@ -31,7 +31,7 @@ public class GetOrderByIdQueryHandler : IBaseQueryHandler<GetOrderByIdQuery, Ord
                         ON oa.OrderId = @OrderId
                     INNER JOIN {_dapperContext.OrderItems} oi
                         ON oi.OrderId = @OrderId
-                    INNER JOIN {_dapperContext.Inventories} i
+                    INNER JOIN {_dapperContext.SellerInventories} i
                         ON oi.InventoryId = i.Id
                     INNER JOIN {_dapperContext.Colors} c
                         ON i.ColorId = c.Id

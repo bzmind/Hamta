@@ -21,7 +21,6 @@ public class SetCommentStatusCommandHandler : IBaseCommandHandler<SetCommentStat
     public async Task<OperationResult> Handle(SetCommentStatusCommand request, CancellationToken cancellationToken)
     {
         var comment = await _commentRepository.GetAsTrackingAsync(request.Id);
-
         if (comment == null)
             return OperationResult.NotFound();
 

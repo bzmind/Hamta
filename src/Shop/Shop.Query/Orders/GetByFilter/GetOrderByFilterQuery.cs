@@ -70,7 +70,8 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
             });
         });
 
-        var inventoryDetails = await _shopContext.Inventories
+        var inventoryDetails = await _shopContext.Sellers
+            .SelectMany(seller => seller.Inventories)
             .Where(i => itemInventoryIds.Contains(i.Id))
             .Join(
                 _shopContext.Colors,

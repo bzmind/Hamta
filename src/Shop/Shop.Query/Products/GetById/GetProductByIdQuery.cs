@@ -21,20 +21,20 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
     {
         var productDtos =
             await _shopContext.Products
-                .Where(p => p.Id == request.ProductId)
+                .Where(product => product.Id == request.ProductId)
                 .Join(
                     _shopContext.Categories,
-                    p => p.CategoryId,
-                    c => c.Id,
+                    product => product.CategoryId,
+                    category => category.Id,
                     (product, category) => new
                     {
                         Product = product,
                         Category = category
                     })
                 .Join(
-                    _shopContext.Inventories,
+                    _shopContext.Sellers.SelectMany(seller => seller.Inventories),
                     tables => tables.Product.Id,
-                    i => i.ProductId,
+                    inventory => inventory.ProductId,
                     (tables, inventory) => new
                     {
                         tables.Product,
@@ -44,12 +44,12 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
                 .Join(
                     _shopContext.Colors,
                     tables => tables.Inventory.ColorId,
-                    c => c.Id,
+                    color => color.Id,
                     (tables, color) => 
                         tables.Product.MapToProductDto(tables.Category, tables.Inventory, color))
                 .ToListAsync(cancellationToken);
 
-        var groupedProduct = productDtos.GroupBy(p => p.Id).Select(productGroup =>
+        var groupedProduct = productDtos.GroupBy(productDto => productDto.Id).Select(productGroup =>
         {
             var firstItem = productGroup.First();
             firstItem.GalleryImages = productGroup.Select(p => p.GalleryImages).First();

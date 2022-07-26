@@ -84,7 +84,7 @@ public class UserService : BaseService, IUserService
 
     public async Task<UserFilterResult> GetByFilter(UserFilterParams filterParams)
     {
-        var url = $"GetByFilterPageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&Name={filterParams.Name}&PhoneNumber={filterParams.PhoneNumber}&Email={filterParams.Email}";
         var result = await GetFromJsonAsync<UserFilterResult>(url);
         return result.Data;

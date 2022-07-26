@@ -9,7 +9,7 @@ namespace Shop.API.ViewModels.Comments;
 public class SetCommentStatusViewModel
 {
     [Required(ErrorMessage = ValidationMessages.IdRequired)]
-    public long CommentId { get; set; }
+    public long Id { get; set; }
 
     [DisplayName("وضعیت نظر")]
     [Required(ErrorMessage = ValidationMessages.CommentStatusRequired)]

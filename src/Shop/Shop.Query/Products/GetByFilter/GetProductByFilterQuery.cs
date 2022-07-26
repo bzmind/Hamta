@@ -30,7 +30,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
         var query = _shopContext.Products
             .OrderByDescending(p => p.CreationDate)
             .Join(
-                _shopContext.Inventories,
+                _shopContext.Sellers.SelectMany(seller => seller.Inventories),
                 p => p.Id,
                 i => i.ProductId,
                 (product, inventory) => new { product, inventory })

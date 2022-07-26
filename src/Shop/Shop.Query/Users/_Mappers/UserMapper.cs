@@ -96,7 +96,7 @@ internal static class UserMapper
                         ON pi.ProductId = p.Id
                     LEFT JOIN {dapperContext.ProductScores} ps
                         ON ps.ProductId = p.Id
-                    LEFT JOIN {dapperContext.Inventories} i
+                    LEFT JOIN {dapperContext.SellerInventories} i
                         ON i.ProductId = fi.ProductId
                     WHERE fi.UserId = @UserDtoId
                     GROUP BY

@@ -110,7 +110,7 @@ public class ProductService : BaseService, IProductService
 
     public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
     {
-        var url = $"api/product/GetByFilterPageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"api/product/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&CategoryId={filterParams.CategoryId}&Name={filterParams.Name}" +
                   $"&EnglishName={filterParams.EnglishName}&Slug={filterParams.Slug}" +
                   $"&AverageScore={filterParams.AverageScore}";

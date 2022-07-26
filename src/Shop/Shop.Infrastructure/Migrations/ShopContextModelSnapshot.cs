@@ -161,40 +161,6 @@ namespace Shop.Infrastructure.Migrations
                     b.ToTable("Comments", "comment");
                 });
 
-            modelBuilder.Entity("Shop.Domain.InventoryAggregate.Inventory", b =>
-                {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
-
-                    b.Property<long>("ColorId")
-                        .HasColumnType("bigint");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2(0)");
-
-                    b.Property<int>("DiscountPercentage")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsAvailable")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsDiscounted")
-                        .HasColumnType("bit");
-
-                    b.Property<long>("ProductId")
-                        .HasColumnType("bigint");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Inventories", "inventory");
-                });
-
             modelBuilder.Entity("Shop.Domain.OrderAggregate.Order", b =>
                 {
                     b.Property<long>("Id")
@@ -307,6 +273,40 @@ namespace Shop.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles", "role");
+                });
+
+            modelBuilder.Entity("Shop.Domain.SellerAggregate.Seller", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"), 1L, 1);
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2(0)");
+
+                    b.Property<string>("NationalCode")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<string>("ShopName")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("nvarchar(10)");
+
+                    b.Property<long>("UserId")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Sellers", "seller");
                 });
 
             modelBuilder.Entity("Shop.Domain.ShippingAggregate.Shipping", b =>
@@ -489,29 +489,6 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("CommentHints");
 
                     b.Navigation("CommentReactions");
-                });
-
-            modelBuilder.Entity("Shop.Domain.InventoryAggregate.Inventory", b =>
-                {
-                    b.OwnsOne("Common.Domain.ValueObjects.Money", "Price", b1 =>
-                        {
-                            b1.Property<long>("InventoryId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<int>("Value")
-                                .HasColumnType("int")
-                                .HasColumnName("Price");
-
-                            b1.HasKey("InventoryId");
-
-                            b1.ToTable("Inventories", "inventory");
-
-                            b1.WithOwner()
-                                .HasForeignKey("InventoryId");
-                        });
-
-                    b.Navigation("Price")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Shop.Domain.OrderAggregate.Order", b =>
@@ -924,6 +901,73 @@ namespace Shop.Infrastructure.Migrations
                         });
 
                     b.Navigation("Permissions");
+                });
+
+            modelBuilder.Entity("Shop.Domain.SellerAggregate.Seller", b =>
+                {
+                    b.OwnsMany("Shop.Domain.SellerAggregate.SellerInventory", "Inventories", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<long>("ColorId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2(0)");
+
+                            b1.Property<int>("DiscountPercentage")
+                                .HasColumnType("int");
+
+                            b1.Property<bool>("IsAvailable")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("IsDiscounted")
+                                .HasColumnType("bit");
+
+                            b1.Property<long>("ProductId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<int>("Quantity")
+                                .HasColumnType("int");
+
+                            b1.Property<long>("SellerId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("SellerId");
+
+                            b1.ToTable("Inventories", "seller");
+
+                            b1.WithOwner()
+                                .HasForeignKey("SellerId");
+
+                            b1.OwnsOne("Common.Domain.ValueObjects.Money", "Price", b2 =>
+                                {
+                                    b2.Property<long>("SellerInventoryId")
+                                        .HasColumnType("bigint");
+
+                                    b2.Property<int>("Value")
+                                        .HasColumnType("int")
+                                        .HasColumnName("Price");
+
+                                    b2.HasKey("SellerInventoryId");
+
+                                    b2.ToTable("Inventories", "seller");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("SellerInventoryId");
+                                });
+
+                            b1.Navigation("Price")
+                                .IsRequired();
+                        });
+
+                    b.Navigation("Inventories");
                 });
 
             modelBuilder.Entity("Shop.Domain.ShippingAggregate.Shipping", b =>

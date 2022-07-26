@@ -13,7 +13,7 @@ public class RolePermission : BaseEntity
         CategoryManager,
         ColorManager,
         CommentManager,
-        InventoryManager,
+        SellerManager,
         OrderManager,
         ProductManager,
         QuestionManager,

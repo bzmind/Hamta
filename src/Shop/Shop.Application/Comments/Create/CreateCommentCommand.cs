@@ -9,8 +9,8 @@ namespace Shop.Application.Comments.Create;
 
 public class CreateCommentCommand : IBaseCommand<long>
 {
-    public long ProductId { get; set; }
     public long UserId { get; set; }
+    public long ProductId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
     public List<string>? PositivePoints { get; set; }

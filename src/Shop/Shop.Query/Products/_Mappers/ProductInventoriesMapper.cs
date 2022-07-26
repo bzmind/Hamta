@@ -12,7 +12,7 @@ internal static class ProductInventoriesMapper
     //    var sql = $@"SELECT
     //                    i.ProductId, i.Quantity, i.Price, c.Name AS ColorName, c.Code AS ColorCode,
     //                    i.IsAvailable, i.DiscountPercentage, i.IsDiscounted
-    //                FROM {dapperContext.Inventories} i
+    //                FROM {dapperContext.SellerInventories} i
     //                INNER JOIN {dapperContext.Colors} c
     //                    ON i.ColorId == c.Id
     //                WHERE i.ProductId == @ProductDtoId";

@@ -60,7 +60,6 @@ public class CheckPermissionAttribute : AuthorizeAttribute, IAsyncAuthorizationF
     private async Task<bool> UserHasPermission(AuthorizationFilterContext context)
     {
         var user = await _userFacade.GetById(context.HttpContext.User.GetUserId());
-
         if (user == null)
             return false;
 

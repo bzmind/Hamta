@@ -6,11 +6,11 @@ using Shop.UI.Services.Auth;
 using Shop.UI.Services.Avatars;
 using Shop.UI.Services.Categories;
 using Shop.UI.Services.Comments;
-using Shop.UI.Services.Inventories;
 using Shop.UI.Services.Orders;
 using Shop.UI.Services.Products;
 using Shop.UI.Services.Questions;
 using Shop.UI.Services.Roles;
+using Shop.UI.Services.Sellers;
 using Shop.UI.Services.Shippings;
 using Shop.UI.Services.UserAddresses;
 using Shop.UI.Services.Users;
@@ -45,7 +45,7 @@ public static class UiBootstrapper
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 
-        services.AddHttpClient<IInventoryService, InventoryService>
+        services.AddHttpClient<ISellerService, SellerService>
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 

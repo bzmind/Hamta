@@ -1,13 +1,13 @@
 ﻿using Shop.Domain.ColorAggregate;
-using Shop.Domain.InventoryAggregate;
 using Shop.Domain.ProductAggregate;
+using Shop.Domain.SellerAggregate;
 using Shop.Query.Products._DTOs;
 
 namespace Shop.Query.Products._Mappers;
 
 internal static class ProductListMapper
 {
-    public static ProductListDto MapToProductListDto(this Product? product, Inventory inventory)
+    public static ProductListDto MapToProductListDto(this Product? product, SellerInventory sellerInventory)
     {
         if (product == null)
             return null;
@@ -17,13 +17,13 @@ internal static class ProductListMapper
             Id = product.Id,
             CreationDate = product.CreationDate,
             CategoryId = product.CategoryId,
-            ColorId = inventory.ColorId,
+            ColorId = sellerInventory.ColorId,
             Name = product.Name,
             EnglishName = product.EnglishName,
             Slug = product.Slug,
-            Price = inventory.Price.Value,
+            Price = sellerInventory.Price.Value,
             AverageScore = product.AverageScore,
-            Quantity = inventory.Quantity,
+            Quantity = sellerInventory.Quantity,
             Colors = new List<Color>()
         };
     }

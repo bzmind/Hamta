@@ -2,9 +2,9 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
 using FluentValidation;
-using Shop.Domain.InventoryAggregate.Repository;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.OrderAggregate.Repository;
+using Shop.Domain.SellerAggregate.Repository;
 
 namespace Shop.Application.Orders.AddItem;
 
@@ -23,26 +23,24 @@ public class AddOrderItemCommand : IBaseCommand<long>
 public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemCommand, long>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IInventoryRepository _inventoryRepository;
+    private readonly ISellerRepository _sellerRepository;
 
-    public AddOrderItemCommandHandler(IOrderRepository orderRepository, IInventoryRepository inventoryRepository)
+    public AddOrderItemCommandHandler(IOrderRepository orderRepository, ISellerRepository sellerRepository)
     {
         _orderRepository = orderRepository;
-        _inventoryRepository = inventoryRepository;
+        _sellerRepository = sellerRepository;
     }
 
     public async Task<OperationResult<long>> Handle(AddOrderItemCommand request, CancellationToken cancellationToken)
     {
-        var inventory = await _inventoryRepository.GetAsTrackingAsync(request.InventoryId);
-
+        var inventory = await _sellerRepository.GetInventoryByIdAsTrackingAsync(request.InventoryId);
         if (inventory == null)
-            return OperationResult<long>.NotFound();
+            return OperationResult<long>.NotFound(ValidationMessages.FieldNotFound("انبار"));
 
         if (inventory.Quantity < request.Quantity)
             return OperationResult<long>.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
 
         var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
-
         if (order == null)
         {
             order = new Order(request.UserId);

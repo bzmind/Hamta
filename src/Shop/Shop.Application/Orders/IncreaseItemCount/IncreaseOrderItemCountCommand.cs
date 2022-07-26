@@ -1,7 +1,7 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
-using Shop.Domain.InventoryAggregate.Repository;
 using Shop.Domain.OrderAggregate.Repository;
+using Shop.Domain.SellerAggregate.Repository;
 
 namespace Shop.Application.Orders.IncreaseItemCount;
 
@@ -10,28 +10,25 @@ public record IncreaseOrderItemCountCommand(long UserId, long OrderItemId) : IBa
 public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<IncreaseOrderItemCountCommand>
 {
     private readonly IOrderRepository _orderRepository;
-    private readonly IInventoryRepository _inventoryRepository;
+    private readonly ISellerRepository _sellerRepository;
 
-    public IncreaseOrderItemCountCommandHandler(IOrderRepository orderRepository, IInventoryRepository inventoryRepository)
+    public IncreaseOrderItemCountCommandHandler(IOrderRepository orderRepository, ISellerRepository sellerRepository)
     {
         _orderRepository = orderRepository;
-        _inventoryRepository = inventoryRepository;
+        _sellerRepository = sellerRepository;
     }
 
     public async Task<OperationResult> Handle(IncreaseOrderItemCountCommand request, CancellationToken cancellationToken)
     {
         var order = await _orderRepository.GetOrderByUserIdAsTracking(request.UserId);
-
         if (order == null)
             return OperationResult.NotFound("سفارش یافت نشد");
 
         var itemToBeIncreased = order.Items.FirstOrDefault(oi => oi.Id == request.OrderItemId);
-
         if (itemToBeIncreased == null)
             return OperationResult.NotFound("محصول یافت نشد");
 
-        var inventory = await _inventoryRepository.GetAsTrackingAsync(itemToBeIncreased.InventoryId);
-
+        var inventory = await _sellerRepository.GetInventoryByIdAsTrackingAsync(itemToBeIncreased.InventoryId);
         if (inventory == null)
             return OperationResult.NotFound("انبار یافت نشد");
 

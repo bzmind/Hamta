@@ -12,11 +12,6 @@
     <Folder Include="Categories\AddSubCategory\" />
     <Folder Include="Colors\Edit\" />
     <Folder Include="Comments\Remove\" />
-    <Folder Include="Inventories\Edit\" />
-    <Folder Include="Inventories\DecreaseQuantity\" />
-    <Folder Include="Inventories\IncreaseQuantity\" />
-    <Folder Include="Inventories\Remove\" />
-    <Folder Include="Inventories\RemoveDiscount\" />
     <Folder Include="Orders\AddItem\" />
     <Folder Include="Orders\Checkout\" />
     <Folder Include="Orders\RemoveItem\" />
@@ -30,6 +25,9 @@
     <Folder Include="Questions\RemoveReply\" />
     <Folder Include="Roles\Remove\" />
     <Folder Include="Roles\Create\" />
+    <Folder Include="Sellers\Inventories\IncreaseQuantity\" />
+    <Folder Include="Sellers\Inventories\Remove\" />
+    <Folder Include="Sellers\SetStatus\" />
     <Folder Include="Users\SetAvatar\" />
     <Folder Include="Users\Roles\RemoveRole\" />
     <Folder Include="Users\Roles\AddRole\" />

@@ -4,11 +4,11 @@ using Shop.Domain.CategoryAggregate;
 using Shop.Domain.ColorAggregate;
 using Shop.Domain.CommentAggregate;
 using Shop.Domain.UserAggregate;
-using Shop.Domain.InventoryAggregate;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.ProductAggregate;
 using Shop.Domain.QuestionAggregate;
 using Shop.Domain.RoleAggregate;
+using Shop.Domain.SellerAggregate;
 using Shop.Domain.ShippingAggregate;
 
 namespace Shop.Infrastructure.Persistence.EF;
@@ -20,7 +20,7 @@ public class ShopContext : DbContext
     public DbSet<Color> Colors { get; set; }
     public DbSet<Comment> Comments { get; set; }
     public DbSet<User> Users { get; set; }
-    public DbSet<Inventory> Inventories { get; set; }
+    public DbSet<Seller> Sellers { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<Product> Products { get; set; }
     public DbSet<Question> Questions { get; set; }

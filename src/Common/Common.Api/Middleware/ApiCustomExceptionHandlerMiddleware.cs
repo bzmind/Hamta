@@ -65,8 +65,15 @@ public class ApiCustomExceptionHandlerMiddleware
                                    exception.InnerException + Environment.NewLine +
                                    exception.StackTrace;
 
+                // This should only be the exception.message, but I was testing and I needed to see the full
+                // message, so I basically did the same thing as above, and saying that I needed to see the full
+                // message, then this might not be the right way to remove that cookielength error on the browser
+                // devtools, this is because of that, but as I said, I need to see the full exception message
+                // maybe change this and get rid of that error in another way...idk...
                 if (exceptionMessage.Length > 3000)
-                    exceptionMessage = exception.Message;
+                    exceptionMessage = exception.Message + Environment.NewLine +
+                                       exception.InnerException + Environment.NewLine +
+                                       exception.StackTrace;
             }
         }
 

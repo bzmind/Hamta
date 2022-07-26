@@ -1,7 +1,7 @@
 ﻿using Shop.Domain.CategoryAggregate;
 using Shop.Domain.ColorAggregate;
-using Shop.Domain.InventoryAggregate;
 using Shop.Domain.ProductAggregate;
+using Shop.Domain.SellerAggregate;
 using Shop.Query.Categories._Mappers;
 using Shop.Query.Products._DTOs;
 
@@ -9,7 +9,7 @@ namespace Shop.Query.Products._Mappers;
 
 internal static class ProductMapper
 {
-    public static ProductDto? MapToProductDto(this Product product, Category category, Inventory inventory,
+    public static ProductDto? MapToProductDto(this Product product, Category category, SellerInventory sellerInventory,
         Color color)
     {
         if (product == null)
@@ -34,16 +34,16 @@ internal static class ProductMapper
             {
                 new ProductInventoryDto()
                 {
-                    Id = inventory.Id,
-                    CreationDate = inventory.CreationDate,
-                    ProductId = inventory.Id,
-                    Quantity = inventory.Quantity,
-                    Price = inventory.Price.Value,
+                    Id = sellerInventory.Id,
+                    CreationDate = sellerInventory.CreationDate,
+                    ProductId = sellerInventory.Id,
+                    Quantity = sellerInventory.Quantity,
+                    Price = sellerInventory.Price.Value,
                     ColorName = color.Name,
                     ColorCode = color.Code,
-                    IsAvailable = inventory.IsAvailable,
-                    DiscountPercentage = inventory.DiscountPercentage,
-                    IsDiscounted = inventory.IsDiscounted
+                    IsAvailable = sellerInventory.IsAvailable,
+                    DiscountPercentage = sellerInventory.DiscountPercentage,
+                    IsDiscounted = sellerInventory.IsDiscounted
                 }
             }
         };

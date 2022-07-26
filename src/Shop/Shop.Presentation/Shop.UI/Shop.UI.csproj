@@ -15,7 +15,6 @@
 		<Folder Include="Pages\Profile\Favorites\" />
 		<Folder Include="Services\Avatars\" />
 		<Folder Include="Services\UserAddresses\" />
-		<Folder Include="Services\Inventories\" />
 		<Folder Include="Services\Users\" />
 		<Folder Include="Services\Shippings\" />
 		<Folder Include="Services\Questions\" />
