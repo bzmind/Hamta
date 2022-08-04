@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Shop.UI.Setup;
+using Shop.UI.Setup.Middleware;
 using Shop.UI.Setup.ModelStateExtensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -49,6 +50,12 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+builder.Services.AddRouting(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
+
 var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
@@ -56,8 +63,6 @@ if (!app.Environment.IsDevelopment())
     app.UseExceptionHandler("/ServerError");
     app.UseHsts();
 }
-
-//app.UseCookiePolicy(new CookiePolicyOptions { Secure = CookieSecurePolicy.Always, MinimumSameSitePolicy = SameSiteMode.Lax});
 
 app.Use(async (context, next) =>
 {
@@ -83,6 +88,8 @@ app.Use(async (context, next) =>
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+
+app.UseUiCustomExceptionHandler();
 
 app.UseRouting();
 

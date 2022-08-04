@@ -48,22 +48,22 @@ public class EditCategoryCommandValidator : AbstractValidator<EditCategoryComman
     public EditCategoryCommandValidator()
     {
         RuleFor(c => c.Title)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
+            .NotNull().WithMessage(ValidationMessages.TitleRequired)
+            .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
 
         RuleFor(c => c.Slug)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("اسلاگ"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("اسلاگ"));
+            .NotNull().WithMessage(ValidationMessages.SlugRequired)
+            .NotEmpty().WithMessage(ValidationMessages.SlugRequired);
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Title)
-                .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
+                .NotNull().WithMessage(ValidationMessages.TitleRequired)
+                .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
 
             specification.RuleFor(spec => spec.Description)
-                .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیحات"))
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
+                .NotNull().WithMessage(ValidationMessages.DescriptionRequired)
+                .NotEmpty().WithMessage(ValidationMessages.DescriptionRequired);
         });
     }
 }

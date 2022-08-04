@@ -45,6 +45,7 @@ public class ListMinLengthAttribute : ValidationAttribute, IClientModelValidator
     {
         if (!context.Attributes.ContainsKey("data-val"))
             context.Attributes.Add("data-val", "true");
+        context.Attributes.Add("data-listMinLength", _minLength.ToString());
         context.Attributes.Add("data-val-listMinLength", ErrorMessage);
     }
 }
@@ -74,6 +75,7 @@ public class ListMaxLengthAttribute : ValidationAttribute, IClientModelValidator
     {
         if (!context.Attributes.ContainsKey("data-val"))
             context.Attributes.Add("data-val", "true");
+        context.Attributes.Add("data-listMaxLength", _maxLength.ToString());
         context.Attributes.Add("data-val-listMaxLength", ErrorMessage);
     }
 }
@@ -112,6 +114,7 @@ public class ListMembersCharactersMinLengthAttribute : ValidationAttribute, ICli
     {
         if (!context.Attributes.ContainsKey("data-val"))
             context.Attributes.Add("data-val", "true");
+        context.Attributes.Add("data-listMembersCharactersMinLength", _charactersMinLength.ToString());
         context.Attributes.Add("data-val-listMembersCharactersMinLength", ErrorMessage);
     }
 }
@@ -150,6 +153,7 @@ public class ListMembersCharactersMaxLengthAttribute : ValidationAttribute, ICli
     {
         if (!context.Attributes.ContainsKey("data-val"))
             context.Attributes.Add("data-val", "true");
+        context.Attributes.Add("data-listMembersCharactersMaxLength", _charactersMaxLength.ToString());
         context.Attributes.Add("data-val-listMembersCharactersMaxLength", ErrorMessage);
     }
 }

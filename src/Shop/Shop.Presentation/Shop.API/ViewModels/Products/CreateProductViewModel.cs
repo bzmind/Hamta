@@ -31,14 +31,15 @@ public class CreateProductViewModel
     public string? Description { get; set; }
 
     [DisplayName("عکس اصلی محصول")]
-    [Required(ErrorMessage = "لطفا {0} را وارد")]
-    [ImageFile(ErrorMessage = "{0} نامعتبر است")]
+    [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+    [ImageFile(ErrorMessage = "عکس اصلی محصول نامعتبر است")]
     public IFormFile MainImage { get; set; }
 
     [DisplayName("عکس های گالری محصول")]
-    [ListNotEmpty(ErrorMessage = "لطفا {0} را وارد کنید")]
-    [ImageFile(ErrorMessage = "{0} نامعتبر هستند")]
-    [ListMaxLength(10, ErrorMessage = "{0} نمی‌تواند بیشتر از 10 عدد باشد")]
+    [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
+    [ListNotEmpty(ErrorMessage = "لطفا عکس های گالری محصول را وارد کنید")]
+    [ImageFile(ErrorMessage = "عکس های گالری محصول نامعتبر هستند")]
+    [ListMaxLength(10, ErrorMessage = "عکس های گالری محصول نمی‌تواند بیشتر از 10 عدد باشد")]
     public List<IFormFile> GalleryImages { get; set; }
 
     [DisplayName("مشخصات")]

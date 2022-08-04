@@ -1,0 +1,157 @@
+﻿@page
+@using Shop.UI.Services.Categories
+@using Shop.UI.Setup.ServerSide
+@model Shop.UI.Pages.Admin.Products.IndexModel
+@inject ICategoryService CategoryService
+@{
+  var categories = await CategoryService.GetAll();
+  ViewData["Title"] = "مدیریت محصولات";
+  var highestProductPrice = Model.FilterResult.HighestProductPrice;
+}
+
+<h5 class="mb-1">@ViewData["Title"]</h5>
+<a asp-page="Add" class="btn btn-success mb-1">افزودن محصول</a>
+<form class="card shadow-lg" method="get">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-md-3" style="margin-bottom: 5px;">
+        <label>نام</label>
+        <input type="text" asp-for="@Model.FilterParams.Name" class="form-control" />
+      </div>
+      <div class="col-md-3" style="margin-bottom: 5px;">
+        <label>نام انگلیسی</label>
+        <input type="text" asp-for="@Model.FilterParams.EnglishName" class="form-control" />
+      </div>
+      <div class="col-md-3" style="margin-bottom: 5px;">
+        <label>اسلاگ</label>
+        <input type="text" asp-for="@Model.FilterParams.Slug" class="form-control" />
+      </div>
+      <div class="col-md-3" style="margin-bottom: 5px;">
+        <label>امتیاز</label>
+        <input type="text" asp-for="@Model.FilterParams.AverageScore" class="form-control" />
+      </div>
+      <div class="col-md-3" style="margin-bottom: 15px;">
+        <div class="form-group m-0">
+          <label>دسته‌بندی</label>
+          <select class="form-control" asp-for="@Model.FilterParams.CategoryId">
+            <option selected value="0">همه</option>
+            @foreach (var category in categories)
+            {
+              <option value="@category.Id">@category.Title</option>
+            }
+          </select>
+          <span asp-validation-for="@Model.FilterParams.CategoryId" class="d-block"></span>
+        </div>
+      </div>
+      <div class="col-md-12" style="margin-bottom: 5px;">
+        <label>محدوده قیمت</label>
+        <fieldset>
+          <div class="row">
+            <div class="col-md-3 d-flex align-items-center">
+              <div style="margin-left: 10px;">از</div>
+              <input class="form-control d-inline-block" type="text" min="0" max="@highestProductPrice"
+                     step="1" id="slider-input-min">
+              <input id="slider-input-min-value" type="hidden" asp-for="@Model.FilterParams.MinPrice" />
+              <div class="toman-placeholder">تومان</div>
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <div style="margin-left: 10px;">تا</div>
+              <input class="form-control d-inline-block" type="text" min="0" max="@highestProductPrice"
+                     step="1" id="slider-input-max">
+              <input id="slider-input-max-value" type="hidden" asp-for="@Model.FilterParams.MaxPrice" />
+              <div class="toman-placeholder">تومان</div>
+            </div>
+          </div>
+          <div class="my-1 noUi-target noUi-rtl noUi-horizontal mt-2" id="slider-with-input">
+          </div>
+        </fieldset>
+      </div>
+    </div>
+  </div>
+  <div class="card-footer text-left">
+    <a asp-page="Index" class="btn btn-danger btn-sm">حذف فیلتر</a>
+    <button type="submit" class="btn btn-primary btn-sm">اعمال فیلتر</button>
+  </div>
+</form>
+<section>
+  <div class="table-responsive card card-content">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>عکس</th>
+          <th>نام</th>
+          <th>قیمت</th>
+          <th>سایر اطلاعات</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var product in Model.FilterResult.Data)
+        {
+          <tr>
+            <td style="max-width: 100px">
+              <img alt="product image" class="item-image"
+                 src="@ServerSettings.GetProductMainImagePath(product.MainImage)" />
+            </td>
+            <td>
+              <label>نام:</label>
+              <span>@product.Name</span>
+              <br />
+              <label>نام انگلیسی:</label>
+              <span>@product.EnglishName</span>
+              <br />
+              <label>اسلاگ:</label>
+              <span>@product.Slug</span>
+            </td>
+            <td style="max-width: 130px">
+              @product.LowestInventoryPrice.ToString("##,###") <small>تومان</small>
+              @if (@product.LowestInventoryPrice != @product.HighestInventoryPrice)
+              {
+                <br />
+                <span>تا</span>
+                <br />
+                @product.HighestInventoryPrice.ToString("##,###") <small>تومان</small>
+              }
+            </td>
+            <td style="max-width: 50px">
+              <label>امتیاز:</label>
+              <span>@product.AverageScore</span>
+              <br />
+              <label>موجودی:</label>
+              <span>@product.AllQuantityInStock</span>
+              <small>عدد</small>
+              <br />
+              <label>رنگ ها:</label>
+              <div>
+                @foreach (var color in product.Colors)
+                {
+                  <span class="item-color" style="background-color: @color.Code;">
+                  </span>
+                }
+              </div>
+            </td>
+            <td>
+              <delete url="@Url.Page("Index", "RemoveUser", new { userId = product.Id })"
+                    class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+                حذف
+              </delete>
+            </td>
+          </tr>
+        }
+        @if (!Model.FilterResult.Data.Any())
+        {
+          <tr>
+            <td colspan="8" class="text-center p-2">موردی برای نمایش وجود ندارد</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+@section Scripts
+  {
+  <script>
+    setupRangeSlider(0, @highestProductPrice, @(Model.FilterParams.MinPrice ?? 0),
+    @(Model.FilterParams.MaxPrice ?? highestProductPrice))
+  </script>
+}

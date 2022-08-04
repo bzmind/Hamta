@@ -6,7 +6,7 @@
 @{
   ViewData["Title"] = "مدیریت دسته بندی ها";
 
-  const int textIndentationDefaultSize = 10;
+  const int textIndentationDefaultSize = 15;
   var textIndentation = textIndentationDefaultSize;
   var depth = 1;
   async Task AddSubCategories(CategoryViewModel parentCategory)
@@ -16,7 +16,7 @@
       var hasSubCategory = parentCategory.SubCategories[i].SubCategories.Any();
       <tr class="children" style="display: none;"
       data-depth="@depth" data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
-        <td style="text-indent: @($"{textIndentation}px")">
+        <td style="text-indent: @($"{textIndentation - 8}px")">
           @for (var t = 0; t < depth; t++)
           {
             <span class="indentation-lines"
@@ -28,7 +28,7 @@
             <i class="bx bx-caret-down"></i>
           }
         </td>
-        <td style="text-indent: @($"{textIndentation}px");">
+        <td style="text-indent: @($"{textIndentation - 8}px");">
           @for (var t = 0; t < depth; t++)
           {
             <span class="indentation-lines"
@@ -73,6 +73,8 @@
         return;
       }
     }
+    depth++;
+    textIndentation += textIndentationDefaultSize;
   }
 }
 
@@ -124,6 +126,12 @@
             </td>
           </tr>
           @if (hasSubCategory) await AddSubCategories(category);
+        }
+        @if (!Model.Categories.Any())
+        {
+          <tr>
+            <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
+          </tr>
         }
       </tbody>
     </table>

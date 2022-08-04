@@ -1,28 +1,24 @@
 ﻿using System.Net;
+using Common.Api;
 using Common.Application.Exceptions;
 using Common.Domain.Exceptions;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Hosting;
 using Newtonsoft.Json;
+namespace Shop.UI.Setup.Middleware;
 
-namespace Common.Api.Middleware;
-
-public static class ApiCustomExceptionHandlerMiddlewareExtensions
+public static class UiCustomExceptionHandlerMiddlewareExtensions
 {
-    public static IApplicationBuilder UseApiCustomExceptionHandler(this IApplicationBuilder builder)
+    public static IApplicationBuilder UseUiCustomExceptionHandler(this IApplicationBuilder builder)
     {
-        return builder.UseMiddleware<ApiCustomExceptionHandlerMiddleware>();
+        return builder.UseMiddleware<UiCustomExceptionHandlerMiddleware>();
     }
 }
 
-public class ApiCustomExceptionHandlerMiddleware
+public class UiCustomExceptionHandlerMiddleware
 {
     private readonly RequestDelegate _next;
     private readonly IWebHostEnvironment _environment;
 
-    public ApiCustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvironment environment)
+    public UiCustomExceptionHandlerMiddleware(RequestDelegate next, IWebHostEnvironment environment)
     {
         _next = next;
         _environment = environment;

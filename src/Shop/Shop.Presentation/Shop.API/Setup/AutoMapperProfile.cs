@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Shop.API.ViewModels;
+using Shop.API.ViewModels.Auth;
 using Shop.API.ViewModels.Avatars;
 using Shop.API.ViewModels.Categories;
 using Shop.API.ViewModels.Colors;
@@ -13,7 +14,6 @@ using Shop.API.ViewModels.Sellers.Inventories;
 using Shop.API.ViewModels.Shippings;
 using Shop.API.ViewModels.Users;
 using Shop.API.ViewModels.Users.Addresses;
-using Shop.API.ViewModels.Users.Auth;
 using Shop.API.ViewModels.Users.Roles;
 using Shop.Application;
 using Shop.Application.Avatars.Create;
@@ -99,7 +99,6 @@ public class AutoMapperProfile : Profile
         CreateMap<EditShippingCommand, EditShippingViewModel>().ReverseMap();
         CreateMap<CreateUserAddressCommand, CreateUserAddressViewModel>().ReverseMap();
         CreateMap<EditUserAddressCommand, EditUserAddressViewModel>().ReverseMap();
-        CreateMap<RegisterUserCommand, RegisterUserViewModel>().ReverseMap();
         CreateMap<ResetUserPasswordCommand, ResetUserPasswordViewModel>().ReverseMap();
         CreateMap<AddUserRoleCommand, AddUserRoleViewModel>().ReverseMap();
         CreateMap<RemoveUserRoleCommand, RemoveUserRoleViewModel>().ReverseMap();

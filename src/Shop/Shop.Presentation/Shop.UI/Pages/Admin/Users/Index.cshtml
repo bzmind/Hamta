@@ -1,0 +1,56 @@
+﻿@page
+@using Shop.UI.Setup.ServerSide
+@using Shop.UI.TagHelpers
+@model Shop.UI.Pages.Admin.Users.IndexModel
+@{
+  ViewData["Title"] = "مدیریت کاربران";
+}
+
+<section>
+  <h5 class="mb-1">@ViewData["Title"]</h5>
+  <open-modal url="@Url.Page("Index", "ShowAddPage")" modal-title="افزودن کاربر" modal-size="modal-sm"
+              class="btn btn-success mb-1">افزودن کاربر</open-modal>
+  <div class="table-responsive card card-content">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>آواتار</th>
+          <th>نام</th>
+          <th>ایمیل</th>
+          <th>شماره موبایل</th>
+          <th>جنسیت</th>
+          <th>ثبت‌نام در خبرنامه</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var user in Model.UserFilterResult.Data)
+        {
+          <tr>
+            <td>
+              <img class="avatar-img" width="50" height="50" alt="avatar"
+                 src="@ServerSettings.GetAvatarPath(user.AvatarName)" />
+            </td>
+            <td>@user.FullName</td>
+            <td>@user.Email</td>
+            <td>@user.PhoneNumber.Value</td>
+            <td>@user.Gender</td>
+            <td>@user.IsSubscribedToNewsletter</td>
+            <td>
+              <delete url="@Url.Page("Index", "RemoveUser", new { userId = user.Id })"
+                    class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+                حذف
+              </delete>
+            </td>
+          </tr>
+        }
+        @if (!Model.UserFilterResult.Data.Any())
+        {
+          <tr>
+            <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

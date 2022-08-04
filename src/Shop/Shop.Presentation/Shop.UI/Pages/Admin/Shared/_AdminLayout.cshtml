@@ -9,6 +9,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="/admin/images/ico/favicon.ico">
   <meta name="theme-color" content="#5A8DEE">
   <link rel="stylesheet" type="text/css" href="/admin/vendors/css/vendors.min.css">
+  <link rel="stylesheet" type="text/css" href="/admin/vendors/css/extensions/nouislider.min.css">
   <link rel="stylesheet" type="text/css" href="/admin/vendors/css/charts/apexcharts.css">
   <link rel="stylesheet" type="text/css" href="/admin/vendors/css/extensions/dragula.min.css">
   <link rel="stylesheet" type="text/css" href="/admin/css/bootstrap.min.css">
@@ -19,6 +20,8 @@
   <link rel="stylesheet" type="text/css" href="/admin/css/themes/semi-dark-layout.css">
   <link rel="stylesheet" type="text/css" href="/admin/vendors/css/forms/select/select2.min.css">
   <link rel="stylesheet" type="text/css" href="/admin/css/core/menu/menu-types/vertical-menu.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/plugins/extensions/noui-slider.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/core/colors/palette-noui.css">
   <link rel="stylesheet" type="text/css" href="/admin/css/pages/dashboard-Analytics.css">
   <link rel="stylesheet" type="text/css" href="/admin/css/admin-custom.css">
   <link rel="stylesheet" href="/global/global.css">
@@ -62,6 +65,8 @@
   <script src="/admin/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
   <script src="/admin/vendors/js/charts/apexcharts.min.js"></script>
   <script src="/admin/vendors/js/extensions/dragula.min.js"></script>
+  <script src="/admin/vendors/js/extensions/wNumb.js"></script>
+  <script src="/admin/vendors/js/extensions/nouislider.min.js"></script>
   <script src="/admin/js/scripts/configs/vertical-menu-dark.js"></script>
   <script src="/admin/js/core/app-menu.js"></script>
   <script src="/admin/js/core/app.js"></script>
@@ -72,10 +77,12 @@
   <script src="/assets/js/plugins/sweetalert2.all.min.js"></script>
   <script src="/assets/js/custom/repeater.js"></script>
   <script src="/admin/vendors/js/forms/select/select2.full.min.js"></script>
+  <script src="/admin/vendors/js/extensions/numeral/numeral.js"></script>
   <script src="/admin/js/scripts/forms/select/form-select2.js"></script>
   <partial name="Shared/_ValidationScriptsPartial" />
   <script src="/assets/js/custom/customClientSideValidation.js"></script>
   <script src="/assets/js/custom/global.js"></script>
+  <script src="/admin/js/scripts/custom/admin-custom.js"></script>
   @await RenderSectionAsync("Scripts", false)
   <div id="antiForgeryToken">
     @Html.AntiForgeryToken()

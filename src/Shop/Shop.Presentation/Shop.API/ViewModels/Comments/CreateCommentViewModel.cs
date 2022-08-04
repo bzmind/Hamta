@@ -22,13 +22,13 @@ public class CreateCommentViewModel
     public string Description { get; set; }
 
     [DisplayName("نکات مثبت")]
-    [ListMaxLength(10, ErrorMessage = "{0} نمی‌تواند بیشتر از 10 عدد باشد")]
+    [ListMaxLength(10, ErrorMessage = "نکات مثبت نمی‌تواند بیشتر از 10 عدد باشد")]
     [ListMembersCharactersMinLength(3, ErrorMessage = "متن وارد شده باید حداقل ۳ کاراکتر باشد")]
     [ListMembersCharactersMaxLength(100, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public List<string>? PositivePoints { get; set; }
 
     [DisplayName("نکات منفی")]
-    [ListMaxLength(10, ErrorMessage = "{0} نمی‌تواند بیشتر از 10 عدد باشد")]
+    [ListMaxLength(10, ErrorMessage = "نکات منفی نمی‌تواند بیشتر از 10 عدد باشد")]
     [ListMembersCharactersMinLength(3, ErrorMessage = "متن وارد شده باید حداقل ۳ کاراکتر باشد")]
     [ListMembersCharactersMaxLength(100, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public List<string>? NegativePoints { get; set; }

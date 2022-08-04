@@ -56,16 +56,16 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
     public CreateCommentCommandValidator()
     {
         RuleFor(r => r.Title)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
+            .NotNull().WithMessage(ValidationMessages.TitleRequired)
+            .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
 
         RuleFor(r => r.Description)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیحات"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات"));
+            .NotNull().WithMessage(ValidationMessages.DescriptionRequired)
+            .NotEmpty().WithMessage(ValidationMessages.DescriptionRequired);
 
         RuleFor(r => r.Recommendation)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("نوع پیشنهاد"))
-            .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("نوع پیشنهاد"));
+            .NotNull().WithMessage(ValidationMessages.CommentRecommendationRequired)
+            .IsInEnum().WithMessage(ValidationMessages.InvalidCommentRecommendation);
 
         RuleForEach(r => r.NegativePoints)
             .NotNull().WithMessage(ValidationMessages.MinCharactersLength)

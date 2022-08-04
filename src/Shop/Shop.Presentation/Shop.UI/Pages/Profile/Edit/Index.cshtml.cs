@@ -6,7 +6,6 @@ using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Shop.API.ViewModels.Users;
-using Shop.API.ViewModels.Users.Auth;
 using Shop.Domain.UserAggregate;
 using Shop.UI.Services.Avatars;
 using Shop.UI.Services.UserAddresses;

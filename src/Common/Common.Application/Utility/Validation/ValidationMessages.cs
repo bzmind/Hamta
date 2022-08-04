@@ -22,7 +22,7 @@ public static class ValidationMessages
     public const string GenderRequired = "لطفا جنسیت را انتخاب کنید";
     public const string AvatarRequired = "لطفا عکس آواتار را وارد کنید";
     public const string TitleRequired = "لطفا عنوان را وارد کنید";
-    public const string DescriptionRequired = "لطفا توضیح را وارد کنید";
+    public const string DescriptionRequired = "لطفا توضیحات را وارد کنید";
     public const string SlugRequired = "لطفا اسلاگ را وارد کنید";
     public const string ColorNameRequired = "لطفا نام رنگ را وارد کنید";
     public const string ColorCodeRequired = "لطفا کد رنگ را وارد کنید";
@@ -55,7 +55,7 @@ public static class ValidationMessages
     public const string InvalidAvatar = "آواتار نامعتبر است";
     public const string InvalidImage = "عکس نامعتبر است";
     public const string InvalidTitle = "عنوان نامعتبر است";
-    public const string InvalidDescription = "توضیح نامعتبر است";
+    public const string InvalidDescription = "توضیحات نامعتبر است";
     public const string InvalidColorName = "نام رنگ نامعتبر است";
     public const string InvalidColorCode = "کد رنگ نامعتبر است";
     public const string InvalidCommentRecommendation = "پیشنهاد نامعتبر است";

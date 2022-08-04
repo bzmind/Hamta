@@ -8,6 +8,11 @@ public class Color : BaseAggregateRoot
     public string Name { get; private set; }
     public string Code { get; private set; }
 
+    private Color()
+    {
+        
+    }
+
     public Color(string name, string code)
     {
         Guard(name, code);

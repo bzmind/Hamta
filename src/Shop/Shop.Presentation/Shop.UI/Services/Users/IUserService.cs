@@ -1,6 +1,5 @@
 ﻿using Common.Api;
 using Shop.API.ViewModels.Users;
-using Shop.API.ViewModels.Users.Auth;
 using Shop.API.ViewModels.Users.Roles;
 using Shop.Query.Users._DTOs;
 

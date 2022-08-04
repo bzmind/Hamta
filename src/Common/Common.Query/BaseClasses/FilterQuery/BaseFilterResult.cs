@@ -24,6 +24,6 @@ public class BaseFilter
 
 public class BaseFilterResult<TData, TParam> : BaseFilter
 {
-    public List<TData> Data { get; set; }
+    public List<TData> Data { get; set; } = new();
     public TParam FilterParam { get; set; }
 }

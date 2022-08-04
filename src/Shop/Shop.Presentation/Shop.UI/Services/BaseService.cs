@@ -101,10 +101,12 @@ public abstract class BaseService
         }
         catch (Exception e)
         {
-            var resultError = e.Message +
-                              Environment.NewLine +
-                              Environment.NewLine +
-                              result;
+            //var resultError = "UI LAYER ERRORS:\n\n" +
+            //                  $"{e.Message} {e.InnerException} {e.StackTrace}\n\n" +
+            //                  "==========================================================================================================================================================================\n\n" +
+            //                  "API LAYER ERRORS:\n\n" +
+            //                  $"{await result.Content.ReadAsStringAsync()}";
+            var resultError = await result.Content.ReadAsStringAsync();
             finalResult = ApiResult<TData>.Error(resultError);
         }
 

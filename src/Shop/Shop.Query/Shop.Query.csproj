@@ -18,7 +18,6 @@
     <Folder Include="Comments\_Mappers\" />
     <Folder Include="Orders\_DTOs\" />
     <Folder Include="Orders\_Mappers\" />
-    <Folder Include="Products\_DTOs\" />
     <Folder Include="Roles\GetList\" />
     <Folder Include="Roles\GetById\" />
     <Folder Include="Roles\_Mapper\" />

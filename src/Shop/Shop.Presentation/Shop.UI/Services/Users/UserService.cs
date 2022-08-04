@@ -2,7 +2,6 @@
 using Shop.Query.Users._DTOs;
 using System.Text.Json;
 using Shop.API.ViewModels.Users;
-using Shop.API.ViewModels.Users.Auth;
 using Shop.API.ViewModels.Users.Roles;
 
 namespace Shop.UI.Services.Users;

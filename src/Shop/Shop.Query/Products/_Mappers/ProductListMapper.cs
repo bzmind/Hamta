@@ -7,44 +7,23 @@ namespace Shop.Query.Products._Mappers;
 
 internal static class ProductListMapper
 {
-    public static ProductListDto MapToProductListDto(this Product? product, SellerInventory sellerInventory)
+    public static ProductFilterDto MapToProductFilterDto(this Product? product, SellerInventory inventory,
+        Color color)
     {
         if (product == null)
             return null;
-
-        return new ProductListDto
+        
+        return new ProductFilterDto
         {
             Id = product.Id,
             CreationDate = product.CreationDate,
-            CategoryId = product.CategoryId,
-            ColorId = sellerInventory.ColorId,
             Name = product.Name,
             EnglishName = product.EnglishName,
             Slug = product.Slug,
-            Price = sellerInventory.Price.Value,
+            MainImage = product.MainImage.Name,
+            LowestInventoryPrice = inventory.Price.Value,
             AverageScore = product.AverageScore,
-            Quantity = sellerInventory.Quantity,
-            Colors = new List<Color>()
-        };
-    }
-
-    public static ProductListDto SetProductListDtoColors(this ProductListDto? product, Color color)
-    {
-        if (product == null)
-            return null;
-
-        return new ProductListDto
-        {
-            Id = product.Id,
-            CreationDate = product.CreationDate,
-            CategoryId = product.CategoryId,
-            ColorId = product.ColorId,
-            Name = product.Name,
-            EnglishName = product.EnglishName,
-            Slug = product.Slug,
-            Price = product.Price,
-            AverageScore = product.AverageScore,
-            Quantity = product.Quantity,
+            AllQuantityInStock = inventory.Quantity,
             Colors = new List<Color>
             {
                 color

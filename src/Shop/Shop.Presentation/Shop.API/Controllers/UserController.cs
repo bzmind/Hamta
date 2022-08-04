@@ -16,7 +16,6 @@ using Shop.Application.Users.FavoriteItems.AddFavoriteItem;
 using Shop.Application.Users.FavoriteItems.RemoveFavoriteItem;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
-using Shop.API.ViewModels.Users.Auth;
 using Shop.API.ViewModels.Users.Roles;
 
 namespace Shop.API.Controllers;

@@ -37,11 +37,11 @@ public class CreateRoleCommandValidator : AbstractValidator<CreateRoleCommand>
     public CreateRoleCommandValidator()
     {
         RuleFor(r => r.Title)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان"));
+            .NotNull().WithMessage(ValidationMessages.TitleRequired)
+            .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
 
         RuleForEach(r => r.Permissions)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("مجوز"))
-            .IsInEnum().WithMessage(ValidationMessages.FieldInvalid("مجوز"));
+            .NotNull().WithMessage(ValidationMessages.PermissionsRequired)
+            .IsInEnum().WithMessage(ValidationMessages.InvalidPermissions);
     }
 }
