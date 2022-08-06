@@ -36,6 +36,10 @@ public class QuestionConfiguration : IEntityTypeConfiguration<Question>
 
             options.Property(reply => reply.CreationDate)
                 .HasColumnType("datetime2(0)");
+
+            builder.Property(reply => reply.Description)
+                .IsRequired()
+                .HasMaxLength(300);
         });
     }
 }

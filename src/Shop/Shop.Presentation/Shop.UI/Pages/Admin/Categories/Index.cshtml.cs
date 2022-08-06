@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Query.Categories._DTOs;
 using Shop.UI.Services.Categories;
 using Shop.UI.Setup.RazorUtility;
-using Shop.UI.ViewModels.Categories;
 
 namespace Shop.UI.Pages.Admin.Categories;
 
@@ -18,17 +18,11 @@ public class IndexModel : BaseRazorPage
         _mapper = mapper;
     }
 
-    public List<CategoryViewModel> Categories { get; set; }
+    public List<CategoryDto> Categories { get; set; }
 
     public async Task OnGet()
     {
-        var categoryDtos = await _categoryService.GetAll();
-        var categories = new List<CategoryViewModel>();
-        categoryDtos.ForEach(dto =>
-        {
-            categories.Add(_mapper.Map<CategoryViewModel>(dto));
-        });
-        Categories = categories;
+        Categories = await _categoryService.GetAll();
     }
 
     public async Task<IActionResult> OnPostRemoveCategory(long categoryId)

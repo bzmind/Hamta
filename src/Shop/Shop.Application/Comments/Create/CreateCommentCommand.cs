@@ -13,8 +13,8 @@ public class CreateCommentCommand : IBaseCommand<long>
     public long ProductId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public List<string>? PositivePoints { get; set; }
-    public List<string>? NegativePoints { get; set; }
+    public List<string>? PositiveHints { get; set; }
+    public List<string>? NegativeHints { get; set; }
     public Comment.CommentRecommendation Recommendation { get; set; }
 
     private CreateCommentCommand()
@@ -39,11 +39,11 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
 
         await _commentRepository.AddAsync(comment);
 
-        if (request.PositivePoints != null && request.PositivePoints.Any())
-            comment.SetPositivePoints(request.PositivePoints);
+        if (request.PositiveHints != null && request.PositiveHints.Any())
+            comment.SetPositiveHints(request.PositiveHints);
 
-        if (request.NegativePoints != null && request.NegativePoints.Any())
-            comment.SetNegativePoints(request.NegativePoints);
+        if (request.NegativeHints != null && request.NegativeHints.Any())
+            comment.SetNegativeHints(request.NegativeHints);
 
         _commentRepository.Add(comment);
         await _commentRepository.SaveAsync();
@@ -57,22 +57,24 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
     {
         RuleFor(r => r.Title)
             .NotNull().WithMessage(ValidationMessages.TitleRequired)
-            .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
+            .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+            .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 100));
 
         RuleFor(r => r.Description)
             .NotNull().WithMessage(ValidationMessages.DescriptionRequired)
-            .NotEmpty().WithMessage(ValidationMessages.DescriptionRequired);
+            .NotEmpty().WithMessage(ValidationMessages.DescriptionRequired)
+            .MaximumLength(1500).WithMessage(ValidationMessages.FieldCharactersMaxLength("توضیحات", 1500));
 
         RuleFor(r => r.Recommendation)
             .NotNull().WithMessage(ValidationMessages.CommentRecommendationRequired)
             .IsInEnum().WithMessage(ValidationMessages.InvalidCommentRecommendation);
 
-        RuleForEach(r => r.NegativePoints)
+        RuleForEach(r => r.NegativeHints)
             .NotNull().WithMessage(ValidationMessages.MinCharactersLength)
-            .MinimumLength(3).WithMessage(ValidationMessages.MinCharactersLength);
+            .MinimumLength(3).WithMessage(ValidationMessages.FieldCharactersMinLength("متن", 3));
 
-        RuleForEach(r => r.PositivePoints)
+        RuleForEach(r => r.PositiveHints)
             .NotNull().WithMessage(ValidationMessages.MinCharactersLength)
-            .MinimumLength(3).WithMessage(ValidationMessages.MinCharactersLength);
+            .MinimumLength(3).WithMessage(ValidationMessages.FieldCharactersMinLength("متن", 3));
     }
 }

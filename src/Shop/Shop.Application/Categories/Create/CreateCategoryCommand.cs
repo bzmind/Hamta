@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
 using FluentValidation;
+using Shop.Application.Categories._DTOs;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Services;
@@ -9,7 +10,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.Create;
 
 public record CreateCategoryCommand(string Title, string Slug,
-    List<SpecificationDto>? Specifications) : IBaseCommand<long>;
+    List<CategorySpecificationDto>? Specifications) : IBaseCommand<long>;
 
 public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand, long>
 {
@@ -35,7 +36,7 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
 
             request.Specifications.ToList().ForEach(specification =>
                 specifications.Add(new CategorySpecification(category.Id, specification.Title,
-                    specification.Description, specification.IsImportantFeature)));
+                    specification.IsImportantFeature)));
 
             category.SetSpecifications(specifications);
         }
@@ -51,21 +52,20 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
     {
         RuleFor(c => c.Title)
             .NotNull().WithMessage(ValidationMessages.TitleRequired)
-            .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
+            .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+            .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 30));
 
         RuleFor(c => c.Slug)
             .NotNull().WithMessage(ValidationMessages.SlugRequired)
-            .NotEmpty().WithMessage(ValidationMessages.SlugRequired);
+            .NotEmpty().WithMessage(ValidationMessages.SlugRequired)
+            .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 100));
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Title)
-                .NotNull().WithMessage(ValidationMessages.FieldRequired("عنوان مشخصات"))
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عنوان مشخصات"));
-
-            specification.RuleFor(spec => spec.Description)
-                .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیحات مشخصات"))
-                .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیحات مشخصات"));
+                .NotNull().WithMessage(ValidationMessages.TitleRequired)
+                .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+                .MaximumLength(50).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 50));
         });
     }
 }

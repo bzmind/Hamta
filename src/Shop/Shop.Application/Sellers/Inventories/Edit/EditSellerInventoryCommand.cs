@@ -44,6 +44,10 @@ public class EditSellerInventoryCommandValidator : AbstractValidator<EditSellerI
 {
     public EditSellerInventoryCommandValidator()
     {
+        RuleFor(i => i.ColorId)
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("آیدی رنگ"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آیدی رنگ"));
+
         RuleFor(i => i.Quantity)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("تعداد محصولات"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("تعداد محصولات"))
@@ -53,10 +57,6 @@ public class EditSellerInventoryCommandValidator : AbstractValidator<EditSellerI
             .NotNull().WithMessage(ValidationMessages.FieldRequired("قیمت"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("قیمت"))
             .GreaterThan(0).WithMessage(ValidationMessages.TomanMinAmount("قیمت", 0));
-
-        RuleFor(i => i.ColorId)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("آیدی رنگ"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آیدی رنگ"));
 
         RuleFor(i => i.DiscountPercentage)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("تخفیف"))

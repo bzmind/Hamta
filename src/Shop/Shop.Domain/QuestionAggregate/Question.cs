@@ -10,7 +10,7 @@ public class Question : BaseAggregateRoot
     public string Description { get; private set; }
     public QuestionStatus Status { get; private set; }
 
-    private readonly List<Reply> _replies = new List<Reply>();
+    private readonly List<Reply> _replies = new();
     public IEnumerable<Reply> Replies => _replies.ToList();
 
     public enum QuestionStatus { Pending, Accepted, Rejected }

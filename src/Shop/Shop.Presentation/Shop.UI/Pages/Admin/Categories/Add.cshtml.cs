@@ -1,8 +1,4 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using Common.Application.Utility.Validation;
-using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Categories;
 using Shop.UI.Services.Categories;
 using Shop.UI.Setup.ModelStateExtensions;
@@ -21,17 +17,7 @@ public class AddModel : BaseRazorPage
         _categoryService = categoryService;
     }
 
-    [DisplayName("عنوان")]
-    [Required(ErrorMessage = ValidationMessages.TitleRequired)]
-    public string Title { get; set; }
-
-    [DisplayName("اسلاگ")]
-    [Required(ErrorMessage = ValidationMessages.TitleRequired)]
-    [MaxLength(100, ErrorMessage = ValidationMessages.MaxCharactersLength)]
-    public string Slug { get; set; }
-
-    [DisplayName("مشخصات")]
-    public List<SpecificationViewModel> Specifications { get; set; } = new() { new() };
+    public CreateCategoryViewModel CreateCategoryViewModel { get; set; } = new();
 
     public void OnGet()
     {
@@ -44,9 +30,9 @@ public class AddModel : BaseRazorPage
             var addSubCategoryResult = await _categoryService.AddSubCategory(new AddSubCategoryViewModel
             {
                 ParentId = parentId.Value,
-                Title = Title,
-                Slug = Slug,
-                Specifications = Specifications
+                Title = CreateCategoryViewModel.Title,
+                Slug = CreateCategoryViewModel.Slug,
+                Specifications = CreateCategoryViewModel.Specifications
             });
             if (!addSubCategoryResult.IsSuccessful)
             {
@@ -58,9 +44,9 @@ public class AddModel : BaseRazorPage
         {
             var result = await _categoryService.Create(new CreateCategoryViewModel
             {
-                Title = Title,
-                Slug = Slug,
-                Specifications = Specifications
+                Title = CreateCategoryViewModel.Title,
+                Slug = CreateCategoryViewModel.Slug,
+                Specifications = CreateCategoryViewModel.Specifications
             });
             if (!result.IsSuccessful)
             {

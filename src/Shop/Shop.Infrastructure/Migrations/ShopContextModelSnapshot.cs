@@ -392,11 +392,6 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2(0)");
 
-                            b1.Property<string>("Description")
-                                .IsRequired()
-                                .HasMaxLength(300)
-                                .HasColumnType("nvarchar(300)");
-
                             b1.Property<bool>("IsImportantFeature")
                                 .HasColumnType("bit");
 
@@ -771,9 +766,6 @@ namespace Shop.Infrastructure.Migrations
                                 .IsRequired()
                                 .HasMaxLength(300)
                                 .HasColumnType("nvarchar(300)");
-
-                            b1.Property<bool>("IsImportantFeature")
-                                .HasColumnType("bit");
 
                             b1.Property<long>("ProductId")
                                 .HasColumnType("bigint");

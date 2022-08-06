@@ -28,6 +28,7 @@ public class CreateProductViewModel
     [DisplayName("توضیحات")]
     [Required(ErrorMessage = ValidationMessages.DescriptionRequired)]
     [MaxLength(2000, ErrorMessage = ValidationMessages.MaxCharactersLength)]
+    [DataType(DataType.MultilineText)]
     public string? Description { get; set; }
 
     [DisplayName("عکس اصلی محصول")]
@@ -43,9 +44,8 @@ public class CreateProductViewModel
     public List<IFormFile> GalleryImages { get; set; }
 
     [DisplayName("مشخصات")]
-    public List<SpecificationViewModel>? CustomSpecifications { get; set; }
+    public List<ProductSpecificationViewModel>? Specifications { get; set; } = new() { new() };
 
     [DisplayName("توضیحات اضافه")]
-    [DictionaryMembersCharactersMaxLength(100, 2000, ErrorMessage = ValidationMessages.MaxCharactersLength)]
-    public Dictionary<string, string>? ExtraDescriptions { get; set; }
+    public List<ProductExtraDescriptionViewModel>? ExtraDescriptions { get; set; } = new() { new() };
 }

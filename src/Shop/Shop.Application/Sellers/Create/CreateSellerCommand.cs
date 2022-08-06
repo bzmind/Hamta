@@ -42,11 +42,12 @@ public class CreateSellerCommandValidator : AbstractValidator<CreateSellerComman
     {
         RuleFor(i => i.ShopName)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("نام فروشگاه"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام فروشگاه"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام فروشگاه"))
+            .MaximumLength(50).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 50));
 
         RuleFor(i => i.NationalCode)
             .NotNull().WithMessage(ValidationMessages.NationalCodeRequired)
             .NotEmpty().WithMessage(ValidationMessages.NationalCodeRequired)
-            .MaximumLength(10).WithMessage(ValidationMessages.FieldCharactersStaticLength("کدملی", 10));
+            .Length(10).WithMessage(ValidationMessages.FieldCharactersStaticLength("کدملی", 10));
     }
 }

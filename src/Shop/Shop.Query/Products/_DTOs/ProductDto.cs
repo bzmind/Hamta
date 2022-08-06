@@ -13,8 +13,8 @@ public class ProductDto : BaseDto
     public string MainImage { get; set; }
     public float AverageScore { get; set; }
     public List<ProductImageDto> GalleryImages { get; set; }
-    public List<ProductSpecificationDto> CustomSpecifications { get; set; }
-    public List<CategorySpecificationDto> CategorySpecifications { get; set; }
-    public List<ProductExtraDescriptionDto> ExtraDescriptions { get; set; }
+    public List<QueryProductSpecificationDto> Specifications { get; set; }
+    public List<QueryCategorySpecificationDto> CategorySpecifications { get; set; }
+    public List<QueryProductExtraDescriptionDto> ExtraDescriptions { get; set; }
     public List<ProductInventoryDto> ProductInventories { get; set; }
 }

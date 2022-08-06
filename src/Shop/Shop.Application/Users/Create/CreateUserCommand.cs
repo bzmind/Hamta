@@ -48,7 +48,8 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     {
         RuleFor(c => c.FullName)
             .NotNull().WithMessage(ValidationMessages.FullNameRequired)
-            .NotEmpty().WithMessage(ValidationMessages.FullNameRequired);
+            .NotEmpty().WithMessage(ValidationMessages.FullNameRequired)
+            .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام و نام خانوادگی", 30));
 
         RuleFor(c => c.Gender)
             .NotNull().WithMessage(ValidationMessages.GenderRequired)

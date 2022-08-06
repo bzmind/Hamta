@@ -84,6 +84,5 @@ public static class UiBootstrapper
         services.AddScoped<IRazorToStringRenderer, RazorToStringRenderer>();
         services.AddScoped<IEmailSender, EmailSender>();
         services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
-        services.AddAutoMapper(typeof(AutoMapperUiProfile).Assembly);
     }
 }

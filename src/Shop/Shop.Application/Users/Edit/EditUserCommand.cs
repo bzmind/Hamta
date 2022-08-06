@@ -57,12 +57,18 @@ public class EditUserCommandValidator : AbstractValidator<EditUserCommand>
     public EditUserCommandValidator()
     {
         RuleFor(c => c.FullName)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام و نام خانوادگی"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام و نام خانوادگی"));
+            .NotNull().WithMessage(ValidationMessages.FullNameRequired)
+            .NotEmpty().WithMessage(ValidationMessages.FullNameRequired)
+            .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام و نام خانوادگی", 30));
+        
+        RuleFor(r => r.Gender)
+            .NotNull().WithMessage(ValidationMessages.GenderRequired)
+            .IsInEnum().WithMessage(ValidationMessages.InvalidGender);
 
         RuleFor(c => c.Email)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("ایمیل"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("ایمیل"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("ایمیل"))
+            .MaximumLength(250).WithMessage(ValidationMessages.FieldCharactersMaxLength("ایمیل", 250));
 
         RuleFor(c => c.PhoneNumber)
             .ValidPhoneNumber();

@@ -17,5 +17,5 @@ public class CreateCategoryViewModel
     public string Slug { get; set; }
 
     [DisplayName("مشخصات")]
-    public List<SpecificationViewModel>? Specifications { get; set; } = new() { new() };
+    public List<CategorySpecificationViewModel>? Specifications { get; set; } = new() { new CategorySpecificationViewModel() };
 }

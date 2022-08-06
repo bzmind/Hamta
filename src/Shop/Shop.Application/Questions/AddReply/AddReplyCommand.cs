@@ -46,7 +46,8 @@ public class AddReplyCommandValidator : AbstractValidator<AddReplyCommand>
     public AddReplyCommandValidator()
     {
         RuleFor(r => r.Description)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("توضیح"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("توضیح"));
+            .NotNull().WithMessage(ValidationMessages.DescriptionRequired)
+            .NotEmpty().WithMessage(ValidationMessages.DescriptionRequired)
+            .MaximumLength(300).WithMessage(ValidationMessages.FieldCharactersMaxLength("توضیحات", 300));
     }
 }

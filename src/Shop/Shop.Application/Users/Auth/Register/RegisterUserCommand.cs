@@ -55,8 +55,8 @@ public class RegisterUserCommandValidator : AbstractValidator<RegisterUserComman
             .IsInEnum().WithMessage(ValidationMessages.InvalidGender);
 
         RuleFor(u => u.PhoneNumber)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("شماره موبایل"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("شماره موبایل"))
+            .NotNull().WithMessage(ValidationMessages.PhoneNumberRequired)
+            .NotEmpty().WithMessage(ValidationMessages.PhoneNumberRequired)
             .ValidPhoneNumber();
 
         RuleFor(u => u.Password)

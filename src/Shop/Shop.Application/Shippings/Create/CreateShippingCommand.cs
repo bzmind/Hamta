@@ -33,8 +33,9 @@ public class CreateShippingCommandValidator : AbstractValidator<CreateShippingCo
     public CreateShippingCommandValidator()
     {
         RuleFor(s => s.Name)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام"));
+            .NotNull().WithMessage(ValidationMessages.NameRequired)
+            .NotEmpty().WithMessage(ValidationMessages.NameRequired)
+            .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام", 100));
 
         RuleFor(s => s.Cost)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("هزینه"))

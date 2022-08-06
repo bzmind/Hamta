@@ -1,0 +1,136 @@
+﻿* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  padding-right: 0 !important;
+}
+
+button:focus {
+  outline: 0;
+}
+
+.field-validation-error, .field-validation-error span {
+  color: #ff4242 !important;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.input-validation-error {
+  border-color: #ff4242 !important;
+}
+
+.select2.input-validation-error ~ span.select2-container {
+  border-color: #ff4242 !important;
+}
+
+.input-validation-error ~ label {
+  border-color: #ff4242 !important;
+}
+
+#alerts {
+  display: none;
+  top: 10px;
+  right: 10px;
+  z-index: 10000;
+  position: fixed;
+  width: 19%;
+}
+
+#alerts ul {
+  margin: 5px 0 0 0;
+  border-radius: 10px;
+  background-color: #373737;
+  color: white;
+  word-break: break-word;
+  font-weight: 400;
+  line-height: 25px;
+  padding: 10px;
+}
+
+#alerts ul:first-child {
+  margin: 0;
+}
+
+.btn-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.loading {
+  display: none;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  border-radius: 7px;
+  transform: translate(-50%, 0%);
+  left: 50%;
+  background-color: #007bff;
+}
+
+.dot-flashing {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%, 220%);
+}
+
+.fa-eye, .fa-eye-slash {
+  cursor: pointer;
+}
+
+.fa-eye {
+  left: 16px !important;
+}
+
+.fa-eye-slash {
+  left: 15px !important;
+}
+
+.form-element-with-icon i {
+  color: #CCCCCC;
+}
+
+.input-validation-error ~ .select2 .select2-selection {
+  border: 1px solid #fc3232;
+}
+
+.select2-results__option--disabled {
+  display: none;
+}
+
+.select2-results__option {
+  padding-top: 9px;
+  padding-right: 10px;
+}
+
+.select2-dropdown--above .select2-results__options {
+  border: 1px solid #EEEEEE;
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+
+.select2-dropdown--below .select2-results__options {
+  border: 1px solid #EEEEEE;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: black;
+}
+
+.select2-container[dir="rtl"] .select2-selection--single .select2-selection__rendered {
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+
+.select2-container--default[dir="rtl"] .select2-selection--single .select2-selection__arrow {
+  left: 5px;
+}

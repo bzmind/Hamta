@@ -4,9 +4,8 @@ using AutoMapper;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Shop.API.Setup;
-using Shop.API.ViewModels;
 using Shop.API.ViewModels.Products;
-using Shop.Application;
+using Shop.Application.Products._DTOs;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 
@@ -22,8 +21,8 @@ internal class TempProductModel
     public string Description { get; set; }
     public IFormFile MainImage { get; set; }
     public List<IFormFile> GalleryImages { get; set; } = new();
-    public List<SpecificationViewModel> CustomSpecifications { get; set; } = new();
-    public Dictionary<string, string> ExtraDescriptions { get; set; } = new();
+    public List<ProductSpecificationViewModel> Specifications { get; set; } = new();
+    public List<ProductExtraDescriptionDto> ExtraDescriptions { get; set; } = new();
 }
 
 public class ProductModelBinder : IModelBinder
@@ -75,13 +74,13 @@ public class ProductModelBinder : IModelBinder
         tempModel.MainImage = formFiles.GetFile(nameof(tempModel.MainImage));
         tempModel.GalleryImages = formFiles.GetFiles(nameof(tempModel.GalleryImages)).ToList();
 
-        var customSpecifications = bindingContext.ValueProvider.GetValue(nameof(tempModel.CustomSpecifications));
+        var customSpecifications = bindingContext.ValueProvider.GetValue(nameof(tempModel.Specifications));
         var options = new JsonSerializerOptions { PropertyNameCaseInsensitive = true };
 
         customSpecifications.Values.ToList().ForEach(spec =>
         {
-            var deserializedSpec = JsonSerializer.Deserialize(spec, typeof(SpecificationViewModel), options);
-            tempModel.CustomSpecifications.Add((SpecificationViewModel)deserializedSpec);
+            var deserializedSpec = JsonSerializer.Deserialize(spec, typeof(ProductSpecificationViewModel), options);
+            tempModel.Specifications.Add((ProductSpecificationViewModel)deserializedSpec);
         });
 
         var extraDescriptions = bindingContext.ValueProvider
@@ -89,13 +88,13 @@ public class ProductModelBinder : IModelBinder
         if (extraDescriptions != null)
         {
             var deserializedDesc = JsonSerializer.Deserialize
-                (extraDescriptions, typeof(Dictionary<string, string>), options);
-            tempModel.ExtraDescriptions = (Dictionary<string, string>)deserializedDesc;
+                (extraDescriptions, typeof(ProductExtraDescriptionDto), options);
+            tempModel.ExtraDescriptions = (List<ProductExtraDescriptionDto>)deserializedDesc;
         }
 
         if (bindingContext.ModelType == typeof(CreateProductViewModel))
         {
-            var specs = _mapper.Map<List<SpecificationDto>>(tempModel.CustomSpecifications);
+            var specs = _mapper.Map<List<ProductSpecificationDto>>(tempModel.Specifications);
             var model = new CreateProductCommand(tempModel.CategoryId, tempModel.Name, tempModel.EnglishName,
                 tempModel.Slug, tempModel.Description, tempModel.MainImage, tempModel.GalleryImages,
                 specs, tempModel.ExtraDescriptions);
@@ -107,7 +106,7 @@ public class ProductModelBinder : IModelBinder
         }
         else if (bindingContext.ModelType == typeof(EditProductCommand))
         {
-            var specs = _mapper.Map<List<SpecificationDto>>(tempModel.CustomSpecifications);
+            var specs = _mapper.Map<List<ProductSpecificationDto>>(tempModel.Specifications);
             var model = new EditProductCommand(tempModel.ProductId, tempModel.CategoryId, tempModel.Name,
                 tempModel.EnglishName, tempModel.Slug, tempModel.Description, tempModel.MainImage,
                 tempModel.GalleryImages, specs, tempModel.ExtraDescriptions);

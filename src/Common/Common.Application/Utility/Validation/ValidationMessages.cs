@@ -76,178 +76,145 @@ public static class ValidationMessages
     /// <summary>
     /// <example>Example: نام} را وارد کنید}</example>
     /// </summary>
-    /// <param name="field"></param>
-    public static string FieldRequired(string field) => $"{field} را وارد کنید";
+    /// <param name="fieldName"></param>
+    public static string FieldRequired(string fieldName) => $"لطفا {fieldName} را وارد کنید";
 
     /// <summary>
     /// <example>Example: نام} نامعتبر است}</example>
     /// </summary>
-    /// <param name="field"></param>
-    public static string FieldInvalid(string field) => $"{field} نامعتبر است";
-
+    /// <param name="fieldName"></param>
+    public static string FieldInvalid(string fieldName) => $"{fieldName} نامعتبر است";
 
     /// <summary>
-    /// <example>Example: امتیاز} باید بیشتر یا مساوی {3} باشد}</example>
+    /// <example>Example: امتیاز} نمی‌تواند بیشتر از {3} باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="maxLength"></param>
-    public static string FieldGreaterThanOrEqualTo(string field, int maxLength)
-        => $"{field} باید بیشتر یا مساوی {maxLength} باشد";
+    public static string FieldMaxAmount(string fieldName, int maxLength)
+        => $"{fieldName} نمی‌تواند بیشتر از {maxLength} باشد";
 
     /// <summary>
-    /// <example>Example: امتیاز} باید کمتر یا مساوی {3} باشد}</example>
+    /// <example>Example: امتیاز} نمی‌تواند کمتر از {3} باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
-    /// <param name="maxLength"></param>
-    public static string FieldLessThanOrEqualTo(string field, int maxLength)
-        => $"{field} باید کمتر یا مساوی {maxLength} باشد";
-
-    /// <summary>
-    /// <example>Example: نام} باید کمتر از {3} باشد}</example>
-    /// </summary>
-    /// <param name="field"></param>
-    /// <param name="maxLength"></param>
-    public static string FieldMaxLength(string field, int maxLength)
-        => $"{field} باید کمتر از {maxLength} باشد";
-
-    /// <summary>
-    /// <example>Example: نام} باید بیشتر از {3} باشد}</example>
-    /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="minLength"></param>
-    public static string FieldMinLength(string field, int minLength)
-        => $"{field} باید بیشتر از {minLength} باشد";
+    public static string FieldMinAmount(string fieldName, int minLength)
+        => $"{fieldName} نمی‌تواند کمتر از {minLength} باشد";
 
     /// <summary>
     /// <example>Example: نام} باید {3} کاراکتر باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="staticLength"></param>
-    public static string FieldCharactersStaticLength(string field, int staticLength)
-        => $"{field} باید {staticLength} کاراکتر باشد";
+    public static string FieldCharactersStaticLength(string fieldName, int staticLength)
+        => $"{fieldName} باید {staticLength} کاراکتر باشد";
 
     /// <summary>
-    /// <example>Example: نام} باید کمتر از {3} کاراکتر باشد}</example>
+    /// <example>Example: نام} نمی‌تواند بیشتر از {3} کاراکتر باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="maxLength"></param>
-    public static string FieldCharactersMaxLength(string field, int maxLength)
-        => $"{field} باید کمتر از {maxLength} کاراکتر باشد";
+    public static string FieldCharactersMaxLength(string fieldName, int maxLength)
+        => $"{fieldName} نمی‌تواند بیشتر از {maxLength} کاراکتر باشد";
 
     /// <summary>
-    /// <example>Example: نام} باید بیشتر از {3} کاراکتر باشد}</example>
+    /// <example>Example: نام} نمی‌تواند کمتر از {3} کاراکتر باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="minLength"></param>
-    public static string FieldCharactersMinLength(string field, int minLength)
-        => $"{field} باید بیشتر از {minLength} کاراکتر باشد";
+    public static string FieldCharactersMinLength(string fieldName, int minLength)
+        => $"{fieldName} نمی‌تواند کمتر از {minLength} کاراکتر باشد";
 
     /// <summary>
     /// <example>Example: شماره تلفن} باید {11} رقم باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="staticLength"></param>
-    public static string FieldDigitsStaticNumber(string field, int staticLength)
-        => $"{field} باید {staticLength} رقم باشد";
+    public static string FieldDigitsStaticNumber(string fieldName, int staticLength)
+        => $"{fieldName} باید {staticLength} رقم باشد";
 
     /// <summary>
-    /// <example>Example: شماره تلفن} باید کمتر از {12} رقم باشد}</example>
+    /// <example>Example: شماره تلفن} نمی‌تواند بیشتر از {12} رقم باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="maxLength"></param>
-    public static string FieldDigitsMaxNumber(string field, int maxLength)
-        => $"{field} باید کمتر از {maxLength} رقم باشد";
+    public static string FieldDigitsMaxNumber(string fieldName, int maxLength)
+        => $"{fieldName} نمی‌تواند بیشتر از {maxLength} رقم باشد";
 
     /// <summary>
-    /// <example>Example: شماره تلفن} باید بیشتر از {12} رقم باشد}</example>
+    /// <example>Example: شماره تلفن} نمی‌تواند کمتر از {12} رقم باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="minLength"></param>
-    public static string FieldDigitsMinNumber(string field, int minLength)
-        => $"{field} باید بیشتر از {minLength} رقم باشد";
+    public static string FieldDigitsMinNumber(string fieldName, int minLength)
+        => $"{fieldName} نمی‌تواند کمتر از {minLength} رقم باشد";
 
     /// <summary>
-    /// <example>Example: محصولات} باید کمتر از {0} عدد باشد}</example>
+    /// <example>Example: محصولات} نمی‌تواند بیشتر از {50} عدد باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="maxLength"></param>
-    public static string FieldQuantityMaxNumber(string field, int maxLength)
-        => $"{field} باید کمتر از {maxLength} عدد باشد";
+    public static string FieldQuantityMaxNumber(string fieldName, int maxLength)
+        => $"{fieldName} نمی‌تواند بیشتر از {maxLength} عدد باشد";
 
     /// <summary>
-    /// <example>Example: محصولات} باید بیشتر از {0} عدد باشد}</example>
+    /// <example>Example: محصولات} نمی‌تواند کمتر از {0} عدد باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="minLength"></param>
-    public static string FieldQuantityMinNumber(string field, int minLength)
-        => $"{field} باید بیشتر از {minLength} عدد باشد";
+    public static string FieldQuantityMinNumber(string fieldName, int minLength)
+        => $"{fieldName} نمی‌تواند کمتر از {minLength} عدد باشد";
     
     /// <summary>
-    /// <example>Example: تخفیف} حداکثر می‌تواند {100} درصد باشد}</example>
+    /// <example>Example: تخفیف} نمی‌تواند بیشتر از {100} درصد باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="maxPercentage"></param>
-    public static string FieldPercentageMaximum(string field, int maxPercentage)
-        => $"{field} حداکثر می‌تواند {maxPercentage} درصد باشد";
-
+    public static string FieldPercentageMaximum(string fieldName, int maxPercentage)
+        => $"{fieldName} نمی‌تواند بیشتر از {maxPercentage} درصد باشد";
+    
     /// <summary>
-    /// <example>Example: تخفیف} باید کمتر از {100} درصد باشد}</example>
+    /// <example>Example: تخفیف} نمی‌تواند کمتر از {0} درصد باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="maxPercentage"></param>
-    public static string FieldPercentageLessThan(string field, int maxPercentage)
-        => $"{field} باید کمتر از {maxPercentage} درصد باشد";
-
-    /// <summary>
-    /// <example>Example: تخفیف} باید بیشتر یا مساوی {0} درصد باشد}</example>
-    /// </summary>
-    /// <param name="field"></param>
-    /// <param name="minPercentage"></param>
-    public static string FieldPercentageGreaterThanOrEqualTo(string field, int minPercentage)
-        => $"{field} باید بیشتر از {minPercentage} درصد باشد";
-
-    /// <summary>
-    /// <example>Example: تخفیف} باید بیشتر از {0} درصد باشد}</example>
-    /// </summary>
-    /// <param name="field"></param>
-    /// <param name="minPercentage"></param>
-    public static string FieldPercentageGreaterThan(string field, int minPercentage)
-        => $"{field} باید بیشتر از {minPercentage} درصد باشد";
+    public static string FieldPercentageMinimum(string fieldName, int maxPercentage)
+        => $"{fieldName} نمی‌تواند کمتر از {maxPercentage} درصد باشد";
 
     /// <summary>
     /// <example>Example: قیمت} باید کمتر از {100000} تومان باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="maxAmount"></param>
-    public static string TomanMaxAmount(string field, int maxAmount)
-        => $"{field} باید کمتر از {maxAmount:C0} درصد باشد";
+    public static string TomanMaxAmount(string fieldName, int maxAmount)
+        => $"{fieldName} نمی‌تواند بیشتر از {maxAmount:C0} تومان باشد";
 
     /// <summary>
     /// <example>Example: قیمت} باید بیشتر از {0} تومان باشد}</example>
     /// </summary>
-    /// <param name="field"></param>
+    /// <param name="fieldName"></param>
     /// <param name="minAmount"></param>
-    public static string TomanMinAmount(string field, int minAmount)
-        => $"{field} باید بیشتر از {minAmount:C0} درصد باشد";
+    public static string TomanMinAmount(string fieldName, int minAmount)
+        => $"{fieldName} نمی‌تواند کمتر از {minAmount:C0} تومان باشد";
 
     /// <summary>
     /// <example>Example: سفارش} یافت نشد}</example>
     /// </summary>
-    /// <param name="field"></param>
-    public static string FieldNotFound(string field)
-        => $"{field} یافت نشد";
+    /// <param name="fieldName"></param>
+    public static string FieldNotFound(string fieldName)
+        => $"{fieldName} یافت نشد";
 
     /// <summary>
     /// <example>Example: نام} تکراری است}</example>
     /// </summary>
-    /// <param name="field"></param>
-    public static string FieldDuplicate(string field)
-        => $"{field} تکراری است";
+    /// <param name="fieldName"></param>
+    public static string FieldDuplicate(string fieldName)
+        => $"{fieldName} تکراری است";
 
     /// <summary>
     /// <example>Example امکان حذف این {سفارش} وجود ندارد</example>
     /// </summary>
-    /// <param name="field"></param>
-    public static string FieldCantBeRemoved(string field)
-        => $"امکان حذف این {field} وجود ندارد";
+    /// <param name="fieldName"></param>
+    public static string FieldCantBeRemoved(string fieldName)
+        => $"امکان حذف این {fieldName} وجود ندارد";
 }

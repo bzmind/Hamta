@@ -5,6 +5,7 @@ using Common.Application.Utility.Validation;
 using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
+using Shop.Application.Products._DTOs;
 using Shop.Domain.ProductAggregate;
 using Shop.Domain.ProductAggregate.Repository;
 using Shop.Domain.ProductAggregate.Services;
@@ -13,7 +14,8 @@ namespace Shop.Application.Products.Create;
 
 public record CreateProductCommand(long CategoryId, string Name, string? EnglishName, string Slug,
     string? Description, IFormFile MainImage, List<IFormFile> GalleryImages,
-    List<SpecificationDto>? CustomSpecifications, Dictionary<string, string>? ExtraDescriptions) : IBaseCommand<long>;
+    List<ProductSpecificationDto>? CustomSpecifications,
+    List<ProductExtraDescriptionDto>? ExtraDescriptions) : IBaseCommand<long>;
 
 public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductCommand, long>
 {
@@ -51,7 +53,7 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
 
             request.CustomSpecifications.ToList().ForEach(specification =>
                 customSpecifications.Add(new ProductSpecification(product.Id, specification.Title,
-                    specification.Description, specification.IsImportantFeature)));
+                    specification.Description)));
 
             product.SetCustomSpecifications(customSpecifications);
         }
@@ -61,10 +63,8 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
             var extraDescriptions = new List<ProductExtraDescription>();
 
             request.ExtraDescriptions.ToList().ForEach(extraDescription =>
-            {
-                extraDescriptions.Add(new ProductExtraDescription(product.Id, extraDescription.Key,
-                    extraDescription.Value));
-            });
+                extraDescriptions.Add(new ProductExtraDescription(product.Id, extraDescription.Title,
+                    extraDescription.Description)));
 
             product.SetExtraDescriptions(extraDescriptions);
         }
@@ -79,12 +79,17 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     public CreateProductCommandValidator()
     {
         RuleFor(p => p.Name)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام محصول"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام محصول"));
+            .NotNull().WithMessage(ValidationMessages.ProductNameRequired)
+            .NotEmpty().WithMessage(ValidationMessages.ProductNameRequired)
+            .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام محصول", 50));
+
+        RuleFor(p => p.Name)
+            .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام انگلیسی محصول", 50));
 
         RuleFor(p => p.Slug)
             .NotNull().WithMessage(ValidationMessages.SlugRequired)
-            .NotEmpty().WithMessage(ValidationMessages.SlugRequired);
+            .NotEmpty().WithMessage(ValidationMessages.SlugRequired)
+            .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("اسلاگ", 100));
 
         RuleFor(p => p.MainImage)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"))
@@ -99,5 +104,31 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس های گالری"))
             .JustImageFile();
+
+        RuleForEach(p => p.CustomSpecifications).ChildRules(specification =>
+        {
+            specification.RuleFor(spec => spec.Title)
+                .NotNull().WithMessage(ValidationMessages.TitleRequired)
+                .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+                .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 100));
+
+            specification.RuleFor(spec => spec.Description)
+                .NotNull().WithMessage(ValidationMessages.TitleRequired)
+                .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+                .MaximumLength(300).WithMessage(ValidationMessages.FieldCharactersMaxLength("توضیحات", 300));
+        });
+
+        RuleForEach(p => p.ExtraDescriptions).ChildRules(specification =>
+        {
+            specification.RuleFor(description => description.Title)
+                .NotNull().WithMessage(ValidationMessages.TitleRequired)
+                .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+                .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 100));
+
+            specification.RuleFor(description => description.Description)
+                .NotNull().WithMessage(ValidationMessages.DescriptionRequired)
+                .NotEmpty().WithMessage(ValidationMessages.DescriptionRequired)
+                .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("توضیحات", 2000));
+        });
     }
 }

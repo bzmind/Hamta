@@ -1,55 +1,47 @@
 ﻿@page "{handler?}"
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Shop.Query.Categories._DTOs
 @using Shop.UI.TagHelpers
-@using Shop.UI.ViewModels.Categories
 @model Shop.UI.Pages.Admin.Categories.IndexModel
 @{
-  ViewData["Title"] = "مدیریت دسته بندی ها";
+  ViewData["Title"] = "مدیریت دسته‌بندی‌ها";
 
   const int textIndentationDefaultSize = 15;
   var textIndentation = textIndentationDefaultSize;
   var depth = 1;
-  async Task AddSubCategories(CategoryViewModel parentCategory)
+  async Task AddSubCategories(CategoryDto parentCategory)
   {
     for (var i = 0; i < parentCategory.SubCategories.Count; i++)
     {
-      var hasSubCategory = parentCategory.SubCategories[i].SubCategories.Any();
-      <tr class="children" style="display: none;"
-      data-depth="@depth" data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
+      var subCategory = parentCategory.SubCategories[i];
+      var hasSubCategory = subCategory.SubCategories.Any();
+      <tr class="children" style="display: none;" data-categoryId="@subCategory.Id"
+      data-parentCategoryId="@parentCategory.Id" data-depth="@depth"
+      data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
         <td style="text-indent: @($"{textIndentation - 8}px")">
           @for (var t = 0; t < depth; t++)
           {
             <span class="indentation-lines"
             style="right: calc(2rem + @($"{t * textIndentationDefaultSize}px"))"></span>
           }
-          @parentCategory.SubCategories[i].Title
-          @if (hasSubCategory)
-          {
-            <i class="bx bx-caret-down"></i>
-          }
-        </td>
-        <td style="text-indent: @($"{textIndentation - 8}px");">
-          @for (var t = 0; t < depth; t++)
-          {
-            <span class="indentation-lines"
-            style="right: calc(2rem + @($"{t * textIndentationDefaultSize}px"))"></span>
-          }
-          @parentCategory.SubCategories[i].Slug
-          @if (hasSubCategory)
-          {
-            <i class="bx bx-caret-down"></i>
-          }
+          <span class="category-title" style="text-indent: 0;">
+            @subCategory.Title
+            @if (hasSubCategory)
+            {
+              <i class="bx bx-caret-down"></i>
+            }
+          </span>
         </td>
         <td>
-          <a asp-page="Add" asp-route-parentId="@parentCategory.SubCategories[i].Id"
+          <a asp-page="Add" asp-route-parentId="@subCategory.Id"
        class="btn-sm badge-pill bg-rgba-success text-success">
             افزودن زیرگروه
           </a>
-          <a asp-page="Edit" asp-route-categoryId="@parentCategory.SubCategories[i].Id"
+          <a asp-page="Edit" asp-route-categoryId="@subCategory.Id"
        class="btn-sm badge-pill bg-rgba-primary text-primary">
             ویرایش
           </a>
-          <delete url="@Url.Page("Index", "RemoveCategory", new { categoryId = parentCategory.SubCategories[i].Id })"
+          <delete url="@Url.Page("Index", "RemoveCategory", new { categoryId = subCategory.Id })"
             class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
             حذف
           </delete>
@@ -59,7 +51,7 @@
       {
         depth++;
         textIndentation += textIndentationDefaultSize;
-        await AddSubCategories(parentCategory.SubCategories[i]);
+        await AddSubCategories(subCategory);
         if (i + 1 == parentCategory.SubCategories.Count)
         {
           depth--;
@@ -80,13 +72,18 @@
 
 <section>
   <h5 class="mb-1">@ViewData["Title"]</h5>
-  <a asp-page="Add" class="btn btn-success mb-1">افزودن دسته بندی</a>
+  <a asp-page="Add" class="btn btn-success mb-1">افزودن دسته‌بندی</a>
+  <fieldset class="position-relative has-icon-left category-search-box form-group">
+    <input type="text" class="form-control form-control-sm" id="category-search" placeholder="جستجو">
+    <div class="form-control-position">
+      <i class="bx bx-search"></i>
+    </div>
+  </fieldset>
   <div class="table-responsive card card-content">
-    <table class="table mb-0">
+    <table class="table mb-0 category-table">
       <thead>
         <tr>
-          <th>@Html.DisplayNameFor(m => m.Categories.First().Title)</th>
-          <th>@Html.DisplayNameFor(m => m.Categories.First().Slug)</th>
+          <th>نام</th>
           <th>عملیات</th>
         </tr>
       </thead>
@@ -94,21 +91,16 @@
         @foreach (var category in Model.Categories)
         {
           var hasSubCategory = category.SubCategories.Any();
-          <tr class="parent" data-depth="0"
+          <tr class="parent" data-depth="0" data-categoryId="@category.Id"
             data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
             <td>
-              @category.Title
-              @if (hasSubCategory)
-              {
-                <i class="bx bx-caret-down"></i>
-              }
-            </td>
-            <td>
-              @category.Slug
-              @if (hasSubCategory)
-              {
-                <i class="bx bx-caret-down"></i>
-              }
+              <span class="category-title">
+                @category.Title
+                @if (hasSubCategory)
+                {
+                  <i class="bx bx-caret-down"></i>
+                }
+              </span>
             </td>
             <td>
               <a asp-page="Add" asp-route-parentId="@category.Id"
@@ -125,12 +117,15 @@
               </delete>
             </td>
           </tr>
-          @if (hasSubCategory) await AddSubCategories(category);
+          @if (hasSubCategory)
+          {
+            await AddSubCategories(category);
+          }
         }
         @if (!Model.Categories.Any())
         {
           <tr>
-            <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
+            <td colspan="2" class="text-center">موردی برای نمایش وجود ندارد</td>
           </tr>
         }
       </tbody>

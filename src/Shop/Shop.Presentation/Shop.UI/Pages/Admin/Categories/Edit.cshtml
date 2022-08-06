@@ -7,19 +7,19 @@
   <div class="card-body">
     <div class="row">
       <div class="col-md-12">
-        @Html.HiddenFor(m => m.Id)
-        @Html.HiddenFor(m => m.ParentId)
-        @Html.EditorFor(m => m.Title)
-        @Html.EditorFor(m => m.Slug)
+        @Html.HiddenFor(m => m.EditCategoryViewModel.Id)
+        @Html.HiddenFor(m => m.EditCategoryViewModel.ParentId)
+        @Html.EditorFor(m => m.EditCategoryViewModel.Title)
+        @Html.EditorFor(m => m.EditCategoryViewModel.Slug)
         <div class="form-group">
-          <label>@Html.DisplayNameFor(m => m.Specifications)</label>
+          <label>@Html.DisplayNameFor(m => m.EditCategoryViewModel.Specifications)</label>
           <div data-repeater-list="">
-            @for (var i = 0; i < Model.Specifications.Count; i++)
+            @for (var i = 0; i < Model.EditCategoryViewModel.Specifications.Count; i++)
             {
               <div data-repeater-item="">
                 <div class="row justify-content-between align-items-center">
                   <div class="col-11">
-                    @Html.EditorFor(m => m.Specifications[i])
+                    @Html.EditorFor(m => m.EditCategoryViewModel.Specifications[i])
                   </div>
                   <div class="col-1">
                     <button class="btn btn-icon rounded-circle btn-danger" data-repeater-remove="" type="button">

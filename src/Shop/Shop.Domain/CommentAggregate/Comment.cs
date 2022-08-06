@@ -42,7 +42,7 @@ public class Comment : BaseAggregateRoot
         Dislikes = 0;
     }
 
-    public void SetPositivePoints(List<string> positiveHints)
+    public void SetPositiveHints(List<string> positiveHints)
     {
         ValidateCommentPoints(positiveHints, nameof(positiveHints));
 
@@ -57,7 +57,7 @@ public class Comment : BaseAggregateRoot
             throw new OperationNotAllowedDomainException("Comment hints can't be more than 20");
     }
 
-    public void SetNegativePoints(List<string> negativeHints)
+    public void SetNegativeHints(List<string> negativeHints)
     {
         ValidateCommentPoints(negativeHints, nameof(negativeHints));
 

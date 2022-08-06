@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Shop.API.ViewModels;
 using Shop.API.ViewModels.Auth;
 using Shop.API.ViewModels.Avatars;
 using Shop.API.ViewModels.Categories;
@@ -15,8 +14,8 @@ using Shop.API.ViewModels.Shippings;
 using Shop.API.ViewModels.Users;
 using Shop.API.ViewModels.Users.Addresses;
 using Shop.API.ViewModels.Users.Roles;
-using Shop.Application;
 using Shop.Application.Avatars.Create;
+using Shop.Application.Categories._DTOs;
 using Shop.Application.Categories.AddSubCategory;
 using Shop.Application.Categories.Create;
 using Shop.Application.Categories.Edit;
@@ -27,6 +26,7 @@ using Shop.Application.Comments.SetStatus;
 using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.SetStatus;
+using Shop.Application.Products._DTOs;
 using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
@@ -104,13 +104,10 @@ public class AutoMapperProfile : Profile
         CreateMap<RemoveUserRoleCommand, RemoveUserRoleViewModel>().ReverseMap();
         CreateMap<CreateUserCommand, CreateUserViewModel>().ReverseMap();
         CreateMap<EditUserCommand, EditUserViewModel>().ReverseMap();
-        CreateMap<SpecificationDto, SpecificationViewModel>().ReverseMap();
+        CreateMap<CategorySpecificationDto, CategorySpecificationViewModel>().ReverseMap();
+        CreateMap<ProductSpecificationDto, ProductSpecificationViewModel>().ReverseMap();
         CreateMap<UserAddressDto, EditUserAddressViewModel>().ReverseMap();
         CreateMap<RoleDto, EditRoleViewModel>().ReverseMap();
-        CreateMap<CategorySpecificationDto, SpecificationViewModel>().ReverseMap()
-            .ForMember(dto => dto.Id, options => options.Ignore())
-            .ForMember(dto => dto.CreationDate, options => options.Ignore())
-            .ForMember(dto => dto.CategoryId, options => options.Ignore());
         CreateMap<CategoryDto, EditCategoryViewModel>().ReverseMap()
             .ForMember(dto => dto.SubCategories, options => options.Ignore());
     }

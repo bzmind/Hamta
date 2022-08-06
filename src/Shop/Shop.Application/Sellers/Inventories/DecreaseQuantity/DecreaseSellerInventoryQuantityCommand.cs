@@ -45,6 +45,6 @@ public class DecreaseSellerInventoryQuantityCommandValidator :
         RuleFor(i => i.Quantity)
             .NotNull().WithMessage(ValidationMessages.QuantityRequired)
             .NotEmpty().WithMessage(ValidationMessages.QuantityRequired)
-            .GreaterThan(0).WithMessage(ValidationMessages.FieldMinLength("تعداد", 0));
+            .GreaterThan(0).WithMessage(ValidationMessages.FieldMinAmount("تعداد", 0));
     }
 }

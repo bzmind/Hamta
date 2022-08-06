@@ -36,11 +36,13 @@ public class EditColorCommandValidator : AbstractValidator<EditColorCommand>
     public EditColorCommandValidator()
     {
         RuleFor(c => c.Name)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام رنگ"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام رنگ"));
+            .NotNull().WithMessage(ValidationMessages.ColorNameRequired)
+            .NotEmpty().WithMessage(ValidationMessages.ColorNameRequired)
+            .MaximumLength(50).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام رنگ", 50));
 
         RuleFor(c => c.Code)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("کد رنگ"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("کد رنگ"));
+            .NotNull().WithMessage(ValidationMessages.ColorCodeRequired)
+            .NotEmpty().WithMessage(ValidationMessages.ColorCodeRequired)
+            .MaximumLength(7).WithMessage(ValidationMessages.FieldCharactersMaxLength("کد رنگ", 7));
     }
 }

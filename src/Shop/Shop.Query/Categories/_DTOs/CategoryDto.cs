@@ -8,5 +8,5 @@ public class CategoryDto : BaseDto
     public string Title { get; set; }
     public string Slug { get; set; }
     public List<CategoryDto> SubCategories { get; set; }
-    public List<CategorySpecificationDto> Specifications { get; set; }
+    public List<QueryCategorySpecificationDto> Specifications { get; set; }
 }

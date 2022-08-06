@@ -5,35 +5,35 @@ namespace Shop.Query.Categories._Mappers;
 
 internal static class CategorySpecificationMapper
 {
-    public static CategorySpecificationDto MapToCategorySpecificationDto(this CategorySpecification? specification)
+    public static QueryCategorySpecificationDto MapToQueryCategorySpecificationDto
+        (this CategorySpecification? specification)
     {
         if (specification == null)
             return null;
 
-        return new CategorySpecificationDto
+        return new QueryCategorySpecificationDto
         {
             Id = specification.Id,
             CreationDate = specification.CreationDate,
             CategoryId = specification.CategoryId,
             Title = specification.Title,
-            Description = specification.Description,
             IsImportantFeature = specification.IsImportantFeature
         };
     }
 
-    public static List<CategorySpecificationDto> MapToCategorySpecificationDto(this List<CategorySpecification> specifications)
+    public static List<QueryCategorySpecificationDto> MapToQueryCategorySpecificationDto
+        (this List<CategorySpecification> specifications)
     {
-        var dtoSpecifications = new List<CategorySpecificationDto>();
+        var dtoSpecifications = new List<QueryCategorySpecificationDto>();
 
         specifications.ForEach(specification =>
         {
-            dtoSpecifications.Add(new CategorySpecificationDto
+            dtoSpecifications.Add(new QueryCategorySpecificationDto
             {
                 Id = specification.Id,
                 CreationDate = specification.CreationDate,
                 CategoryId = specification.CategoryId,
                 Title = specification.Title,
-                Description = specification.Description,
             IsImportantFeature = specification.IsImportantFeature
             });
         });

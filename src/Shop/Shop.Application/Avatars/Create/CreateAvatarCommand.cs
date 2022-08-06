@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.FileUtility;
 using Common.Application.Utility.Validation;
+using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Shop.Domain.AvatarAggregate;
@@ -39,7 +40,8 @@ public class CreateAvatarCommandValidator : AbstractValidator<CreateAvatarComman
     {
         RuleFor(r => r.AvatarFile)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس آواتار"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس آواتار"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس آواتار"))
+            .JustImageFile();
 
         RuleFor(r => r.Gender)
             .NotNull().WithMessage(ValidationMessages.GenderRequired)

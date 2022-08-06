@@ -47,10 +47,11 @@ public class EditRoleCommandValidator : AbstractValidator<EditRoleCommand>
     {
         RuleFor(c => c.Title)
             .NotNull().WithMessage(ValidationMessages.TitleRequired)
-            .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
+            .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+            .MaximumLength(50).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 50));
 
         RuleFor(r => r.Permissions)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("مجوز ها"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("مجوز ها"));
+            .NotNull().WithMessage(ValidationMessages.PermissionsRequired)
+            .NotEmpty().WithMessage(ValidationMessages.PermissionsRequired);
     }
 }

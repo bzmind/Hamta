@@ -45,6 +45,7 @@ public class CreateQuestionCommandValidator : AbstractValidator<CreateQuestionCo
     {
         RuleFor(q => q.Description)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("متن سوال"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("متن سوال"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("متن سوال"))
+            .MaximumLength(300).WithMessage(ValidationMessages.FieldCharactersMaxLength("متن سوال", 300));
     }
 }

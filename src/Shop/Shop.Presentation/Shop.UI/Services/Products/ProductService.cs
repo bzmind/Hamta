@@ -35,8 +35,8 @@ public class ProductService : BaseService, IProductService
                 formData.Add(new StreamContent(galleryImage.OpenReadStream()), "GalleryImage", galleryImage.FileName);
         });
 
-        var specificationsJson = JsonSerializer.Serialize(model.CustomSpecifications);
-        formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "CustomSpecifications");
+        var specificationsJson = JsonSerializer.Serialize(model.Specifications);
+        formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "Specifications");
 
         var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
         formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
@@ -67,8 +67,8 @@ public class ProductService : BaseService, IProductService
                 formData.Add(new StreamContent(galleryImage.OpenReadStream()), "GalleryImage", galleryImage.FileName);
         });
 
-        var specificationsJson = JsonSerializer.Serialize(model.CustomSpecifications);
-        formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "CustomSpecifications");
+        var specificationsJson = JsonSerializer.Serialize(model.Specifications);
+        formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "Specifications");
 
         var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
         formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");

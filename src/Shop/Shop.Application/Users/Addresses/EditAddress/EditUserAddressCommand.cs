@@ -53,25 +53,31 @@ public class EditUserAddressCommandValidator : AbstractValidator<EditUserAddress
     public EditUserAddressCommandValidator()
     {
         RuleFor(a => a.FullName)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("نام و نام خانوادگی"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام و نام خانوادگی"));
+            .NotNull().WithMessage(ValidationMessages.FullNameRequired)
+            .NotEmpty().WithMessage(ValidationMessages.FullNameRequired)
+            .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام و نام خانوادگی", 30));
 
-        RuleFor(a => a.PhoneNumber).ValidPhoneNumber();
+        RuleFor(a => a.PhoneNumber)
+            .ValidPhoneNumber();
 
         RuleFor(a => a.Province)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("استان"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("استان"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("استان"))
+            .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("استان", 30));
 
         RuleFor(a => a.City)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("شهر"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("شهر"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("شهر"))
+            .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("شهر", 30));
 
         RuleFor(a => a.FullAddress)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("آدرس کامل"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آدرس کامل"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آدرس کامل"))
+            .MaximumLength(300).WithMessage(ValidationMessages.FieldCharactersMaxLength("آدرس کامل", 300));
 
         RuleFor(a => a.PostalCode)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("کد پستی"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("کد پستی"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("کد پستی"))
+            .Length(10).WithMessage(ValidationMessages.FieldCharactersStaticLength("کد پستی", 10));
     }
 }

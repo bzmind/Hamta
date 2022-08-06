@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
 using FluentValidation;
+using Shop.Application.Categories._DTOs;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Services;
@@ -9,7 +10,7 @@ using Shop.Domain.CategoryAggregate.Services;
 namespace Shop.Application.Categories.Edit;
 
 public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
-    List<SpecificationDto>? Specifications) : IBaseCommand;
+    List<CategorySpecificationDto>? Specifications) : IBaseCommand;
 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
 {
@@ -35,7 +36,7 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
         var specifications = new List<CategorySpecification>();
         request.Specifications.ToList().ForEach(specification =>
             specifications.Add(new CategorySpecification(category.Id, specification.Title,
-                specification.Description, specification.IsImportantFeature)));
+                specification.IsImportantFeature)));
         category.SetSpecifications(specifications);
 
         await _categoryRepository.SaveAsync();
@@ -49,21 +50,20 @@ public class EditCategoryCommandValidator : AbstractValidator<EditCategoryComman
     {
         RuleFor(c => c.Title)
             .NotNull().WithMessage(ValidationMessages.TitleRequired)
-            .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
+            .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+            .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 30));
 
         RuleFor(c => c.Slug)
             .NotNull().WithMessage(ValidationMessages.SlugRequired)
-            .NotEmpty().WithMessage(ValidationMessages.SlugRequired);
+            .NotEmpty().WithMessage(ValidationMessages.SlugRequired)
+            .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 100));
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Title)
                 .NotNull().WithMessage(ValidationMessages.TitleRequired)
-                .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
-
-            specification.RuleFor(spec => spec.Description)
-                .NotNull().WithMessage(ValidationMessages.DescriptionRequired)
-                .NotEmpty().WithMessage(ValidationMessages.DescriptionRequired);
+                .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+                .MaximumLength(50).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 50));
         });
     }
 }

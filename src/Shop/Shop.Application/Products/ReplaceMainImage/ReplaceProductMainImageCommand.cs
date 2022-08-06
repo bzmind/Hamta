@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.FileUtility;
 using Common.Application.Utility.Validation;
+using Common.Application.Utility.Validation.CustomFluentValidations;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Shop.Domain.ProductAggregate.Repository;
@@ -46,6 +47,7 @@ public class ReplaceMainImageCommandValidator : AbstractValidator<ReplaceProduct
     {
         RuleFor(p => p.MainImage)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس اصلی محصول"))
+            .JustImageFile();
     }
 }

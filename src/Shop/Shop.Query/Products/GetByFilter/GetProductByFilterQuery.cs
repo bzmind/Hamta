@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using Shop.Domain.ColorAggregate;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Products._DTOs;
-using Shop.Query.Products._Mappers;
 
 namespace Shop.Query.Products.GetByFilter;
 

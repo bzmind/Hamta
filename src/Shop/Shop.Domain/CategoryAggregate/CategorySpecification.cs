@@ -1,17 +1,24 @@
 ﻿using Common.Domain.BaseClasses;
+using Common.Domain.Exceptions;
 
 namespace Shop.Domain.CategoryAggregate;
 
-public class CategorySpecification : BaseSpecification
+public class CategorySpecification : BaseEntity
 {
     public long CategoryId { get; private set; }
+    public string Title { get; private set; }
+    public bool IsImportantFeature { get; private set; }
 
-    public CategorySpecification(long categoryId, string title, string description, bool isImportantFeature)
+    public CategorySpecification(long categoryId, string title, bool isImportantFeature)
     {
-        Guard(title, description);
+        Guard(title);
         CategoryId = categoryId;
         Title = title;
-        Description = description;
         IsImportantFeature = isImportantFeature;
+    }
+
+    private void Guard(string title)
+    {
+        NullOrEmptyDataDomainException.CheckString(title, nameof(title));
     }
 }

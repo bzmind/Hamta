@@ -5,12 +5,13 @@ namespace Shop.Query.Products._Mappers;
 
 internal static class ProductExtraDescriptionMapper
 {
-    public static ProductExtraDescriptionDto MapToExtraDescriptionDto(this ProductExtraDescription? description)
+    public static QueryProductExtraDescriptionDto MapToQueryExtraDescriptionDto
+        (this ProductExtraDescription? description)
     {
         if (description == null)
             return null;
 
-        return new ProductExtraDescriptionDto
+        return new QueryProductExtraDescriptionDto
         {
             Id = description.Id,
             CreationDate = description.CreationDate,
@@ -20,13 +21,14 @@ internal static class ProductExtraDescriptionMapper
         };
     }
 
-    public static List<ProductExtraDescriptionDto> MapToExtraDescriptionDto(this List<ProductExtraDescription> descriptions)
+    public static List<QueryProductExtraDescriptionDto> MapToQueryExtraDescriptionDto
+        (this List<ProductExtraDescription> descriptions)
     {
-        var dtoDescriptions = new List<ProductExtraDescriptionDto>();
+        var dtoDescriptions = new List<QueryProductExtraDescriptionDto>();
         
         descriptions.ForEach(description =>
         {
-            dtoDescriptions.Add(new ProductExtraDescriptionDto
+            dtoDescriptions.Add(new QueryProductExtraDescriptionDto
             {
                 Id = description.Id,
                 CreationDate = description.CreationDate,

@@ -38,7 +38,7 @@ public class AddScoreCommandValidator : AbstractValidator<AddProductScoreCommand
         RuleFor(p => p.Score)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("امتیاز"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("امتیاز"))
-            .GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.FieldGreaterThanOrEqualTo("امتیاز", 0))
-            .LessThanOrEqualTo(5).WithMessage(ValidationMessages.FieldLessThanOrEqualTo("امتیاز", 5));
+            .GreaterThanOrEqualTo(0).WithMessage(ValidationMessages.FieldMinAmount("امتیاز", 0))
+            .LessThanOrEqualTo(5).WithMessage(ValidationMessages.FieldMaxAmount("امتیاز", 5));
     }
 }

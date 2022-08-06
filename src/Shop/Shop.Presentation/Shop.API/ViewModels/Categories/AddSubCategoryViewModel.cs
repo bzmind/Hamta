@@ -20,5 +20,5 @@ public class AddSubCategoryViewModel
     public string Slug { get; set; }
 
     [DisplayName("مشخصات")]
-    public List<SpecificationViewModel>? Specifications { get; set; }
+    public List<CategorySpecificationViewModel>? Specifications { get; set; }
 }

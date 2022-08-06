@@ -1,17 +1,25 @@
 ﻿using Common.Domain.BaseClasses;
+using Common.Domain.Exceptions;
 
 namespace Shop.Domain.ProductAggregate;
 
-public class ProductSpecification : BaseSpecification
+public class ProductSpecification : BaseEntity
 {
     public long ProductId { get; private set; }
+    public string Title { get; private set; }
+    public string Description { get; private set; }
 
-    public ProductSpecification(long productId, string title, string description, bool isImportantFeature)
+    public ProductSpecification(long productId, string title, string description)
     {
         Guard(title, description);
         ProductId = productId;
         Title = title;
         Description = description;
-        IsImportantFeature = isImportantFeature;
+    }
+
+    private void Guard(string title, string description)
+    {
+        NullOrEmptyDataDomainException.CheckString(title, nameof(title));
+        NullOrEmptyDataDomainException.CheckString(description, nameof(description));
     }
 }

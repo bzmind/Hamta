@@ -38,7 +38,8 @@ public class CreateRoleCommandValidator : AbstractValidator<CreateRoleCommand>
     {
         RuleFor(r => r.Title)
             .NotNull().WithMessage(ValidationMessages.TitleRequired)
-            .NotEmpty().WithMessage(ValidationMessages.TitleRequired);
+            .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
+            .MaximumLength(50).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 50));
 
         RuleForEach(r => r.Permissions)
             .NotNull().WithMessage(ValidationMessages.PermissionsRequired)

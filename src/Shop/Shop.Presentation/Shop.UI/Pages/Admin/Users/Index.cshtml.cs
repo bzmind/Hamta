@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Services.Users;
 using Shop.UI.Setup.RazorUtility;

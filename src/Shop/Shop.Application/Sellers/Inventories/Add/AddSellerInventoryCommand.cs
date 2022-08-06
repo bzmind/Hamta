@@ -11,9 +11,9 @@ public class AddSellerInventoryCommand : IBaseCommand<long>
 {
     public long UserId { get; set; }
     public long ProductId { get; set; }
+    public long ColorId { get; set; }
     public int Quantity { get; set; }
     public int Price { get; set; }
-    public long ColorId { get; set; }
     public int DiscountPercentage { get; set; }
 }
 
@@ -46,6 +46,10 @@ public class AddSellerInventoryCommandValidator : AbstractValidator<AddSellerInv
 {
     public AddSellerInventoryCommandValidator()
     {
+        RuleFor(i => i.ColorId)
+            .NotNull().WithMessage(ValidationMessages.FieldRequired("آیدی رنگ"))
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("آیدی رنگ"));
+
         RuleFor(i => i.Quantity)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("محصولات"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("محصولات"))
@@ -55,11 +59,7 @@ public class AddSellerInventoryCommandValidator : AbstractValidator<AddSellerInv
             .NotNull().WithMessage(ValidationMessages.FieldRequired("قیمت"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("قیمت"))
             .GreaterThan(0).WithMessage(ValidationMessages.TomanMinAmount("قیمت", 0));
-
-        RuleFor(i => i.ColorId)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("رنگ"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("رنگ"));
-
+        
         RuleFor(i => i.DiscountPercentage)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("تخفیف"))
             .LessThanOrEqualTo(100).WithMessage(ValidationMessages.FieldPercentageMaximum("تخفیف", 100));

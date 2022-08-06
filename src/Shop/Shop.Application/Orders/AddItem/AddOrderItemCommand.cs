@@ -62,6 +62,6 @@ public class AddOrderItemCommandValidator : AbstractValidator<AddOrderItemComman
     public AddOrderItemCommandValidator()
     {
         RuleFor(oi => oi.Quantity)
-            .GreaterThanOrEqualTo(1).WithMessage(ValidationMessages.FieldQuantityMinNumber("سفارشات", 0));
+            .GreaterThan(0).WithMessage(ValidationMessages.FieldQuantityMinNumber("سفارشات", 0));
     }
 }

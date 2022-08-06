@@ -9,8 +9,8 @@ namespace Shop.Query.Products._Mappers;
 
 internal static class ProductMapper
 {
-    public static ProductDto? MapToProductDto(this Product product, Category category, SellerInventory sellerInventory,
-        Color color)
+    public static ProductDto? MapToProductDto(this Product product, Category category,
+        SellerInventory sellerInventory, Color color)
     {
         if (product == null)
             return null;
@@ -27,12 +27,12 @@ internal static class ProductMapper
             AverageScore = product.AverageScore,
             MainImage = product.MainImage.Name,
             GalleryImages = product.GalleryImages.ToList().MapToProductImageDto(),
-            CustomSpecifications = product.CustomSpecifications.ToList().MapToProductSpecificationDto(),
-            CategorySpecifications = category.Specifications.ToList().MapToCategorySpecificationDto(),
-            ExtraDescriptions = product.ExtraDescriptions.ToList().MapToExtraDescriptionDto(),
+            Specifications = product.CustomSpecifications.ToList().MapToQueryProductSpecificationDto(),
+            CategorySpecifications = category.Specifications.ToList().MapToQueryCategorySpecificationDto(),
+            ExtraDescriptions = product.ExtraDescriptions.ToList().MapToQueryExtraDescriptionDto(),
             ProductInventories = new List<ProductInventoryDto>
             {
-                new ProductInventoryDto()
+                new()
                 {
                     Id = sellerInventory.Id,
                     CreationDate = sellerInventory.CreationDate,

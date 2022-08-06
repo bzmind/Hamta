@@ -44,10 +44,6 @@ internal class CategoryConfiguration : IEntityTypeConfiguration<Category>
             options.Property(specification => specification.Title)
                 .IsRequired()
                 .HasMaxLength(50);
-
-            options.Property(specification => specification.Description)
-                .IsRequired()
-                .HasMaxLength(300);
         });
     }
 }

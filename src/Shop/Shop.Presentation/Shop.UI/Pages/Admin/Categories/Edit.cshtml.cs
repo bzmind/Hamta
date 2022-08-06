@@ -1,9 +1,5 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using AutoMapper;
-using Common.Application.Utility.Validation;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels;
 using Shop.API.ViewModels.Categories;
 using Shop.UI.Services.Categories;
 using Shop.UI.Setup.ModelStateExtensions;
@@ -24,23 +20,7 @@ public class EditModel : BaseRazorPage
         _mapper = mapper;
     }
 
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
-    public long Id { get; set; }
-
-    public long? ParentId { get; set; }
-
-    [DisplayName("عنوان")]
-    [Required(ErrorMessage = ValidationMessages.TitleRequired)]
-    [MaxLength(50, ErrorMessage = ValidationMessages.MaxCharactersLength)]
-    public string Title { get; set; }
-
-    [DisplayName("اسلاگ")]
-    [Required(ErrorMessage = ValidationMessages.TitleRequired)]
-    [MaxLength(100, ErrorMessage = ValidationMessages.MaxCharactersLength)]
-    public string Slug { get; set; }
-
-    [DisplayName("مشخصات")]
-    public List<SpecificationViewModel> Specifications { get; set; }
+    public EditCategoryViewModel EditCategoryViewModel { get; set; } = new();
 
     public async Task<IActionResult> OnGet(long categoryId)
     {
@@ -48,18 +28,18 @@ public class EditModel : BaseRazorPage
         if (category == null)
             return RedirectToPage("Index");
 
-        Id = category.Id;
-        ParentId = category.ParentId;
-        Title = category.Title;
-        Slug = category.Slug;
-        List<SpecificationViewModel> specifications = new() { new() };
+        EditCategoryViewModel.Id = category.Id;
+        EditCategoryViewModel.ParentId = category.ParentId;
+        EditCategoryViewModel.Title = category.Title;
+        EditCategoryViewModel.Slug = category.Slug;
+        List<CategorySpecificationViewModel> specifications = new() { new CategorySpecificationViewModel() };
         if (category.Specifications.Any())
             specifications.Clear();
         category.Specifications.ForEach(dto =>
         {
-            specifications.Add(_mapper.Map<SpecificationViewModel>(dto));
+            specifications.Add(_mapper.Map<CategorySpecificationViewModel>(dto));
         });
-        Specifications = specifications;
+        EditCategoryViewModel.Specifications = specifications;
         return Page();
     }
 
@@ -67,16 +47,16 @@ public class EditModel : BaseRazorPage
     {
         var result = await _categoryService.Edit(new EditCategoryViewModel
         {
-            Id = Id,
-            ParentId = ParentId,
-            Title = Title,
-            Slug = Slug,
-            Specifications = Specifications
+            Id = EditCategoryViewModel.Id,
+            ParentId = EditCategoryViewModel.ParentId,
+            Title = EditCategoryViewModel.Title,
+            Slug = EditCategoryViewModel.Slug,
+            Specifications = EditCategoryViewModel.Specifications
         });
         if (!result.IsSuccessful)
         {
             MakeAlert(result);
-            return RedirectToPage("Edit", new { categoryId = Id }).WithModelStateOf(this);
+            return RedirectToPage("Edit", new { categoryId = EditCategoryViewModel.Id }).WithModelStateOf(this);
         }
         return RedirectToPage("Index");
     }

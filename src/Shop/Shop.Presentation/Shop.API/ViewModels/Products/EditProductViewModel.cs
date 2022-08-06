@@ -45,9 +45,8 @@ public class EditProductViewModel
     public List<IFormFile> GalleryImages { get; set; }
 
     [DisplayName("مشخصات")]
-    public List<SpecificationViewModel>? CustomSpecifications { get; set; }
+    public List<ProductSpecificationViewModel>? Specifications { get; set; }
 
     [DisplayName("توضیحات اضافه")]
-    [DictionaryMembersCharactersMaxLength(100, 2000, ErrorMessage = ValidationMessages.MaxCharactersLength)]
-    public Dictionary<string, string>? ExtraDescriptions { get; set; }
+    public List<ProductExtraDescriptionViewModel>? ExtraDescriptions { get; set; } = new() { new() };
 }

@@ -53,7 +53,7 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
         {
             var firstItem = productGroup.First();
             firstItem.GalleryImages = productGroup.Select(p => p.GalleryImages).First();
-            firstItem.CustomSpecifications = productGroup.Select(p => p.CustomSpecifications).First();
+            firstItem.Specifications = productGroup.Select(p => p.Specifications).First();
             firstItem.CategorySpecifications = productGroup.Select(p => p.CategorySpecifications).First();
             firstItem.ExtraDescriptions = productGroup.Select(p => p.ExtraDescriptions).First();
             firstItem.ProductInventories = productGroup.Select(p => p.ProductInventories).First();

@@ -43,7 +43,8 @@ public class EditSellerCommandValidator : AbstractValidator<CreateSellerCommand>
     {
         RuleFor(i => i.ShopName)
             .NotNull().WithMessage(ValidationMessages.FieldRequired("نام فروشگاه"))
-            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام فروشگاه"));
+            .NotEmpty().WithMessage(ValidationMessages.FieldRequired("نام فروشگاه"))
+            .MaximumLength(50).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 50));
 
         RuleFor(i => i.NationalCode)
             .NotNull().WithMessage(ValidationMessages.NationalCodeRequired)
