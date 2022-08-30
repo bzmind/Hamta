@@ -3,11 +3,6 @@
   if ($(".pace"))
     $(".pace").remove();
   checkForAlertCookies();
-  $("form").each(function ()
-  {
-    if ($(this).data("validator"))
-      $(this).data("validator").settings.ignore = ".quill-editor-container *";
-  });
   reinitializeScripts();
 });
 
@@ -170,7 +165,8 @@ function checkResult(result)
     window.location.replace(result.RedirectPath);
 }
 
-function reinitializeScripts() {
+function reinitializeScripts()
+{
   reinitializeJqueryUnobtrusive();
   reinitializeElementsScripts();
   reinitializeSelect2();
@@ -180,6 +176,11 @@ function reinitializeJqueryUnobtrusive()
 {
   $("form").removeData("validator").removeData("unobtrusiveValidation");
   $.validator.unobtrusive.parse(document);
+  $("form").each(function ()
+  {
+    if ($(this).data("validator"))
+      $(this).data("validator").settings.ignore = ".quill-editor-container *, .quill-toolbar-container *";
+  });
 }
 
 function reinitializeElementsScripts()
@@ -334,3 +335,16 @@ function prependAjaxResultToElement(elementSelector, result)
     return;
   replaceElement.prepend(result.Data);
 }
+
+function getGuid()
+{
+  return ([1e7] + -1e3 + -4e3 + -8e3 + -1e11).replace(/[018]/g, c =>
+    (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
+  );
+}
+
+$.fn.attrContains = function (attrName, string) { return $(this).attr(attrName).indexOf(string) > -1; };
+
+$.fn.isVisible = function () { return $(this).css("display") !== "none"; };
+
+$.fn.isHidden = function () { return $(this).css("display") === "none"; };

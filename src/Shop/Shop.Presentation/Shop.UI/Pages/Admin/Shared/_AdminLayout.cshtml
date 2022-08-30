@@ -26,8 +26,8 @@
   <link rel="stylesheet" type="text/css" href="/admin/vendors/css/editors/quill/monokai-sublime.min.css">
   <link rel="stylesheet" type="text/css" href="/admin/vendors/css/editors/quill/quill.snow.css">
   <link rel="stylesheet" type="text/css" href="/admin/css/admin-custom.css">
-  <link rel="stylesheet" type="text/css" href="/global/custom-bootstrap.css">
-  <link rel="stylesheet" type="text/css" href="/global/global.css">
+  <link rel="stylesheet" type="text/css" href="/assets/custom/css/custom-bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/assets/custom/css/global.css">
 </head>
 
 <body class="vertical-layout vertical-menu-modern dark-layout 2-columns navbar-sticky footer-static"
@@ -78,17 +78,21 @@
   <script src="/admin/js/scripts/customizer.js"></script>
   <script src="/admin/js/scripts/pages/dashboard-Analytics.js"></script>
   <script src="/assets/js/plugins/sweetalert2.all.min.js"></script>
-  <script src="/assets/js/custom/repeater.js"></script>
+  <script src="/admin/custom/js/repeater.js"></script>
   <script src="/admin/vendors/js/forms/select/select2.full.min.js"></script>
   <script src="/admin/vendors/js/extensions/numeral/numeral.js"></script>
   <script src="/admin/vendors/js/extensions/Sortable.min.js"></script>
   <script src="/admin/js/scripts/forms/select/form-select2.js"></script>
   <script src="/admin/vendors/js/editors/quill/highlight.min.js"></script>
   <script src="/admin/vendors/js/editors/quill/quill.min.js"></script>
+  <script src="/admin/custom/js/rangeSlider.js"></script>
   <partial name="Shared/_ValidationScriptsPartial" />
-  <script src="/assets/js/custom/customClientSideValidation.js"></script>
-  <script src="/assets/js/custom/global.js"></script>
-  <script src="/admin/js/scripts/custom/admin-custom.js"></script>
+  <script src="/assets/custom/js/customClientSideValidation.js"></script>
+  <script src="/assets/custom/js/global.js"></script>
+  <script src="/admin/custom/js/categorySeach.js"></script>
+  <script src="/admin/custom/js/productGalleryImages.js"></script>
+  <script src="/admin/custom/js/quillImageUploader.js"></script>
+  <script src="/admin/custom/js/admin.js"></script>
   @await RenderSectionAsync("Scripts", false)
   <div id="antiForgeryToken">
     @Html.AntiForgeryToken()

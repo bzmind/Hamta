@@ -97,7 +97,8 @@ function getExtension(path)
 }
 
 jQuery.validator.addMethod("requiredif",
-  function(value, element, parameters) {
+  function (value, element, parameters)
+  {
     const guid = element.getAttribute("data-otherPropertyGuid");
     const targetId = parameters.otherProperty;
     const targetValue = parameters.otherPropertyDesiredValue;
