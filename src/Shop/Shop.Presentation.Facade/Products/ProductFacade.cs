@@ -4,8 +4,6 @@ using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 using Shop.Application.Products.Remove;
-using Shop.Application.Products.RemoveGalleryImage;
-using Shop.Application.Products.ReplaceMainImage;
 using Shop.Query.Products._DTOs;
 using Shop.Query.Products.GetByFilter;
 using Shop.Query.Products.GetById;
@@ -27,16 +25,6 @@ internal class ProductFacade : IProductFacade
     }
 
     public async Task<OperationResult> Edit(EditProductCommand command)
-    {
-        return await _mediator.Send(command);
-    }
-
-    public async Task<OperationResult> ReplaceMainImage(ReplaceProductMainImageCommand command)
-    {
-        return await _mediator.Send(command);
-    }
-
-    public async Task<OperationResult> RemoveGalleryImage(RemoveProductGalleryImageCommand command)
     {
         return await _mediator.Send(command);
     }

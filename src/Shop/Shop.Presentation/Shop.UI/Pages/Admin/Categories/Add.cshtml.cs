@@ -34,6 +34,7 @@ public class AddModel : BaseRazorPage
                 Slug = CreateCategoryViewModel.Slug,
                 Specifications = CreateCategoryViewModel.Specifications
             });
+
             if (!addSubCategoryResult.IsSuccessful)
             {
                 MakeAlert(addSubCategoryResult);

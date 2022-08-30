@@ -17,7 +17,8 @@ internal static class CategorySpecificationMapper
             CreationDate = specification.CreationDate,
             CategoryId = specification.CategoryId,
             Title = specification.Title,
-            IsImportantFeature = specification.IsImportantFeature
+            IsImportant = specification.IsImportant,
+            IsOptional = specification.IsOptional
         };
     }
 
@@ -34,7 +35,8 @@ internal static class CategorySpecificationMapper
                 CreationDate = specification.CreationDate,
                 CategoryId = specification.CategoryId,
                 Title = specification.Title,
-            IsImportantFeature = specification.IsImportantFeature
+                IsImportant = specification.IsImportant,
+                IsOptional = specification.IsOptional
             });
         });
 

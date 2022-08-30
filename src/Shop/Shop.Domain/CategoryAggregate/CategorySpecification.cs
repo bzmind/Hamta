@@ -7,14 +7,16 @@ public class CategorySpecification : BaseEntity
 {
     public long CategoryId { get; private set; }
     public string Title { get; private set; }
-    public bool IsImportantFeature { get; private set; }
+    public bool IsImportant { get; private set; }
+    public bool IsOptional { get; private set; }
 
-    public CategorySpecification(long categoryId, string title, bool isImportantFeature)
+    public CategorySpecification(long categoryId, string title, bool isImportant, bool isOptional)
     {
         Guard(title);
         CategoryId = categoryId;
         Title = title;
-        IsImportantFeature = isImportantFeature;
+        IsImportant = isImportant;
+        IsOptional = isOptional;
     }
 
     private void Guard(string title)

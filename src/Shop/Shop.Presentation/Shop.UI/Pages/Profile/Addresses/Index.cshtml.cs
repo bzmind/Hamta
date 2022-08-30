@@ -39,7 +39,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowAddPage()
     {
-        return await AjaxSuccessHtmlResultAsync("_Add", new CreateUserAddressViewModel());
+        return await AjaxHtmlSuccessResultAsync("_Add", new CreateUserAddressViewModel());
     }
 
     public async Task<IActionResult> OnGetShowEditPage(long addressId)
@@ -50,9 +50,8 @@ public class IndexModel : BaseRazorPage
             MakeAlert(ValidationMessages.FieldNotFound("آدرس"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("آدرس"), ApiStatusCode.NotFound);
         }
-
         var model = _mapper.Map<EditUserAddressViewModel>(address);
-        return await AjaxSuccessHtmlResultAsync("_Edit", model);
+        return await AjaxHtmlSuccessResultAsync("_Edit", model);
     }
     
     public async Task<IActionResult> OnPostEditAddress(EditUserAddressViewModel model)

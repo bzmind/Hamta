@@ -11,20 +11,21 @@ public class Product : BaseAggregateRoot
     public string Name { get; private set; }
     public string? EnglishName { get; private set; }
     public string Slug { get; private set; }
-    public string? Description { get; private set; }
+    public string? Introduction { get; private set; }
+    public string? Review { get; private set; }
+    public string MainImage { get; private set; }
+
+    private readonly List<ProductGalleryImage> _galleryImages = new();
+    public IEnumerable<ProductGalleryImage> GalleryImages => _galleryImages.ToList();
+
+    private List<ProductSpecification> _specifications = new();
+    public IEnumerable<ProductSpecification> Specifications => _specifications.ToList();
+
+    private List<ProductCategorySpecification> _categorySpecifications = new();
+    public IEnumerable<ProductCategorySpecification> CategorySpecifications => _categorySpecifications.ToList();
 
     private readonly List<Score> _scores = new();
     public IEnumerable<Score> Scores => _scores.ToList();
-    public ProductImage MainImage { get; private set; }
-
-    private readonly List<ProductImage> _galleryImages = new();
-    public IEnumerable<ProductImage> GalleryImages => _galleryImages.ToList();
-
-    private List<ProductSpecification> _customSpecifications = new();
-    public IEnumerable<ProductSpecification> CustomSpecifications => _customSpecifications.ToList();
-
-    private List<ProductExtraDescription> _extraDescriptions = new();
-    public IEnumerable<ProductExtraDescription> ExtraDescriptions => _extraDescriptions.ToList();
 
     public float AverageScore
     {
@@ -44,59 +45,59 @@ public class Product : BaseAggregateRoot
 
     }
 
-    public Product(long categoryId, string name, string? englishName, string slug, string? description,
-        IProductDomainService productService)
+    public Product(long categoryId, string name, string? englishName, string slug, string? introduction,
+        string? review, IProductDomainService productService)
     {
         Guard(name, slug, productService);
         CategoryId = categoryId;
         Name = name;
         EnglishName = englishName;
-        Description = description;
+        Introduction = introduction;
         Slug = slug;
+        Review = review;
     }
 
     public void Edit(long categoryId, string name, string? englishName, string slug, string? description,
-        IProductDomainService productService)
+        string? review, IProductDomainService productService)
     {
         Guard(name, slug, productService);
         CategoryId = categoryId;
         Name = name;
         EnglishName = englishName;
         Slug = slug;
-        Description = description;
+        Introduction = description;
+        Review = review;
     }
 
     public void SetMainImage(string mainImage)
     {
-        MainImage = new ProductImage(Id, mainImage);
+        NullOrEmptyDataDomainException.CheckString(mainImage, nameof(mainImage));
+        MainImage = mainImage;
     }
 
-    public void SetGalleryImages(List<string> galleryImages)
+    public void SetGalleryImages(List<string> galleryImagesNames)
     {
-        galleryImages.ForEach(galleryImage =>
+        galleryImagesNames.ForEach(imageName =>
         {
-            _galleryImages.Add(new ProductImage(Id, galleryImage));
+            NullOrEmptyDataDomainException.CheckString(imageName, "Gallery image name");
         });
+
+        _galleryImages.Clear();
+
+        for (var i = 0; i < galleryImagesNames.Count; i++)
+        {
+            _galleryImages.Add(new ProductGalleryImage(Id, galleryImagesNames[i], i + 1));
+        }
     }
-
-    public void RemoveGalleryImage(long imageId)
+    
+    public void SetSpecifications(List<ProductSpecification> specifications)
     {
-        var image = GalleryImages.FirstOrDefault(i => i.Id == imageId);
-
-        if (image == null)
-            throw new InvalidDataDomainException("Image not found for this product");
-
-        _galleryImages.Remove(image);
+        _specifications = specifications;
     }
-
-    public void SetCustomSpecifications(List<ProductSpecification> customSpecifications)
+    
+    public void SetCategorySpecifications(List<ProductCategorySpecification> categorySpecifications)
     {
-        _customSpecifications = customSpecifications;
-    }
-
-    public void SetExtraDescriptions(List<ProductExtraDescription> extraDescriptions)
-    {
-        _extraDescriptions = extraDescriptions;
+        _categorySpecifications = categorySpecifications;
     }
 
     public void AddScore(float scoreAmount)
@@ -109,7 +110,7 @@ public class Product : BaseAggregateRoot
         NullOrEmptyDataDomainException.CheckString(name, nameof(name));
         NullOrEmptyDataDomainException.CheckString(slug, nameof(slug));
 
-        if (productService.IsDuplicateSlug(slug))
+        if (productService.IsDuplicateSlug(Id, slug))
             throw new SlugAlreadyExistsDomainException("Slug is already used, cannot use duplicated slug");
     }
 }

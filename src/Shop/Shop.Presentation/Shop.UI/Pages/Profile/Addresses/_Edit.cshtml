@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Shop.API.ViewModels.Users.Addresses.EditUserAddressViewModel
 
-<form method="post" asp-page-handler="EditAddress" onsubmit="return submitThisFormWithAjax(event, '')">
+<form method="post" asp-page-handler="EditAddress" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
     @Html.HiddenFor(m => m.Id)
     <div class="row">
         <div class="col-lg-6 mb-3">

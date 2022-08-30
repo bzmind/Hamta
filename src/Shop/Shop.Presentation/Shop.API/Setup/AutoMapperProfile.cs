@@ -30,8 +30,6 @@ using Shop.Application.Products._DTOs;
 using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
-using Shop.Application.Products.RemoveGalleryImage;
-using Shop.Application.Products.ReplaceMainImage;
 using Shop.Application.Questions.AddReply;
 using Shop.Application.Questions.Create;
 using Shop.Application.Questions.RemoveReply;
@@ -56,6 +54,7 @@ using Shop.Application.Users.Edit;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
 using Shop.Query.Categories._DTOs;
+using Shop.Query.Products._DTOs;
 using Shop.Query.Roles._DTOs;
 using Shop.Query.Users._DTOs;
 
@@ -86,9 +85,9 @@ public class AutoMapperProfile : Profile
         CreateMap<SetOrderStatusCommand, SetOrderStatusViewModel>().ReverseMap();
         CreateMap<AddProductScoreCommand, AddProductScoreViewModel>().ReverseMap();
         CreateMap<CreateProductCommand, CreateProductViewModel>().ReverseMap();
+        CreateMap<CreateProductCommand, ControllerCreateProductViewModel>().ReverseMap();
         CreateMap<EditProductCommand, EditProductViewModel>().ReverseMap();
-        CreateMap<RemoveProductGalleryImageCommand, RemoveProductGalleryImageViewModel>().ReverseMap();
-        CreateMap<ReplaceProductMainImageCommand, ReplaceProductMainImageViewModel>().ReverseMap();
+        CreateMap<EditProductCommand, ControllerEditProductViewModel>().ReverseMap();
         CreateMap<AddReplyCommand, AddReplyViewModel>().ReverseMap();
         CreateMap<CreateQuestionCommand, CreateQuestionViewModel>().ReverseMap();
         CreateMap<RemoveReplyCommand, RemoveReplyViewModel>().ReverseMap();
@@ -105,7 +104,10 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateUserCommand, CreateUserViewModel>().ReverseMap();
         CreateMap<EditUserCommand, EditUserViewModel>().ReverseMap();
         CreateMap<CategorySpecificationDto, CategorySpecificationViewModel>().ReverseMap();
+        CreateMap<QueryCategorySpecificationDto, CategorySpecificationViewModel>().ReverseMap();
         CreateMap<ProductSpecificationDto, ProductSpecificationViewModel>().ReverseMap();
+        CreateMap<ProductCategorySpecificationDto, ProductCategorySpecificationViewModel>().ReverseMap();
+        CreateMap<QueryProductSpecificationDto, ProductSpecificationViewModel>().ReverseMap();
         CreateMap<UserAddressDto, EditUserAddressViewModel>().ReverseMap();
         CreateMap<RoleDto, EditRoleViewModel>().ReverseMap();
         CreateMap<CategoryDto, EditCategoryViewModel>().ReverseMap()

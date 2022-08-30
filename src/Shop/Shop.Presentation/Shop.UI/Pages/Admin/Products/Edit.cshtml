@@ -1,4 +1,261 @@
-﻿@page
+﻿@page "{productId}/{handler?}"
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Shop.Query.Categories._DTOs
+@using Shop.UI.Services.Categories
+@using Shop.UI.Setup.ServerSide
+@using Shop.UI.TagHelpers
 @model Shop.UI.Pages.Admin.Products.EditModel
+@inject ICategoryService CategoryService
 @{
+  ViewData["Title"] = "ویرایش محصول";
+  var categories = await CategoryService.GetAll();
+
+  const int textIndentationDefaultSize = 15;
+  var textIndentation = textIndentationDefaultSize;
+  const int rightSidePadding = 0;
+  var depth = 1;
+  async Task AddSubCategories(CategoryDto parentCategory)
+  {
+    if (depth <= 0)
+    {
+      depth++;
+      textIndentation += textIndentationDefaultSize;
+    }
+    for (var i = 0; i < parentCategory.SubCategories.Count; i++)
+    {
+      var newId = Guid.NewGuid();
+      var subCategory = parentCategory.SubCategories[i];
+      var hasSubCategory = subCategory.SubCategories.Any();
+      <tr class="children" style="display: none;" data-depth="@depth" data-categoryId="@subCategory.Id"
+      data-parentCategoryId="@parentCategory.Id" data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
+        <td style="text-indent: @($"{textIndentation - 8}px");" class="pl-0 pr-0">
+          @for (var t = 0; t < depth; t++)
+          {
+            <span class="indentation-lines"
+            style="right: @($"{t * textIndentationDefaultSize + rightSidePadding}px")"></span>
+          }
+          <div class="d-inline-flex align-items-center">
+            <label class="radio">
+              <input type="radio" class="radio-primary category-radio" id="@newId"
+               asp-for="@Model.EditProductViewModel.CategoryId" value="@subCategory.Id" />
+              <label class="radio-circle" for="@newId"></label>
+            </label>
+            <span asp-validation-for="@Model.EditProductViewModel.CategoryId"></span>
+            <span class="category-title" style="text-indent: 0; margin-right: 6px;">
+              @subCategory.Title
+              @if (hasSubCategory)
+              {
+                <i class="bx bx-caret-down"></i>
+              }
+            </span>
+          </div>
+        </td>
+      </tr>
+      if (hasSubCategory)
+      {
+        depth++;
+        textIndentation += textIndentationDefaultSize;
+        await AddSubCategories(subCategory);
+        if (i + 1 == parentCategory.SubCategories.Count)
+        {
+          depth--;
+          textIndentation = textIndentationDefaultSize * depth;
+          return;
+        }
+      }
+      else if (i + 1 == parentCategory.SubCategories.Count)
+      {
+        depth--;
+        textIndentation = textIndentationDefaultSize * depth;
+        return;
+      }
+    }
+  }
 }
+
+<h5 class="mb-1">@ViewData["Title"]</h5>
+<form method="post" enctype="multipart/form-data" id="productForm">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12 d-flex">
+          <div class="d-flex flex-column mainImageContainer">
+            <div class="d-flex align-items-center">
+              <label>@Html.DisplayNameFor(m => m.EditProductViewModel.MainImage)</label>
+              @{
+                var guid = Guid.NewGuid();
+                var isMainImageNull = string.IsNullOrWhiteSpace(Model.MainImage);
+              }
+              <label class="btn-sm badge-pill bg-rgba-info text-info border-0">
+                <input asp-for="@Model.EditProductViewModel.MainImage" type="file" data-img-preview="@guid"
+                       accept="image/*" />
+                انتخاب
+              </label>
+            </div>
+            <div class="mainImage">
+              <img alt="product-image" data-img-preview="@guid" data-img-name="@Model.MainImage"
+                   style="@(isMainImageNull ? "display: none" : "")"
+                   src="@(isMainImageNull ? "" : ServerPaths.GetProductMainImagePath(Model.MainImage))" />
+            </div>
+            <span asp-validation-for="@Model.EditProductViewModel.MainImage"></span>
+          </div>
+          <div class="galleryImagesContainer d-flex flex-column ml-1 w-100">
+            @{
+              var imgPreview = Guid.NewGuid();
+            }
+            <div class="d-flex align-items-center">
+              <label>@Html.DisplayNameFor(m => m.EditProductViewModel.GalleryImages)</label>
+              <label class="btn-sm badge-pill bg-rgba-info text-info border-0" data-toggle="tooltip"
+                     data-placement="top" title="" data-original-title="جایگزین کردن همه‌ی عکس های کنونی">
+                <input asp-for="@Model.EditProductViewModel.GalleryImages" type="file" multiple=""
+                       data-img-preview="@imgPreview" data-replace="" accept="image/*" />
+                انتخاب
+              </label>
+              <label class="btn-sm badge-pill bg-rgba-success text-success border-0" data-toggle="tooltip"
+                     data-placement="top" title="" data-original-title="اضافه کردن به عکس های کنونی">
+                <input hidden="" type="file" multiple="" data-add="" accept="image/*"
+                       data-img-preview="@imgPreview" />
+                اضافه کردن
+              </label>
+              <span asp-validation-for="@Model.EditProductViewModel.GalleryImages"></span>
+            </div>
+            <div class="galleryImagesList" data-img-preview-list="@imgPreview">
+              @for (var i = 0; i < Model.GalleryImages.Count; i++)
+              {
+                var imgGuid = Guid.NewGuid();
+                var isNull = string.IsNullOrWhiteSpace(Model.GalleryImages[i].Name);
+                <div class="galleryImageItem" data-img-preview-item="">
+                  <div class="imgOptions">
+                    <label class="btn-sm btn-info border-0 m-0">
+                      <input hidden="" type="file" data-img-preview="@imgGuid">
+                      <i class="bx bx-repost"></i>
+                    </label>
+                    <button type="button" class="btn-sm btn-danger border-0" onclick="deleteGalleryImage(event)">
+                      <i class="bx bx-trash"></i>
+                    </button>
+                  </div>
+                  <img style="@(isNull ? "display: none" : null)" data-img-preview="@imgGuid" alt="product-image"
+                     src="@(isNull ? null : ServerPaths.GetProductGalleryImagePath(Model.GalleryImages[i].Name))"
+                     data-img-name="@Model.GalleryImages[i].Name" />
+                  <span style="@(isNull ? "display: none" : null)">@(i + 1)</span>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          @Html.EditorFor(m => m.EditProductViewModel.Name)
+        </div>
+        <div class="col-md-4">
+          @Html.EditorFor(m => m.EditProductViewModel.EnglishName)
+        </div>
+        <div class="col-md-4">
+          @Html.EditorFor(m => m.EditProductViewModel.Slug)
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label asp-for="@Model.EditProductViewModel.Introduction"></label>
+            <partial name="Admin/Shared/_QuillToolbar" />
+            <div class="quill-editor-container" id="productIntroductionQuill">
+            </div>
+            <textarea id="productIntroduction" hidden="" class="form-control"
+                      asp-for="@Model.EditProductViewModel.Introduction"></textarea>
+            <span asp-validation-for="@Model.EditProductViewModel.Introduction" class="d-block"></span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <label asp-for="@Model.EditProductViewModel.Review"></label>
+          <partial name="Admin/Shared/_QuillToolbar" />
+          <div class="quill-editor-container" id="productReviewQuill">
+          </div>
+          <textarea id="productReview" hidden="" class="form-control"
+                    asp-for="@Model.EditProductViewModel.Review"></textarea>
+          <span asp-validation-for="@Model.EditProductViewModel.Review" class="d-block"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <label>دسته بندی</label>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb category-breadcrumb">
+              <li class="breadcrumb-item">دسته‌بندی انتخاب نشده است</li>
+            </ol>
+          </nav>
+          <fieldset class="position-relative has-icon-left category-search-box">
+            <input type="text" class="form-control form-control-sm" id="category-search" placeholder="جستجو">
+            <div class="form-control-position">
+              <i class="bx bx-search"></i>
+            </div>
+          </fieldset>
+          <table class="table mb-0 category-table">
+            <tbody>
+              @foreach (var category in categories)
+              {
+                var hasSubCategory = category.SubCategories.Any();
+                <tr class="parent" data-depth="0" data-categoryId="@category.Id"
+                  data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
+                  <td class="pl-0 pr-0">
+                    <span class="category-title">
+                      @category.Title
+                      @if (hasSubCategory)
+                      {
+                        <i class="bx bx-caret-down"></i>
+                      }
+                    </span>
+                  </td>
+                </tr>
+                @if (hasSubCategory)
+                  await AddSubCategories(category);
+              }
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <label>@Html.DisplayNameFor(m => m.EditProductViewModel.CategorySpecifications)</label>
+          <div class="category-specifications">
+            @Html.EditorFor(m => m.EditProductViewModel.CategorySpecifications)
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12" data-repeater-container="">
+          <label>@Html.DisplayNameFor(m => m.EditProductViewModel.Specifications)</label>
+          <div data-repeater-list="">
+            @Html.EditorFor(m => m.EditProductViewModel.Specifications)
+          </div>
+          <div class="col p-0">
+            <button class="btn btn-primary" data-repeater-create="" type="button">
+              <i class="bx bx-plus"></i>
+              افزودن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    ویرایش
+  </button>
+  <cancel></cancel>
+</form>

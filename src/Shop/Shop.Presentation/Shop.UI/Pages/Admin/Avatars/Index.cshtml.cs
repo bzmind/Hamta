@@ -37,7 +37,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowAddPage()
     {
-        return await AjaxSuccessHtmlResultAsync("_Add", new CreateAvatarViewModel());
+        return await AjaxHtmlSuccessResultAsync("_Add", new CreateAvatarViewModel());
     }
 
     public async Task<IActionResult> OnPostRemoveAvatar(long avatarId)

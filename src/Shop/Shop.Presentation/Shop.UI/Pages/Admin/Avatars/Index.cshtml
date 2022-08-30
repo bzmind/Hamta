@@ -24,7 +24,7 @@
           <tr>
             <td>
               <img class="avatar-img" width="50" height="50" alt="avatar"
-                 src="@ServerSettings.GetAvatarPath(avatar.Name)" />
+                 src="@ServerPaths.GetAvatarPath(avatar.Name)" />
             </td>
             <td>@avatar.Gender</td>
             <td>
@@ -38,7 +38,7 @@
         @if (!Model.Avatars.Any())
         {
           <tr>
-            <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
+            <td colspan="3" class="text-center">موردی برای نمایش وجود ندارد</td>
           </tr>
         }
       </tbody>

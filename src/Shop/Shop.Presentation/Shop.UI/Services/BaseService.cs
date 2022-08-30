@@ -70,6 +70,18 @@ public abstract class BaseService
         return await HandleResult(result);
     }
 
+    protected async Task<ApiResult> DeleteAsJsonAsync(string endpointAction, object model)
+    {
+        var request = new HttpRequestMessage
+        {
+            Content = JsonContent.Create(model),
+            Method = HttpMethod.Delete,
+            RequestUri = new Uri($"{ApiEndpointName}/{endpointAction}", UriKind.Relative)
+        };
+        var result = await _client.SendAsync(request);
+        return await HandleResult(result);
+    }
+
     protected async Task<ApiResult<TData>> GetFromJsonAsync<TData>(string endpointAction)
     {
         var result = await _client.GetAsync($"{ApiEndpointName}/{endpointAction}");

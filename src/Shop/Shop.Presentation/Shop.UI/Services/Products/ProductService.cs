@@ -26,20 +26,23 @@ public class ProductService : BaseService, IProductService
         if (model.EnglishName != null)
             formData.Add(new StringContent(model.EnglishName), "EnglishName");
 
-        if (model.Description != null)
-            formData.Add(new StringContent(model.Description), "Description");
+        if (model.Introduction != null)
+            formData.Add(new StringContent(model.Introduction), "Introduction");
 
-        model.GalleryImages.ForEach(galleryImage =>
+        if (model.Review != null)
+            formData.Add(new StringContent(model.Review), "Review");
+
+        model.GalleryImages.ForEach(image =>
         {
-            if (galleryImage.IsImage())
-                formData.Add(new StreamContent(galleryImage.OpenReadStream()), "GalleryImage", galleryImage.FileName);
+            if (image.IsImage())
+                formData.Add(new StreamContent(image.OpenReadStream()), "GalleryImages", image.FileName);
         });
 
         var specificationsJson = JsonSerializer.Serialize(model.Specifications);
-        formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "Specifications");
+        formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "SpecificationsJson");
 
-        var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
-        formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
+        var categorySpecificationsJson = JsonSerializer.Serialize(model.CategorySpecifications);
+        formData.Add(new StringContent(categorySpecificationsJson, Encoding.UTF8, "application/json"), "CategorySpecificationsJson");
 
         return await PostAsFormDataAsync("Create", formData);
     }
@@ -58,43 +61,30 @@ public class ProductService : BaseService, IProductService
         if (model.EnglishName != null)
             formData.Add(new StringContent(model.EnglishName), "EnglishName");
 
-        if (model.Description != null)
-            formData.Add(new StringContent(model.Description), "Description");
+        if (model.Introduction != null)
+            formData.Add(new StringContent(model.Introduction), "Introduction");
 
-        model.GalleryImages.ForEach(galleryImage =>
+        if (model.Review != null)
+            formData.Add(new StringContent(model.Review), "Review");
+
+        model.GalleryImages?.ForEach(image =>
         {
-            if (galleryImage.IsImage())
-                formData.Add(new StreamContent(galleryImage.OpenReadStream()), "GalleryImage", galleryImage.FileName);
+            if (image.IsImage())
+                formData.Add(new StreamContent(image.OpenReadStream()), "GalleryImages", image.FileName);
         });
 
-        var specificationsJson = JsonSerializer.Serialize(model.Specifications);
-        formData.Add(new StringContent(specificationsJson, Encoding.UTF8, "application/json"), "Specifications");
+        var specifications = JsonSerializer.Serialize(model.Specifications);
+        formData.Add(new StringContent(specifications, Encoding.UTF8, "application/json"), "SpecificationsJson");
 
-        var extraDescriptionsJson = JsonSerializer.Serialize(model.ExtraDescriptions);
-        formData.Add(new StringContent(extraDescriptionsJson, Encoding.UTF8, "application/json"), "ExtraDescriptions");
+        var categorySpecificationsJson = JsonSerializer.Serialize(model.CategorySpecifications);
+        formData.Add(new StringContent(categorySpecificationsJson, Encoding.UTF8, "application/json"), "CategorySpecificationsJson");
 
         return await PutAsFormDataAsync("Edit", formData);
-    }
-
-    public async Task<ApiResult> ReplaceMainImage(ReplaceProductMainImageViewModel model)
-    {
-        var formData = new MultipartFormDataContent();
-        formData.Add(new StringContent(model.ProductId.ToString()), "ProductId");
-
-        if (model.MainImage.IsImage())
-            formData.Add(new StreamContent(model.MainImage.OpenReadStream()), "MainImage", model.MainImage.FileName);
-
-        return await PutAsFormDataAsync("ReplaceMainImage", formData);
     }
 
     public async Task<ApiResult> AddScore(AddProductScoreViewModel model)
     {
         return await PutAsJsonAsync("AddScore", model);
-    }
-
-    public async Task<ApiResult> RemoveGalleryImage(RemoveProductGalleryImageViewModel model)
-    {
-        return await PutAsJsonAsync("RemoveGalleryImage", model);
     }
 
     public async Task<ApiResult> Remove(long productId)

@@ -2,6 +2,7 @@
 using Common.Application.BaseClasses;
 using Common.Application.Utility.FileUtility;
 using Common.Application.Utility.Validation;
+using FluentValidation;
 using Shop.Domain.AvatarAggregate.Repository;
 
 namespace Shop.Application.Avatars.Remove;
@@ -34,5 +35,14 @@ public class RemoveAvatarCommandHandler : IBaseCommandHandler<RemoveAvatarComman
 
         await _avatarRepository.SaveAsync();
         return OperationResult.Success();
+    }
+}
+
+public class RemoveAvatarCommandValidator : AbstractValidator<RemoveAvatarCommand>
+{
+    public RemoveAvatarCommandValidator()
+    {
+        RuleFor(r => r.AvatarId)
+            .NotEmpty().WithMessage(ValidationMessages.AvatarIdRequired);
     }
 }

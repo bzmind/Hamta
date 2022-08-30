@@ -17,7 +17,6 @@ public class DapperContext
     public string OrderAddresses => "[order].Addresses";
     public string OrderItems => "[order].Items";
     public string Products => "[product].Products";
-    public string ProductImages => "[product].Images";
     public string ProductScores => "[product].Scores";
     public string Colors => "[color].Colors";
     public string Comments => "[comment].Comments";

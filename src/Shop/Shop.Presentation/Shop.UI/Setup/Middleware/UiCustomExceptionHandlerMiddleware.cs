@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Common.Api;
+using Common.Api.Utility;
 using Common.Application.Exceptions;
 using Common.Domain.Exceptions;
 using Newtonsoft.Json;
@@ -65,7 +66,7 @@ public class UiCustomExceptionHandlerMiddleware
                 // This is because the browser would complaint about the cookie size, because
                 // if I were to return the exceptionMessage as above, it would surpass the size limit
                 if (exceptionMessage.Length > 3000)
-                    exceptionMessage = exception.Message;
+                    exceptionMessage = exceptionMessage.Truncate(3000);
             }
         }
 

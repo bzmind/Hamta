@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model Shop.API.ViewModels.Users.Addresses.CreateUserAddressViewModel
 
-<form method="post" onsubmit="return submitThisFormWithAjax(event, '')">
+<form method="post" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
     <div class="row">
         <div class="col-lg-6 mb-3">
             @Html.EditorFor(m => m.FullName)

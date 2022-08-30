@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.Collections;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
@@ -8,10 +9,20 @@ public class ImageFileAttribute : ValidationAttribute, IClientModelValidator
 {
     public override bool IsValid(object? value)
     {
-        if (value is not IFormFile fileInput)
-            return false;
+        if (value == null)
+            return true;
 
-        return fileInput.IsImage();
+        if (value is ICollection valueCollection)
+        {
+            if (valueCollection.Count == 0)
+                return true;
+
+            foreach (var v in valueCollection)
+            {
+                return v is IFormFile iFormFile && iFormFile.IsImage();
+            }
+        }
+        return value is IFormFile fileInput && fileInput.IsImage();
     }
 
     public void AddValidation(ClientModelValidationContext context)
@@ -21,31 +32,5 @@ public class ImageFileAttribute : ValidationAttribute, IClientModelValidator
 
         context.Attributes.Add("accept", "image/*");
         context.Attributes.Add("data-val-imageFile", ErrorMessage);
-    }
-}
-
-public class ImageFileListAttribute : ValidationAttribute, IClientModelValidator
-{
-    public override bool IsValid(object? value)
-    {
-        if (value is not ICollection<IFormFile> formFiles)
-            return false;
-
-        foreach (var formFile in formFiles)
-        {
-            if (formFile.IsImage() == false)
-                return false;
-        }
-        
-        return true;
-    }
-
-    public void AddValidation(ClientModelValidationContext context)
-    {
-        if (!context.Attributes.ContainsKey("data-val"))
-            context.Attributes.Add("data-val", "true");
-
-        context.Attributes.Add("accept", "image/*");
-        context.Attributes.Add("data-val-imageFileList", ErrorMessage);
     }
 }

@@ -12,8 +12,13 @@ public class ProductDomainService : IProductDomainService
         _productRepository = productRepository;
     }
 
-    public bool IsDuplicateSlug(string slug)
+    public bool IsDuplicateSlug(long id, string slug)
     {
-        return _productRepository.Exists(c => c.Slug == slug);
+        var product = _productRepository.GetProductBySlug(slug);
+        if (product == null)
+            return false;
+        if (product.Id == id)
+            return false;
+        return true;
     }
 }

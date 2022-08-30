@@ -22,7 +22,7 @@
               <open-modal url="@Url.Page("Index", "ShowAvatarsPage")" type="button" id="edit-avatar-btn"
                           modal-title="انتخاب آواتار" modal-size="modal-lg">
                 <i class="far fa-camera"></i>
-                <img src="@ServerSettings.GetAvatarPath(Model.AvatarName)" alt="avatar">
+                <img src="@ServerPaths.GetAvatarPath(Model.AvatarName)" alt="avatar">
               </open-modal>
             </div>
             @Html.EditorFor(m => m.FullName)

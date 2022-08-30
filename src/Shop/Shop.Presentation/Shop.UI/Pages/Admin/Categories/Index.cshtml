@@ -8,9 +8,15 @@
 
   const int textIndentationDefaultSize = 15;
   var textIndentation = textIndentationDefaultSize;
+  const int rightSidePadding = 20;
   var depth = 1;
   async Task AddSubCategories(CategoryDto parentCategory)
   {
+    if (depth <= 0)
+    {
+      depth++;
+      textIndentation += textIndentationDefaultSize;
+    }
     for (var i = 0; i < parentCategory.SubCategories.Count; i++)
     {
       var subCategory = parentCategory.SubCategories[i];
@@ -22,7 +28,7 @@
           @for (var t = 0; t < depth; t++)
           {
             <span class="indentation-lines"
-            style="right: calc(2rem + @($"{t * textIndentationDefaultSize}px"))"></span>
+            style="right: @($"{t * textIndentationDefaultSize + rightSidePadding}px")"></span>
           }
           <span class="category-title" style="text-indent: 0;">
             @subCategory.Title
@@ -56,6 +62,7 @@
         {
           depth--;
           textIndentation = textIndentationDefaultSize * depth;
+          return;
         }
       }
       else if (i + 1 == parentCategory.SubCategories.Count)
@@ -65,8 +72,6 @@
         return;
       }
     }
-    depth++;
-    textIndentation += textIndentationDefaultSize;
   }
 }
 

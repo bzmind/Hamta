@@ -3,23 +3,22 @@ using Common.Domain.Exceptions;
 
 namespace Shop.Domain.ProductAggregate;
 
-public class ProductExtraDescription : BaseEntity
+public class ProductCategorySpecification : BaseEntity
 {
     public long ProductId { get; private set; }
-    public string Title { get; private set; }
+    public long CategorySpecificationId { get; private set; }
     public string Description { get; private set; }
 
-    public ProductExtraDescription(long productId, string title, string description)
+    public ProductCategorySpecification(long productId, long categorySpecificationId, string description)
     {
-        Guard(title, description);
+        Guard(description);
         ProductId = productId;
-        Title = title;
+        CategorySpecificationId = categorySpecificationId;
         Description = description;
     }
 
-    public void Guard(string title, string description)
+    private void Guard(string description)
     {
-        NullOrEmptyDataDomainException.CheckString(title, nameof(title));
         NullOrEmptyDataDomainException.CheckString(description, nameof(description));
     }
 }

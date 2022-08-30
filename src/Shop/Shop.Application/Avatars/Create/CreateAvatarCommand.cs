@@ -39,7 +39,6 @@ public class CreateAvatarCommandValidator : AbstractValidator<CreateAvatarComman
     public CreateAvatarCommandValidator()
     {
         RuleFor(r => r.AvatarFile)
-            .NotNull().WithMessage(ValidationMessages.FieldRequired("عکس آواتار"))
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("عکس آواتار"))
             .JustImageFile();
 

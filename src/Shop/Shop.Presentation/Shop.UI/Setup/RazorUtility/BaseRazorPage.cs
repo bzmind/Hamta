@@ -28,7 +28,7 @@ public class BaseRazorPage : PageModel
         HttpContext.Response.Cookies.Append("alert", model);
     }
 
-    protected async Task<ContentResult> AjaxSuccessHtmlResultAsync(string pageName, object? pageModel)
+    protected async Task<ContentResult> AjaxHtmlSuccessResultAsync(string pageName, object? pageModel)
     {
         var successApiResult = ApiResult<string>.Success
             (await _razorToStringRenderer.RenderToStringAsync(pageName, pageModel, PageContext));

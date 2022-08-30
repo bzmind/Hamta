@@ -2,9 +2,9 @@
 
 namespace Shop.UI.Setup.ServerSide;
 
-public static class ServerSettings
+public static class ServerPaths
 {
-    public static string ServerPath =>
+    private static string ServerPath =>
         "https://localhost:7087";
 
     public static string GetAvatarPath(string name) =>

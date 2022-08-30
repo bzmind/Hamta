@@ -16,4 +16,5 @@ public interface ICategoryFacade
     Task<List<CategoryDto>> GetAll();
     Task<CategoryDto?> GetById(long id);
     Task<List<CategoryDto>> GetByParentId(long parentId);
+    Task<List<QueryCategorySpecificationDto>> GetSpecificationsByCategoryId(long categoryId);
 }

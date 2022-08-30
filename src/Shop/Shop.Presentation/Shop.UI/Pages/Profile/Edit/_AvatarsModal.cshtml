@@ -8,7 +8,7 @@
   var currentUser = await UserService.GetById(User.GetUserId());
 }
 
-<form method="post" asp-page-handler="SetAvatar" onsubmit="return submitThisFormWithAjax(event, '')">
+<form method="post" asp-page-handler="SetAvatar" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
   <div class="avatars-container">
     @foreach (var gender in Enum.GetValues<Avatar.AvatarGender>().Select(g => g).ToList())
     {
@@ -23,7 +23,7 @@
             <input type="radio" name="avatarId" value="@avatar.Id"
              checked="@(currentUser.Avatar.Id == avatar.Id ? "checked" : null)" />
             <span class="d-block checkmark">
-              <img src="@ServerSettings.GetAvatarPath(avatar.Name)"
+              <img src="@ServerPaths.GetAvatarPath(avatar.Name)"
              alt="@($"{gender} avatar")" />
             </span>
           </label>

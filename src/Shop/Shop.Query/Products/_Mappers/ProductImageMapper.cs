@@ -5,32 +5,34 @@ namespace Shop.Query.Products._Mappers;
 
 internal static class ProductImageMapper
 {
-    public static ProductImageDto MapToProductImageDto(this ProductImage? productImage)
+    public static ProductGalleryImageDto MapToProductImageDto(this ProductGalleryImage? productImage)
     {
         if (productImage == null)
             return null;
 
-        return new ProductImageDto
+        return new ProductGalleryImageDto
         {
             Id = productImage.Id,
             CreationDate = productImage.CreationDate,
             ProductId = productImage.ProductId,
-            Name = productImage.Name
+            Name = productImage.Name,
+            Sequence = productImage.Sequence
         };
     }
 
-    public static List<ProductImageDto> MapToProductImageDto(this List<ProductImage> productImages)
+    public static List<ProductGalleryImageDto> MapToProductImageDto(this List<ProductGalleryImage> productImages)
     {
-        var dtoProducts = new List<ProductImageDto>();
+        var dtoProducts = new List<ProductGalleryImageDto>();
 
         productImages.ForEach(productImage =>
         {
-            dtoProducts.Add(new ProductImageDto
+            dtoProducts.Add(new ProductGalleryImageDto
             {
                 Id = productImage.Id,
                 CreationDate = productImage.CreationDate,
                 ProductId = productImage.ProductId,
-                Name = productImage.Name
+                Name = productImage.Name,
+                Sequence = productImage.Sequence
             });
         });
 

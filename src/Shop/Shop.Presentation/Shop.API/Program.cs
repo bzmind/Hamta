@@ -10,12 +10,11 @@ using System.Text.Json.Serialization;
 using Shop.API.Setup;
 
 var builder = WebApplication.CreateBuilder(args);
-const string CORSPolicyName = "ApiCORS";
+const string corsPolicyName = "ApiCORS";
 
-// Add services to the container.
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy(CORSPolicyName, policy =>
+    options.AddPolicy(corsPolicyName, policy =>
     {
         policy.WithOrigins("https://localhost:7212");
     });
@@ -97,9 +96,9 @@ app.UseSwaggerUI(settings =>
 
 app.UseHttpsRedirection();
 
-app.UseStaticFiles();
+app.UseCors(corsPolicyName);
 
-app.UseCors(CORSPolicyName);
+app.UseStaticFiles();
 
 app.UseAuthentication();
 

@@ -8,6 +8,7 @@ using Shop.Query.Categories._DTOs;
 using Shop.Query.Categories.GetById;
 using Shop.Query.Categories.GetByParentId;
 using Shop.Query.Categories.GetList;
+using Shop.Query.Categories.Specifications;
 
 namespace Shop.Presentation.Facade.Categories;
 
@@ -53,5 +54,10 @@ internal class CategoryFacade : ICategoryFacade
     public async Task<List<CategoryDto>> GetByParentId(long parentId)
     {
         return await _mediator.Send(new GetCategoryByParentIdQuery(parentId));
+    }
+
+    public async Task<List<QueryCategorySpecificationDto>> GetSpecificationsByCategoryId(long categoryId)
+    {
+        return await _mediator.Send(new GetCategorySpecificationsByIdQuery(categoryId));
     }
 }

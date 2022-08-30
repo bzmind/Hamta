@@ -67,7 +67,6 @@ public class CategoryController : BaseApiController
         return QueryResult(result);
     }
 
-    [AllowAnonymous]
     [HttpGet("GetById/{id}")]
     public async Task<ApiResult<CategoryDto?>> GetById(long id)
     {
@@ -75,11 +74,17 @@ public class CategoryController : BaseApiController
         return QueryResult(result);
     }
 
-    [AllowAnonymous]
     [HttpGet("GetByParentId/{parentId}")]
     public async Task<ApiResult<List<CategoryDto>>> GetByParentId(long parentId)
     {
         var result = await _categoryFacade.GetByParentId(parentId);
+        return QueryResult(result);
+    }
+
+    [HttpGet("GetSpecificationsByCategoryId/{categoryId}")]
+    public async Task<ApiResult<List<QueryCategorySpecificationDto>>> GetSpecificationsByCategoryId(long categoryId)
+    {
+        var result = await _categoryFacade.GetSpecificationsByCategoryId(categoryId);
         return QueryResult(result);
     }
 }

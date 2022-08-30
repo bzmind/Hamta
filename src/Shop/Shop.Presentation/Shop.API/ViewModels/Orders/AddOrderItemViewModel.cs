@@ -7,10 +7,10 @@ namespace Shop.API.ViewModels.Orders;
 public class AddOrderItemViewModel
 {
     [Required(ErrorMessage = ValidationMessages.IdRequired)]
-    public long InventoryId { get; init; }
+    public long InventoryId { get; set; }
 
     [DisplayName("تعداد سفارش")]
     [Required(ErrorMessage = ValidationMessages.QuantityRequired)]
     [MinLength(1, ErrorMessage = "{0} باید بیشتر از 0 باشد")]
-    public int Quantity { get; init; }
+    public int Quantity { get; set; }
 }

@@ -32,14 +32,9 @@ public class EditModel : BaseRazorPage
         EditCategoryViewModel.ParentId = category.ParentId;
         EditCategoryViewModel.Title = category.Title;
         EditCategoryViewModel.Slug = category.Slug;
-        List<CategorySpecificationViewModel> specifications = new() { new CategorySpecificationViewModel() };
-        if (category.Specifications.Any())
-            specifications.Clear();
-        category.Specifications.ForEach(dto =>
-        {
-            specifications.Add(_mapper.Map<CategorySpecificationViewModel>(dto));
-        });
-        EditCategoryViewModel.Specifications = specifications;
+        EditCategoryViewModel.Specifications = category.Specifications.Any()
+            ? _mapper.Map<List<CategorySpecificationViewModel>>(category.Specifications)
+            : new() { new() };
         return Page();
     }
 

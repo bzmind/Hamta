@@ -1,0 +1,66 @@
+﻿@using Shop.API.ViewModels.Products
+@model List<Shop.API.ViewModels.Products.ProductCategorySpecificationViewModel>
+@{
+  var routeInfo = ViewContext.ActionDescriptor.AttributeRouteInfo;
+  var routeName = routeInfo.Name ?? routeInfo.Template;
+
+  var model = nameof(EditProductViewModel);
+  var categorySpecs = nameof(EditProductViewModel.CategorySpecifications);
+  const string specId = nameof(ProductCategorySpecificationViewModel.CategorySpecificationId);
+  const string specDescription = nameof(ProductCategorySpecificationViewModel.Description);
+  const string specTitle = nameof(ProductCategorySpecificationViewModel.Title);
+  const string specIsImportant = nameof(ProductCategorySpecificationViewModel.IsImportant);
+  const string specIsOptional = nameof(ProductCategorySpecificationViewModel.IsOptional);
+
+  if (routeName.Contains("/Add/"))
+  {
+    model = nameof(CreateProductViewModel);
+    categorySpecs = nameof(CreateProductViewModel.CategorySpecifications);
+  }
+}
+
+@for (var i = 0; i < Model.Count; i++)
+{
+  var categorySpecificationIdName = $"{model}.{categorySpecs}[{i}].{specId}";
+  var titleName = $"{model}.{categorySpecs}[{i}].{specTitle}";
+  var descriptionName = $"{model}.{categorySpecs}[{i}].{specDescription}";
+  var isImportantName = $"{model}.{categorySpecs}[{i}].{specIsImportant}";
+  var isOptionalName = $"{model}.{categorySpecs}[{i}].{specIsOptional}";
+  var guid = Guid.NewGuid();
+
+  var isImportant = Model[i].IsImportant;
+  var isOptional = Model[i].IsOptional;
+
+  <div class="category-specification">
+    <div class="row justify-content-between align-items-center">
+      <div class="col-11">
+        <div class="row">
+          <div class="col-3 pl-0">
+            <input hidden="" name="@categorySpecificationIdName" value="@Model[i].CategorySpecificationId"/>
+            <input hidden="" name="@isImportantName" value="@(isImportant ? "True" : "False")" id="IsImportant" />
+            <input hidden="" name="@isOptionalName" value="@(isOptional ? "True" : "False")"
+                   id="@("IsOptional"+guid)" />
+            <span asp-validation-for="@Model[i].CategorySpecificationId"
+                data-valmsg-for="@categorySpecificationIdName" class="d-block"></span>
+            <input type="text" class="form-control" readonly="" name="@titleName"
+                   placeholder="@Model[i].Title" value="@Model[i].Title"/>
+            <label class="mt-5px ml-3px" style="display: @(isImportant ? null : "none")">
+              @(isImportant ? "ویژگی مهم" : null)
+            </label>
+            <label class="mt-5px">@(isOptional ? null : "(اجباری)")</label>
+          </div>
+          <div class="col-9 pl-0">
+            <textarea type="text" class="form-control" name="@descriptionName" asp-for="@Model[i].Description"
+                    placeholder="@Html.DisplayNameFor(m => Model[i].Description)" data-otherPropertyGuid="@guid"></textarea>
+            <span asp-validation-for="@Model[i].Description" data-valmsg-for="@descriptionName"
+                class="d-block"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    @if (i != Model.Count - 1)
+    {
+      <hr>
+    }
+  </div>
+}

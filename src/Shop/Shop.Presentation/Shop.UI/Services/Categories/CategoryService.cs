@@ -48,4 +48,11 @@ public class CategoryService : BaseService, ICategoryService
         var result = await GetFromJsonAsync<List<CategoryDto>>("GetAll");
         return result.Data;
     }
+
+    public async Task<List<QueryCategorySpecificationDto>> GetSpecificationsByCategoryId(long categoryId)
+    {
+        var result = await GetFromJsonAsync<List<QueryCategorySpecificationDto>>
+            ($"GetSpecificationsByCategoryId/{categoryId}");
+        return result.Data;
+    }
 }

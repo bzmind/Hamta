@@ -7,6 +7,7 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+	  <Content Remove="Pages\Admin\Products\_CategorySpecifications.cshtml" />
 	  <Content Remove="wwwroot\admin\images\ico\favicon.ico" />
 	</ItemGroup>
 
@@ -29,7 +30,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<None Include="Pages\Admin\Products\_CategorySpecifications.cshtml" />
 		<None Include="wwwroot\admin\images\ico\favicon.ico" />
+		<None Include="wwwroot\admin\vendors\css\editors\quill\Downloads\Close.svg" />
+		<None Include="wwwroot\admin\vendors\css\editors\quill\Downloads\values" />
 		<None Include="wwwroot\favicon.ico" />
 	</ItemGroup>
 

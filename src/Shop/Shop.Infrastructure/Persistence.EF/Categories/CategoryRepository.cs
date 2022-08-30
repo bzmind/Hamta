@@ -14,8 +14,7 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 
     public Category? GetCategoryBySlug(string slug)
     {
-        var category = Context.Categories.FirstOrDefault(category => category.Slug == slug);
-        return category ?? null;
+        return Context.Categories.FirstOrDefault(category => category.Slug == slug);
     }
 
     public async Task<bool> RemoveCategory(long categoryId)

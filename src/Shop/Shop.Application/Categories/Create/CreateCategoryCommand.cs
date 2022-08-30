@@ -36,7 +36,7 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
 
             request.Specifications.ToList().ForEach(specification =>
                 specifications.Add(new CategorySpecification(category.Id, specification.Title,
-                    specification.IsImportantFeature)));
+                    specification.IsImportant, specification.IsOptional)));
 
             category.SetSpecifications(specifications);
         }

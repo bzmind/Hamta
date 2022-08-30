@@ -1,5 +1,7 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
+using Common.Application.Utility.Validation;
+using FluentValidation;
 using Shop.Domain.ProductAggregate.Repository;
 
 namespace Shop.Application.Products.Remove;
@@ -24,5 +26,14 @@ public class RemoveProductCommandHandler : IBaseCommandHandler<RemoveProductComm
 
         await _productRepository.SaveAsync();
         return OperationResult.Success();
+    }
+}
+
+public class RemoveProductCommandValidator : AbstractValidator<RemoveProductCommand>
+{
+    public RemoveProductCommandValidator()
+    {
+        RuleFor(r => r.ProductId)
+            .NotEmpty().WithMessage(ValidationMessages.ProductIdRequired);
     }
 }

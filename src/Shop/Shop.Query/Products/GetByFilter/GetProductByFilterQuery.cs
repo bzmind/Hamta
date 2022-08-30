@@ -57,22 +57,37 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
 
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"SELECT DISTINCT
-                        p.Id, p.CategoryId, p.Name, p.EnglishName, p.Slug, p.Description, p.CreationDate,
-						pi.Name AS MainImage,
-                        i.Price AS LowestInventoryPrice, i.Quantity AS AllQuantityInStock,
-						AVG(ps.Value) OVER(PARTITION BY p.Id) AS AverageScore,
+                    	p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate,
+                    	AVG(ps.Value) OVER (PARTITION by p.Id) AS AverageScore,
+                        i.Id AS InventoryId,
+                    	MIN(i.Price) OVER (PARTITION by p.Id) AS LowestInventoryPrice,
+                    	MAX(i.Price) OVER (PARTITION by p.Id) AS HighestInventoryPrice,
+                    	q.Quantity AS AllQuantityInStock,
                         c.Id, c.Name, c.Code, c.CreationDate
-                    FROM {_dapperContext.Products} p
-                    LEFT JOIN {_dapperContext.ProductImages} pi
-                        ON p.Id = pi.ProductId
+                    FROM
+                    	(
+                    		SELECT DISTINCT *
+                    		FROM {_dapperContext.Products}
+		                    ORDER BY CreationDate DESC
+                    		OFFSET @skip ROWS
+                    		FETCH NEXT @take ROWS ONLY
+                    	) AS p
                     LEFT JOIN {_dapperContext.ProductScores} ps
-                        ON p.Id = ps.ProductId
+                    	ON p.Id = ps.ProductId
                     LEFT JOIN {_dapperContext.SellerInventories} i
-                        ON p.Id = i.ProductId
+                    	ON p.Id = i.ProductId
                     LEFT JOIN {_dapperContext.Colors} c
-                        ON i.ColorId = c.Id
-                    WHERE 1 = 1 {conditions} ORDER BY p.Id offset @skip ROWS FETCH NEXT @take ROWS ONLY";
-
+                    	ON c.Id = i.ColorId
+                    LEFT JOIN
+                    	(
+                    		SELECT ProductId, SUM(Quantity) AS Quantity
+                    		FROM seller.Inventories
+                    		GROUP BY ProductId
+                    	) AS q
+                    	ON p.Id = q.ProductId
+                    WHERE 1 = 1 {conditions}
+                    ORDER BY p.CreationDate DESC";
+        
         var result = await connection
             .QueryAsync<ProductFilterDto, Color, ProductFilterDto>(sql, (productFilterDto, color) =>
             {
@@ -83,12 +98,13 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
         var groupedQueryResult = result.GroupBy(p => p.Id).Select(productGroup =>
         {
             var firstItem = productGroup.First();
-            var colorList = productGroup.Select(p => p.Colors.Single()).DistinctBy(c => c.Code).ToList();
+            var colorList = productGroup.Select(p => p.Colors.FirstOrDefault())
+                .DistinctBy(c => c?.Code).OrderBy(c => c?.Id).ToList();
             firstItem.Colors = colorList;
-            firstItem.LowestInventoryPrice = productGroup.OrderBy(p => p.LowestInventoryPrice).First().LowestInventoryPrice;
-            firstItem.HighestInventoryPrice = productGroup.OrderBy(p => p.LowestInventoryPrice).Last().LowestInventoryPrice;
-            firstItem.AllQuantityInStock = productGroup.Sum(p => p.AllQuantityInStock);
-            firstItem.AverageScore = productGroup.Select(p => p.AverageScore).First();
+            firstItem.LowestInventoryPrice = productGroup.First().LowestInventoryPrice;
+            firstItem.HighestInventoryPrice = productGroup.First().HighestInventoryPrice;
+            firstItem.AllQuantityInStock = productGroup.First().AllQuantityInStock;
+            firstItem.AverageScore = productGroup.First().AverageScore;
             return firstItem;
         }).ToList();
 

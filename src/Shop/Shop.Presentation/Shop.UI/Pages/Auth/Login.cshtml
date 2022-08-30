@@ -1,4 +1,4 @@
-﻿@page "{handler?}"
+﻿@page "/login/{handler?}"
 @model LoginModel
 @{
     Layout = "Shared/Layouts/_AuthLayout";
@@ -13,7 +13,7 @@
 <div class="auth-form-title border-0">
     @ViewData["Title"]
 </div>
-<form method="post" asp-page="Login" onsubmit="return submitThisFormWithAjax(event, 'auth-form')">
+<form method="post" asp-page="Login" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '#auth-form')">
     <div class="form-row-title mb-3">
         <h4 class="font-weight-normal fa-1x">لطفا شماره موبایل یا ایمیل خود را وارد کنید</h4>
     </div>

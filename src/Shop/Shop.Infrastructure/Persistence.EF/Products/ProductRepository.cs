@@ -11,11 +11,15 @@ public class ProductRepository : BaseRepository<Product>, IProductRepository
     {
     }
 
+    public Product? GetProductBySlug(string slug)
+    {
+        return Context.Products.FirstOrDefault(product => product.Slug == slug);
+    }
+
     public async Task<bool> RemoveProduct(long productId)
     {
         var result = await Context.Products
             .Where(p => p.Id == productId)
-            .AsTracking()
             .GroupJoin(
                 Context.Sellers.SelectMany(s => s.Inventories),
                 product => product.Id,

@@ -17,10 +17,11 @@ internal static class ProductListMapper
         {
             Id = product.Id,
             CreationDate = product.CreationDate,
+            InventoryId = inventory.Id,
             Name = product.Name,
             EnglishName = product.EnglishName,
             Slug = product.Slug,
-            MainImage = product.MainImage.Name,
+            MainImage = product.MainImage,
             LowestInventoryPrice = inventory.Price.Value,
             AverageScore = product.AverageScore,
             AllQuantityInStock = inventory.Quantity,

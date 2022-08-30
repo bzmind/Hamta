@@ -20,45 +20,51 @@ public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery,
     public async Task<ProductDto?> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
         var productDtos =
-            await _shopContext.Products
-                .Where(product => product.Id == request.ProductId)
-                .Join(
+            await _shopContext.Products.Where(product => product.Id == request.ProductId)
+                .GroupJoin(
                     _shopContext.Categories,
                     product => product.CategoryId,
                     category => category.Id,
-                    (product, category) => new
-                    {
-                        Product = product,
-                        Category = category
-                    })
-                .Join(
+                    (product, categories) => new
+                    { Product = product, Categories = categories })
+                .SelectMany(
+                    tables => tables.Categories.DefaultIfEmpty(),
+                    (tables, category) => new
+                    { tables.Product, Category = category })
+                .GroupJoin(
                     _shopContext.Sellers.SelectMany(seller => seller.Inventories),
                     tables => tables.Product.Id,
                     inventory => inventory.ProductId,
+                    (tables, inventories) => new
+                    { tables.Product, tables.Category, Inventories = inventories })
+                .SelectMany(
+                    tables => tables.Inventories.DefaultIfEmpty(),
                     (tables, inventory) => new
-                    {
-                        tables.Product,
-                        tables.Category,
-                        Inventory = inventory
-                    })
-                .Join(
+                    { tables.Product, tables.Category, Inventory = inventory })
+                .GroupJoin(
                     _shopContext.Colors,
                     tables => tables.Inventory.ColorId,
                     color => color.Id,
-                    (tables, color) => 
-                        tables.Product.MapToProductDto(tables.Category, tables.Inventory, color))
+                    (tables, colors) => new
+                    { tables.Product, tables.Inventory, tables.Category, Colors = colors })
+                .SelectMany(
+                    tables => tables.Colors.DefaultIfEmpty(),
+                    (tables, color) => new
+                    { tables.Product, tables.Inventory, tables.Category, Color = color })
                 .ToListAsync(cancellationToken);
 
-        var groupedProduct = productDtos.GroupBy(productDto => productDto.Id).Select(productGroup =>
-        {
-            var firstItem = productGroup.First();
-            firstItem.GalleryImages = productGroup.Select(p => p.GalleryImages).First();
-            firstItem.Specifications = productGroup.Select(p => p.Specifications).First();
-            firstItem.CategorySpecifications = productGroup.Select(p => p.CategorySpecifications).First();
-            firstItem.ExtraDescriptions = productGroup.Select(p => p.ExtraDescriptions).First();
-            firstItem.ProductInventories = productGroup.Select(p => p.ProductInventories).First();
-            return firstItem;
-        }).Single();
+        var groupedProduct = productDtos
+            .Select(t => t.Product.MapToProductDto(t.Category, t.Inventory, t.Color))
+            .GroupBy(product => product.Id).Select(grouping =>
+            {
+                var firstItem = grouping.First();
+                firstItem.GalleryImages = grouping
+                    .Select(p => p.GalleryImages.OrderBy(gi => gi.Sequence).ToList()).First();
+                firstItem.Specifications = grouping.Select(p => p.Specifications).First();
+                firstItem.CategorySpecifications = grouping.Select(p => p.CategorySpecifications).First();
+                firstItem.Inventories = grouping.Select(p => p.Inventories).First();
+                return firstItem;
+            }).Single();
 
         return groupedProduct;
     }

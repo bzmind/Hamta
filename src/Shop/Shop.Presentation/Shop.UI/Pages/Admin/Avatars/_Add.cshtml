@@ -1,12 +1,16 @@
 ﻿@model Shop.API.ViewModels.Avatars.CreateAvatarViewModel
+@{
+  var guid = Guid.NewGuid();
+}
 
-<form method="post" asp-page="Index" onsubmit="return submitThisFormWithAjax(event, '')">
+<form method="post" asp-page="Index" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
   <div class="form-group d-flex align-items-center justify-content-center flex-column">
     <label asp-for="@Model.AvatarFile">انتخاب آواتار</label>
     <label class="custom-file avatar-file-label" for="@Model.AvatarFile">
+      <img data-img-preview="@guid" alt="avatar" style="display: none; z-index: 1;"
+           src="/assets/images/avatar/avatar.png" />
       <i class="bx bxs-camera"></i>
-      <img class="avatar-preview" alt="avatar" style="display: none" src="/assets/images/avatar/avatar.png"/>
-      <input type="file" class="custom-file-input avatar-file-input" asp-for="@Model.AvatarFile">
+      <input type="file" class="custom-file-input" asp-for="@Model.AvatarFile" data-img-preview="@guid">
     </label>
     <span asp-validation-for="@Model.AvatarFile" class="d-block"></span>
   </div>

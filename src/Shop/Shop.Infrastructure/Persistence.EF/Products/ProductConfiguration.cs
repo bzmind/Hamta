@@ -28,8 +28,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .IsRequired()
             .HasMaxLength(100);
 
-        builder.Property(product => product.Description)
+        builder.Property(product => product.Introduction)
             .HasMaxLength(2000);
+
+        builder.Property(product => product.Review)
+            .HasMaxLength(10000);
 
         builder.OwnsMany(product => product.Scores, options =>
         {
@@ -40,22 +43,9 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
                 .HasColumnType("float(2,1)");
         });
 
-        builder.OwnsOne(product => product.MainImage, options =>
-        {
-            options.ToTable("Images", "product");
-
-            options.HasKey(mainImage => mainImage.Id);
-
-            options.Property(mainImage => mainImage.Id)
-                .UseIdentityColumn(1);
-
-            options.Property(mainImage => mainImage.CreationDate)
-                .HasColumnType("datetime2(0)");
-
-            options.Property(mainImage => mainImage.Name)
-                .IsRequired()
-                .HasMaxLength(100);
-        });
+        builder.Property(product => product.MainImage)
+            .IsRequired()
+            .HasMaxLength(100);
 
         builder.OwnsMany(product => product.GalleryImages, options =>
         {
@@ -72,48 +62,47 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             options.Property(galleryImage => galleryImage.Name)
                 .IsRequired()
                 .HasMaxLength(100);
+
+            options.Property(galleryImage => galleryImage.Sequence)
+                .IsRequired();
         });
 
-        builder.OwnsMany(product => product.CustomSpecifications, options =>
+        builder.OwnsMany(product => product.Specifications, options =>
         {
-            options.ToTable("CustomSpecifications", "product");
+            options.ToTable("Specifications", "product");
 
-            options.HasKey(customSpec => customSpec.Id);
+            options.HasKey(specification => specification.Id);
 
-            options.Property(customSpec => customSpec.Id)
+            options.Property(specification => specification.Id)
                 .UseIdentityColumn(1);
 
-            options.Property(customSpec => customSpec.CreationDate)
+            options.Property(specification => specification.CreationDate)
                 .HasColumnType("datetime2(0)");
 
-            options.Property(customSpec => customSpec.Title)
+            options.Property(specification => specification.Title)
                 .IsRequired()
                 .HasMaxLength(50);
 
-            options.Property(customSpec => customSpec.Description)
+            options.Property(specification => specification.Description)
                 .IsRequired()
                 .HasMaxLength(300);
         });
 
-        builder.OwnsMany(product => product.ExtraDescriptions, options =>
+        builder.OwnsMany(product => product.CategorySpecifications, options =>
         {
-            options.ToTable("ExtraDescriptions", "product");
+            options.ToTable("CategorySpecifications", "product");
 
-            options.HasKey(extraDescription => extraDescription.Id);
+            options.HasKey(specification => specification.Id);
 
-            options.Property(extraDescription => extraDescription.Id)
+            options.Property(specification => specification.Id)
                 .UseIdentityColumn(1);
 
-            options.Property(extraDescription => extraDescription.CreationDate)
+            options.Property(specification => specification.CreationDate)
                 .HasColumnType("datetime2(0)");
 
-            options.Property(extraDescription => extraDescription.Title)
+            options.Property(specification => specification.Description)
                 .IsRequired()
-                .HasMaxLength(100);
-
-            options.Property(extraDescription => extraDescription.Description)
-                .IsRequired()
-                .HasMaxLength(2000);
+                .HasMaxLength(300);
         });
     }
 }

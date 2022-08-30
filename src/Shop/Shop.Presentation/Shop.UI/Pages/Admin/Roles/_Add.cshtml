@@ -1,7 +1,7 @@
 ﻿@using Shop.Domain.RoleAggregate
 @model Shop.API.ViewModels.Roles.CreateRoleViewModel
 
-<form method="post" asp-page="Index" onsubmit="return submitThisFormWithAjax(event, '')">
+<form method="post" asp-page="Index" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
   @Html.EditorFor(m => m.Title)
   <label asp-for="@Model.Permissions"></label>
   <div class="form-group">

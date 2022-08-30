@@ -65,9 +65,9 @@ public class LoginModel : BaseRazorPage
         TempData["EmailOrPhone"] = EmailOrPhone;
 
         if (result.Data.NextStep is NextSteps.Register)
-            return await AjaxSuccessHtmlResultAsync("_Register", new RegisterUserViewModel());
+            return await AjaxHtmlSuccessResultAsync("_Register", new RegisterUserViewModel());
 
-        return await AjaxSuccessHtmlResultAsync("_Password", new PasswordViewModel());
+        return await AjaxHtmlSuccessResultAsync("_Password", new PasswordViewModel());
     }
 
     public async Task<IActionResult> OnPostPassword(PasswordViewModel viewModel)

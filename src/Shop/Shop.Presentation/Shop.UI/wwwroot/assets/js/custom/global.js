@@ -3,7 +3,12 @@
   if ($(".pace"))
     $(".pace").remove();
   checkForAlertCookies();
-  initializeScripts();
+  $("form").each(function ()
+  {
+    if ($(this).data("validator"))
+      $(this).data("validator").settings.ignore = ".quill-editor-container *";
+  });
+  reinitializeScripts();
 });
 
 function setupPasswordInputsVisibilityToggle()
@@ -105,7 +110,7 @@ function removeAlert(delay)
   }, delay);
 }
 
-function submitThisFormWithAjax(e, elementIdToReplaceInnerHtml)
+function submitFormWithAjaxAndReplaceElement(e, elementSelector)
 {
   e.preventDefault();
   const form = $(e.target);
@@ -118,17 +123,8 @@ function submitThisFormWithAjax(e, elementIdToReplaceInnerHtml)
   sendAjaxPost(url, formData).then(function (result)
   {
     checkResult(result);
-    result = JSON.parse(result);
-
-    let replaceElement;
-    if (elementIdToReplaceInnerHtml !== "")
-      replaceElement = $(`#${elementIdToReplaceInnerHtml}`);
-
-    if (result.IsHtml !== true || replaceElement == null)
-      return;
-    replaceElement.html(result.Data);
-
-    initializeScripts();
+    replaceElementWithAjaxResult(elementSelector, result);
+    reinitializeScripts();
   });
 
   return false;
@@ -174,19 +170,25 @@ function checkResult(result)
     window.location.replace(result.RedirectPath);
 }
 
-function initializeScripts()
-{
-  $.validator.unobtrusive.parse(document);
-  initializeElementsScripts();
-  initializeSelect2();
+function reinitializeScripts() {
+  reinitializeJqueryUnobtrusive();
+  reinitializeElementsScripts();
+  reinitializeSelect2();
 }
 
-function initializeElementsScripts()
+function reinitializeJqueryUnobtrusive()
+{
+  $("form").removeData("validator").removeData("unobtrusiveValidation");
+  $.validator.unobtrusive.parse(document);
+}
+
+function reinitializeElementsScripts()
 {
   setupPasswordInputsVisibilityToggle();
-  showImagePreview();
   triggerSelect2ValidationOnChange();
-  //triggerInputsValidationOnChange();
+  triggerFileInputsValidationOnChange();
+  avatarInputChangeListener();
+  setupEventListeners();
 }
 
 function triggerSelect2ValidationOnChange()
@@ -197,15 +199,15 @@ function triggerSelect2ValidationOnChange()
   });
 }
 
-//function triggerInputsValidationOnChange()
-//{
-//  $("input").on("input", function ()
-//  {
-//    $(this).valid();
-//  });
-//}
+function triggerFileInputsValidationOnChange()
+{
+  $("input[type='file']").change(function ()
+  {
+    $(this).valid();
+  });
+}
 
-function initializeSelect2()
+function reinitializeSelect2()
 {
   try
   {
@@ -222,6 +224,14 @@ function initializeSelect2()
   {
     return;
   }
+}
+
+function avatarInputChangeListener()
+{
+  $(".avatar-file-label input").change(function ()
+  {
+    $(".avatar-file-label").css("border-color", "#5a8dee");
+  });
 }
 
 function openModal(url, modalTitle, modalSize)
@@ -256,7 +266,7 @@ function openModal(url, modalTitle, modalSize)
       $(`#${modalName} .modal-dialog`).removeClass("modal-lg modal-xl modal-sm modal-full");
       $(`#${modalName} .modal-dialog`).addClass(modalSize);
 
-      initializeScripts();
+      reinitializeScripts();
     }
   });
 }
@@ -289,19 +299,38 @@ function sendAjaxPostWithRouteData(urlWithRouteData)
   });
 }
 
-function showImagePreview()
+function sendAjaxGetWithRouteData(urlWithRouteData)
 {
-  $(".avatar-file-input").change(function ()
+  return new Promise(function (resolve)
   {
-    const file = $(this).prop("files")[0];
-
-    if (file)
+    $.ajax({
+      url: urlWithRouteData,
+      type: "GET",
+      success: function (result)
+      {
+        resolve(result);
+      }
+    }).always(() =>
     {
-      $(".avatar-preview").attr("src", URL.createObjectURL(file));
-      $(".avatar-file-label").css("border-color", "#5a8dee");
-      $(".avatar-file-label i").remove();
-      $(".avatar-preview").show();
-      URL.revokeObjectURL(file);
-    }
+      checkForAlertCookies();
+    });
   });
+}
+
+function replaceElementWithAjaxResult(elementSelector, result)
+{
+  result = JSON.parse(result);
+  const replaceElement = $(elementSelector);
+  if (result.IsHtml !== true || replaceElement == null)
+    return;
+  replaceElement.html(result.Data);
+}
+
+function prependAjaxResultToElement(elementSelector, result)
+{
+  result = JSON.parse(result);
+  const replaceElement = $(elementSelector);
+  if (result.IsHtml !== true || replaceElement == null)
+    return;
+  replaceElement.prepend(result.Data);
 }

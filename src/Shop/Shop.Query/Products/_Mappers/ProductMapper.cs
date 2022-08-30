@@ -10,12 +10,12 @@ namespace Shop.Query.Products._Mappers;
 internal static class ProductMapper
 {
     public static ProductDto? MapToProductDto(this Product product, Category category,
-        SellerInventory sellerInventory, Color color)
+        SellerInventory inventory, Color color)
     {
         if (product == null)
             return null;
 
-        return new ProductDto
+        var productDto = new ProductDto
         {
             Id = product.Id,
             CreationDate = product.CreationDate,
@@ -23,29 +23,32 @@ internal static class ProductMapper
             Name = product.Name,
             EnglishName = product.EnglishName,
             Slug = product.Slug,
-            Description = product.Description,
+            Introduction = product.Introduction,
+            Review = product.Review,
             AverageScore = product.AverageScore,
-            MainImage = product.MainImage.Name,
+            MainImage = product.MainImage,
             GalleryImages = product.GalleryImages.ToList().MapToProductImageDto(),
-            Specifications = product.CustomSpecifications.ToList().MapToQueryProductSpecificationDto(),
-            CategorySpecifications = category.Specifications.ToList().MapToQueryCategorySpecificationDto(),
-            ExtraDescriptions = product.ExtraDescriptions.ToList().MapToQueryExtraDescriptionDto(),
-            ProductInventories = new List<ProductInventoryDto>
-            {
-                new()
-                {
-                    Id = sellerInventory.Id,
-                    CreationDate = sellerInventory.CreationDate,
-                    ProductId = sellerInventory.Id,
-                    Quantity = sellerInventory.Quantity,
-                    Price = sellerInventory.Price.Value,
-                    ColorName = color.Name,
-                    ColorCode = color.Code,
-                    IsAvailable = sellerInventory.IsAvailable,
-                    DiscountPercentage = sellerInventory.DiscountPercentage,
-                    IsDiscounted = sellerInventory.IsDiscounted
-                }
-            }
+            Specifications = product.Specifications.ToList().MapToQueryProductSpecificationDto(),
+            CategorySpecifications = product.CategorySpecifications
+                .ToList().MapToQueryProductCategorySpecificationDto(),
+            Inventories = new List<ProductInventoryDto>()
         };
+
+        if (inventory != null)
+            productDto.Inventories.Add(new()
+            {
+                Id = inventory.Id,
+                CreationDate = inventory.CreationDate,
+                ProductId = inventory.Id,
+                Quantity = inventory.Quantity,
+                Price = inventory.Price.Value,
+                ColorName = color.Name,
+                ColorCode = color.Code,
+                IsAvailable = inventory.IsAvailable,
+                DiscountPercentage = inventory.DiscountPercentage,
+                IsDiscounted = inventory.IsDiscounted
+            });
+
+        return productDto;
     }
 }

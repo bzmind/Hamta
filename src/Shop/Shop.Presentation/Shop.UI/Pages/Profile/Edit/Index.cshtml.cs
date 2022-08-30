@@ -110,15 +110,15 @@ public class IndexModel : BaseRazorPage
         }
 
         if (result.Data == false)
-            return await AjaxSuccessHtmlResultAsync("_NotSubscribedToNewsletter", null);
+            return await AjaxHtmlSuccessResultAsync("_NotSubscribedToNewsletter", null);
 
-        return await AjaxSuccessHtmlResultAsync("_SubscribedToNewsletter", null);
+        return await AjaxHtmlSuccessResultAsync("_SubscribedToNewsletter", null);
     }
 
     public async Task<IActionResult> OnGetShowAvatarsPage()
     {
         var avatars = await _avatarService.GetAll();
-        return await AjaxSuccessHtmlResultAsync("_AvatarsModal", avatars);
+        return await AjaxHtmlSuccessResultAsync("_AvatarsModal", avatars);
     }
 
     public async Task<IActionResult> OnPostSetAvatar(long avatarId)

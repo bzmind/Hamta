@@ -6,5 +6,6 @@ public class QueryCategorySpecificationDto : BaseDto
 {
     public long CategoryId { get; set; }
     public string Title { get; set; }
-    public bool IsImportantFeature { get; set; }
+    public bool IsImportant { get; set; }
+    public bool IsOptional { get; set; }
 }

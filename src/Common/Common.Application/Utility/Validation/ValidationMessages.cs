@@ -8,6 +8,22 @@ public static class ValidationMessages
     public const string MinCharactersLength = "تعداد کاراکتر های وارد شده کمتر از حد مجاز است";
 
     public const string IdRequired = "لطفا آیدی را وارد کنید";
+    public const string ProductIdRequired = "لطفا آیدی محصول را وارد کنید";
+    public const string ProductMainImageIdRequired = "لطفا آیدی عکس اصلی محصول را وارد کنید";
+    public const string ProductGalleryImageIdRequired = "لطفا آیدی عکس گالری محصول را وارد کنید";
+    public const string CategoryIdRequired = "لطفا آیدی دسته‌بندی را وارد کنید";
+    public const string CategorySpecificationIdRequired = "لطفا آیدی مشخصات دسته‌بندی را وارد کنید";
+    public const string UserIdRequired = "لطفا آیدی کاربر را وارد کنید";
+    public const string UserAddressIdRequired = "لطفا آیدی آدرس کاربر را وارد کنید";
+    public const string RoleIdRequired = "لطفا آیدی نقش را وارد کنید";
+    public const string OrderIdRequired = "لطفا آیدی سفارش را وارد کنید";
+    public const string AvatarIdRequired = "لطفا آیدی آواتار را وارد کنید";
+    public const string ColorIdRequired = "لطفا آیدی رنگ را وارد کنید";
+    public const string CommentIdRequired = "لطفا آیدی نظر را وارد کنید";
+    public const string QuestionIdRequired = "لطفا آیدی سوال را وارد کنید";
+    public const string SellerIdRequired = "لطفا آیدی فروشنده را وارد کنید";
+    public const string SellerInventoryIdRequired = "لطفا آیدی انبار فروشنده را وارد کنید";
+    public const string ShippingIdRequired = "لطفا آیدی روش ارسال را وارد کنید";
     public const string NameRequired = "لطفا نام را وارد کنید";
     public const string FamilyNameRequired = "لطفا نام خانوادگی را وارد کنید";
     public const string FullNameRequired = "لطفا نام و نام خانوادگی را وارد کنید";
@@ -19,9 +35,13 @@ public static class ValidationMessages
     public const string ConfirmPasswordRequired = "لطفا تکرار رمز عبور را وارد کنید";
     public const string ConfirmNewPasswordRequired = "لطفا تکرار رمز عبور جدید را وارد کنید";
     public const string EmailOrPhoneRequired = "لطفا شماره موبایل یا ایمیل را وارد کنید";
+    public const string CategoryRequired = "لطفا دسته‌بندی را وارد کنید";
+    public const string CategorySpecificationRequired = "لطفا مشخصات دسته‌بندی را وارد کنید";
     public const string GenderRequired = "لطفا جنسیت را انتخاب کنید";
     public const string AvatarRequired = "لطفا عکس آواتار را وارد کنید";
     public const string TitleRequired = "لطفا عنوان را وارد کنید";
+    public const string IntroductionRequired = "لطفا متن معرفی را وارد کنید";
+    public const string ReviewRequired = "لطفا متن بررسی تخصصی را وارد کنید";
     public const string DescriptionRequired = "لطفا توضیحات را وارد کنید";
     public const string SlugRequired = "لطفا اسلاگ را وارد کنید";
     public const string ColorNameRequired = "لطفا نام رنگ را وارد کنید";
@@ -56,6 +76,8 @@ public static class ValidationMessages
     public const string InvalidImage = "عکس نامعتبر است";
     public const string InvalidTitle = "عنوان نامعتبر است";
     public const string InvalidDescription = "توضیحات نامعتبر است";
+    public const string InvalidIntroduction = "متن معرفی نامعتبر است";
+    public const string InvalidReview = "متن بررسی تخصصی نامعتبر است";
     public const string InvalidColorName = "نام رنگ نامعتبر است";
     public const string InvalidColorCode = "کد رنگ نامعتبر است";
     public const string InvalidCommentRecommendation = "پیشنهاد نامعتبر است";

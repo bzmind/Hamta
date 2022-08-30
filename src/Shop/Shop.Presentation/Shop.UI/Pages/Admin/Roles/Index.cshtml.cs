@@ -42,7 +42,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowAddPage()
     {
-        return await AjaxSuccessHtmlResultAsync("_Add", new CreateRoleViewModel());
+        return await AjaxHtmlSuccessResultAsync("_Add", new CreateRoleViewModel());
     }
 
     public async Task<IActionResult> OnPostEditRole(EditRoleViewModel model)
@@ -66,7 +66,7 @@ public class IndexModel : BaseRazorPage
         }
 
         var model = _mapper.Map<EditRoleViewModel>(role);
-        return await AjaxSuccessHtmlResultAsync("_Edit", model);
+        return await AjaxHtmlSuccessResultAsync("_Edit", model);
     }
 
     public async Task<IActionResult> OnPostRemoveRole(long roleId)

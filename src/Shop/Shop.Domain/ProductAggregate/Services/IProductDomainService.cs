@@ -2,5 +2,5 @@
 
 public interface IProductDomainService
 {
-    bool IsDuplicateSlug(string slug);
+    bool IsDuplicateSlug(long id, string slug);
 }

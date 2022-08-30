@@ -14,4 +14,5 @@ public interface ICategoryService
     Task<CategoryDto?> GetById(long categoryId);
     Task<List<CategoryDto>> GetByParentId(long parentId);
     Task<List<CategoryDto>> GetAll();
+    Task<List<QueryCategorySpecificationDto>> GetSpecificationsByCategoryId(long categoryId);
 }

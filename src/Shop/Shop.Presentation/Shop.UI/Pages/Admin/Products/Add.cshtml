@@ -1,40 +1,46 @@
-﻿@page
+﻿@page "{handler?}"
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Shop.Query.Categories._DTOs
 @using Shop.UI.Services.Categories
+@using Shop.UI.Setup.ServerSide
 @using Shop.UI.TagHelpers
 @model Shop.UI.Pages.Admin.Products.AddModel
 @inject ICategoryService CategoryService
 @{
   ViewData["Title"] = "افزودن محصول";
-  var id = Guid.NewGuid();
   var categories = await CategoryService.GetAll();
 
   const int textIndentationDefaultSize = 15;
   var textIndentation = textIndentationDefaultSize;
+  const int rightSidePadding = 0;
   var depth = 1;
   async Task AddSubCategories(CategoryDto parentCategory)
   {
+    if (depth <= 0)
+    {
+      depth++;
+      textIndentation += textIndentationDefaultSize;
+    }
     for (var i = 0; i < parentCategory.SubCategories.Count; i++)
     {
       var newId = Guid.NewGuid();
       var subCategory = parentCategory.SubCategories[i];
       var hasSubCategory = subCategory.SubCategories.Any();
       <tr class="children" style="display: none;" data-depth="@depth" data-categoryId="@subCategory.Id"
-      data-parentCategoryId="@parentCategory.Id"
-      data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
+      data-parentCategoryId="@parentCategory.Id" data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
         <td style="text-indent: @($"{textIndentation - 8}px");" class="pl-0 pr-0">
           @for (var t = 0; t < depth; t++)
           {
             <span class="indentation-lines"
-            style="right: calc(0rem + @($"{t * textIndentationDefaultSize}px"))"></span>
+            style="right: @($"{t * textIndentationDefaultSize + rightSidePadding}px")"></span>
           }
           <div class="d-inline-flex align-items-center">
             <label class="radio">
-              <input type="radio" class="radio-primary" name="avatarId" id="@newId"
-                 value="@subCategory.Id" />
+              <input type="radio" class="radio-primary category-radio" id="@newId"
+               asp-for="@Model.CreateProductViewModel.CategoryId" value="@subCategory.Id" />
               <label class="radio-circle" for="@newId"></label>
             </label>
+            <span asp-validation-for="@Model.CreateProductViewModel.CategoryId"></span>
             <span class="category-title" style="text-indent: 0; margin-right: 6px;">
               @subCategory.Title
               @if (hasSubCategory)
@@ -54,6 +60,7 @@
         {
           depth--;
           textIndentation = textIndentationDefaultSize * depth;
+          return;
         }
       }
       else if (i + 1 == parentCategory.SubCategories.Count)
@@ -63,48 +70,120 @@
         return;
       }
     }
-    depth++;
-    textIndentation += textIndentationDefaultSize;
   }
 }
 
 <h5 class="mb-1">@ViewData["Title"]</h5>
-<form method="post" class="card">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-4">
-        @Html.EditorFor(m => m.CreateProductViewModel.MainImage)
-      </div>
-      <div class="col-md-4">
-        <fieldset class="form-group">
-          <label asp-for="@Model.CreateProductViewModel.GalleryImages"></label>
-          <div class="custom-file">
-            <input type="file" multiple="" class="custom-file-input" id="@id"
-                   asp-for="@Model.CreateProductViewModel.GalleryImages">
-            <span asp-validation-for="@Model.CreateProductViewModel.GalleryImages" class="d-block"></span>
-            <label class="custom-file-label" for="@id">انتخاب فایل</label>
+<form method="post" enctype="multipart/form-data" id="productForm">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12 d-flex">
+          <div class="d-flex flex-column mainImageContainer">
+            <div class="d-flex align-items-center">
+              <label>@Html.DisplayNameFor(m => m.CreateProductViewModel.MainImage)</label>
+              @{
+                var guid = Guid.NewGuid();
+              }
+              <label class="btn-sm badge-pill bg-rgba-info text-info border-0">
+                <input asp-for="@Model.CreateProductViewModel.MainImage" type="file"
+                       data-img-preview="@guid" accept="image/*" />
+                انتخاب
+              </label>
+            </div>
+            <div class="mainImage">
+              <img alt="product-image" data-img-preview="@guid" style="display: none;" src="" />
+            </div>
+            <span asp-validation-for="@Model.CreateProductViewModel.MainImage"></span>
           </div>
-        </fieldset>
-      </div>
-      <div class="col-md-4">
-        @Html.EditorFor(m => m.CreateProductViewModel.Name)
-      </div>
-      <div class="col-md-4">
-        @Html.EditorFor(m => m.CreateProductViewModel.EnglishName)
-      </div>
-      <div class="col-md-4">
-        @Html.EditorFor(m => m.CreateProductViewModel.Slug)
-      </div>
-      <div class="col-md-12">
-        <div class="form-group">
-          <label asp-for="@Model.CreateProductViewModel.Description"></label>
-          <textarea id="ckeditor4" class="form-control" asp-for="@Model.CreateProductViewModel.Description"></textarea>
-          <span asp-validation-for="@Model.CreateProductViewModel.Description" class="d-block"></span>
+          <div class="galleryImagesContainer d-flex flex-column ml-1 w-100">
+            @{
+              var imgPreview = Guid.NewGuid();
+            }
+            <div class="d-flex align-items-center">
+              <label>@Html.DisplayNameFor(m => m.CreateProductViewModel.GalleryImages)</label>
+              <label class="btn-sm badge-pill bg-rgba-info text-info border-0" data-toggle="tooltip"
+                     data-placement="top" title="" data-original-title="جایگزین کردن همه‌ی عکس های کنونی">
+                <input asp-for="@Model.CreateProductViewModel.GalleryImages" type="file" multiple=""
+                       data-img-preview="@imgPreview" data-replace="" accept="image/*" />
+                انتخاب
+              </label>
+              <label class="btn-sm badge-pill bg-rgba-success text-success border-0" data-toggle="tooltip"
+                     data-placement="top" title="" data-original-title="اضافه کردن به عکس های کنونی">
+                <input hidden="" type="file" multiple="" data-add="" accept="image/*"
+                       data-img-preview="@imgPreview" />
+                اضافه کردن
+              </label>
+              <span asp-validation-for="@Model.CreateProductViewModel.GalleryImages"></span>
+            </div>
+            <div class="galleryImagesList" data-img-preview-list="@imgPreview">
+              @{
+                var imgGuid = Guid.NewGuid();
+              }
+              <div class="galleryImageItem" data-img-preview-item="" style="display: none">
+                <div class="imgOptions">
+                  <label class="btn-sm btn-info border-0 m-0">
+                    <input hidden="" type="file" data-img-preview="@imgGuid">
+                    <i class="bx bx-repost"></i>
+                  </label>
+                  <button type="button" class="btn-sm btn-danger border-0" onclick="deleteGalleryImage(event)">
+                    <i class="bx bx-trash"></i>
+                  </button>
+                </div>
+                <img style="display: none" data-img-preview="@imgGuid" alt="product-image" src="" data-img-name="" />
+                <span style="display: none">1</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="col-md-12">
-        <div class="form-group">
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          @Html.EditorFor(m => m.CreateProductViewModel.Name)
+        </div>
+        <div class="col-md-4">
+          @Html.EditorFor(m => m.CreateProductViewModel.EnglishName)
+        </div>
+        <div class="col-md-4">
+          @Html.EditorFor(m => m.CreateProductViewModel.Slug)
+        </div>
+        <div class="col-md-12">
+          <div class="form-group">
+            <label asp-for="@Model.CreateProductViewModel.Introduction"></label>
+            <partial name="Admin/Shared/_QuillToolbar" />
+            <div class="quill-editor-container" id="productIntroductionQuill">
+            </div>
+            <textarea id="productIntroduction" hidden="" class="form-control"
+                      asp-for="@Model.CreateProductViewModel.Introduction"></textarea>
+            <span asp-validation-for="@Model.CreateProductViewModel.Introduction" class="d-block"></span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <label asp-for="@Model.CreateProductViewModel.Review"></label>
+          <partial name="Admin/Shared/_QuillToolbar" />
+          <div class="quill-editor-container" id="productReviewQuill">
+          </div>
+          <textarea id="productReview" hidden="" class="form-control"
+                    asp-for="@Model.CreateProductViewModel.Review"></textarea>
+          <span asp-validation-for="@Model.CreateProductViewModel.Review" class="d-block"></span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
           <label>دسته بندی</label>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb category-breadcrumb">
+              <li class="breadcrumb-item">دسته‌بندی انتخاب نشده است</li>
+            </ol>
+          </nav>
           <fieldset class="position-relative has-icon-left category-search-box">
             <input type="text" class="form-control form-control-sm" id="category-search" placeholder="جستجو">
             <div class="form-control-position">
@@ -135,67 +214,41 @@
           </table>
         </div>
       </div>
-      <div class="col-md-12" data-repeater-container="">
-        <div class="form-group">
-          <label>@Html.DisplayNameFor(m => m.CreateProductViewModel.Specifications)</label>
-          <div data-repeater-list="">
-            <div data-repeater-item="">
-              <div class="row justify-content-between align-items-center">
-                <div class="col-11">
-                  @Html.EditorFor(m => m.CreateProductViewModel.Specifications)
-                </div>
-                <div class="col-1 d-flex justify-content-center">
-                  <button class="btn btn-icon rounded-circle btn-danger" data-repeater-remove="" type="button">
-                    <i class="bx bx-trash"></i>
-                  </button>
-                </div>
-              </div>
-              <hr>
-            </div>
-          </div>
-          <div class="form-group m-0">
-            <div class="col p-0">
-              <button class="btn btn-primary" data-repeater-create="" type="button">
-                <i class="bx bx-plus"></i>
-                افزودن
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-12" data-repeater-container="">
-        <div class="form-group">
-          <label>@Html.DisplayNameFor(m => m.CreateProductViewModel.ExtraDescriptions)</label>
-          <div data-repeater-list="">
-            <div data-repeater-item="">
-              <div class="row justify-content-between align-items-center">
-                <div class="col-11">
-                  @Html.EditorFor(m => m.CreateProductViewModel.ExtraDescriptions)
-                </div>
-                <div class="col-1 d-flex justify-content-center">
-                  <button class="btn btn-icon rounded-circle btn-danger" data-repeater-remove="" type="button">
-                    <i class="bx bx-trash"></i>
-                  </button>
-                </div>
-              </div>
-              <hr>
-            </div>
-          </div>
-          <div class="form-group m-0 mb-3">
-            <div class="col p-0">
-              <button class="btn btn-primary" data-repeater-create="" type="button">
-                <i class="bx bx-plus"></i>
-                افزودن
-              </button>
-            </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12">
+          <label>@Html.DisplayNameFor(m => m.CreateProductViewModel.CategorySpecifications)</label>
+          <div class="category-specifications">
+            @Html.EditorFor(m => m.CreateProductViewModel.CategorySpecifications)
           </div>
         </div>
       </div>
     </div>
-    <button type="submit" class="btn btn-success">
-      <i class="bx bx-check d-block d-sm-none"></i>
-      ایجاد
-    </button>
-    <cancel></cancel>
   </div>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-12" data-repeater-container="">
+          <label>@Html.DisplayNameFor(m => m.CreateProductViewModel.Specifications)</label>
+          <div data-repeater-list="">
+            @Html.EditorFor(m => m.CreateProductViewModel.Specifications)
+          </div>
+          <div class="col p-0">
+            <button class="btn btn-primary" data-repeater-create="" type="button">
+              <i class="bx bx-plus"></i>
+              افزودن
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    ایجاد
+  </button>
+  <cancel></cancel>
 </form>

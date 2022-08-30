@@ -1,7 +1,7 @@
 ﻿@using Shop.Domain.RoleAggregate
 @model Shop.API.ViewModels.Roles.EditRoleViewModel
 
-<form method="post" asp-page-handler="EditRole" onsubmit="return submitThisFormWithAjax(event, '')">
+<form method="post" asp-page-handler="EditRole" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
   @Html.HiddenFor(m => m.Id)
   @Html.EditorFor(m => m.Title)
   <div class="form-group">

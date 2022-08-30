@@ -12,6 +12,7 @@
     <Folder Include="Avatars\GetByGender\" />
     <Folder Include="Avatars\_Mappers\" />
     <Folder Include="Avatars\_DTOs\" />
+    <Folder Include="Categories\Specifications\" />
     <Folder Include="Colors\_Mappers\" />
     <Folder Include="Colors\_DTOs\" />
     <Folder Include="Comments\_Mappers\" />

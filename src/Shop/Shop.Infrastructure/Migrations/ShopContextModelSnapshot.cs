@@ -199,18 +199,27 @@ namespace Shop.Infrastructure.Migrations
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2(0)");
 
-                    b.Property<string>("Description")
-                        .HasMaxLength(2000)
-                        .HasColumnType("nvarchar(2000)");
-
                     b.Property<string>("EnglishName")
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Introduction")
+                        .HasMaxLength(2000)
+                        .HasColumnType("nvarchar(2000)");
+
+                    b.Property<string>("MainImage")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Review")
+                        .HasMaxLength(10000)
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Slug")
                         .IsRequired()
@@ -392,7 +401,10 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2(0)");
 
-                            b1.Property<bool>("IsImportantFeature")
+                            b1.Property<bool>("IsImportant")
+                                .HasColumnType("bit");
+
+                            b1.Property<bool>("IsOptional")
                                 .HasColumnType("bit");
 
                             b1.Property<string>("Title")
@@ -658,7 +670,39 @@ namespace Shop.Infrastructure.Migrations
 
             modelBuilder.Entity("Shop.Domain.ProductAggregate.Product", b =>
                 {
-                    b.OwnsMany("Shop.Domain.ProductAggregate.ProductImage", "GalleryImages", b1 =>
+                    b.OwnsMany("Shop.Domain.ProductAggregate.ProductCategorySpecification", "CategorySpecifications", b1 =>
+                        {
+                            b1.Property<long>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bigint");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
+
+                            b1.Property<long>("CategorySpecificationId")
+                                .HasColumnType("bigint");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2(0)");
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasMaxLength(300)
+                                .HasColumnType("nvarchar(300)");
+
+                            b1.Property<long>("ProductId")
+                                .HasColumnType("bigint");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ProductId");
+
+                            b1.ToTable("CategorySpecifications", "product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.OwnsMany("Shop.Domain.ProductAggregate.ProductGalleryImage", "GalleryImages", b1 =>
                         {
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
@@ -676,6 +720,9 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.Property<long>("ProductId")
                                 .HasColumnType("bigint");
+
+                            b1.Property<int>("Sequence")
+                                .HasColumnType("int");
 
                             b1.HasKey("Id");
 
@@ -687,71 +734,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasForeignKey("ProductId");
                         });
 
-                    b.OwnsOne("Shop.Domain.ProductAggregate.ProductImage", "MainImage", b1 =>
-                        {
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
-
-                            b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2(0)");
-
-                            b1.Property<string>("Name")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.Property<long>("ProductId")
-                                .HasColumnType("bigint");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("ProductId")
-                                .IsUnique();
-
-                            b1.ToTable("Images", "product");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.OwnsMany("Shop.Domain.ProductAggregate.ProductExtraDescription", "ExtraDescriptions", b1 =>
-                        {
-                            b1.Property<long>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("bigint");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<long>("Id"), 1L, 1);
-
-                            b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2(0)");
-
-                            b1.Property<string>("Description")
-                                .IsRequired()
-                                .HasMaxLength(2000)
-                                .HasColumnType("nvarchar(2000)");
-
-                            b1.Property<long>("ProductId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<string>("Title")
-                                .IsRequired()
-                                .HasMaxLength(100)
-                                .HasColumnType("nvarchar(100)");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("ProductId");
-
-                            b1.ToTable("ExtraDescriptions", "product");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.OwnsMany("Shop.Domain.ProductAggregate.ProductSpecification", "CustomSpecifications", b1 =>
+                    b.OwnsMany("Shop.Domain.ProductAggregate.ProductSpecification", "Specifications", b1 =>
                         {
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
@@ -779,7 +762,7 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.HasIndex("ProductId");
 
-                            b1.ToTable("CustomSpecifications", "product");
+                            b1.ToTable("Specifications", "product");
 
                             b1.WithOwner()
                                 .HasForeignKey("ProductId");
@@ -807,16 +790,13 @@ namespace Shop.Infrastructure.Migrations
                                 .HasForeignKey("ProductId");
                         });
 
-                    b.Navigation("CustomSpecifications");
-
-                    b.Navigation("ExtraDescriptions");
+                    b.Navigation("CategorySpecifications");
 
                     b.Navigation("GalleryImages");
 
-                    b.Navigation("MainImage")
-                        .IsRequired();
-
                     b.Navigation("Scores");
+
+                    b.Navigation("Specifications");
                 });
 
             modelBuilder.Entity("Shop.Domain.QuestionAggregate.Question", b =>
