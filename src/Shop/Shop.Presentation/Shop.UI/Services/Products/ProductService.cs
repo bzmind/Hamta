@@ -92,6 +92,14 @@ public class ProductService : BaseService, IProductService
         return await DeleteAsync($"Remove/{productId}");
     }
 
+    public async Task<ApiResult<string?>> AddReviewImage(AddProductReviewImageViewModel model)
+    {
+        var formData = new MultipartFormDataContent();
+        if (model.Image.IsImage())
+            formData.Add(new StreamContent(model.Image.OpenReadStream()), "Image", model.Image.FileName);
+        return await PostAsFormDataAsync<string?>("AddReviewImage", formData);
+    }
+
     public async Task<ProductDto?> GetById(long productId)
     {
         var result = await GetFromJsonAsync<ProductDto>($"GetById/{productId}");

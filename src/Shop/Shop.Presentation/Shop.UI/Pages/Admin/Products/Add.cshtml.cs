@@ -50,7 +50,7 @@ public class AddModel : BaseRazorPage
         if (!result.IsSuccessful)
         {
             MakeAlert(result);
-            return Page();
+            return RedirectToPage("Add").WithModelStateOf(this);
         }
         return RedirectToPage("Index");
     }

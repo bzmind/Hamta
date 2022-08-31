@@ -84,6 +84,6 @@ public class IndexModel : BaseRazorPage
             MakeAlert(result);
             return AjaxErrorMessageResult(result);
         }
-        return AjaxEmptySuccessResult();
+        return AjaxSuccessResult();
     }
 }

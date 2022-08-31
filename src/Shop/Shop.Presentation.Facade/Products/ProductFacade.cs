@@ -1,5 +1,6 @@
 ﻿using Common.Application;
 using MediatR;
+using Shop.Application.Products;
 using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
@@ -37,6 +38,11 @@ internal class ProductFacade : IProductFacade
     public async Task<OperationResult> Remove(long productId)
     {
         return await _mediator.Send(new RemoveProductCommand(productId));
+    }
+
+    public async Task<OperationResult<string>> AddReviewImage(AddProductReviewImageCommand command)
+    {
+        return await _mediator.Send(command);
     }
 
     public async Task<ProductDto?> GetById(long id)

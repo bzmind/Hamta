@@ -85,9 +85,20 @@ public class BaseRazorPage : PageModel
         return Content(JsonConvert.SerializeObject(model));
     }
 
-    protected ContentResult AjaxEmptySuccessResult()
+    protected ContentResult AjaxSuccessResult<TData>(ApiResult<TData> apiResult)
     {
-        var successApiResult = ApiResult.Success();
+        var model = new AjaxResult
+        {
+            Data = apiResult.Data,
+            Message = apiResult.MetaData.Message,
+            StatusCode = apiResult.MetaData.ApiStatusCode
+        };
+        return Content(JsonConvert.SerializeObject(model));
+    }
+
+    protected ContentResult AjaxSuccessResult(ApiResult? apiResult = null)
+    {
+        var successApiResult = apiResult ?? ApiResult.Success();
         var model = new AjaxResult
         {
             Message = successApiResult.MetaData.Message,

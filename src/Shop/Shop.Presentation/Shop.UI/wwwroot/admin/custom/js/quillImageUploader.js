@@ -1,18 +1,16 @@
-﻿function setupQuillImageUploader(quill)
+﻿async function setupQuillImageUploader(quill)
 {
   // watch for images added:
-  quill.on("text-change", async function (delta, oldDelta, source)
+  const imgs = Array.from(
+    quill.container.querySelectorAll('img[src^="data:"]:not(.loading)')
+  );
+  for (const img of imgs)
   {
-    const imgs = Array.from(
-      quill.container.querySelectorAll('img[src^="data:"]:not(.loading)')
-    );
-    for (const img of imgs)
-    {
-      img.classList.add("loading");
-      img.setAttribute("src", await uploadBase64Img(img.getAttribute("src")));
-      img.classList.remove("loading");
-    }
-  });
+    img.classList.add("imgLoading");
+    img.setAttribute("src", await uploadBase64Img(img.getAttribute("src")));
+    img.classList.remove("imgLoading");
+    $(img).show();
+  }
 }
 
 // wait for upload
@@ -22,7 +20,7 @@ async function uploadBase64Img(base64Str)
   {
     return base64Str;
   }
-  const url = await b64ToUrl(base64Str);
+  const url = await base64ToUrl(base64Str);
   return url;
 }
 
@@ -65,7 +63,7 @@ function base64toBlob(base64Data, contentType, sliceSize)
 // this is my upload function. I'm converting the base64 to blob for more efficient file 
 // upload and so it works with my existing file upload processing
 // see here for more info on this approach https://ourcodeworld.com/articles/read/322/how-to-convert-a-base64-image-into-a-image-file-and-upload-it-with-an-asynchronous-form-using-jquery
-function b64ToUrl(base64)
+function base64ToUrl(base64)
 {
   return new Promise(resolve =>
   {
@@ -80,20 +78,19 @@ function b64ToUrl(base64)
     // create form data
     const formData = new FormData();
     // replace "file_upload" with whatever form field you expect the file to be uploaded to
-    formData.append("file_upload", blob);
+    formData.append("Image", blob, "blob.jpeg");
 
-    const xhr = new XMLHttpRequest();
+    const antiForgeryToken = getAntiForgeryToken();
+    if (antiForgeryToken == null)
+      reject();
+    formData.append("__RequestVerificationToken", antiForgeryToken);
+
     // replace "/upload" with whatever the path is to your upload handler
-    xhr.open("POST", "/upload", true);
-    xhr.onload = () =>
+    sendAjaxPost(`${$(location).attr("pathname")}/addReviewImage`, formData).then(result =>
     {
-      if (xhr.status === 200)
-      {
-        // my upload handler responds with JSON of { "path": "/images/static_images/blob2.png" }
-        const url = JSON.parse(xhr.responseText).path;
-        resolve(url);
-      }
-    };
-    xhr.send(formData);
+      checkResult(result);
+      result = JSON.parse(result);
+      resolve(result.Data);
+    });
   });
 }

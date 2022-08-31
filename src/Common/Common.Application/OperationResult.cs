@@ -51,25 +51,25 @@ public class OperationResult<TData>
         StatusCode = statusCode;
     }
 
-    public static OperationResult<TData> Success(TData data, string? message = null)
+    public static OperationResult<TData> Success(TData data, string? message = SuccessMessage)
         => new(data, message ?? SuccessMessage, OperationStatusCode.Success);
 
     public static OperationResult<TData> Error()
         => new(default, ErrorMessage, OperationStatusCode.ServerError);
 
-    public static OperationResult<TData> Error(string? message = null)
+    public static OperationResult<TData> Error(string? message = ErrorMessage)
         => new(default, message ?? ErrorMessage, OperationStatusCode.ServerError);
 
-    public static OperationResult<TData> Error(TData? data = default, string? message = null)
+    public static OperationResult<TData> Error(TData? data = default, string? message = ErrorMessage)
         => new(data, message ?? ErrorMessage, OperationStatusCode.ServerError);
 
     public static OperationResult<TData> NotFound()
         => new(default, NotFoundMessage, OperationStatusCode.NotFound);
 
-    public static OperationResult<TData> NotFound(string? message = null)
+    public static OperationResult<TData> NotFound(string? message = NotFoundMessage)
         => new(default, message ?? NotFoundMessage, OperationStatusCode.NotFound);
 
-    public static OperationResult<TData> NotFound(TData? data = default, string? message = null)
+    public static OperationResult<TData> NotFound(TData? data = default, string? message = NotFoundMessage)
         => new(data, message ?? NotFoundMessage, OperationStatusCode.NotFound);
 }
 

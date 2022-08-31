@@ -91,4 +91,15 @@ public class EditModel : BaseRazorPage
         }
         return RedirectToPage("Index");
     }
+
+    public async Task<IActionResult> OnPostAddReviewImage(IFormFile image)
+    {
+        var result = await _productService.AddReviewImage(new AddProductReviewImageViewModel { Image = image });
+        if (!result.IsSuccessful)
+        {
+            MakeAlert(result);
+            return AjaxErrorMessageResult(result);
+        }
+        return AjaxSuccessResult(result);
+    }
 }

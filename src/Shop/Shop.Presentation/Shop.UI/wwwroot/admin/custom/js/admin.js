@@ -1,4 +1,4 @@
-﻿var quill;
+﻿var quills = [];
 $(document).ready(function ()
 {
   if ($(".category-radio:checked").length > 0)
@@ -15,19 +15,33 @@ $(document).ready(function ()
   const toolbars = $(".quill-editor-toolbar-container");
   for (let i = 0; i < editors.length; i++)
   {
-    quill = new Quill(editors[i], {
+    const quill = new Quill(editors[i], {
       modules: {
         syntax: true,
         toolbar: toolbars[i]
       },
       theme: "snow"
     });
-    setupQuillImageUploader(quill);
+    quills.push(quill);
   }
+
+  setupQuillImageUploaderEventListeners(quills);
 
   if (editors.length > 0)
     fillQuillEditorsContent();
 });
+
+function setupQuillImageUploaderEventListeners(quills)
+{
+  $("form button:submit").on("click", async function ()
+  {
+    for (const quill of quills)
+    {
+      await setupQuillImageUploader(quill);
+    }
+    $(this).parents("form").submit();
+  });
+}
 
 function fillQuillEditorsContent()
 {

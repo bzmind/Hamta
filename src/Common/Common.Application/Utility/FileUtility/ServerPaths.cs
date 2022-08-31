@@ -1,6 +1,4 @@
-﻿using Common.Application.Utility.FileUtility;
-
-namespace Shop.UI.Setup.ServerSide;
+﻿namespace Common.Application.Utility.FileUtility;
 
 public static class ServerPaths
 {
@@ -15,6 +13,9 @@ public static class ServerPaths
 
     public static string GetProductGalleryImagePath(string name) =>
         $"{ServerPath}/{Directories.ProductGalleryImages}/{name}".Replace("wwwroot/", "");
+
+    public static string GetProductReviewImagePath(string name) =>
+        $"{ServerPath}/{Directories.ProductReviewImages}/{name}".Replace("wwwroot/", "");
 
     public static string GetProductMainImagePath(string name) =>
         $"{ServerPath}/{Directories.ProductMainImages}/{name}".Replace("wwwroot/", "");

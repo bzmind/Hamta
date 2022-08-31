@@ -63,10 +63,22 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
         if (CategoryHasProduct(exactCategory, categoriesWithProduct.ToList()))
             return false;
 
-        Context.Categories.RemoveRange(exactCategory.SubCategories);
+        RecursivelyRemoveSubCategories(exactCategory, Context);
         Context.Categories.Remove(exactCategory);
 
         return true;
+    }
+
+    private void RecursivelyRemoveSubCategories(Category category, ShopContext context)
+    {
+        if (category.SubCategories.Any())
+        {
+            foreach (var subCategory in category.SubCategories)
+            {
+                RecursivelyRemoveSubCategories(subCategory, context);
+            }
+        }
+        context.Categories.RemoveRange(category);
     }
 
     private bool CategoryHasProduct(Category category, List<Category> categoriesWithProduct)

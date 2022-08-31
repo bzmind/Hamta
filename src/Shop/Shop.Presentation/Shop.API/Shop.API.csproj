@@ -30,6 +30,7 @@
     <Folder Include="ViewModels\Avatars\" />
     <Folder Include="ViewModels\Shippings\" />
     <Folder Include="ViewModels\Users\Roles\" />
+    <Folder Include="wwwroot\images\products\review\" />
     <Folder Include="wwwroot\images\users\avatars\" />
   </ItemGroup>
 

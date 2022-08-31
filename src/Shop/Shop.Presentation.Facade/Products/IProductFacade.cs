@@ -1,4 +1,5 @@
 ﻿using Common.Application;
+using Shop.Application.Products;
 using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
@@ -12,6 +13,7 @@ public interface IProductFacade
     Task<OperationResult> Edit(EditProductCommand command);
     Task<OperationResult> AddScore(AddProductScoreCommand command);
     Task<OperationResult> Remove(long productId);
+    Task<OperationResult<string>> AddReviewImage(AddProductReviewImageCommand command);
 
     Task<ProductDto?> GetById(long id);
     Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams);

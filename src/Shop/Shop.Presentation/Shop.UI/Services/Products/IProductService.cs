@@ -10,6 +10,7 @@ public interface IProductService
     Task<ApiResult> Edit(EditProductViewModel model);
     Task<ApiResult> AddScore(AddProductScoreViewModel model);
     Task<ApiResult> Remove(long productId);
+    Task<ApiResult<string?>> AddReviewImage(AddProductReviewImageViewModel model);
 
     Task<ProductDto?> GetById(long productId);
     Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams);

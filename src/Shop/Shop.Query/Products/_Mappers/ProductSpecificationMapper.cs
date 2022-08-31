@@ -1,5 +1,4 @@
-﻿using Shop.Domain.CategoryAggregate;
-using Shop.Domain.ProductAggregate;
+﻿using Shop.Domain.ProductAggregate;
 using Shop.Query.Products._DTOs;
 
 namespace Shop.Query.Products._Mappers;

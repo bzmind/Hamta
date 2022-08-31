@@ -1,4 +1,5 @@
-﻿using Common.Application;
+﻿using System.Text.RegularExpressions;
+using Common.Application;
 using Common.Application.BaseClasses;
 using Common.Application.Utility.FileUtility;
 using Common.Application.Utility.Validation;
@@ -57,7 +58,7 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
         if (category.Specifications.Any()
             && (request.CategorySpecifications == null || !request.CategorySpecifications.Any()))
             return OperationResult.Error(ValidationMessages.CategorySpecificationRequired);
-        
+
         if (request.CategorySpecifications != null && request.CategorySpecifications.Any())
         {
             var emptyOptionalSpecifications = new List<ProductCategorySpecificationDto>();
@@ -89,6 +90,9 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
 
             product.SetCategorySpecifications(categorySpecifications);
         }
+
+        RemoveUnusedReviewImages(product.Review, request.Review,
+            product.Introduction, request.Introduction, _fileService);
 
         product.Edit(request.CategoryId, request.Name, request.EnglishName, request.Slug, request.Introduction,
             request.Review, _productDomainService);
@@ -131,6 +135,49 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
 
         await _productRepository.SaveAsync();
         return OperationResult.Success();
+    }
+
+    private void RemoveUnusedReviewImages(string oldReview, string newReview,
+        string oldIntroduction, string newIntroduction, IFileService fileService)
+    {
+        var oldReviewImageNames = GetImageNames(oldReview);
+        var newReviewImageNames = GetImageNames(newReview);
+        var unusedReviewImages = new List<string>();
+        oldReviewImageNames.ForEach(oldImageName =>
+        {
+            if (newReviewImageNames.All(newImageName => newImageName != oldImageName))
+                unusedReviewImages.Add(oldImageName);
+        });
+        fileService.DeleteMultipleFiles(Directories.ProductReviewImages, unusedReviewImages);
+
+        var oldIntroductionImageNames = GetImageNames(oldIntroduction);
+        var newIntroductionImageNames = GetImageNames(newIntroduction);
+        var unusedIntroductionImages = new List<string>();
+        oldIntroductionImageNames.ForEach(oldImageName =>
+        {
+            if (newIntroductionImageNames.All(newImageName => newImageName != oldImageName))
+                unusedIntroductionImages.Add(oldImageName);
+        });
+        fileService.DeleteMultipleFiles(Directories.ProductReviewImages, unusedIntroductionImages);
+    }
+
+    private List<string> GetImageNames(string input)
+    {
+        const string r = @"src\s*=\s*""(.+?)""";
+        var result = new List<string>();
+        foreach (Match match in Regex.Matches(input, r))
+        {
+            if (match.Success && match.Groups.Count > 0)
+            {
+                var text = match.Groups[1].Value;
+                result.Add(text
+                    .Replace(@"src=""", "")
+                    .Replace(ServerPaths.GetProductReviewImagePath(""), "")
+                    .Replace(@"""", ""));
+            }
+        }
+
+        return result;
     }
 }
 

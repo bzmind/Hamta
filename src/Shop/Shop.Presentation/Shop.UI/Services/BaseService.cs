@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Net;
+using System.Text.Json;
 using Common.Api;
 
 namespace Shop.UI.Services;
@@ -32,6 +33,12 @@ public abstract class BaseService
     {
         var result = await _client.PostAsync($"{ApiEndpointName}/{endpointAction}", data);
         return await HandleResult(result);
+    }
+
+    protected async Task<ApiResult<TData>> PostAsFormDataAsync<TData>(string endpointAction, HttpContent data)
+    {
+        var result = await _client.PostAsync($"{ApiEndpointName}/{endpointAction}", data);
+        return await HandleResult<TData>(result);
     }
 
     protected async Task<ApiResult<TData>> PostAsync<TData>(string endpointAction)
@@ -110,14 +117,18 @@ public abstract class BaseService
         try
         {
             finalResult = await result.Content.ReadFromJsonAsync<ApiResult<TData>>(_jsonOptions);
+            if (finalResult.MetaData == null)
+            {
+                finalResult.IsSuccessful = false;
+                finalResult.MetaData = new MetaData
+                {
+                    ApiStatusCode = ApiStatusCode.ServerError,
+                    Message = $"Status Code: {(int)result.StatusCode} {result.ReasonPhrase}"
+                };
+            }
         }
         catch (Exception e)
         {
-            //var resultError = "UI LAYER ERRORS:\n\n" +
-            //                  $"{e.Message} {e.InnerException} {e.StackTrace}\n\n" +
-            //                  "==========================================================================================================================================================================\n\n" +
-            //                  "API LAYER ERRORS:\n\n" +
-            //                  $"{await result.Content.ReadAsStringAsync()}";
             var resultError = await result.Content.ReadAsStringAsync();
             finalResult = ApiResult<TData>.Error(resultError);
         }

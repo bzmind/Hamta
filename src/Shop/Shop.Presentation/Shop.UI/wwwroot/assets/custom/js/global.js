@@ -289,7 +289,7 @@ function deleteItem(urlWithRouteData)
 
 function sendAjaxPostWithRouteData(urlWithRouteData)
 {
-  const antiForgeryToken = $('#antiForgeryToken input[name="__RequestVerificationToken"]').val();
+  const antiForgeryToken = getAntiForgeryToken();
   if (antiForgeryToken == null)
     return;
   const data = new FormData();
@@ -334,6 +334,11 @@ function prependAjaxResultToElement(elementSelector, result)
   if (result.IsHtml !== true || replaceElement == null)
     return;
   replaceElement.prepend(result.Data);
+}
+
+function getAntiForgeryToken()
+{
+  return $('#antiForgeryToken input[name="__RequestVerificationToken"]').val();
 }
 
 function getGuid()

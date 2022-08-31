@@ -11,6 +11,7 @@ using System.Net;
 using AutoMapper;
 using Newtonsoft.Json;
 using Shop.API.ViewModels.Products;
+using Shop.Application.Products;
 using Shop.Application.Products._DTOs;
 using Shop.Application.Products.Create;
 
@@ -88,6 +89,13 @@ public class ProductController : BaseApiController
     {
         var result = await _productFacade.Remove(productId);
         return CommandResult(result);
+    }
+
+    [HttpPost("AddReviewImage")]
+    public async Task<ApiResult<string?>> AddReviewImage([FromForm] AddProductReviewImageViewModel viewModel)
+    {
+        var result = await _productFacade.AddReviewImage(new AddProductReviewImageCommand(viewModel.Image));
+        return CommandResult(result, HttpStatusCode.Created);
     }
 
     [AllowAnonymous]

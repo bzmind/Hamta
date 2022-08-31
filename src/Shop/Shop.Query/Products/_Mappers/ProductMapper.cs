@@ -2,7 +2,6 @@
 using Shop.Domain.ColorAggregate;
 using Shop.Domain.ProductAggregate;
 using Shop.Domain.SellerAggregate;
-using Shop.Query.Categories._Mappers;
 using Shop.Query.Products._DTOs;
 
 namespace Shop.Query.Products._Mappers;
