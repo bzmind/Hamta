@@ -81,7 +81,7 @@ app.Use(async (context, next) =>
     if (status == 401)
     {
         var previousPath = context.Request.Path;
-        context.Response.Redirect($"/auth/login?redirectTo={previousPath}");
+        context.Response.Redirect($"/login?redirectTo={previousPath}");
     }
 });
 

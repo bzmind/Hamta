@@ -82,6 +82,7 @@ function getProductCategorySpecifications(currentSelectedRadioInput)
       prependAjaxResultToElement(".category-specifications", result);
       resetIndexes($(".category-specifications"), "[data-repeater-item]");
       reinitializeScripts();
+      setupEventListeners();
     });
   showSelectedCategoryBreadCrumb();
 }

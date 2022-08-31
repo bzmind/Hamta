@@ -189,7 +189,6 @@ function reinitializeElementsScripts()
   triggerSelect2ValidationOnChange();
   triggerFileInputsValidationOnChange();
   avatarInputChangeListener();
-  setupEventListeners();
 }
 
 function triggerSelect2ValidationOnChange()

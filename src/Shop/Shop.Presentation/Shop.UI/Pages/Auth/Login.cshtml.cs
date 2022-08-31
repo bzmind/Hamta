@@ -129,8 +129,16 @@ public class LoginModel : BaseRazorPage
 
         var token = loginResult.Data.Token;
         var refreshToken = loginResult.Data.RefreshToken;
-        Response.Cookies.Append("token", token);
-        Response.Cookies.Append("refresh-token", refreshToken);
+        Response.Cookies.Append("token", token, new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTimeOffset.Now.AddMinutes(5)
+        });
+        Response.Cookies.Append("refresh-token", refreshToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTimeOffset.Now.AddDays(30)
+        });
 
         var redirectTo = TempData["redirectTo"]?.ToString();
         if (!string.IsNullOrWhiteSpace(redirectTo) && Url.IsLocalUrl(redirectTo))
