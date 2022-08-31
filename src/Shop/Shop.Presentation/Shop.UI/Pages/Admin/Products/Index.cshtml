@@ -8,6 +8,7 @@
 @{
   var categories = await CategoryService.GetAll();
   ViewData["Title"] = "مدیریت محصولات";
+  ViewData["Selected"] = "products";
   var highestProductPrice = Model.FilterResult.HighestProductPrice;
 }
 

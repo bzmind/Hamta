@@ -8,6 +8,7 @@
 @inject ICategoryService CategoryService
 @{
   ViewData["Title"] = "ویرایش محصول";
+  ViewData["Selected"] = "products";
   var categories = await CategoryService.GetAll();
 
   const int textIndentationDefaultSize = 15;
