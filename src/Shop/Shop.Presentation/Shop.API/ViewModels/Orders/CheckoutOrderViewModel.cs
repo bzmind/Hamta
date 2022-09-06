@@ -5,9 +5,9 @@ namespace Shop.API.ViewModels.Orders;
 
 public class CheckoutOrderViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseUserAddress)]
     public long UserAddressId { get; set; }
 
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseShipping)]
     public long ShippingMethodId { get; set; }
 }

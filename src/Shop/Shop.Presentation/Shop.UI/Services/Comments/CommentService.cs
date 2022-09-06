@@ -44,7 +44,7 @@ public class CommentService : BaseService, ICommentService
 
     public async Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams)
     {
-        var url = $"api/comment/GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+        var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&ProductId={filterParams.ProductId}&Status={filterParams.Status}";
         var result = await GetFromJsonAsync<CommentFilterResult>(url);
         return result.Data;

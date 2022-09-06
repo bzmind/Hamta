@@ -52,8 +52,14 @@ public class Seller : BaseAggregateRoot
 
     public void AddInventory(SellerInventory inventory)
     {
-        if (Inventories.Any(sellerInventory => sellerInventory.ProductId == inventory.ProductId))
-            throw new InvalidDataDomainException("Inventory with the same product already exists");
+        var existingInventories = Inventories
+            .Where(sellerInventory => sellerInventory.ProductId == inventory.ProductId).ToList();
+
+        existingInventories.ForEach(existingInventory =>
+        {
+            if (existingInventory.ColorId == inventory.ColorId || existingInventory.Price == inventory.Price)
+                throw new InvalidDataDomainException("Inventory is duplicate");
+        });
 
         _inventories.Add(inventory);
     }

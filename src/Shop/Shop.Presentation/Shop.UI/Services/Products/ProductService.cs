@@ -109,8 +109,8 @@ public class ProductService : BaseService, IProductService
     public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
     {
         var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&CategoryId={filterParams.CategoryId}&Name={filterParams.Name}" +
-                  $"&EnglishName={filterParams.EnglishName}&Slug={filterParams.Slug}" +
+                  $"&OldCategoryId={filterParams.OldCategoryId}&CategoryId={filterParams.CategoryId}" +
+                  $"&Name={filterParams.Name}&EnglishName={filterParams.EnglishName}&Slug={filterParams.Slug}" +
                   $"&AverageScore={filterParams.AverageScore}&MinPrice={filterParams.MinPrice}" +
                   $"&MaxPrice={filterParams.MaxPrice}";
         var result = await GetFromJsonAsync<ProductFilterResult>(url);

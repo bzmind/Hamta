@@ -27,7 +27,7 @@ public class GetColorByFilterQueryHandler : IBaseQueryHandler<GetColorByFilterQu
     {
         var @params = request.FilterParams;
 
-        var query = _shopContext.Colors.OrderByDescending(c => c.CreationDate).AsQueryable();
+        var query = _shopContext.Colors.OrderBy(c => c.CreationDate).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(@params.Name))
             query = query.Where(c => c.Name.Contains(@params.Name));
@@ -35,16 +35,19 @@ public class GetColorByFilterQueryHandler : IBaseQueryHandler<GetColorByFilterQu
         if (!string.IsNullOrWhiteSpace(@params.Code))
             query = query.Where(c => c.Code.Contains(@params.Code));
 
+        if (@params.Take != 0)
+            query = query.Take(@params.Take);
+
         var skip = (@params.PageId - 1) * @params.Take;
+
+        var finalQuery = await query
+            .Skip(skip)
+            .Select(c => c.MapToColorDto())
+            .ToListAsync(cancellationToken);
 
         return new ColorFilterResult
         {
-            Data = await query
-                .Skip(skip)
-                .Take(@params.Take)
-                .Select(c => c.MapToColorDto())
-                .ToListAsync(cancellationToken),
-
+            Data = finalQuery,
             FilterParam = @params
         };
     }

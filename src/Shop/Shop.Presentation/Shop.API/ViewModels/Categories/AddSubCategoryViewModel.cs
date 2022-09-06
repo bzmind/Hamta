@@ -6,7 +6,7 @@ namespace Shop.API.ViewModels.Categories;
 
 public class AddSubCategoryViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseCategory)]
     public long ParentId { get; set; }
 
     [DisplayName("عنوان")]

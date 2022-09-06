@@ -6,7 +6,7 @@ namespace Shop.API.ViewModels.Products;
 
 public class AddProductScoreViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseProduct)]
     public long ProductId { get; set; }
 
     [DisplayName("امتیاز")]

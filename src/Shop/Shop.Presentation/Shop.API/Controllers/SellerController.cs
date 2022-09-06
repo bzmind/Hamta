@@ -57,10 +57,10 @@ public class SellerController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpGet("GetById")]
-    public async Task<ApiResult<SellerDto?>> GetById()
+    [HttpGet("GetCurrentSeller")]
+    public async Task<ApiResult<SellerDto?>> GetCurrentSeller()
     {
-        var result = await _sellerFacade.GetById(User.GetUserId());
+        var result = await _sellerFacade.GetCurrentSeller(User.GetUserId());
         return QueryResult(result);
     }
 

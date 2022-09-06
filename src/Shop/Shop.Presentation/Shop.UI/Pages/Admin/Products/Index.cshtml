@@ -1,6 +1,7 @@
 ﻿@page
 @using Common.Application.Utility.FileUtility
 @using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Shop.Query.Categories._DTOs
 @using Shop.UI.Services.Categories
 @using Shop.UI.TagHelpers
 @model Shop.UI.Pages.Admin.Products.IndexModel
@@ -9,69 +10,170 @@
   var categories = await CategoryService.GetAll();
   ViewData["Title"] = "مدیریت محصولات";
   ViewData["Selected"] = "products";
-  var highestProductPrice = Model.FilterResult.HighestProductPrice;
+  var oldCategory = Request.Query["FilterParams.CategoryId"].ToString() ?? "0";
+  var highestProductPrice = Model.FilterResult.HighestPriceInCategory;
+
+  const int textIndentationDefaultSize = 15;
+  var textIndentation = textIndentationDefaultSize;
+  const int rightSidePadding = 0;
+  var depth = 1;
+  async Task AddSubCategories(CategoryDto parentCategory)
+  {
+    if (depth <= 0)
+    {
+      depth++;
+      textIndentation += textIndentationDefaultSize;
+    }
+    for (var i = 0; i < parentCategory.SubCategories.Count; i++)
+    {
+      var newId = Guid.NewGuid();
+      var subCategory = parentCategory.SubCategories[i];
+      var hasSubCategory = subCategory.SubCategories.Any();
+      <tr class="children" style="display: none;" data-depth="@depth" data-categoryId="@subCategory.Id"
+      data-parentCategoryId="@parentCategory.Id" data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
+        <td style="text-indent: @($"{textIndentation - 8}px");" class="pl-0 pr-0">
+          @for (var t = 0; t < depth; t++)
+          {
+            <span class="indentation-lines"
+            style="right: @($"{t * textIndentationDefaultSize + rightSidePadding}px")"></span>
+          }
+          <div class="d-inline-flex align-items-center">
+            <label class="radio">
+              <input type="radio" class="radio-primary category-radio" id="@newId"
+               asp-for="@Model.FilterParams.CategoryId" value="@subCategory.Id" />
+              <label class="radio-circle" for="@newId"></label>
+            </label>
+            <span asp-validation-for="@Model.FilterParams.CategoryId"></span>
+            <span class="category-title" style="text-indent: 0; margin-right: 6px;">
+              @subCategory.Title
+              @if (hasSubCategory)
+              {
+                <i class="bx bx-caret-down"></i>
+              }
+            </span>
+          </div>
+        </td>
+      </tr>
+      if (hasSubCategory)
+      {
+        depth++;
+        textIndentation += textIndentationDefaultSize;
+        await AddSubCategories(subCategory);
+        if (i + 1 == parentCategory.SubCategories.Count)
+        {
+          depth--;
+          textIndentation = textIndentationDefaultSize * depth;
+          return;
+        }
+      }
+      else if (i + 1 == parentCategory.SubCategories.Count)
+      {
+        depth--;
+        textIndentation = textIndentationDefaultSize * depth;
+        return;
+      }
+    }
+  }
 }
 
-<h5 class="mb-1">@ViewData["Title"]</h5>
 <a asp-page="Add" class="btn btn-success mb-1">افزودن محصول</a>
-<form class="card shadow-lg" method="get">
-  <div class="card-body">
-    <div class="row">
-      <div class="col-md-3" style="margin-bottom: 5px;">
-        <label>نام</label>
-        <input type="text" asp-for="@Model.FilterParams.Name" class="form-control" />
-      </div>
-      <div class="col-md-3" style="margin-bottom: 5px;">
-        <label>نام انگلیسی</label>
-        <input type="text" asp-for="@Model.FilterParams.EnglishName" class="form-control" />
-      </div>
-      <div class="col-md-3" style="margin-bottom: 5px;">
-        <label>اسلاگ</label>
-        <input type="text" asp-for="@Model.FilterParams.Slug" class="form-control" />
-      </div>
-      <div class="col-md-3" style="margin-bottom: 5px;">
-        <label>امتیاز</label>
-        <input type="text" asp-for="@Model.FilterParams.AverageScore" class="form-control" />
-      </div>
-      <div class="col-md-3" style="margin-bottom: 15px;">
-        <div class="form-group m-0">
-          <label>دسته‌بندی</label>
-          <select class="form-control" asp-for="@Model.FilterParams.CategoryId">
-            <option selected value="0">همه</option>
-            @foreach (var category in categories)
-            {
-              <option value="@category.Id">@category.Title</option>
-            }
-          </select>
-          <span asp-validation-for="@Model.FilterParams.CategoryId" class="d-block"></span>
+<form method="get">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3 mb-5px">
+          <label>نام</label>
+          <input type="text" asp-for="@Model.FilterParams.Name" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-5px">
+          <label>نام انگلیسی</label>
+          <input type="text" asp-for="@Model.FilterParams.EnglishName" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-5px">
+          <label>اسلاگ</label>
+          <input type="text" asp-for="@Model.FilterParams.Slug" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-5px">
+          <label>امتیاز</label>
+          <input type="text" asp-for="@Model.FilterParams.AverageScore" class="form-control" />
         </div>
       </div>
-      <div class="col-md-12" style="margin-bottom: 5px;">
+      <div class="mb-5px mt-10px">
         <label>محدوده قیمت</label>
         <fieldset>
           <div class="row">
             <div class="col-md-3 d-flex align-items-center">
               <div style="margin-left: 10px;">از</div>
-              <input class="form-control d-inline-block" type="text" step="1" id="slider-input-min">
-              <input id="slider-input-min-value" type="hidden" asp-for="@Model.FilterParams.MinPrice" />
+              <input class="form-control d-inline-block" type="text" step="1" id="slider-input-min" data-money="minPrice">
+              <input type="hidden" asp-for="@Model.FilterParams.MinPrice" data-money-value="minPrice"
+                     id="slider-input-min-value">
               <div class="toman-placeholder">تومان</div>
             </div>
             <div class="col-md-3 d-flex align-items-center">
               <div style="margin-left: 10px;">تا</div>
-              <input class="form-control d-inline-block" type="text" step="1" id="slider-input-max">
-              <input id="slider-input-max-value" type="hidden" asp-for="@Model.FilterParams.MaxPrice" />
+              <input class="form-control d-inline-block" type="text" step="1" id="slider-input-max" data-money="maxPrice">
+              <input type="hidden" asp-for="@Model.FilterParams.MaxPrice" data-money-value="maxPrice"
+                     id="slider-input-max-value">
               <div class="toman-placeholder">تومان</div>
             </div>
           </div>
-          <div class="my-1 noUi-target noUi-rtl noUi-horizontal mt-2" id="slider-with-input">
+          <div class="noUi-target noUi-rtl noUi-horizontal mt-2" id="slider-with-input">
           </div>
         </fieldset>
       </div>
     </div>
   </div>
-  <div class="card-footer text-left">
-    <a asp-page="Index" class="btn btn-danger btn-sm">حذف فیلتر</a>
-    <button type="submit" class="btn btn-primary btn-sm">اعمال فیلتر</button>
+  <div class="card">
+    <div class="card-body">
+      <div style="margin-bottom: 5px;">
+        <label>دسته بندی</label>
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb category-breadcrumb">
+            <li class="breadcrumb-item">دسته‌بندی انتخاب نشده است</li>
+          </ol>
+        </nav>
+        <fieldset class="position-relative has-icon-left category-search-box">
+          <input type="text" class="form-control form-control-sm" id="category-search" placeholder="جستجو">
+          <div class="form-control-position">
+            <i class="bx bx-search"></i>
+          </div>
+        </fieldset>
+        <input type="hidden" asp-for="@Model.FilterParams.OldCategoryId" value="@oldCategory" />
+        <label class="radio mb-0 mt-5px">
+          <input type="radio" class="radio-primary category-radio" id="allCategoriesRadio"
+                 asp-for="@Model.FilterParams.CategoryId" value="0" />
+          <label class="radio-circle align-items-center ml-5px" for="allCategoriesRadio">
+            <small class="mr-5px">همه دسته‌بندی ها</small>
+          </label>
+        </label>
+        <table class="table mb-0 category-table">
+          <tbody>
+            @foreach (var category in categories)
+            {
+              var hasSubCategory = category.SubCategories.Any();
+              <tr class="parent" data-depth="0" data-categoryId="@category.Id"
+                data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
+                <td class="pl-0 pr-0">
+                  <span class="category-title">
+                    @category.Title
+                    @if (hasSubCategory)
+                    {
+                      <i class="bx bx-caret-down"></i>
+                    }
+                  </span>
+                </td>
+              </tr>
+              @if (hasSubCategory)
+                await AddSubCategories(category);
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card-footer text-left pt-0">
+      <a asp-page="Index" class="btn btn-danger btn-sm">حذف فیلتر</a>
+      <button type="submit" class="btn btn-primary btn-sm">اعمال فیلتر</button>
+    </div>
   </div>
 </form>
 <section>
@@ -94,45 +196,46 @@
               <img alt="product image" width="100" height="100" class="item-image"
                  src="@ServerPaths.GetProductMainImagePath(product.MainImage)" />
             </td>
-            <td>
-              <label>نام:</label>
+            <td class="font-weight-bolder">
+              <label class="grayed">نام:</label>
               <span>@product.Name</span>
               <br />
-              <label>نام انگلیسی:</label>
+              <label class="grayed">نام انگلیسی:</label>
               <span>@product.EnglishName</span>
               <br />
-              <label>اسلاگ:</label>
+              <label class="grayed">اسلاگ:</label>
               <span>@product.Slug</span>
             </td>
             @if (product.InventoryId != 0)
             {
-              <td>
-                @product.LowestInventoryPrice.ToString("##,###") <small>تومان</small>
+              <td class="font-weight-bolder">
+                @product.LowestInventoryPrice.ToString("##,###") <small class="grayed">تومان</small>
                 @if (product.LowestInventoryPrice != product.HighestInventoryPrice)
                 {
                   <br />
-                  <span>تا</span>
+                  <span class="grayed">تا</span>
                   <br />
-                  @product.HighestInventoryPrice.ToString("##,###") <small>تومان</small>
+                  @product.HighestInventoryPrice.ToString("##,###") <small class="grayed">تومان</small>
                 }
               </td>
-              <td>
-                <label>امتیاز:</label>
+              <td class="font-weight-bolder">
+                <label class="grayed">امتیاز:</label>
                 <span>@(product.AverageScore != 0 ? product.AverageScore.ToString("#.#") : 0)</span>
                 <br />
-                <label>موجودی:</label>
+                <label class="grayed">موجودی:</label>
                 <span>@product.AllQuantityInStock</span>
-                <small>عدد</small>
+                <small class="grayed">عدد</small>
                 <br />
                 @if (product.Colors.Any())
                 {
-                  <label>رنگ ها:</label>
+                  <label class="grayed">رنگ ها:</label>
                   <div>
                     @foreach (var color in product.Colors)
                     {
                       if (color != null)
                       {
-                        <span class="item-color" style="background-color: @color.Code;"></span>
+                        <span class="item-color" style="background-color: @color.Code;" data-toggle="tooltip"
+                    data-placement="top" title="" data-original-title="@color.Name"></span>
                       }
                     }
                   </div>

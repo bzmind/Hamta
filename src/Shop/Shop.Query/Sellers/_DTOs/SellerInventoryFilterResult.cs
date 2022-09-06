@@ -9,13 +9,14 @@ public class SellerInventoryFilterResult : BaseFilterResult<SellerInventoryDto, 
 
 public class SellerInventoryFilterParams : BaseFilterParams
 {
+    public long UserId { get; set; }
     public long? ProductId { get; set; }
-    public int? StartQuantity { get; set; }
-    public int? EndQuantity { get; set; }
-    public int? StartPrice { get; set; }
-    public int? EndPrice { get; set; }
-    public int? StartDiscountPercentage { get; set; }
-    public int? EndDiscountPercentage { get; set; }
+    public int? MinQuantity { get; set; }
+    public int? MaxQuantity { get; set; }
+    public int? MinPrice { get; set; }
+    public int? MaxPrice { get; set; }
+    public int? MinDiscountPercentage { get; set; }
+    public int? MaxDiscountPercentage { get; set; }
     public bool? IsAvailable { get; set; }
     public bool? IsDiscounted { get; set; }
 }

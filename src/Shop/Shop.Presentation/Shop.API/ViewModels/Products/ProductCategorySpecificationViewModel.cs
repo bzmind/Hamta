@@ -7,7 +7,7 @@ namespace Shop.API.ViewModels.Products;
 
 public class ProductCategorySpecificationViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.CategorySpecificationIdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseCategorySpecification)]
     public long CategorySpecificationId { get; set; }
 
     [DisplayName("عنوان")]

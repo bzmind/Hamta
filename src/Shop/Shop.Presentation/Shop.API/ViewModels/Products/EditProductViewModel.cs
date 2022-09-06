@@ -8,10 +8,10 @@ namespace Shop.API.ViewModels.Products;
 
 public class EditProductViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.ProductIdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseProduct)]
     public long ProductId { get; set; }
 
-    [Required(ErrorMessage = ValidationMessages.CategoryIdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseCategory)]
     public long CategoryId { get; set; }
 
     [Display(Name = "نام محصول")]

@@ -8,7 +8,7 @@ namespace Shop.API.ViewModels.Comments;
 
 public class CreateCommentViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseProduct)]
     public int ProductId { get; set; }
 
     [DisplayName("عنوان")]

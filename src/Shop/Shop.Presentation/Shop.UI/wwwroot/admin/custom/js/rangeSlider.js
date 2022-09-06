@@ -13,22 +13,23 @@
 
   const maxInput = document.getElementById("slider-input-max");
   const minInput = document.getElementById("slider-input-min");
-  const maxInputValue = document.getElementById("slider-input-max-value");
   const minInputValue = document.getElementById("slider-input-min-value");
+  const maxInputValue = document.getElementById("slider-input-max-value");
 
   sliderWithInput.noUiSlider.on("update", function (values, handle)
   {
     const value = values[handle];
-    if (handle)
+    if (handle) {
+
+      const formattedValue = numeral(parseInt(value)).format("0,0");
+      $(maxInput).val(formattedValue);
+      $(maxInputValue).val(parseInt(value));
+    }
+    else
     {
-      maxInput.value = numeral(value).format("0,0");
-      maxInput.setAttribute("value", value);
-      maxInputValue.setAttribute("value", parseInt(value));
-    } else
-    {
-      minInput.value = numeral(value).format("0,0");
-      minInput.setAttribute("value", value);
-      minInputValue.setAttribute("value", parseInt(value));
+      const formattedValue = numeral(parseInt(value)).format("0,0");
+      $(minInput).val(formattedValue);
+      $(minInputValue).val(parseInt(value));
     }
   });
 

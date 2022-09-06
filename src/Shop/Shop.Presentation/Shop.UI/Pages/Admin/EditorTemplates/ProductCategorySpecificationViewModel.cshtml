@@ -18,7 +18,7 @@
             <input hidden="" name="@Model[i].IsImportant" value="@(isImportant ? "True" : "False")" id="IsImportant" />
             <input hidden="" name="@Model[i].IsImportant" value="@(isOptional ? "True" : "False")"
                    id="@("IsOptional"+guid)" />
-            <span asp-validation-for="@Model[i].CategorySpecificationId" class="d-block"></span>
+            <span asp-validation-for="@Model[i].CategorySpecificationId"></span>
             <input type="text" class="form-control" readonly="" name="@Model[i].Title"
                    placeholder="@Model[i].Title" value="@Model[i].Title"/>
             <label class="mt-5px ml-3px" style="display: @(isImportant ? null : "none")">
@@ -29,7 +29,7 @@
           <div class="col-9 pl-0">
             <textarea type="text" class="form-control" name="@Model[i].Description" asp-for="@Model[i].Description"
                     placeholder="@Html.DisplayNameFor(m => Model[i].Description)" data-otherPropertyGuid="@guid"></textarea>
-            <span asp-validation-for="@Model[i].Description" class="d-block"></span>
+            <span asp-validation-for="@Model[i].Description"></span>
           </div>
         </div>
       </div>

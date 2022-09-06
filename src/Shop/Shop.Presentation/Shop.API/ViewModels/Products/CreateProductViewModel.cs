@@ -8,7 +8,7 @@ namespace Shop.API.ViewModels.Products;
 
 public class CreateProductViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.CategoryIdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseCategory)]
     public long CategoryId { get; set; }
 
     [Display(Name = "نام محصول")]

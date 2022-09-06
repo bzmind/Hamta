@@ -71,9 +71,9 @@ internal class SellerFacade : ISellerFacade
         return await _mediator.Send(new RemoveSellerCommand(sellerId));
     }
 
-    public async Task<SellerDto?> GetById(long id)
+    public async Task<SellerDto?> GetCurrentSeller(long userId)
     {
-        return await _mediator.Send(new GetSellerByIdQuery(id));
+        return await _mediator.Send(new GetSellerByUserIdQuery(userId));
     }
 
     public async Task<SellerFilterResult> GetByFilter(SellerFilterParams filterParams)

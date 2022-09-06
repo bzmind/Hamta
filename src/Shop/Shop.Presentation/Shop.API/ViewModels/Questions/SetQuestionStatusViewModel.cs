@@ -8,7 +8,7 @@ namespace Shop.API.ViewModels.Questions;
 
 public class SetQuestionStatusViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseQuestion)]
     public long QuestionId { get; set; }
 
     [DisplayName("وضعیت سوال")]

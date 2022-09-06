@@ -34,6 +34,6 @@ public class RemoveProductCommandValidator : AbstractValidator<RemoveProductComm
     public RemoveProductCommandValidator()
     {
         RuleFor(r => r.ProductId)
-            .NotEmpty().WithMessage(ValidationMessages.ProductIdRequired);
+            .NotEmpty().WithMessage(ValidationMessages.ChooseProduct);
     }
 }

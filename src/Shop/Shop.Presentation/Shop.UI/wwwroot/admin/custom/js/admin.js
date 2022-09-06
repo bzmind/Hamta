@@ -1,16 +1,44 @@
 ﻿var quills = [];
 $(document).ready(function ()
 {
-  if ($(".category-radio:checked").length > 0)
-  {
-    if ($(".input-validation-error").length > 0)
-      return;
-    getProductCategorySpecifications($(".category-radio:checked"));
-  }
-
+  setupEventListeners();
+  getProductCategorySpecifications($(".category-radio:checked"));
   showSelectedCategoryBreadCrumb();
   setProductImagesFiles();
+  setupQuillEditors();
+  setupColorSearch();
+  setupValidationErrors();
+});
 
+function setupValidationErrors()
+{
+  const spans = $("span[data-valmsg-for][data-val-for]");
+  const observer = new MutationObserver(function (mutations)
+  {
+    mutations.forEach(function (mutation)
+    {
+      const thisSpan = $(mutation.target);
+      const errorSource = $(`[data-val-id="${thisSpan.attr("data-val-for")}"]`);
+      const className = thisSpan.prop(mutation.attributeName);
+      if (strContains(className, "field-validation-error"))
+        errorSource.css("border", "1px solid #fc3232");
+      else
+        errorSource.css("border", "");
+    });
+  });
+
+  spans.each((i, span) =>
+  {
+    observer.observe(span,
+      {
+        attributes: true,
+        attributeFilter: ["class"]
+      });
+  });
+}
+
+function setupQuillEditors()
+{
   const editors = $(".quill-editor-container");
   const toolbars = $(".quill-editor-toolbar-container");
   for (let i = 0; i < editors.length; i++)
@@ -24,12 +52,10 @@ $(document).ready(function ()
     });
     quills.push(quill);
   }
-
-  setupQuillImageUploaderEventListeners(quills);
-
   if (editors.length > 0)
     fillQuillEditorsContent();
-});
+  setupQuillImageUploaderEventListeners(quills);
+}
 
 function setupQuillImageUploaderEventListeners(quills)
 {
@@ -73,6 +99,9 @@ $("#productForm").submit(function ()
 
 function getProductCategorySpecifications(currentSelectedRadioInput)
 {
+  if (currentSelectedRadioInput.length === 0 || $(".input-validation-error").length > 0
+    || $(".category-specifications").length === 0)
+    return;
   const categoryId = currentSelectedRadioInput.val();
   sendAjaxGetWithRouteData(`${$(location).attr("pathname")}/showCategorySpecifications?categoryId=${categoryId}`)
     .then((result) =>
@@ -84,7 +113,6 @@ function getProductCategorySpecifications(currentSelectedRadioInput)
       reinitializeScripts();
       setupEventListeners();
     });
-  showSelectedCategoryBreadCrumb();
 }
 
 function setupEventListeners()
@@ -92,6 +120,7 @@ function setupEventListeners()
   $(".category-radio").unbind("change");
   $(".category-radio").change(function ()
   {
+    showSelectedCategoryBreadCrumb();
     getProductCategorySpecifications($(this));
   });
 
@@ -164,5 +193,22 @@ async function createFile(blobUrl, fileName)
     };
     const file = new File([data], fileName, metadata);
     return file;
+  });
+}
+
+function setupColorSearch()
+{
+  $("#product-color-search").on("input", function ()
+  {
+    const searchText = $(this).val();
+    const colors = $("#product-colors");
+    const foundColors = $.grep(colors.find(".product-color"), (color, i) =>
+    {
+      if ($(color).text().toLowerCase().indexOf(searchText.toLowerCase()) !== -1)
+        return true;
+      return false;
+    });
+    colors.find(".product-color").hide(50);
+    $(foundColors).show(50);
   });
 }

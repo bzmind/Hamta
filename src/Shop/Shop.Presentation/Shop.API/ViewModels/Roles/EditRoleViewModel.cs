@@ -8,7 +8,7 @@ namespace Shop.API.ViewModels.Roles;
 
 public class EditRoleViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseRole)]
     public long Id { get; set; }
 
     [DisplayName("عنوان")]

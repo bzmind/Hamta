@@ -7,7 +7,7 @@ namespace Shop.UI.Services.Sellers;
 
 public class SellerService : BaseService, ISellerService
 {
-    protected override string ApiEndpointName { get; set; } = "SellerInventory";
+    protected override string ApiEndpointName { get; set; } = "Seller";
 
     public SellerService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
     
@@ -51,9 +51,9 @@ public class SellerService : BaseService, ISellerService
         return await DeleteAsync($"Remove/{sellerId}");
     }
 
-    public async Task<SellerDto?> GetById(long id)
+    public async Task<SellerDto?> GetCurrentSeller()
     {
-        var result = await GetFromJsonAsync<SellerDto>($"GetById/{id}");
+        var result = await GetFromJsonAsync<SellerDto>("GetCurrentSeller");
         return result.Data;
     }
 
@@ -74,12 +74,12 @@ public class SellerService : BaseService, ISellerService
 
     public async Task<SellerInventoryFilterResult> GetInventoryByFilter(SellerInventoryFilterParams filterParams)
     {
-        var url = $"api/inventory/GetInventoriesByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&ProductId={filterParams.ProductId}&StartQuantity={filterParams.StartQuantity}" +
-                  $"&EndQuantity={filterParams.EndQuantity}&StartPrice={filterParams.StartPrice}" +
-                  $"&EndPrice={filterParams.EndPrice}" +
-                  $"&StartDiscountPercentage={filterParams.StartDiscountPercentage}" +
-                  $"&EndDiscountPercentage={filterParams.EndDiscountPercentage}" +
+        var url = $"GetInventoriesByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+                  $"&UserId={filterParams.UserId}&ProductId={filterParams.ProductId}" +
+                  $"&MinQuantity={filterParams.MinQuantity}&MaxQuantity={filterParams.MaxQuantity}" +
+                  $"&MinPrice={filterParams.MinPrice}&MaxPrice={filterParams.MaxPrice}" +
+                  $"&MinDiscountPercentage={filterParams.MinDiscountPercentage}" +
+                  $"&MaxDiscountPercentage={filterParams.MaxDiscountPercentage}" +
                   $"&IsAvailable={filterParams.IsAvailable}&IsDiscounted={filterParams.IsDiscounted}";
         var result = await GetFromJsonAsync<SellerInventoryFilterResult>(url);
         return result.Data;

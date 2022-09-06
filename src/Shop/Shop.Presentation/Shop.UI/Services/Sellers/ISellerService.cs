@@ -15,7 +15,7 @@ public interface ISellerService
     Task<ApiResult> DecreaseInventoryQuantity(DecreaseSellerInventoryQuantityViewModel model);
     Task<ApiResult> Remove(long inventoryId);
 
-    Task<SellerDto?> GetById(long id);
+    Task<SellerDto?> GetCurrentSeller();
     Task<SellerFilterResult> GetByFilter(SellerFilterParams filterParams);
     Task<SellerInventoryDto?> GetInventoryById(long id);
     Task<SellerInventoryFilterResult> GetInventoryByFilter(SellerInventoryFilterParams filterParams);

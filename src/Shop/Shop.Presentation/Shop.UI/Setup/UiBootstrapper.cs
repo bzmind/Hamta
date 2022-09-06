@@ -5,6 +5,7 @@ using Shop.Infrastructure.EmailService;
 using Shop.UI.Services.Auth;
 using Shop.UI.Services.Avatars;
 using Shop.UI.Services.Categories;
+using Shop.UI.Services.Colors;
 using Shop.UI.Services.Comments;
 using Shop.UI.Services.Orders;
 using Shop.UI.Services.Products;
@@ -34,6 +35,10 @@ public static class UiBootstrapper
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 
         services.AddHttpClient<ICategoryService, CategoryService>
+            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
+
+        services.AddHttpClient<IColorService, ColorService>
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 

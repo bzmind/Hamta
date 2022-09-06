@@ -30,6 +30,6 @@ public class GetUserByEmailOrPhoneQueryHandler : IBaseQueryHandler<GetUserByEmai
                 })
             .FirstOrDefaultAsync(tables => tables.user.PhoneNumber.Value == request.EmailOrPhone ||
                                          tables.user.Email == request.EmailOrPhone, cancellationToken);
-        return tables.user.MapToUserDto(tables.avatar);
+        return await tables.user.MapToUserDto(tables.avatar).GetRolesDto(_shopContext);
     }
 }

@@ -6,7 +6,7 @@ namespace Shop.API.ViewModels.Categories;
 
 public class EditCategoryViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseCategory)]
     public long Id { get; set; }
 
     public long? ParentId { get; set; }

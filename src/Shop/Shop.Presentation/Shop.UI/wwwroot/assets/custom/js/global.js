@@ -189,6 +189,33 @@ function reinitializeElementsScripts()
   triggerSelect2ValidationOnChange();
   triggerFileInputsValidationOnChange();
   avatarInputChangeListener();
+  setupMoneyInputsFormatting();
+}
+
+function setupMoneyInputsFormatting()
+{
+  $("input[type='text'][data-money]").on("input", function ()
+  {
+    formatMoneyInputs($(this));
+    const realValue = $(this).val().replace(/,/g, "");
+    console.log(realValue);
+    const realInput = $(`input[data-money-value="${$(this).attr("data-money")}"]`);
+    if (realInput.length === 0)
+      return;
+    realInput.val(realValue);
+    realInput.valid();
+  });
+  formatMoneyInputs($("input[type='text'][data-money]"));
+}
+
+function formatMoneyInputs(inputs)
+{
+  inputs.each((i, input) =>
+  {
+    const value = $(input).val();
+    if (value !== "")
+      $(input).val(numeral(value).format("0,0"));
+  });
 }
 
 function triggerSelect2ValidationOnChange()
@@ -211,14 +238,16 @@ function reinitializeSelect2()
 {
   try
   {
-    const select2 = $(".select2");
-    select2.select2();
+    const select2 = $(".select2").select2();
     select2.on("change", function (e)
     {
       $(this).parent(".form-element-row").find(".input-validation-error")
         .removeClass("input-validation-error");
       $(this).parent(".form-element-row").next(".field-validation-error")
         .removeClass("field-validation-error").html("");
+    });
+    $(".select2[multiple]").select2({
+      closeOnSelect: false
     });
   } catch (e)
   {
@@ -346,6 +375,8 @@ function getGuid()
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
 }
+
+const strContains = function (string, text) { return string.indexOf(text) > -1; };
 
 $.fn.attrContains = function (attrName, string) { return $(this).attr(attrName).indexOf(string) > -1; };
 

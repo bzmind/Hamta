@@ -6,7 +6,7 @@ namespace Shop.API.ViewModels.Orders;
 
 public class AddOrderItemViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseSellerInventory)]
     public long InventoryId { get; set; }
 
     [DisplayName("تعداد سفارش")]

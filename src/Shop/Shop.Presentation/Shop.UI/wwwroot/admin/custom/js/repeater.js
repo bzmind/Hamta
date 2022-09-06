@@ -18,7 +18,7 @@ $.fn.repeater = function ()
       const item = list.find("[data-repeater-item]").last();
       removeExtraCheckboxes(item);
       let itemClone;
-      if (item.length === 0 || item.hasClass("category-specification"))
+      if (item.length === 0)
         itemClone = cachedItem.clone();
       else
       {
@@ -31,7 +31,7 @@ $.fn.repeater = function ()
 
 function appendItemToList(item, list, container)
 {
-  item.find("[name]").val("");
+  item.find("input[type='text'][name]").val("");
   item.css("display", "none");
   item.appendTo(list).slideDown(200, () =>
   {

@@ -23,7 +23,7 @@ public interface ISellerFacade
     Task<OperationResult> DecreaseInventoryQuantity(DecreaseSellerInventoryQuantityCommand command);
     Task<OperationResult> Remove(long sellerId);
 
-    Task<SellerDto?> GetById(long id);
+    Task<SellerDto?> GetCurrentSeller(long userId);
     Task<SellerFilterResult> GetByFilter(SellerFilterParams filterParams);
     Task<SellerInventoryDto?> GetInventoryById(long id);
     Task<SellerInventoryFilterResult> GetInventoriesByFilter(SellerInventoryFilterParams filterParams);

@@ -5,9 +5,9 @@ namespace Shop.API.ViewModels.Users.Roles;
 
 public class AddUserRoleViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseUser)]
     public long UserId { get; set; }
 
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseRole)]
     public long RoleId { get; set; }
 }

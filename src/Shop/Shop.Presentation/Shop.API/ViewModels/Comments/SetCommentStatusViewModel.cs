@@ -8,7 +8,7 @@ namespace Shop.API.ViewModels.Comments;
 
 public class SetCommentStatusViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseComment)]
     public long Id { get; set; }
 
     [DisplayName("وضعیت نظر")]

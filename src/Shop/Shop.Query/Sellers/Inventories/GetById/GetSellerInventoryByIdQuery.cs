@@ -19,10 +19,23 @@ public class GetSellerInventoryByIdQueryHandler : IBaseQueryHandler<GetSellerInv
 
     public async Task<SellerInventoryDto> Handle(GetSellerInventoryByIdQuery request, CancellationToken cancellationToken)
     {
-        var inventory = await _shopContext.Sellers
+        var tables = await _shopContext.Sellers
             .Select(seller => seller.Inventories.FirstOrDefault(inventory => inventory.Id == request.InventoryId))
+            .GroupJoin(
+                _shopContext.Colors,
+                inventory => inventory.ColorId,
+                color => color.Id,
+                (inventory, colors) => new { inventory, colors })
+            .SelectMany(
+                tables => tables.colors.DefaultIfEmpty(),
+                (tables, color) => new { tables.inventory, color })
+            .Join(
+                _shopContext.Products,
+                tables => tables.inventory.ProductId,
+                product => product.Id,
+                (tables, product) => new { tables, product })
             .FirstOrDefaultAsync(cancellationToken);
 
-        return inventory.MapToSellerInventoryDto();
+        return tables.tables.inventory.MapToSellerInventoryDto(tables.tables.color, tables.product);
     }
 }

@@ -130,7 +130,8 @@ public abstract class BaseService
         catch (Exception e)
         {
             var resultError = await result.Content.ReadAsStringAsync();
-            finalResult = ApiResult<TData>.Error(resultError);
+            finalResult = ApiResult<TData>.Error
+                (string.IsNullOrWhiteSpace(resultError) ? e.Message : result.ReasonPhrase);
         }
 
         return finalResult;

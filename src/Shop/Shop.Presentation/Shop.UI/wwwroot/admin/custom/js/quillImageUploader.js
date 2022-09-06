@@ -85,6 +85,7 @@ function base64ToUrl(base64)
       reject();
     formData.append("__RequestVerificationToken", antiForgeryToken);
 
+    console.log(formData);
     // replace "/upload" with whatever the path is to your upload handler
     sendAjaxPost(`${$(location).attr("pathname")}/addReviewImage`, formData).then(result =>
     {

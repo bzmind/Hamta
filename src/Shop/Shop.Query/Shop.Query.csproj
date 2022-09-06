@@ -22,7 +22,6 @@
     <Folder Include="Roles\GetById\" />
     <Folder Include="Roles\_Mapper\" />
     <Folder Include="Roles\_DTOs\" />
-    <Folder Include="Sellers\GetById\" />
     <Folder Include="Shippings\_DTOs\" />
     <Folder Include="Shippings\_Mappers\" />
     <Folder Include="Users\GetByEmailOrPhone\" />

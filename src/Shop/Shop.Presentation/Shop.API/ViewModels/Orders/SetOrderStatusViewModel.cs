@@ -8,7 +8,7 @@ namespace Shop.API.ViewModels.Orders;
 
 public class SetOrderStatusViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseUser)]
     public long UserId { get; set; }
 
     [DisplayName("وضعیت سفارش")]

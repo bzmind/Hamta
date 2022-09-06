@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -13,6 +14,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddMvcOptions(opti
 }).AddRazorPagesOptions(options =>
 {
     options.Conventions.AuthorizeFolder("/Profile", "ProfileAuth");
+    options.Conventions.AuthorizeFolder("/Seller", "SellerAuth");
 });
 
 builder.Services.RegisterUiDependencies();
@@ -27,6 +29,12 @@ builder.Services.AddAuthorization(options =>
     options.AddPolicy("ProfileAuth", config =>
     {
         config.RequireAuthenticatedUser();
+    });
+    options.AddPolicy("SellerAuth", config =>
+    {
+        config.RequireAuthenticatedUser();
+        config.RequireAssertion(authContext => authContext.User.Claims
+            .Any(claim => claim.Type == ClaimTypes.Role && claim.Value.ToLower().Contains("seller")));
     });
 });
 

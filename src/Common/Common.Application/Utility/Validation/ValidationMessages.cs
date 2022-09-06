@@ -7,23 +7,6 @@ public static class ValidationMessages
     public const string MaxCharactersLength = "تعداد کاراکتر های وارد شده بیشتر از حد مجاز است";
     public const string MinCharactersLength = "تعداد کاراکتر های وارد شده کمتر از حد مجاز است";
 
-    public const string IdRequired = "لطفا آیدی را وارد کنید";
-    public const string ProductIdRequired = "لطفا آیدی محصول را وارد کنید";
-    public const string ProductMainImageIdRequired = "لطفا آیدی عکس اصلی محصول را وارد کنید";
-    public const string ProductGalleryImageIdRequired = "لطفا آیدی عکس گالری محصول را وارد کنید";
-    public const string CategoryIdRequired = "لطفا آیدی دسته‌بندی را وارد کنید";
-    public const string CategorySpecificationIdRequired = "لطفا آیدی مشخصات دسته‌بندی را وارد کنید";
-    public const string UserIdRequired = "لطفا آیدی کاربر را وارد کنید";
-    public const string UserAddressIdRequired = "لطفا آیدی آدرس کاربر را وارد کنید";
-    public const string RoleIdRequired = "لطفا آیدی نقش را وارد کنید";
-    public const string OrderIdRequired = "لطفا آیدی سفارش را وارد کنید";
-    public const string AvatarIdRequired = "لطفا آیدی آواتار را وارد کنید";
-    public const string ColorIdRequired = "لطفا آیدی رنگ را وارد کنید";
-    public const string CommentIdRequired = "لطفا آیدی نظر را وارد کنید";
-    public const string QuestionIdRequired = "لطفا آیدی سوال را وارد کنید";
-    public const string SellerIdRequired = "لطفا آیدی فروشنده را وارد کنید";
-    public const string SellerInventoryIdRequired = "لطفا آیدی انبار فروشنده را وارد کنید";
-    public const string ShippingIdRequired = "لطفا آیدی روش ارسال را وارد کنید";
     public const string NameRequired = "لطفا نام را وارد کنید";
     public const string FamilyNameRequired = "لطفا نام خانوادگی را وارد کنید";
     public const string FullNameRequired = "لطفا نام و نام خانوادگی را وارد کنید";
@@ -52,12 +35,31 @@ public static class ValidationMessages
     public const string QuestionStatusRequired = "لطفا وضعیت سوال را وارد کنید";
     public const string QuantityRequired = "لطفا تعداد را وارد کنید";
     public const string PriceRequired = "لطفا قیمت را وارد کنید";
+    public const string DiscountPercentageRequired = "لطفا درصد تخفیف را وارد کنید";
+    public const string InvalidDiscountPercentageRange = "درصد تخفیف باید بین 0 تا 100 باشد";
     public const string ProductNameRequired = "لطفا نام محصول را وارد کنید";
     public const string ProductEnglishNameRequired = "لطفا نام انگلیسی محصول را وارد کنید";
     public const string PermissionsRequired = "لطفا مجوز ها را وارد کنید";
     public const string NationalCodeRequired = "لطفا کدملی را وارد کنید";
     public const string ShopNameRequired = "لطفا نام فروشگاه را وارد کنید";
-    public const string StatusRequired = "لطفا وضعیت را وارد کنید";
+    public const string StatusRequired = "لطفا وضعیت را انتخاب کنید";
+
+    public const string ChooseProduct = "لطفا محصول را انتخاب کنید";
+    public const string ChooseProductMainImage = "لطفا عکس اصلی محصول را انتخاب کنید";
+    public const string ChooseProductGalleryImage = "لطفا عکس های گالری محصول را انتخاب کنید";
+    public const string ChooseUser = "لطفا کاربر را انتخاب کنید";
+    public const string ChooseUserAddress = "لطفا آیدی آدرس کاربر را وارد کنید";
+    public const string ChooseComment = "لطفا نظر را انتخاب کنید";
+    public const string ChooseCategory = "لطفا دسته‌بندی را انتخاب کنید";
+    public const string ChooseCategorySpecification = "لطفا مشخصات دسته‌بندی را انتخاب کنید";
+    public const string ChooseColor = "لطفا رنگ را انتخاب کنید";
+    public const string ChooseQuestion = "لطفا سوال را انتخاب کنید";
+    public const string ChooseSeller = "لطفا فروشنده را انتخاب کنید";
+    public const string ChooseSellerInventory = "لطفا انبار را انتخاب کنید";
+    public const string ChooseOrder = "لطفا سفارش را انتخاب کنید";
+    public const string ChooseShipping = "لطفا روش ارسال را انتخاب کنید";
+    public const string ChooseRole = "لطفا نقش را انتخاب کنید";
+    public const string ChooseAvatar = "لطفا آواتار را انتخاب کنید";
 
     public const string InvalidName = "نام نامعتبر است";
     public const string InvalidFamilyName = "نام خانوادگی نامعتبر است";
@@ -70,7 +72,7 @@ public static class ValidationMessages
     public const string InvalidPassword = "رمز عبور نامعتبر است";
     public const string InvalidConfirmPassword = "رمز های عبور با هم یکسان نیستند";
     public const string InvalidConfirmNewPassword = "رمز های عبور جدید با هم یکسان نیستند";
-    public const string InvalidPrice = "مبلغ نامعتبر است";
+    public const string InvalidPrice = "قیمت نامعتبر است";
     public const string InvalidGender = "جنسیت نامعتبر است";
     public const string InvalidAvatar = "آواتار نامعتبر است";
     public const string InvalidImage = "عکس نامعتبر است";
@@ -209,7 +211,7 @@ public static class ValidationMessages
     /// <param name="fieldName"></param>
     /// <param name="maxAmount"></param>
     public static string TomanMaxAmount(string fieldName, int maxAmount)
-        => $"{fieldName} نمی‌تواند بیشتر از {maxAmount:C0} تومان باشد";
+        => $"{fieldName} نمی‌تواند بیشتر از {maxAmount} تومان باشد";
 
     /// <summary>
     /// <example>Example: قیمت} باید بیشتر از {0} تومان باشد}</example>
@@ -217,7 +219,7 @@ public static class ValidationMessages
     /// <param name="fieldName"></param>
     /// <param name="minAmount"></param>
     public static string TomanMinAmount(string fieldName, int minAmount)
-        => $"{fieldName} نمی‌تواند کمتر از {minAmount:C0} تومان باشد";
+        => $"{fieldName} نمی‌تواند کمتر از {minAmount} تومان باشد";
 
     /// <summary>
     /// <example>Example: سفارش} یافت نشد}</example>

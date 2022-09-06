@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html lang="fa" data-textdirection="rtl" dir="rtl">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0">
+  <title>@ViewData["Title"]</title>
+  <link rel="shortcut icon" type="image/x-icon" href="/admin/images/ico/favicon.ico">
+  <meta name="theme-color" content="#5A8DEE">
+  <link rel="stylesheet" type="text/css" href="/admin/vendors/css/vendors.min.css">
+  <link rel="stylesheet" type="text/css" href="/admin/vendors/css/extensions/nouislider.min.css">
+  <link rel="stylesheet" type="text/css" href="/admin/vendors/css/charts/apexcharts.css">
+  <link rel="stylesheet" type="text/css" href="/admin/vendors/css/extensions/dragula.min.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/bootstrap.min.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/bootstrap-extended.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/colors.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/components.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/themes/dark-layout.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/themes/semi-dark-layout.css">
+  <link rel="stylesheet" type="text/css" href="/admin/vendors/css/forms/select/select2.min.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/core/menu/menu-types/vertical-menu.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/plugins/extensions/noui-slider.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/core/colors/palette-noui.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/pages/dashboard-Analytics.css">
+  <link rel="stylesheet" type="text/css" href="/admin/vendors/css/editors/quill/monokai-sublime.min.css">
+  <link rel="stylesheet" type="text/css" href="/admin/vendors/css/editors/quill/quill.snow.css">
+  <link rel="stylesheet" type="text/css" href="/admin/css/admin-custom.css">
+  <link rel="stylesheet" type="text/css" href="/assets/custom/css/custom-bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="/assets/custom/css/global.css">
+</head>
+
+<body class="vertical-layout vertical-menu-modern dark-layout 2-columns navbar-sticky footer-static"
+      data-open="click" data-menu="vertical-menu-modern" data-col="2-columns" data-layout="dark-layout">
+  <div id="alerts"></div>
+  <div class="header-navbar-shadow"></div>
+  <partial name="Seller/Shared/_Header" />
+  <partial name="Seller/Shared/_Sidebar" />
+  <div class="app-content content">
+    <div class="content-overlay"></div>
+    <div class="content-wrapper">
+      <div class="content-body">
+        <h5 class="mb-2">@ViewData["Title"]</h5>
+        @RenderBody()
+      </div>
+    </div>
+  </div>
+  <div class="sidenav-overlay"></div>
+  <div class="drag-target"></div>
+  <div class="modal fade text-left" id="default-modal" tabindex="-1" role="dialog"
+       aria-labelledby="default-modal-label" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" id="myModalLabel33">فرم ورود</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="بستن">
+            <i class="bx bx-x"></i>
+          </button>
+        </div>
+        <div class="modal-body">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/admin/vendors/js/vendors.min.js"></script>
+  <script src="/admin/fonts/LivIconsEvo/js/LivIconsEvo.tools.min.js"></script>
+  <script src="/admin/fonts/LivIconsEvo/js/LivIconsEvo.defaults.js"></script>
+  <script src="/admin/fonts/LivIconsEvo/js/LivIconsEvo.min.js"></script>
+  <script src="/admin/vendors/js/charts/apexcharts.min.js"></script>
+  <script src="/admin/vendors/js/extensions/dragula.min.js"></script>
+  <script src="/admin/vendors/js/extensions/wNumb.js"></script>
+  <script src="/admin/vendors/js/extensions/nouislider.min.js"></script>
+  <script src="/admin/js/scripts/configs/vertical-menu-dark.js"></script>
+  <script src="/admin/js/core/app-menu.js"></script>
+  <script src="/admin/js/core/app.js"></script>
+  <script src="/admin/js/scripts/components.js"></script>
+  <script src="/admin/js/scripts/footer.js"></script>
+  <script src="/admin/js/scripts/customizer.js"></script>
+  <script src="/admin/js/scripts/pages/dashboard-Analytics.js"></script>
+  <script src="/assets/js/plugins/sweetalert2.all.min.js"></script>
+  <script src="/admin/custom/js/repeater.js"></script>
+  <script src="/admin/vendors/js/forms/select/select2.full.min.js"></script>
+  <script src="/admin/vendors/js/extensions/numeral/numeral.js"></script>
+  <script src="/admin/vendors/js/extensions/Sortable.min.js"></script>
+  <script src="/admin/js/scripts/forms/select/form-select2.js"></script>
+  <script src="/admin/vendors/js/editors/quill/highlight.min.js"></script>
+  <script src="/admin/vendors/js/editors/quill/quill.min.js"></script>
+  <script src="/admin/custom/js/rangeSlider.js"></script>
+  <partial name="Shared/_ValidationScriptsPartial" />
+  <script src="/assets/custom/js/customClientSideValidation.js"></script>
+  <script src="/assets/custom/js/global.js"></script>
+  <script src="/admin/custom/js/categorySeach.js"></script>
+  <script src="/admin/custom/js/productGalleryImages.js"></script>
+  <script src="/admin/custom/js/quillImageUploader.js"></script>
+  <script src="/admin/custom/js/admin.js"></script>
+  @await RenderSectionAsync("Scripts", false)
+  <div id="antiForgeryToken">
+    @Html.AntiForgeryToken()
+  </div>
+</body>
+
+</html>

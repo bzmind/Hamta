@@ -7,9 +7,12 @@
   <div class="col-5 pl-0">
     <input type="text" class="form-control" asp-for="@Model.Title"
            placeholder="@Html.DisplayNameFor(m => m.Title)">
-    <span asp-validation-for="@Model.Title" class="d-block"></span>
+    <span asp-validation-for="@Model.Title"></span>
   </div>
-  <div class="col-3 pl-0">
+  <div class="col-2 pl-0 mr-40px">
     @Html.EditorFor(m => m.IsImportant)
+  </div>
+  <div class="col-2 pl-0">
+    @Html.EditorFor(m => m.IsOptional)
   </div>
 </div>

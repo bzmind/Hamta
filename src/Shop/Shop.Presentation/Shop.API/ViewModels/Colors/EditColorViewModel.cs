@@ -6,7 +6,7 @@ namespace Shop.API.ViewModels.Colors;
 
 public class EditColorViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseColor)]
     public long ColorId { get; set; }
 
     [DisplayName("نام رنگ")]

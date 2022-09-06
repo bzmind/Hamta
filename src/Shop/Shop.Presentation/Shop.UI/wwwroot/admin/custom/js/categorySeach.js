@@ -128,13 +128,16 @@ function hasSubCategory(category)
 function showSelectedCategoryBreadCrumb()
 {
   const selectedCategoryRow = $(".category-radio:checked").parents().closest("tr");
-  if (selectedCategoryRow.length === 0)
+  if (selectedCategoryRow.length === 0) {
+    const categoryBreadCrumb = $(".category-breadcrumb");
+    categoryBreadCrumb.html("");
+    categoryBreadCrumb.append($(`<li class="breadcrumb-item">دسته‌بندی انتخاب نشده است</li>`));
     return;
+  }
   const majorParents = getCategoryMajorParents(selectedCategoryRow).reverse();
   majorParents.push(selectedCategoryRow);
   const categoryBreadCrumb = $(".category-breadcrumb");
   categoryBreadCrumb.html("");
-
   majorParents.forEach(majorParent =>
   {
     categoryBreadCrumb.append($(`<li class="breadcrumb-item"><span>${majorParent.text()}</span></li>`));

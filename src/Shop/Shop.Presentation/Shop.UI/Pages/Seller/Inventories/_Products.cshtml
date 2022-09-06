@@ -1,0 +1,69 @@
+﻿@using Common.Application.Utility.FileUtility
+@model List<Shop.Query.Products._DTOs.ProductFilterDto>
+@{
+}
+
+@foreach (var product in Model)
+{
+  <tr>
+    <td class="item-image-container">
+      <img alt="product image" width="100" height="100" class="item-image"
+         src="@ServerPaths.GetProductMainImagePath(product.MainImage)" />
+    </td>
+    <td>
+      <label>نام:</label>
+      <span>@product.Name</span>
+      <br />
+      <label>نام انگلیسی:</label>
+      <span>@product.EnglishName</span>
+      <br />
+      <label>اسلاگ:</label>
+      <span>@product.Slug</span>
+    </td>
+    @if (product.InventoryId != 0)
+    {
+      <td>
+        @product.LowestInventoryPrice.ToString("##,###") <small>تومان</small>
+        @if (product.LowestInventoryPrice != product.HighestInventoryPrice)
+        {
+          <br />
+          <span>تا</span>
+          <br />
+          @product.HighestInventoryPrice.ToString("##,###") <small>تومان</small>
+        }
+      </td>
+      <td>
+        <label>امتیاز:</label>
+        <span>@(product.AverageScore != 0 ? product.AverageScore.ToString("#.#") : 0)</span>
+        <br />
+        <label>موجودی:</label>
+        <span>@product.AllQuantityInStock</span>
+        <small>عدد</small>
+        <br />
+        @if (product.Colors.Any())
+        {
+          <label>رنگ ها:</label>
+          <div>
+            @foreach (var color in product.Colors)
+            {
+              if (color != null)
+              {
+                <span class="item-color" style="background-color: @color.Code;"></span>
+              }
+            }
+          </div>
+        }
+      </td>
+    }
+    else
+    {
+      <td colspan="2" class="text-center p-2">فهرست موجودی برای این محصول وجود ندارد</td>
+    }
+  </tr>
+}
+@if (!Model.Any())
+{
+  <tr>
+    <td colspan="4" class="text-center p-2">موردی برای نمایش وجود ندارد</td>
+  </tr>
+}

@@ -1,0 +1,9 @@
+﻿@model bool
+@{
+    var id = Guid.NewGuid();
+}
+
+<div class="custom-control custom-checkbox mt-0">
+  <input type="checkbox" class="custom-control-input" name="customCheck" id="@id">
+  <label asp-for="@Model" class="custom-control-label" for="@id"></label>
+</div>

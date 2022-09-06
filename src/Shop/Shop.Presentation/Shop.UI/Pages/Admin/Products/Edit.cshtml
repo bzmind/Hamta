@@ -41,7 +41,6 @@
                asp-for="@Model.EditProductViewModel.CategoryId" value="@subCategory.Id" />
               <label class="radio-circle" for="@newId"></label>
             </label>
-            <span asp-validation-for="@Model.EditProductViewModel.CategoryId"></span>
             <span class="category-title" style="text-indent: 0; margin-right: 6px;">
               @subCategory.Title
               @if (hasSubCategory)
@@ -74,7 +73,6 @@
   }
 }
 
-<h5 class="mb-1">@ViewData["Title"]</h5>
 <form method="post" enctype="multipart/form-data" id="productForm">
   <div class="card">
     <div class="card-body">
@@ -93,12 +91,13 @@
                 انتخاب
               </label>
             </div>
-            <div class="mainImage">
+            <div class="mainImage" data-val-id="productMainImageVal">
               <img alt="product-image" data-img-preview="@guid" data-img-name="@Model.MainImage"
                    style="@(isMainImageNull ? "display: none" : "")"
                    src="@(isMainImageNull ? "" : ServerPaths.GetProductMainImagePath(Model.MainImage))" />
             </div>
-            <span asp-validation-for="@Model.EditProductViewModel.MainImage"></span>
+            <span asp-validation-for="@Model.EditProductViewModel.MainImage"
+                  data-val-for="productMainImageVal"></span>
           </div>
           <div class="galleryImagesContainer d-flex flex-column ml-1 w-100">
             @{
@@ -118,9 +117,10 @@
                        data-img-preview="@imgPreview" />
                 اضافه کردن
               </label>
-              <span asp-validation-for="@Model.EditProductViewModel.GalleryImages"></span>
+              <span asp-validation-for="@Model.EditProductViewModel.GalleryImages"
+                    data-val-for="productGalleryImageVal"></span>
             </div>
-            <div class="galleryImagesList" data-img-preview-list="@imgPreview">
+            <div class="galleryImagesList" data-img-preview-list="@imgPreview" data-val-id="productGalleryImageVal">
               @for (var i = 0; i < Model.GalleryImages.Count; i++)
               {
                 var imgGuid = Guid.NewGuid();
@@ -182,7 +182,7 @@
       </div>
     </div>
   </div>
-  <div class="card">
+  <div class="card" data-val-id="categoryVal">
     <div class="card-body">
       <div class="row">
         <div class="col-md-12">
@@ -222,6 +222,8 @@
           </table>
         </div>
       </div>
+      <span class="mt-8px" asp-validation-for="@Model.EditProductViewModel.CategoryId"
+            data-val-for="categoryVal"></span>
     </div>
   </div>
   <div class="card">

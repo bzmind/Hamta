@@ -121,7 +121,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
     public CreateProductCommandValidator()
     {
         RuleFor(p => p.CategoryId)
-            .NotEmpty().WithMessage(ValidationMessages.CategoryIdRequired);
+            .NotEmpty().WithMessage(ValidationMessages.ChooseCategory);
 
         RuleFor(p => p.Name)
             .NotEmpty().WithMessage(ValidationMessages.ProductNameRequired)
@@ -162,7 +162,7 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
         RuleForEach(p => p.CategorySpecifications).ChildRules(categorySpecification =>
         {
             categorySpecification.RuleFor(p => p.CategorySpecificationId)
-                .NotEmpty().WithMessage(ValidationMessages.CategorySpecificationIdRequired);
+                .NotEmpty().WithMessage(ValidationMessages.ChooseCategorySpecification);
 
             categorySpecification.RuleFor(spec => spec.Description)
                 .MaximumLength(300).WithMessage(ValidationMessages.FieldCharactersMaxLength("توضیحات", 300));

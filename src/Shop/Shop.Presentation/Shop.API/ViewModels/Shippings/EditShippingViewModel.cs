@@ -5,7 +5,7 @@ namespace Shop.API.ViewModels.Shippings;
 
 public class EditShippingViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseShipping)]
     public long Id { get; set; }
 
     [Display(Name = "نام روش ارسال")]

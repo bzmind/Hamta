@@ -1,0 +1,95 @@
+﻿@page "{inventoryId}"
+@using Common.Application.Utility.FileUtility
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Shop.Query.Colors._DTOs
+@using Shop.UI.Services.Colors
+@using Shop.UI.TagHelpers
+@model Shop.UI.Pages.Seller.Inventories.EditModel
+@inject IColorService ColorService
+@{
+  ViewData["Title"] = "ویرایش انبار";
+  ViewData["Selected"] = "inventories";
+  var colors = await ColorService.GetByFilter(new ColorFilterParams { Take = 0 });
+}
+
+<form method="post" enctype="multipart/form-data">
+  @Html.HiddenFor(m => m.EditInventoryViewModel.InventoryId)
+  <section>
+    <div class="table-responsive card card-content" data-val-id="productVal">
+      <table class="table choose-product mb-0">
+        <tbody>
+          @Html.HiddenFor(m => m.EditInventoryViewModel.ProductId)
+          <tr>
+            <td class="item-image-container">
+              <img alt="product image" width="100" height="100" class="item-image"
+                   src="@ServerPaths.GetProductMainImagePath(Model.ProductMainImage)" />
+            </td>
+            <td>
+              <label>نام:</label>
+              <span>@Model.ProductName</span>
+              <br />
+              <label>نام انگلیسی:</label>
+              <span>@Model.ProductEnglishName</span>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <span class="m-1" asp-validation-for="@Model.EditInventoryViewModel.ProductId" data-val-for="productVal"></span>
+    </div>
+  </section>
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="form-group">
+            <label asp-for="@Model.EditInventoryViewModel.Price"></label>
+            <input type="text" class="form-control" data-money="inventoryPrice" data-val-id="inventoryVal"
+                   value="@Model.EditInventoryViewModel.Price">
+            <input type="hidden" class="form-control" asp-for="@Model.EditInventoryViewModel.Price"
+                   data-money-value="inventoryPrice">
+            <span asp-validation-for="@Model.EditInventoryViewModel.Price" data-val-for="inventoryVal"></span>
+          </div>
+        </div>
+        <div class="col-md-4">
+          @Html.EditorFor(m => m.EditInventoryViewModel.Quantity)
+        </div>
+        <div class="col-md-4">
+          @Html.EditorFor(m => m.EditInventoryViewModel.DiscountPercentage)
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>رنگ</label>
+            <fieldset class="position-relative has-icon-left">
+              <input type="text" class="form-control form-control-sm" id="product-color-search" placeholder="جستجو">
+              <div class="form-control-position">
+                <i class="bx bx-search"></i>
+              </div>
+            </fieldset>
+            <div id="product-colors" data-val-id="productColorsVal">
+              @foreach (var color in colors.Data)
+              {
+                var colorGuid = Guid.NewGuid();
+                <div class="product-color">
+                  <input type="radio" hidden="" class="radio-primary" id="@colorGuid"
+                       asp-for="@Model.EditInventoryViewModel.ColorId" value="@color.Id" />
+                  <label class="radio" for="@colorGuid">
+                    <span class="item-color ml-5px" style="background-color: @color.Code"></span>
+                    <span class="color-name">@color.Name</span>
+                  </label>
+                </div>
+              }
+            </div>
+            <span asp-validation-for="@Model.EditInventoryViewModel.ColorId" data-val-for="productColorsVal"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <button type="submit" class="btn btn-success">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    ویرایش
+  </button>
+  <cancel></cancel>
+</form>

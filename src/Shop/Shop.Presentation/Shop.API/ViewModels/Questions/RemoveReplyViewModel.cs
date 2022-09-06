@@ -5,9 +5,9 @@ namespace Shop.API.ViewModels.Questions;
 
 public class RemoveReplyViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseQuestion)]
     public long QuestionId { get; set; }
 
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseRole)]
     public long ReplyId { get; set; }
 }

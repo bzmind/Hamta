@@ -33,6 +33,14 @@ button:focus {
   border-color: #ff4242 !important;
 }
 
+.input-validation-error ~ .select2 .select2-selection {
+  border: 1px solid #fc3232 !important;
+}
+
+.field-validation-valid {
+  display: none !important;
+}
+
 #alerts {
   display: none;
   top: 10px;
@@ -95,10 +103,6 @@ button:focus {
 
 .form-element-with-icon i {
   color: #CCCCCC;
-}
-
-.input-validation-error ~ .select2 .select2-selection {
-  border: 1px solid #fc3232;
 }
 
 .select2-results__option--disabled {

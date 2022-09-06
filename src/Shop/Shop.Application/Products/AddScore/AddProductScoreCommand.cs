@@ -36,7 +36,7 @@ public class AddScoreCommandValidator : AbstractValidator<AddProductScoreCommand
     public AddScoreCommandValidator()
     {
         RuleFor(r => r.ProductId)
-            .NotEmpty().WithMessage(ValidationMessages.ProductIdRequired);
+            .NotEmpty().WithMessage(ValidationMessages.ChooseProduct);
 
         RuleFor(p => p.Score)
             .NotEmpty().WithMessage(ValidationMessages.FieldRequired("امتیاز"))

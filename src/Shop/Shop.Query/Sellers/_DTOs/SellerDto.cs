@@ -9,5 +9,4 @@ public class SellerDto : BaseDto
     public string ShopName { get; set; }
     public string NationalCode { get; set; }
     public Seller.SellerStatus Status { get; set; }
-    public List<SellerInventoryDto> Inventories { get; set; }
 }

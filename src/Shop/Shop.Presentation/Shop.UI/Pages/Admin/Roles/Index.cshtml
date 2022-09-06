@@ -5,9 +5,7 @@
   ViewData["Title"] = "مدیریت نقش ها";
   ViewData["Selected"] = "roles";
 }
-
 <section>
-  <h5 class="mb-1">@ViewData["Title"]</h5>
   <open-modal url="@Url.Page("Index", "ShowAddPage")" modal-title="افزودن نقش"
               modal-size="modal-md" class="btn btn-success mb-1">افزودن نقش</open-modal>
   <div class="table-responsive card card-content">
@@ -20,11 +18,11 @@
         </tr>
       </thead>
       <tbody>
-        @foreach (var role in Model.Roles)
+      @foreach (var role in Model.Roles)
         {
           <tr>
             <td>@role.Title</td>
-            <td class="d-flex flex-wrap-reverse">
+            <td class="d-flex flex-wrap-reverse w-100">
               @foreach (var permission in role.Permissions)
               {
                 <div class="badge-pill bg-rgba-info text-info permission-badges">@permission</div>

@@ -27,11 +27,11 @@ public class ColorService : BaseService, IColorService
         return result.Data;
     }
 
-    public async Task<List<ColorDto>> GetByFilter(ColorFilterParams filterParams)
+    public async Task<ColorFilterResult> GetByFilter(ColorFilterParams filterParams)
     {
-        var url = $"api/color/GetByFilter?PageId={filterParams.PageId}" +
+        var url = $"GetByFilter?PageId={filterParams.PageId}" +
                   $"&Take={filterParams.Take}&Name={filterParams.Name}&Code={filterParams.Code}";
-        var result = await GetFromJsonAsync<List<ColorDto>>(url);
+        var result = await GetFromJsonAsync<ColorFilterResult>(url);
         return result.Data;
     }
 }

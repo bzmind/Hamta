@@ -43,6 +43,6 @@ public class RemoveAvatarCommandValidator : AbstractValidator<RemoveAvatarComman
     public RemoveAvatarCommandValidator()
     {
         RuleFor(r => r.AvatarId)
-            .NotEmpty().WithMessage(ValidationMessages.AvatarIdRequired);
+            .NotEmpty().WithMessage(ValidationMessages.ChooseAvatar);
     }
 }

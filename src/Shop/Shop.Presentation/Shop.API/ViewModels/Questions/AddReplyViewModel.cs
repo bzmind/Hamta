@@ -6,7 +6,7 @@ namespace Shop.API.ViewModels.Questions;
 
 public class AddReplyViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseQuestion)]
     public long QuestionId { get; set; }
 
     [DisplayName("توضیحات")]

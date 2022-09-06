@@ -17,7 +17,8 @@ public class JwtTokenBuilder
         var claims = new List<Claim>
         {
             new(ClaimTypes.MobilePhone, userDto.PhoneNumber.Value),
-            new(ClaimTypes.NameIdentifier, userDto.Id.ToString())
+            new(ClaimTypes.NameIdentifier, userDto.Id.ToString()),
+            new(ClaimTypes.Role, string.Join("-", userDto.Roles.Select(r => r.RoleTitle)))
         };
 
         var secretKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtConfig:SignInKey"]));

@@ -29,34 +29,75 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
     public async Task<ProductFilterResult> Handle(GetProductByFilterQuery request, CancellationToken cancellationToken)
     {
         var @params = request.FilterParams;
+        var categoryHasChanged = @params.OldCategoryId != @params.CategoryId;
 
-        var conditions = "";
+        var tables = _shopContext.Sellers
+            .SelectMany(s => s.Inventories)
+            .Join(
+                _shopContext.Products,
+                inventory => inventory.ProductId,
+                product => product.Id,
+                (inventory, product) => new { inventory, product })
+            .Join(
+                _shopContext.Categories,
+                tables => tables.product.CategoryId,
+                category => category.Id,
+                (tables, category) => new { tables, category })
+            .AsQueryable();
 
         if (@params.CategoryId != null && @params.CategoryId != 0)
-            conditions += $"AND p.CategoryId = {@params.CategoryId}";
+            tables = tables.Where(t => t.tables.product.CategoryId == @params.CategoryId);
+
+        var tablesResult = await tables.ToListAsync(cancellationToken);
+
+        int highestPriceInCategory;
+        if (tablesResult.Any())
+            highestPriceInCategory = tablesResult.Max(t => t.tables.inventory.Price.Value);
+        else
+            highestPriceInCategory = @params.MaxPrice.Value;
+
+        if (categoryHasChanged)
+            @params.MaxPrice = highestPriceInCategory;
+
+        var conditions = "";
+        var joinWithCategories = "";
+
+        if (@params.CategoryId != null && @params.CategoryId != 0)
+            joinWithCategories = @"JOIN category_children cc
+                                       ON p.CategoryId = cc.Id";
 
         if (!string.IsNullOrWhiteSpace(@params.Name))
-            conditions += $"AND p.Name LIKE N'%{@params.Name}%'";
+            conditions += $" AND p.Name LIKE N'%{@params.Name}%'";
 
         if (!string.IsNullOrWhiteSpace(@params.EnglishName))
-            conditions += $"AND p.EnglishName LIKE N'%{@params.EnglishName}%'";
+            conditions += $" AND p.EnglishName LIKE N'%{@params.EnglishName}%'";
 
         if (!string.IsNullOrWhiteSpace(@params.Slug))
-            conditions += $"AND p.Slug LIKE N'%{@params.Slug}%'";
+            conditions += $" AND p.Slug LIKE N'%{@params.Slug}%'";
 
         if (@params.AverageScore != null)
-            conditions += $"AND ps.Value >= {@params.AverageScore}";
+            conditions += $" AND ps.Value >= {@params.AverageScore}";
 
         if (@params.MinPrice != null)
-            conditions += $"AND i.Price >= {@params.MinPrice}";
+            conditions += $" AND i.Price >= {@params.MinPrice} OR i.Price IS NULL";
 
         if (@params.MaxPrice != null)
-            conditions += $"AND i.Price <= {@params.MaxPrice}";
+            conditions += $" AND i.Price <= {@params.MaxPrice} OR i.Price IS NULL";
 
         var skip = (@params.PageId - 1) * @params.Take;
 
         using var connection = _dapperContext.CreateConnection();
-        var sql = $@"SELECT DISTINCT
+        var sql = $@"WITH category_children AS (
+                       SELECT Id, ParentId, Title
+                       FROM category.Categories
+                       WHERE Id = @CategoryId
+                       UNION ALL
+                       SELECT c.Id, c.ParentId, c.Title
+                       FROM category.Categories c
+                       JOIN category_children cc
+                    		ON cc.Id = c.ParentId
+                    )
+                    SELECT DISTINCT
                     	p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate,
                     	AVG(ps.Value) OVER (PARTITION by p.Id) AS AverageScore,
                         i.Id AS InventoryId,
@@ -66,12 +107,14 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
                         c.Id, c.Name, c.Code, c.CreationDate
                     FROM
                     	(
-                    		SELECT DISTINCT *
+                    		SELECT DISTINCT
+                                Id, Name, EnglishName, Slug, MainImage, CreationDate, CategoryId
                     		FROM {_dapperContext.Products}
 		                    ORDER BY CreationDate DESC
                     		OFFSET @skip ROWS
                     		FETCH NEXT @take ROWS ONLY
                     	) AS p
+                    {joinWithCategories}
                     LEFT JOIN {_dapperContext.ProductScores} ps
                     	ON p.Id = ps.ProductId
                     LEFT JOIN {_dapperContext.SellerInventories} i
@@ -87,13 +130,13 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
                     	ON p.Id = q.ProductId
                     WHERE 1 = 1 {conditions}
                     ORDER BY p.CreationDate DESC";
-        
+
         var result = await connection
             .QueryAsync<ProductFilterDto, Color, ProductFilterDto>(sql, (productFilterDto, color) =>
             {
                 productFilterDto.Colors.Add(color);
                 return productFilterDto;
-            }, param: new { skip, take = @params.Take }, splitOn: "Id");
+            }, param: new { skip, take = @params.Take, @params.CategoryId }, splitOn: "Id");
 
         var groupedQueryResult = result.GroupBy(p => p.Id).Select(productGroup =>
         {
@@ -108,17 +151,11 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             return firstItem;
         }).ToList();
 
-        var prices = await _shopContext.Sellers
-            .Select(s => new ProductFilterResult
-            {
-                HighestProductPrice = s.Inventories.OrderByDescending(i => i.Price.Value).First().Price.Value
-            }).ToListAsync(cancellationToken);
-
         return new ProductFilterResult
         {
             Data = groupedQueryResult,
             FilterParam = @params,
-            HighestProductPrice = prices.OrderByDescending(r => r.HighestProductPrice).First().HighestProductPrice
+            HighestPriceInCategory = highestPriceInCategory
         };
     }
 }

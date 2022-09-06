@@ -11,13 +11,20 @@ public class SellerInventory : BaseEntity
     public long ColorId { get; private set; }
     public int Quantity { get; private set; }
 
-    private Money _originalPrice;
+    private int _originalPrice
+    {
+        get => Price.Value + Price.Value * DiscountPercentage / 100;
+        set { }
+    }
     public Money Price { get; private set; }
     public bool IsAvailable { get => Quantity != 0; private set { } }
 
     private int _discountAmount;
     public int DiscountPercentage { get; private set; }
-    public bool IsDiscounted { get; private set; }
+    public bool IsDiscounted
+    {
+        get => DiscountPercentage > 0; private set { }
+    }
 
 
     private SellerInventory()
@@ -32,10 +39,9 @@ public class SellerInventory : BaseEntity
         SellerId = sellerId;
         ProductId = productId;
         Quantity = quantity;
-        _originalPrice = new Money(price);
+        _originalPrice = price;
         ColorId = colorId;
         IsAvailable = true;
-        IsDiscounted = discountPercentage > 0;
         SetDiscountPercentage(discountPercentage);
     }
 
@@ -44,9 +50,7 @@ public class SellerInventory : BaseEntity
         Guard(quantity);
         ProductId = productId;
         Quantity = quantity;
-        _originalPrice = new Money(price);
         ColorId = colorId;
-        IsDiscounted = discountPercentage > 0;
         SetDiscountPercentage(discountPercentage);
     }
 
@@ -76,7 +80,7 @@ public class SellerInventory : BaseEntity
         if (DiscountPercentage > 0)
             DiscountPercentage = 0;
 
-        Price = _originalPrice;
+        //Price = _originalPrice;
         _discountAmount = 0;
     }
 

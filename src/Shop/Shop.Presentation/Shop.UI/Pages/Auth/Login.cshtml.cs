@@ -132,7 +132,7 @@ public class LoginModel : BaseRazorPage
         Response.Cookies.Append("token", token, new CookieOptions
         {
             HttpOnly = true,
-            Expires = DateTimeOffset.Now.AddMinutes(5)
+            Expires = DateTimeOffset.Now.AddDays(5)
         });
         Response.Cookies.Append("refresh-token", refreshToken, new CookieOptions
         {

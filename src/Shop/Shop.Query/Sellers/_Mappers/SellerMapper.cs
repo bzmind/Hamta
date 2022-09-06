@@ -17,8 +17,7 @@ internal static class SellerMapper
             UserId = seller.UserId,
             ShopName = seller.ShopName,
             NationalCode = seller.NationalCode,
-            Status = seller.Status,
-            Inventories = seller.Inventories.ToList().MapToSellerInventoryDto()
+            Status = seller.Status
         };
     }
 
@@ -35,8 +34,7 @@ internal static class SellerMapper
                 UserId = seller.UserId,
                 ShopName = seller.ShopName,
                 NationalCode = seller.NationalCode,
-                Status = seller.Status,
-                Inventories = seller.Inventories.ToList().MapToSellerInventoryDto()
+                Status = seller.Status
             });
         });
 

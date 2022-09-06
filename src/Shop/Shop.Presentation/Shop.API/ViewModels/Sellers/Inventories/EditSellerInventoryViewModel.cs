@@ -6,13 +6,13 @@ namespace Shop.API.ViewModels.Sellers.Inventories;
 
 public class EditSellerInventoryViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseSellerInventory)]
     public long InventoryId { get; set; }
 
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseProduct)]
     public long ProductId { get; set; }
 
-    [Required(ErrorMessage = ValidationMessages.IdRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseColor)]
     public long ColorId { get; set; }
 
     [DisplayName("تعداد")]
@@ -24,5 +24,7 @@ public class EditSellerInventoryViewModel
     public int Price { get; set; }
 
     [DisplayName("درصد تخفیف")]
-    public int? DiscountPercentage { get; set; } = 0;
+    public int DiscountPercentage { get; set; } = 0;
+
+    public int OriginalPrice => Price + Price * DiscountPercentage / 100;
 }
