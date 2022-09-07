@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Dapper;
+using Microsoft.EntityFrameworkCore;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Infrastructure.BaseClasses;
@@ -8,13 +9,49 @@ namespace Shop.Infrastructure.Persistence.EF.Categories;
 
 public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 {
-    public CategoryRepository(ShopContext context) : base(context)
+    private readonly DapperContext _dapperContext;
+
+    public CategoryRepository(ShopContext context, DapperContext dapperContext) : base(context)
     {
+        _dapperContext = dapperContext;
     }
 
     public Category? GetCategoryBySlug(string slug)
     {
         return Context.Categories.FirstOrDefault(category => category.Slug == slug);
+    }
+
+    public async Task<List<CategorySpecification>> GetCategoryAndParentsSpecifications(long categoryId)
+    {
+        using var connection = _dapperContext.CreateConnection();
+        var sql = $@"WITH parent_specs AS (
+                    	SELECT c.ParentId, cs.*
+                    	FROM {_dapperContext.Categories} c
+                    	LEFT JOIN {_dapperContext.CategorySpecifications} cs
+                    		ON cs.CategoryId = c.Id
+                    	WHERE c.Id = @categoryId
+                    
+                    	UNION ALL
+                    
+                    	SELECT c.ParentId, cs.*
+                    	FROM {_dapperContext.Categories} c
+                    	JOIN parent_specs p
+                    		ON p.ParentId = c.Id
+                    	JOIN {_dapperContext.CategorySpecifications} cs
+                    		ON cs.CategoryId = c.Id
+                    )
+                    
+                    SELECT *
+                    INTO TempTable
+                    FROM parent_specs
+                    ALTER TABLE TempTable DROP COLUMN ParentId
+                    SELECT * FROM TempTable tmp
+                    WHERE tmp.Id IS NOT NULL
+                    ORDER BY tmp.Id ASC
+                    DROP TABLE TempTable";
+
+        var result = await connection.QueryAsync<CategorySpecification>(sql, new { categoryId });
+        return result.ToList();
     }
 
     public async Task<bool> RemoveCategory(long categoryId)

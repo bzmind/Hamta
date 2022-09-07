@@ -98,6 +98,7 @@ public abstract class BaseService
     private async Task<ApiResult> HandleResult(HttpResponseMessage result)
     {
         ApiResult finalResult;
+        var reasonPhrase = $"Status Code: {(int)result.StatusCode} {result.ReasonPhrase}";
         try
         {
             finalResult = await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
@@ -105,7 +106,8 @@ public abstract class BaseService
         catch (Exception e)
         {
             var resultError = await result.Content.ReadAsStringAsync();
-            finalResult = ApiResult.Error(resultError);
+            finalResult = ApiResult.Error
+                (string.IsNullOrWhiteSpace(resultError) ? reasonPhrase : e.Message);
         }
 
         return finalResult;
@@ -114,24 +116,16 @@ public abstract class BaseService
     private async Task<ApiResult<TData>> HandleResult<TData>(HttpResponseMessage result)
     {
         ApiResult<TData> finalResult;
+        var reasonPhrase = $"Status Code: {(int)result.StatusCode} {result.ReasonPhrase}";
         try
         {
             finalResult = await result.Content.ReadFromJsonAsync<ApiResult<TData>>(_jsonOptions);
-            if (finalResult.MetaData == null)
-            {
-                finalResult.IsSuccessful = false;
-                finalResult.MetaData = new MetaData
-                {
-                    ApiStatusCode = ApiStatusCode.ServerError,
-                    Message = $"Status Code: {(int)result.StatusCode} {result.ReasonPhrase}"
-                };
-            }
         }
         catch (Exception e)
         {
             var resultError = await result.Content.ReadAsStringAsync();
             finalResult = ApiResult<TData>.Error
-                (string.IsNullOrWhiteSpace(resultError) ? e.Message : result.ReasonPhrase);
+                (string.IsNullOrWhiteSpace(resultError) ? reasonPhrase : e.Message);
         }
 
         return finalResult;

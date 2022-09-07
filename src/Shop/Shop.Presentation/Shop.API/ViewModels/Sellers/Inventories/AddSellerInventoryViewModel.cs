@@ -17,7 +17,7 @@ public class AddSellerInventoryViewModel
     [Required(ErrorMessage = ValidationMessages.QuantityRequired)]
     public int Quantity { get; set; }
 
-    [DisplayName("قیمت")]
+    [DisplayName("قیمت اصلی")]
     [Required(ErrorMessage = ValidationMessages.PriceRequired)]
     [Range(0, MaxValue, ErrorMessage = ValidationMessages.InvalidPrice)]
     public int Price { get; set; }

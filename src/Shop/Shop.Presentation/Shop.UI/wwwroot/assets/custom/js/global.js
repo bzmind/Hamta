@@ -148,21 +148,21 @@ function sendAjaxPost(url, data)
       {
         resolve(result);
       }
-    }).always(() =>
-    {
-      checkForAlertCookies();
     });
   });
 }
 
 function checkResult(result)
 {
-  checkForAlertCookies();
   result = JSON.parse(result);
   if (result.status != undefined && result.status !== 200)
     return;
   if (result.IsRedirection === true)
+  {
     window.location.replace(result.RedirectPath);
+    return;
+  }
+  checkForAlertCookies();
 }
 
 function reinitializeScripts()
@@ -198,7 +198,6 @@ function setupMoneyInputsFormatting()
   {
     formatMoneyInputs($(this));
     const realValue = $(this).val().replace(/,/g, "");
-    console.log(realValue);
     const realInput = $(`input[data-money-value="${$(this).attr("data-money")}"]`);
     if (realInput.length === 0)
       return;

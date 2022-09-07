@@ -83,7 +83,7 @@ public class UiCustomExceptionHandlerMiddleware
                 await context.Response.WriteAsync(exceptionMessage);
                 return;
             }
-
+            
             var result = new ApiResult
             {
                 IsSuccessful = false,
@@ -96,7 +96,8 @@ public class UiCustomExceptionHandlerMiddleware
 
             var json = JsonConvert.SerializeObject(result, Formatting.Indented);
             context.Response.StatusCode = (int)httpStatusCode;
-            await context.Response.WriteAsJsonAsync(json);
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(json);
         }
     }
 }

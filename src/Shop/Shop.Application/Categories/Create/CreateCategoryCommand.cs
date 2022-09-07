@@ -51,19 +51,16 @@ public class CreateCategoryCommandValidator : AbstractValidator<CreateCategoryCo
     public CreateCategoryCommandValidator()
     {
         RuleFor(c => c.Title)
-            .NotNull().WithMessage(ValidationMessages.TitleRequired)
             .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
             .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 30));
 
         RuleFor(c => c.Slug)
-            .NotNull().WithMessage(ValidationMessages.SlugRequired)
             .NotEmpty().WithMessage(ValidationMessages.SlugRequired)
             .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 100));
 
         RuleForEach(c => c.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Title)
-                .NotNull().WithMessage(ValidationMessages.TitleRequired)
                 .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
                 .MaximumLength(50).WithMessage(ValidationMessages.FieldCharactersMaxLength("عنوان", 50));
         });

@@ -108,7 +108,7 @@ public class SellerController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpDelete("RemoveInventory")]
+    [HttpDelete("RemoveInventory/{inventoryId}")]
     public async Task<ApiResult> RemoveInventory(long inventoryId)
     {
         var command = new RemoveSellerInventoryCommand(User.GetUserId(), inventoryId);

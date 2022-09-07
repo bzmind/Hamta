@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Shop.Domain.AvatarAggregate;
 using Shop.Domain.UserAggregate;
+using Shop.Infrastructure;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Users._DTOs;
 

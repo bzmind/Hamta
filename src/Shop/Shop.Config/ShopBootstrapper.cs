@@ -17,7 +17,6 @@ public static class ShopBootstrapper
     {
         ApplicationBootstrapper.RegisterDependencies(services);
         InfrastructureBootstrapper.RegisterDependencies(services, connectionString);
-        QueryBootstrapper.RegisterDependencies(services, connectionString);
         FacadeBootstrapper.RegisterDependencies(services);
 
         services.AddValidatorsFromAssembly(typeof(CreateCategoryCommand).Assembly);

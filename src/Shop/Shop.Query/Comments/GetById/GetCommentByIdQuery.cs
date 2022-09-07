@@ -1,5 +1,6 @@
 ﻿using Common.Query.BaseClasses;
 using Dapper;
+using Shop.Infrastructure;
 using Shop.Query.Comments._DTOs;
 
 namespace Shop.Query.Comments.GetById;

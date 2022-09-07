@@ -3,6 +3,7 @@ using Common.Query.BaseClasses.FilterQuery;
 using Dapper;
 using Microsoft.EntityFrameworkCore;
 using Shop.Domain.ColorAggregate;
+using Shop.Infrastructure;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Products._DTOs;
 

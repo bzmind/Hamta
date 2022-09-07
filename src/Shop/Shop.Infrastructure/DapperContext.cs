@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using Microsoft.Data.SqlClient;
 
-namespace Shop.Query;
+namespace Shop.Infrastructure;
 
 public class DapperContext
 {

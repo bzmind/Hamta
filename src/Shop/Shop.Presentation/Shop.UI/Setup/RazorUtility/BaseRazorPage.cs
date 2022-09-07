@@ -85,7 +85,7 @@ public class BaseRazorPage : PageModel
         return Content(JsonConvert.SerializeObject(model));
     }
 
-    protected ContentResult AjaxSuccessResult<TData>(ApiResult<TData> apiResult)
+    protected ContentResult AjaxDataSuccessResult<TData>(ApiResult<TData> apiResult)
     {
         var model = new AjaxResult
         {

@@ -10,6 +10,11 @@ public class CategorySpecification : BaseEntity
     public bool IsImportant { get; private set; }
     public bool IsOptional { get; private set; }
 
+    private CategorySpecification()
+    {
+        
+    }
+
     public CategorySpecification(long categoryId, string title, bool isImportant, bool isOptional)
     {
         Guard(title);

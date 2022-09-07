@@ -1,6 +1,7 @@
 ﻿using Common.Domain.ValueObjects;
 using Common.Query.BaseClasses;
 using Dapper;
+using Shop.Infrastructure;
 using Shop.Query.Orders._DTOs;
 
 namespace Shop.Query.Orders.GetById;

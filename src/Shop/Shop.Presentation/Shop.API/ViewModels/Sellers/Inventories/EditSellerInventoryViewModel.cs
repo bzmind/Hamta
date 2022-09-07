@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Common.Application.Utility.Validation;
+using static System.Int32;
 
 namespace Shop.API.ViewModels.Sellers.Inventories;
 
@@ -19,12 +20,13 @@ public class EditSellerInventoryViewModel
     [Required(ErrorMessage = ValidationMessages.QuantityRequired)]
     public int Quantity { get; set; }
 
-    [DisplayName("قیمت")]
+    [DisplayName("قیمت اصلی")]
     [Required(ErrorMessage = ValidationMessages.PriceRequired)]
+    [Range(0, MaxValue, ErrorMessage = ValidationMessages.InvalidPrice)]
     public int Price { get; set; }
 
     [DisplayName("درصد تخفیف")]
+    [Required(ErrorMessage = ValidationMessages.DiscountPercentageRequired)]
+    [Range(0, 100, ErrorMessage = ValidationMessages.InvalidDiscountPercentageRange)]
     public int DiscountPercentage { get; set; } = 0;
-
-    public int OriginalPrice => Price + Price * DiscountPercentage / 100;
 }

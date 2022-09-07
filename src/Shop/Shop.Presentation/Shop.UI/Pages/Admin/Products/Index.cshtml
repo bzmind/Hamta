@@ -104,17 +104,23 @@
           <div class="row">
             <div class="col-md-3 d-flex align-items-center">
               <div style="margin-left: 10px;">از</div>
-              <input class="form-control d-inline-block" type="text" step="1" id="slider-input-min" data-money="minPrice">
+              <div class="position-relative">
+                <input class="form-control d-inline-block" type="text" step="1" id="slider-input-min"
+                       data-money="minPrice">
+                <div class="toman-placeholder">تومان</div>
+              </div>
               <input type="hidden" asp-for="@Model.FilterParams.MinPrice" data-money-value="minPrice"
                      id="slider-input-min-value">
-              <div class="toman-placeholder">تومان</div>
             </div>
             <div class="col-md-3 d-flex align-items-center">
               <div style="margin-left: 10px;">تا</div>
-              <input class="form-control d-inline-block" type="text" step="1" id="slider-input-max" data-money="maxPrice">
+              <div class="position-relative">
+                <input class="form-control d-inline-block" type="text" step="1" id="slider-input-max"
+                       data-money="maxPrice">
+                <div class="toman-placeholder">تومان</div>
+              </div>
               <input type="hidden" asp-for="@Model.FilterParams.MaxPrice" data-money-value="maxPrice"
                      id="slider-input-max-value">
-              <div class="toman-placeholder">تومان</div>
             </div>
           </div>
           <div class="noUi-target noUi-rtl noUi-horizontal mt-2" id="slider-with-input">

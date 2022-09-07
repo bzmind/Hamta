@@ -36,8 +36,30 @@ function deleteGalleryImage(e)
   turnImagesIntoInputFiles(itemsList, ".galleryImageItem img", ".galleryImagesContainer input[multiple]");
 }
 
-function setupGalleryImagesEventListeners()
+function setupProductImagesEventListeners()
 {
+  $(".category-radio").unbind("change");
+  $(".category-radio").change(function ()
+  {
+    showSelectedCategoryBreadCrumb();
+    getProductCategorySpecifications($(this));
+  });
+
+  $("input[data-img-preview]:not([multiple])").unbind("change");
+  $("input[data-img-preview]:not([multiple])").change(function ()
+  {
+    const guid = $(this).attr("data-img-preview");
+    const file = $(this).prop("files")[0];
+    const imageElement = $(`img[data-img-preview="${guid}"]`);
+
+    if (file)
+    {
+      imageElement.attr("src", URL.createObjectURL(file));
+      imageElement.show();
+      URL.revokeObjectURL(file);
+    }
+  });
+
   if ($("table.productGalleryImagesTable")[0])
   {
     const productGalleryImagesTable = $("table.productGalleryImagesTable tbody");
@@ -73,13 +95,18 @@ function setupGalleryImagesEventListeners()
     turnImagesIntoInputFiles(itemsList, ".galleryImageItem img", ".galleryImagesContainer input[multiple]");
   });
 
+  setupReplaceAllGalleryImagesButton();
+  setupAddToGalleryImagesButton();
+}
+
+function setupReplaceAllGalleryImagesButton()
+{
   $(".galleryImagesContainer input[data-img-preview][multiple][data-replace]").unbind("change");
   $(".galleryImagesContainer input[data-img-preview][multiple][data-replace]").change(function ()
   {
     const guid = $(this).attr("data-img-preview");
     const itemsList = $(`[data-img-preview-list="${guid}"]`);
     const item = itemsList.find("[data-img-preview-item]:first-child").clone();
-    item.find("input:hidden").remove();
 
     const files = $(this).prop("files");
     if (files)
@@ -95,10 +122,14 @@ function setupGalleryImagesEventListeners()
         URL.revokeObjectURL(files[i]);
         itemClone.appendTo(itemsList);
       }
+      setupProductImagesEventListeners();
       resetGalleryImagesIndexes(itemsList, `[data-img-preview-item]`);
     }
   });
+}
 
+function setupAddToGalleryImagesButton()
+{
   $(".galleryImagesContainer input[data-img-preview][multiple][data-add]").unbind("change");
   $(".galleryImagesContainer input[data-img-preview][multiple][data-add]").change(function ()
   {
@@ -121,6 +152,7 @@ function setupGalleryImagesEventListeners()
         URL.revokeObjectURL(files[i]);
         itemClone.appendTo(itemsList);
       }
+      setupProductImagesEventListeners();
       resetGalleryImagesIndexes(itemsList, `[data-img-preview-item]`);
       turnImagesIntoInputFiles(itemsList, ".galleryImageItem img", ".galleryImagesContainer input[multiple]");
     }

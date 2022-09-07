@@ -1,5 +1,6 @@
 ﻿using Common.Query.BaseClasses;
 using Microsoft.EntityFrameworkCore;
+using Shop.Infrastructure;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Users._DTOs;
 using Shop.Query.Users._Mappers;

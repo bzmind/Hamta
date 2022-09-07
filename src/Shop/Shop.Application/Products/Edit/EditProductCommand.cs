@@ -55,9 +55,8 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
         if (category == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("دسته‌بندی"));
 
-        if (category.Specifications.Any()
-            && (request.CategorySpecifications == null || !request.CategorySpecifications.Any()))
-            return OperationResult.Error(ValidationMessages.CategorySpecificationRequired);
+        var categoryAndParentsSpecs = await _categoryRepository
+            .GetCategoryAndParentsSpecifications(request.CategoryId);
 
         if (request.CategorySpecifications != null && request.CategorySpecifications.Any())
         {
@@ -65,7 +64,7 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
 
             foreach (var spec in request.CategorySpecifications)
             {
-                var categorySpec = category.Specifications.FirstOrDefault(s => s.Id == spec.CategorySpecificationId);
+                var categorySpec = categoryAndParentsSpecs.FirstOrDefault(s => s.Id == spec.CategorySpecificationId);
 
                 if (categorySpec == null)
                     return OperationResult.Error("مشخصه دسته‌بندی یافت نشد");
@@ -78,21 +77,19 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
             }
 
             if (emptyOptionalSpecifications.Count > 0)
-                emptyOptionalSpecifications.ForEach(spec =>
-                {
-                    request.CategorySpecifications?.Remove(spec);
-                });
+                emptyOptionalSpecifications.ForEach(spec => request.CategorySpecifications?.Remove(spec));
 
             var categorySpecifications = new List<ProductCategorySpecification>();
 
             request.CategorySpecifications.ToList().ForEach(specification =>
-                categorySpecifications.Add(new ProductCategorySpecification(product.Id, specification.CategorySpecificationId, specification.Description)));
+                categorySpecifications.Add(new ProductCategorySpecification(product.Id,
+                    specification.CategorySpecificationId, specification.Description)));
 
             product.SetCategorySpecifications(categorySpecifications);
         }
 
-        RemoveUnusedReviewImages(product.Review, request.Review,
-            product.Introduction, request.Introduction, _fileService);
+        RemoveUnusedReviewImages(product.Review, request.Review, product.Introduction, request.Introduction,
+            _fileService);
 
         product.Edit(request.CategoryId, request.Name, request.EnglishName, request.Slug, request.Introduction,
             request.Review, _productDomainService);
@@ -165,6 +162,10 @@ public class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
     {
         const string r = @"src\s*=\s*""(.+?)""";
         var result = new List<string>();
+
+        if (string.IsNullOrEmpty(input))
+            return result;
+
         foreach (Match match in Regex.Matches(input, r))
         {
             if (match.Success && match.Groups.Count > 0)
@@ -185,36 +186,36 @@ public class EditProductCommandValidator : AbstractValidator<EditProductCommand>
 {
     public EditProductCommandValidator()
     {
-        RuleFor(p => p.ProductId)
+        RuleFor(r => r.ProductId)
             .NotEmpty().WithMessage(ValidationMessages.ChooseProduct);
 
-        RuleFor(p => p.CategoryId)
+        RuleFor(r => r.CategoryId)
             .NotEmpty().WithMessage(ValidationMessages.ChooseCategory);
 
-        RuleFor(p => p.Name)
+        RuleFor(r => r.Name)
             .NotEmpty().WithMessage(ValidationMessages.ProductNameRequired)
             .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام محصول", 50));
 
-        RuleFor(p => p.EnglishName)
+        RuleFor(r => r.EnglishName)
             .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام انگلیسی محصول", 50));
 
-        RuleFor(p => p.Slug)
+        RuleFor(r => r.Slug)
             .NotEmpty().WithMessage(ValidationMessages.SlugRequired)
             .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("اسلاگ", 100));
 
-        RuleFor(p => p.Introduction)
+        RuleFor(r => r.Introduction)
             .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("معرفی", 2000));
 
-        RuleFor(p => p.Review)
+        RuleFor(r => r.Review)
             .MaximumLength(10000).WithMessage(ValidationMessages.FieldCharactersMaxLength("بررسی تخصصی", 10000));
 
-        RuleFor(p => p.MainImage)
+        RuleFor(r => r.MainImage)
             .JustImageFile();
 
-        RuleForEach(p => p.GalleryImages)
+        RuleForEach(r => r.GalleryImages)
             .JustImageFile();
 
-        RuleForEach(p => p.Specifications).ChildRules(specification =>
+        RuleForEach(r => r.Specifications).ChildRules(specification =>
         {
             specification.RuleFor(spec => spec.Title)
                 .NotEmpty().WithMessage(ValidationMessages.TitleRequired)
@@ -225,9 +226,9 @@ public class EditProductCommandValidator : AbstractValidator<EditProductCommand>
                 .MaximumLength(300).WithMessage(ValidationMessages.FieldCharactersMaxLength("توضیحات", 300));
         });
 
-        RuleForEach(p => p.CategorySpecifications).ChildRules(categorySpecification =>
+        RuleForEach(r => r.CategorySpecifications).ChildRules(categorySpecification =>
         {
-            categorySpecification.RuleFor(p => p.CategorySpecificationId)
+            categorySpecification.RuleFor(r => r.CategorySpecificationId)
                 .NotEmpty().WithMessage(ValidationMessages.ChooseCategorySpecification);
 
             categorySpecification.RuleFor(spec => spec.Description)

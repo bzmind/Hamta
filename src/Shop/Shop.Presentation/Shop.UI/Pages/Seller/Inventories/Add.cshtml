@@ -107,15 +107,23 @@
           <div class="row">
             <div class="col-md-3 d-flex align-items-center">
               <div style="margin-left: 10px;">از</div>
-              <input class="form-control d-inline-block" type="text" asp-for="@Model.FilterParams.MinPrice"
-                     step="1" id="slider-input-min" data-money="">
-              <div class="toman-placeholder">تومان</div>
+              <div class="position-relative">
+                <input class="form-control d-inline-block" type="text" step="1" id="slider-input-min"
+                       data-money="minPrice">
+                <div class="toman-placeholder">تومان</div>
+              </div>
+              <input type="hidden" asp-for="@Model.FilterParams.MinPrice" data-money-value="minPrice"
+                     id="slider-input-min-value">
             </div>
             <div class="col-md-3 d-flex align-items-center">
               <div style="margin-left: 10px;">تا</div>
-              <input class="form-control d-inline-block" type="text" asp-for="@Model.FilterParams.MaxPrice"
-                     step="1" id="slider-input-max" data-money="">
-              <div class="toman-placeholder">تومان</div>
+              <div class="position-relative">
+                <input class="form-control d-inline-block" type="text" step="1" id="slider-input-max"
+                       data-money="maxPrice">
+                <div class="toman-placeholder">تومان</div>
+              </div>
+              <input type="hidden" asp-for="@Model.FilterParams.MaxPrice" data-money-value="maxPrice"
+                     id="slider-input-max-value">
             </div>
           </div>
           <div class="noUi-target noUi-rtl noUi-horizontal mt-2" id="slider-with-input">
@@ -267,7 +275,7 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label asp-for="@Model.AddInventoryViewModel.Price"></label>
             <input type="text" class="form-control" data-money="inventoryPrice" data-val-id="inventoryVal">
@@ -276,11 +284,30 @@
             <span asp-validation-for="@Model.AddInventoryViewModel.Price" data-val-for="inventoryVal"></span>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           @Html.EditorFor(m => m.AddInventoryViewModel.Quantity)
         </div>
-        <div class="col-md-4">
-          @Html.EditorFor(m => m.AddInventoryViewModel.DiscountPercentage)
+        <div class="col-md-3">
+          <div class="form-group">
+            <label asp-for="@Model.AddInventoryViewModel.DiscountPercentage"></label>
+            <input type="number" class="form-control" asp-for="@Model.AddInventoryViewModel.DiscountPercentage"
+                   data-discount="inventoryPrice">
+            <span asp-validation-for="@Model.AddInventoryViewModel.DiscountPercentage"></span>
+          </div>
+        </div>
+        <div class="col-md-3 d-flex flex-column font-weight-bolder justify-content-center">
+          <small class="mb-8px">
+            <span class="grayed">قیمت اصلی: </span>
+            <span data-money-pair="inventoryPrice"></span>
+          </small>
+          <small class="mb-8px">
+            <span class="grayed">مقدار تخفیف: </span>
+            <span data-discount-amount="inventoryPrice"></span>
+          </small>
+          <small>
+            <span class="grayed">قیمت نهایی: </span>
+            <span data-final-price="inventoryPrice"></span>
+          </small>
         </div>
       </div>
       <div class="row">

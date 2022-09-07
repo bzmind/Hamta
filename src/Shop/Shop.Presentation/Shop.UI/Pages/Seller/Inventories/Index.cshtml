@@ -27,7 +27,7 @@
           <tr>
             <td class="item-image-container">
               <img alt="product image" width="100" height="100" class="item-image"
-                   src="@ServerPaths.GetProductMainImagePath(inventory.ProductMainImage)" />
+                 src="@ServerPaths.GetProductMainImagePath(inventory.ProductMainImage)" />
             </td>
             <td class="font-weight-bolder">
               <label class="grayed">نام:</label>
@@ -43,11 +43,17 @@
               </div>
             </td>
             <td class="font-weight-bolder">
-              <label class="grayed">قیمت اصلی:</label>
+              <label class="grayed">قیمت@(inventory.IsDiscounted ? " اصلی" : ""):</label>
               <bold>@inventory.Price.ToString("##,###") <small class="grayed">تومان</small></bold>
-              <br />
-              <label class="grayed">قیمت با تخفیف:</label>
-              <bold>@inventory.OriginalPrice.ToString("##,###") <small class="grayed">تومان</small></bold>
+              @if (inventory.IsDiscounted)
+              {
+                <br />
+                <label class="grayed">مقدار تخفیف:</label>
+                <bold>@inventory.DiscountAmount.ToString("##,###") <small class="grayed">تومان</small></bold>
+                <br />
+                <label class="grayed">قیمت نهایی:</label>
+                <bold>@inventory.DiscountedPrice.ToString("##,###") <small class="grayed">تومان</small></bold>
+              }
             </td>
             <td>
               @if (inventory.IsAvailable)
@@ -63,11 +69,11 @@
             <td class="font-weight-bolder">@inventory.DiscountPercentage%</td>
             <td>
               <a asp-page="Edit" asp-route-inventoryId="@inventory.Id"
-                 class="btn-sm badge-pill bg-rgba-primary text-primary">
+               class="btn-sm badge-pill bg-rgba-primary text-primary">
                 ویرایش
               </a>
               <delete url="@Url.Page("Index", "RemoveInventory", new { inventoryId = inventory.Id })"
-                      class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+                    class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
                 حذف
               </delete>
             </td>

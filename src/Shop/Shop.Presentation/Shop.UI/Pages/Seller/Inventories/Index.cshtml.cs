@@ -1,6 +1,5 @@
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels.Sellers.Inventories;
 using Shop.Query.Sellers._DTOs;
 using Shop.UI.Services.Sellers;
 using Shop.UI.Setup.RazorUtility;
@@ -34,5 +33,14 @@ public class IndexModel : BaseRazorPage
         FilterParams.UserId = User.GetUserId();
         FilterResult = await _sellerService.GetInventoryByFilter(FilterParams);
         return Page();
+    }
+
+    public async Task<IActionResult> OnPostRemoveInventory(long inventoryId)
+    {
+        var result = await _sellerService.RemoveInventory(inventoryId);
+        MakeAlert(result);
+        if (!result.IsSuccessful)
+            return AjaxErrorMessageResult(result);
+        return AjaxRedirectToPageResult();
     }
 }

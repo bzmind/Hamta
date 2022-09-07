@@ -31,7 +31,7 @@ $.fn.repeater = function ()
 
 function appendItemToList(item, list, container)
 {
-  item.find("input[type='text'][name]").val("");
+  item.find("[type='text'][name]").val("");
   item.css("display", "none");
   item.appendTo(list).slideDown(200, () =>
   {

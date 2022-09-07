@@ -1,14 +1,71 @@
 ﻿var quills = [];
 $(document).ready(function ()
 {
-  setupEventListeners();
+  setupProductImagesEventListeners();
   getProductCategorySpecifications($(".category-radio:checked"));
   showSelectedCategoryBreadCrumb();
   setProductImagesFiles();
   setupQuillEditors();
   setupColorSearch();
   setupValidationErrors();
+  setupPriceAndDiscountSummary();
 });
+
+function setupPriceAndDiscountSummary()
+{
+  $("input[data-money]").on("input", function ()
+  {
+    updatePriceSummary($(this));
+  });
+  $("input[data-discount]").on("input", function ()
+  {
+    updateDiscountSummary($(this));
+  });
+  updatePriceSummary($("input[data-money]"));
+  updateDiscountSummary($("input[data-discount]"));
+}
+
+function updatePriceSummary(inputs)
+{
+  inputs.each((i, input) =>
+  {
+    input = $(input);
+    const attrValue = input.attr("data-money");
+    const realValue = parseInt(input.val().replace(/,/g, ""));
+    const pairField = $(`[data-money-pair='${attrValue}']`);
+    const discountInputValue = parseInt($(`[data-discount='${attrValue}']`).val());
+    const discountAmountField = $(`[data-discount-amount='${attrValue}']`);
+    const finalPriceField = $(`[data-final-price='${attrValue}']`);
+
+    const discountAmount = realValue * discountInputValue / 100;
+    const formattedDiscountAmount = numeral(discountAmount).format("0,0");
+    const formattedFinalPrice = numeral(realValue - discountAmount).format("0,0");
+
+    pairField.html(input.val());
+    discountAmountField.html(formattedDiscountAmount);
+    finalPriceField.html(formattedFinalPrice);
+  });
+}
+
+function updateDiscountSummary(discountInputs) {
+  discountInputs.each((i, discountInput) =>
+  {
+    discountInput = $(discountInput);
+    const attrValue = discountInput.attr("data-discount");
+    const priceInput = $(`[data-money='${attrValue}']`);
+    const priceValue = parseInt(priceInput.val().replace(/,/g, ""));
+    const discountInputValue = parseInt(discountInput.val());
+    const discountAmountField = $(`[data-discount-amount='${attrValue}']`);
+    const finalPriceField = $(`[data-final-price='${attrValue}']`);
+
+    const discountAmount = priceValue * discountInputValue / 100;
+    const formattedDiscountAmount = numeral(discountAmount).format("0,0");
+    const formattedFinalPrice = numeral(priceValue - discountAmount).format("0,0");
+
+    discountAmountField.html(formattedDiscountAmount);
+    finalPriceField.html(formattedFinalPrice);
+  });
+}
 
 function setupValidationErrors()
 {
@@ -111,35 +168,8 @@ function getProductCategorySpecifications(currentSelectedRadioInput)
       prependAjaxResultToElement(".category-specifications", result);
       resetIndexes($(".category-specifications"), "[data-repeater-item]");
       reinitializeScripts();
-      setupEventListeners();
+      setupProductImagesEventListeners();
     });
-}
-
-function setupEventListeners()
-{
-  $(".category-radio").unbind("change");
-  $(".category-radio").change(function ()
-  {
-    showSelectedCategoryBreadCrumb();
-    getProductCategorySpecifications($(this));
-  });
-
-  $("input[data-img-preview]:not([multiple])").unbind("change");
-  $("input[data-img-preview]:not([multiple])").change(function ()
-  {
-    const guid = $(this).attr("data-img-preview");
-    const file = $(this).prop("files")[0];
-    const imageElement = $(`img[data-img-preview=${guid}]`);
-
-    if (file)
-    {
-      imageElement.attr("src", URL.createObjectURL(file));
-      imageElement.show();
-      URL.revokeObjectURL(file);
-    }
-  });
-
-  setupGalleryImagesEventListeners();
 }
 
 function turnImagesIntoInputFiles(imagesContainer, imageSelector, inputToAddFilesTo)

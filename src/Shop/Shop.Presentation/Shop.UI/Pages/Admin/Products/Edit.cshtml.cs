@@ -60,8 +60,8 @@ public class EditModel : BaseRazorPage
     {
         var product = await _productService.GetById(productId);
         var categorySpecifications = await _categoryService.GetSpecificationsByCategoryId(categoryId);
-        if (product == null || !categorySpecifications.Any())
-            return RedirectToPage("Index");
+        if (product == null)
+            return AjaxRedirectToPageResult();
 
         var productCategorySpecifications = new List<ProductCategorySpecificationViewModel>();
         categorySpecifications.ForEach(categorySpec =>
@@ -100,6 +100,6 @@ public class EditModel : BaseRazorPage
             MakeAlert(result);
             return AjaxErrorMessageResult(result);
         }
-        return AjaxSuccessResult(result);
+        return AjaxDataSuccessResult(result);
     }
 }

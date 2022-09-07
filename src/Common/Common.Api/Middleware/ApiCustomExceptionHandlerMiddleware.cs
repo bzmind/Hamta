@@ -80,14 +80,6 @@ public class ApiCustomExceptionHandlerMiddleware
                 throw new InvalidOperationException("The response has already started, " +
                                                     "the http status code middleware will not be executed.");
 
-            if (_environment.IsDevelopment())
-            {
-                context.Response.StatusCode = (int)httpStatusCode;
-                context.Response.ContentType = "text/plain";
-                await context.Response.WriteAsync(exceptionMessage);
-                return;
-            }
-
             var result = new ApiResult
             {
                 IsSuccessful = false,
@@ -100,7 +92,8 @@ public class ApiCustomExceptionHandlerMiddleware
 
             var json = JsonConvert.SerializeObject(result, Formatting.Indented);
             context.Response.StatusCode = (int)httpStatusCode;
-            await context.Response.WriteAsJsonAsync(json);
+            context.Response.ContentType = "application/json";
+            await context.Response.WriteAsync(json);
         }
     }
 }

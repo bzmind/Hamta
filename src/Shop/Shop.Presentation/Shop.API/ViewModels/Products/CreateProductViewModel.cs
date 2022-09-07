@@ -47,7 +47,7 @@ public class CreateProductViewModel
     public List<IFormFile> GalleryImages { get; set; }
 
     [DisplayName("مشخصات")]
-    public List<ProductSpecificationViewModel>? Specifications { get; set; } = new() { new() };
+    public List<ProductSpecificationViewModel>? Specifications { get; set; } = new();
 
     [DisplayName("مشخصات دسته‌بندی")]
     public List<ProductCategorySpecificationViewModel>? CategorySpecifications { get; set; } = new();

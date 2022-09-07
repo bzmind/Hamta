@@ -21,6 +21,7 @@ public class AddModel : BaseRazorPage
 
     public void OnGet()
     {
+        CreateCategoryViewModel.Specifications.Add(new());
     }
 
     public async Task<IActionResult> OnPost(long? parentId)

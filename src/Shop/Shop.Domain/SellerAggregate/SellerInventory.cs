@@ -10,23 +10,15 @@ public class SellerInventory : BaseEntity
     public long ProductId { get; private set; }
     public long ColorId { get; private set; }
     public int Quantity { get; private set; }
-
-    private int _originalPrice
-    {
-        get => Price.Value + Price.Value * DiscountPercentage / 100;
-        set { }
-    }
     public Money Price { get; private set; }
+    public int DiscountedPrice => Price.Value - (int)Math.Round(Price.Value * (double)DiscountPercentage / 100);
     public bool IsAvailable { get => Quantity != 0; private set { } }
-
-    private int _discountAmount;
     public int DiscountPercentage { get; private set; }
     public bool IsDiscounted
     {
         get => DiscountPercentage > 0; private set { }
     }
-
-
+    
     private SellerInventory()
     {
 
@@ -39,7 +31,7 @@ public class SellerInventory : BaseEntity
         SellerId = sellerId;
         ProductId = productId;
         Quantity = quantity;
-        _originalPrice = price;
+        Price = new Money(price);
         ColorId = colorId;
         IsAvailable = true;
         SetDiscountPercentage(discountPercentage);
@@ -50,6 +42,7 @@ public class SellerInventory : BaseEntity
         Guard(quantity);
         ProductId = productId;
         Quantity = quantity;
+        Price = new Money(price);
         ColorId = colorId;
         SetDiscountPercentage(discountPercentage);
     }
@@ -67,21 +60,7 @@ public class SellerInventory : BaseEntity
     {
         if (discountPercentage is < 0 or > 100)
             throw new OutOfRangeValueDomainException("Discount percentage must be between 0 and 100");
-
-        RemoveDiscount();
-        var discountAmount = Price.Value * discountPercentage / 100;
-        _discountAmount = discountAmount;
-        Price = new Money(Price.Value - discountAmount);
         DiscountPercentage = discountPercentage;
-    }
-
-    private void RemoveDiscount()
-    {
-        if (DiscountPercentage > 0)
-            DiscountPercentage = 0;
-
-        //Price = _originalPrice;
-        _discountAmount = 0;
     }
 
     private void Guard(int count)

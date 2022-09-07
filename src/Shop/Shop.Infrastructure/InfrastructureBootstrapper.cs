@@ -41,6 +41,7 @@ public class InfrastructureBootstrapper
         services.AddTransient<IQuestionRepository, QuestionRepository>();
         services.AddTransient<IRoleRepository, RoleRepository>();
         services.AddTransient<IShippingRepository, ShippingRepository>();
+        services.AddTransient(_ => new DapperContext(connectionString));
 
         services.AddDbContext<ShopContext>(option =>
         {

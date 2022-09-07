@@ -29,10 +29,7 @@ public class IndexModel : BaseRazorPage
     public async Task<IActionResult> OnPostRemoveProduct(long productId)
     {
         var result = await _productService.Remove(productId);
-        if (!result.IsSuccessful)
-        {
-            MakeAlert(result);
-        }
+        MakeAlert(result);
         return AjaxRedirectToPageResult();
     }
 }

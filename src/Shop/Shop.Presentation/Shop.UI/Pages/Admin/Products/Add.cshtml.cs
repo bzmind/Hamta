@@ -24,6 +24,7 @@ public class AddModel : BaseRazorPage
 
     public void OnGet()
     {
+        CreateProductViewModel.Specifications.Add(new ());
     }
 
     public async Task<IActionResult> OnGetShowCategorySpecifications(long categoryId)
@@ -63,6 +64,6 @@ public class AddModel : BaseRazorPage
             MakeAlert(result);
             return AjaxErrorMessageResult(result);
         }
-        return AjaxSuccessResult(result);
+        return AjaxDataSuccessResult(result);
     }
 }

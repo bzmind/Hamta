@@ -40,21 +40,43 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-3">
           <div class="form-group">
             <label asp-for="@Model.EditInventoryViewModel.Price"></label>
-            <input type="text" class="form-control" data-money="inventoryPrice" data-val-id="inventoryVal"
+            <div class="position-relative">
+              <div class="toman-placeholder">تومان</div>
+              <input type="text" class="form-control" data-money="inventoryPrice" data-val-id="inventoryVal"
                    value="@Model.EditInventoryViewModel.Price">
+            </div>
             <input type="hidden" class="form-control" asp-for="@Model.EditInventoryViewModel.Price"
                    data-money-value="inventoryPrice">
             <span asp-validation-for="@Model.EditInventoryViewModel.Price" data-val-for="inventoryVal"></span>
           </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           @Html.EditorFor(m => m.EditInventoryViewModel.Quantity)
         </div>
-        <div class="col-md-4">
-          @Html.EditorFor(m => m.EditInventoryViewModel.DiscountPercentage)
+        <div class="col-md-3">
+          <div class="form-group">
+            <label asp-for="@Model.EditInventoryViewModel.DiscountPercentage"></label>
+            <input type="number" class="form-control" asp-for="@Model.EditInventoryViewModel.DiscountPercentage"
+                   data-discount="inventoryPrice">
+            <span asp-validation-for="@Model.EditInventoryViewModel.DiscountPercentage"></span>
+          </div>
+        </div>
+        <div class="col-md-3 d-flex flex-column font-weight-bolder justify-content-center">
+          <small class="mb-8px">
+            <span class="grayed">قیمت اصلی: </span>
+            <span data-money-pair="inventoryPrice"></span>
+          </small>
+          <small class="mb-8px">
+            <span class="grayed">مقدار تخفیف: </span>
+            <span data-discount-amount="inventoryPrice"></span>
+          </small>
+          <small>
+            <span class="grayed">قیمت نهایی: </span>
+            <span data-final-price="inventoryPrice"></span>
+          </small>
         </div>
       </div>
       <div class="row">
