@@ -13,6 +13,9 @@ $(document).ready(function ()
 
 function setupPriceAndDiscountSummary()
 {
+  if ($(`[data-discount]`).length === 0)
+    return;
+
   $("input[data-money]").on("input", function ()
   {
     updatePriceSummary($(this));
@@ -47,7 +50,8 @@ function updatePriceSummary(inputs)
   });
 }
 
-function updateDiscountSummary(discountInputs) {
+function updateDiscountSummary(discountInputs)
+{
   discountInputs.each((i, discountInput) =>
   {
     discountInput = $(discountInput);

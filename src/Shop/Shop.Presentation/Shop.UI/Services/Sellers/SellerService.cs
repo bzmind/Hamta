@@ -75,7 +75,7 @@ public class SellerService : BaseService, ISellerService
     public async Task<SellerInventoryFilterResult> GetInventoryByFilter(SellerInventoryFilterParams filterParams)
     {
         var url = $"GetInventoriesByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&UserId={filterParams.UserId}&ProductId={filterParams.ProductId}" +
+                  $"&UserId={filterParams.UserId}&ProductName={filterParams.ProductName}" +
                   $"&MinQuantity={filterParams.MinQuantity}&MaxQuantity={filterParams.MaxQuantity}" +
                   $"&MinPrice={filterParams.MinPrice}&MaxPrice={filterParams.MaxPrice}" +
                   $"&MinDiscountPercentage={filterParams.MinDiscountPercentage}" +

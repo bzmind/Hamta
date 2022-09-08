@@ -5,10 +5,78 @@
 @{
   ViewData["Title"] = "مدیریت انبار ها";
   ViewData["Selected"] = "inventories";
+  var highestProductPrice = Model.FilterResult.HighestPriceInInventory;
 }
 
+<a asp-page="Add" class="btn btn-success mb-1">افزودن انبار</a>
+<form method="get">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-2 mb-5px">
+          <label>@Html.DisplayNameFor(m => m.FilterParams.ProductName)</label>
+          <input type="text" asp-for="@Model.FilterParams.ProductName" class="form-control" />
+        </div>
+        <div class="col-md-2 mb-5px">
+          <label>@Html.DisplayNameFor(m => m.FilterParams.MinQuantity)</label>
+          <input type="text" asp-for="@Model.FilterParams.MinQuantity" class="form-control" />
+        </div>
+        <div class="col-md-2 mb-5px">
+          <label>@Html.DisplayNameFor(m => m.FilterParams.MaxQuantity)</label>
+          <input type="text" asp-for="@Model.FilterParams.MaxQuantity" class="form-control" />
+        </div>
+        <div class="col-md-2 mb-5px">
+          <label>@Html.DisplayNameFor(m => m.FilterParams.MinDiscountPercentage)</label>
+          <input type="text" asp-for="@Model.FilterParams.MinDiscountPercentage" class="form-control" />
+        </div>
+        <div class="col-md-2 mb-5px">
+          <label>@Html.DisplayNameFor(m => m.FilterParams.MaxDiscountPercentage)</label>
+          <input type="text" asp-for="@Model.FilterParams.MaxDiscountPercentage" class="form-control" />
+        </div>
+        <div class="col-md-1 mb-5px">
+          <label>@Html.DisplayNameFor(m => m.FilterParams.IsAvailable)</label>
+          @Html.EditorFor(m => m.FilterParams.IsAvailable)
+        </div>
+        <div class="col-md-1 mb-5px">
+          <label>@Html.DisplayNameFor(m => m.FilterParams.IsDiscounted)</label>
+          @Html.EditorFor(m => m.FilterParams.IsDiscounted)
+        </div>
+      </div>
+      <div class="mb-5px mt-10px">
+        <label>محدوده قیمت</label>
+        <fieldset>
+          <div class="row">
+            <div class="col-md-3 d-flex align-items-center">
+              <div style="margin-left: 10px;">از</div>
+              <div class="position-relative">
+                <input class="form-control d-inline-block" type="text" id="slider-input-min" data-money="minPrice">
+                <div class="toman-placeholder">تومان</div>
+              </div>
+              <input type="hidden" asp-for="@Model.FilterParams.MinPrice" data-money-value="minPrice"
+                     id="slider-input-min-value">
+            </div>
+            <div class="col-md-3 d-flex align-items-center">
+              <div style="margin-left: 10px;">تا</div>
+              <div class="position-relative">
+                <input class="form-control d-inline-block" type="text" id="slider-input-max" data-money="maxPrice">
+                <div class="toman-placeholder">تومان</div>
+              </div>
+              <input type="hidden" asp-for="@Model.FilterParams.MaxPrice" data-money-value="maxPrice"
+                     id="slider-input-max-value">
+            </div>
+          </div>
+          <div class="noUi-target noUi-rtl noUi-horizontal mt-2" id="slider-with-input">
+          </div>
+        </fieldset>
+      </div>
+    </div>
+    <div class="card-footer text-left pt-0">
+      <a asp-page="Index" class="btn btn-danger btn-sm">حذف فیلتر</a>
+      <button type="submit" class="btn btn-primary btn-sm">اعمال فیلتر</button>
+    </div>
+  </div>
+</form>
 <section>
-  <a asp-page="Add" class="btn btn-success mb-1">افزودن انبار</a>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
@@ -89,3 +157,10 @@
     </table>
   </div>
 </section>
+@section Scripts
+  {
+  <script>
+    setupRangeSlider(0, @highestProductPrice, @(Model.FilterParams.MinPrice ?? 0),
+    @(Model.FilterParams.MaxPrice ?? highestProductPrice))
+  </script>
+}

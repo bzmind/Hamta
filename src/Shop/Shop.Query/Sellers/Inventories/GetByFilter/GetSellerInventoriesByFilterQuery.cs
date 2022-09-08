@@ -49,8 +49,8 @@ public class GetSellerInventoriesByFilterQueryHandler :
             .OrderByDescending(tables => tables.tables.inventory.CreationDate)
             .AsQueryable();
 
-        if (@params.ProductId != null)
-            query = query.Where(tables => tables.tables.inventory.ProductId == @params.ProductId);
+        if (@params.ProductName != null && !string.IsNullOrWhiteSpace(@params.ProductName))
+            query = query.Where(tables => tables.tables.product.Name.Contains(@params.ProductName));
 
         if (@params.MinQuantity != null)
             query = query.Where(tables => tables.tables.inventory.Quantity >= @params.MinQuantity);
@@ -70,23 +70,27 @@ public class GetSellerInventoriesByFilterQueryHandler :
         if (@params.MaxDiscountPercentage != null)
             query = query.Where(tables => tables.tables.inventory.DiscountPercentage <= @params.MaxDiscountPercentage);
 
-        if (@params.IsAvailable != null)
+        if (@params.IsAvailable == true)
             query = query.Where(tables => tables.tables.inventory.IsAvailable == @params.IsAvailable);
 
-        if (@params.IsDiscounted != null)
+        if (@params.IsDiscounted == true)
             query = query.Where(tables => tables.tables.inventory.IsDiscounted == @params.IsDiscounted);
 
         var skip = (@params.PageId - 1) * @params.Take;
 
+        var highestPriceQuery = await _shopContext.Sellers.Where(s => s.UserId == @params.UserId)
+            .SelectMany(s => s.Inventories).ToListAsync(cancellationToken);
+        var highestPriceInInventory = highestPriceQuery.Max(si => si.Price.Value);
+
+        var queryResult = await query.Skip(skip).Take(@params.Take)
+            .Select(tables => tables.tables.inventory.MapToSellerInventoryDto(tables.color, tables.tables.product))
+            .ToListAsync(cancellationToken);
+
         return new SellerInventoryFilterResult
         {
-            Data = await query
-                .Skip(skip)
-                .Take(@params.Take)
-                .Select(tables => tables.tables.inventory.MapToSellerInventoryDto(tables.color, tables.tables.product))
-                .ToListAsync(cancellationToken),
-
-            FilterParam = @params
+            Data = queryResult,
+            FilterParam = @params,
+            HighestPriceInInventory = highestPriceInInventory
         };
     }
 }
