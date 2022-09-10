@@ -114,14 +114,29 @@ function setupQuillEditors()
     quills.push(quill);
   }
   if (editors.length > 0)
-    fillQuillEditorsContent();
+    initQuillEditorsContent();
   setupQuillImageUploaderEventListeners(quills);
+  transferQuillsContentToTheirTextAreasOnTextChange();
 }
 
 function setupQuillImageUploaderEventListeners(quills)
 {
   $("form button:submit").on("click", async function ()
   {
+    $(this).parents("form").valid();
+    const errorSpans = $(".field-validation-error");
+    const errorsOtherThanQuillErrors = $.grep(errorSpans, (errorSpan, i) =>
+    {
+      errorSpan = $(errorSpan);
+      const previousElements = errorSpan.prevAll(".quill-editor-container");
+      if (previousElements.length > 0)
+        return false;
+      return true;
+    });
+
+    if (errorsOtherThanQuillErrors.length > 0)
+      return;
+
     for (const quill of quills)
     {
       await setupQuillImageUploader(quill);
@@ -130,38 +145,43 @@ function setupQuillImageUploaderEventListeners(quills)
   });
 }
 
-function fillQuillEditorsContent()
+// To use this, your quills should have a data-quill-id attr, and their text areas should have
+// a data-quill-for attr, which should have a matching value like data-quill-id="quillOne" and
+// data-quill-for="quillOne"
+function initQuillEditorsContent()
 {
-  const productIntroduction = $("#productIntroduction");
-  const productIntroductionQuill = Quill.find($("#productIntroductionQuill")[0]);
-  if (productIntroduction.length > 0 && productIntroductionQuill != null)
+  const quills = $("[data-quill-id]");
+  quills.each((index, quill) =>
   {
-    const quillContent = productIntroductionQuill.clipboard.convert(productIntroduction.val());
-    productIntroductionQuill.setContents(quillContent, "silent");
-  }
-
-  const productReview = $("#productReview");
-  const productReviewQuill = Quill.find($("#productReviewQuill")[0]);
-  if (productReview.length > 0 && productReviewQuill != null)
-  {
-    const quillContent = productReviewQuill.clipboard.convert(productReview.val());
-    productReviewQuill.setContents(quillContent, "silent");
-  }
+    quill = $(quill);
+    const quillObject = Quill.find(quill[0]);
+    const textArea = $(`[data-quill-for="${quill.attr("data-quill-id")}"]`);
+    if (textArea == null)
+      return;
+    const quillContent = quillObject.clipboard.convert(textArea.val());
+    quillObject.setContents(quillContent, "silent");
+  });
 }
 
-$("#productForm").submit(function ()
+function transferQuillsContentToTheirTextAreasOnTextChange()
 {
-  const productIntroductionQuill = Quill.find($("#productIntroductionQuill")[0]);
-  $("#productIntroduction")[0].value = productIntroductionQuill.container.firstChild.innerHTML;
-
-  const productReviewQuill = Quill.find($("#productReviewQuill")[0]);
-  $("#productReview")[0].value = productReviewQuill.container.firstChild.innerHTML;
-});
+  const quills = $("[data-quill-id]");
+  quills.each((index, quill) =>
+  {
+    quill = $(quill);
+    const quillObject = Quill.find(quill[0]);
+    quillObject.on("text-change", function (delta, oldDelta, source)
+    {
+      const textArea = $(`[data-quill-for="${quill.attr("data-quill-id")}"]`);
+      textArea.val(quillObject.container.firstChild.innerHTML);
+      textArea.valid();
+    });
+  });
+}
 
 function getProductCategorySpecifications(currentSelectedRadioInput)
 {
-  if (currentSelectedRadioInput.length === 0 || $(".input-validation-error").length > 0
-    || $(".category-specifications").length === 0)
+  if (currentSelectedRadioInput.length === 0 || $(".category-specifications").length === 0)
     return;
   const categoryId = currentSelectedRadioInput.val();
   sendAjaxGetWithRouteData(`${$(location).attr("pathname")}/showCategorySpecifications?categoryId=${categoryId}`)

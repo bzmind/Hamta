@@ -163,21 +163,23 @@
           <div class="form-group">
             <label asp-for="@Model.EditProductViewModel.Introduction"></label>
             <partial name="Admin/Shared/_QuillToolbar" />
-            <div class="quill-editor-container" id="productIntroductionQuill">
+            <div class="quill-editor-container" data-quill-id="introductionQuill" data-val-id="introductionVal">
             </div>
-            <textarea id="productIntroduction" hidden="" class="form-control"
+            <textarea id="productIntroduction" hidden="" class="form-control" data-quill-for="introductionQuill"
                       asp-for="@Model.EditProductViewModel.Introduction"></textarea>
-            <span asp-validation-for="@Model.EditProductViewModel.Introduction" class="d-block"></span>
+            <span asp-validation-for="@Model.EditProductViewModel.Introduction" class="d-block"
+                  data-val-id="introductionVal"></span>
           </div>
         </div>
         <div class="col-md-12">
           <label asp-for="@Model.EditProductViewModel.Review"></label>
           <partial name="Admin/Shared/_QuillToolbar" />
-          <div class="quill-editor-container" id="productReviewQuill">
+          <div class="quill-editor-container" data-quill-id="reviewQuill" data-val-id="reviewVal">
           </div>
-          <textarea id="productReview" hidden="" class="form-control"
+          <textarea id="productReview" hidden="" class="form-control" data-quill-for="reviewQuill"
                     asp-for="@Model.EditProductViewModel.Review"></textarea>
-          <span asp-validation-for="@Model.EditProductViewModel.Review" class="d-block"></span>
+          <span asp-validation-for="@Model.EditProductViewModel.Review" class="d-block"
+                data-val-for="reviewVal"></span>
         </div>
       </div>
     </div>

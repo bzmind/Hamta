@@ -9,6 +9,7 @@ public class Category : BaseAggregateRoot
     public long? ParentId { get; private set; }
     public string Title { get; private set; }
     public string Slug { get; private set; }
+    public bool ShowInMenu { get; set; }
 
     private readonly List<Category> _subCategories = new();
     public IEnumerable<Category> SubCategories => _subCategories.ToList();
@@ -21,20 +22,24 @@ public class Category : BaseAggregateRoot
 
     }
 
-    public Category(long? parentId, string title, string slug, ICategoryDomainService categoryDomainService)
+    public Category(long? parentId, string title, string slug, bool showInMenu,
+        ICategoryDomainService categoryDomainService)
     {
         Guard(title, slug, categoryDomainService);
+        ParentId = parentId;
         Title = title;
         Slug = slug;
-        ParentId = parentId;
+        ShowInMenu = showInMenu;
     }
 
-    public void Edit(long? parentId, string title, string slug, ICategoryDomainService categoryDomainService)
+    public void Edit(long? parentId, string title, string slug, bool showInMenu,
+        ICategoryDomainService categoryDomainService)
     {
         Guard(title, slug, categoryDomainService);
+        ParentId = parentId;
         Title = title;
         Slug = slug;
-        ParentId = parentId;
+        ShowInMenu = showInMenu;
     }
 
     public void AddSubCategory(Category subCategory)

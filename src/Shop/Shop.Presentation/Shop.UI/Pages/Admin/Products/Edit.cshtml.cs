@@ -1,4 +1,5 @@
-using AutoMapper;
+﻿using AutoMapper;
+using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Shop.API.ViewModels.Products;
@@ -37,7 +38,10 @@ public class EditModel : BaseRazorPage
     {
         var product = await _productService.GetById(productId);
         if (product == null)
+        {
+            MakeAlert(ValidationMessages.FieldNotFound("محصول"));
             return RedirectToPage("Index");
+        }
         EditProductViewModel = new EditProductViewModel
         {
             ProductId = product.Id,
@@ -61,7 +65,10 @@ public class EditModel : BaseRazorPage
         var product = await _productService.GetById(productId);
         var categorySpecifications = await _categoryService.GetSpecificationsByCategoryId(categoryId);
         if (product == null)
+        {
+            MakeAlert(ValidationMessages.FieldNotFound("محصول"));
             return AjaxRedirectToPageResult();
+        }
 
         var productCategorySpecifications = new List<ProductCategorySpecificationViewModel>();
         categorySpecifications.ForEach(categorySpec =>

@@ -9,13 +9,11 @@ namespace Shop.UI.Pages.Admin.Categories;
 public class IndexModel : BaseRazorPage
 {
     private readonly ICategoryService _categoryService;
-    private readonly IMapper _mapper;
 
     public IndexModel(ICategoryService categoryService,
-        IRazorToStringRenderer razorToStringRenderer, IMapper mapper) : base(razorToStringRenderer)
+        IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
     {
         _categoryService = categoryService;
-        _mapper = mapper;
     }
 
     public List<CategoryDto> Categories { get; set; }
