@@ -10,21 +10,22 @@ $.fn.repeater = function ()
     const container = $(this);
     const list = container.find("[data-repeater-list]");
     const creator = container.find("[data-repeater-create]");
-    const cachedItem = list.find("[data-repeater-item]").last();
+    const lastItem = list.find("[data-repeater-item]").last();
+    const lastItemClone = lastItem.clone();
+    removeExtraCheckboxes(lastItem);
     setupRemovers(container);
+    removeDefaultItem(list);
 
     creator.on("click", function ()
     {
-      const item = list.find("[data-repeater-item]").last();
+      let item = list.find("[data-repeater-item]").last();
       removeExtraCheckboxes(item);
-      let itemClone;
       if (item.length === 0)
-        itemClone = cachedItem.clone();
+        item = lastItemClone;
       else
-      {
-        itemClone = item.clone();
-      }
-      appendItemToList(itemClone, list, container);
+        item = item.clone();
+
+      appendItemToList(item, list, container);
     });
   });
 };
@@ -32,6 +33,7 @@ $.fn.repeater = function ()
 function appendItemToList(item, list, container)
 {
   item.find("[type='text'][name]").val("");
+  item.find("[data-item-id]").remove();
   item.css("display", "none");
   item.appendTo(list).slideDown(200, () =>
   {
@@ -63,17 +65,35 @@ function setupRemovers(container)
 function removeExtraCheckboxes(item)
 {
   const mainCheckboxes = item.find("input[type='checkbox']");
-  mainCheckboxes.each((index, checkbox) =>
+  mainCheckboxes.each((index, mainCheckbox) =>
   {
-    item.parents("[data-repeater-container]").find("input[type='hidden']")
-      .each((innerIndex, hiddenCheckbox) =>
-      {
-        const checkboxNameAttr = checkbox.getAttribute("name");
-        const hiddenCheckboxNameAttr = hiddenCheckbox.getAttribute("name");
-        if (checkboxNameAttr === hiddenCheckboxNameAttr)
-          hiddenCheckbox.remove();
-      });
+    item.parents("[data-repeater-container]").find("input[type='hidden']").each((innerIndex, hiddenCheckbox) =>
+    {
+      const checkboxNameAttr = mainCheckbox.getAttribute("name");
+      const hiddenCheckboxNameAttr = hiddenCheckbox.getAttribute("name");
+      if (checkboxNameAttr === hiddenCheckboxNameAttr)
+        hiddenCheckbox.remove();
+    });
   });
+}
+
+function removeDefaultItem(itemsList)
+{
+  const items = itemsList.find("[data-repeater-item]");
+  if (items.length !== 1)
+    return;
+  const firstItem = items.first();
+  const inputsInFirstItem = firstItem.find("input[type=text], textarea");
+  let hasInputWithValue = false;
+  inputsInFirstItem.each((i, input) =>
+  {
+    input = $(input);
+    if (input.val() != "")
+      hasInputWithValue = true;
+  });
+  if (hasInputWithValue)
+    return;
+  firstItem.remove();
 }
 
 function resetIndexes(itemsList, itemSelector)

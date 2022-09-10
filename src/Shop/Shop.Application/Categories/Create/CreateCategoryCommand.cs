@@ -9,7 +9,7 @@ using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories.Create;
 
-public record CreateCategoryCommand(string Title, string Slug,
+public record CreateCategoryCommand(string Title, string Slug, bool ShowInMenu,
     List<CategorySpecificationDto>? Specifications) : IBaseCommand<long>;
 
 public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCommand, long>
@@ -26,7 +26,7 @@ public class CreateCategoryCommandHandler : IBaseCommandHandler<CreateCategoryCo
 
     public async Task<OperationResult<long>> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
     {
-        var category = new Category(null, request.Title, request.Slug, _categoryDomainService);
+        var category = new Category(null, request.Title, request.Slug, request.ShowInMenu, _categoryDomainService);
 
         await _categoryRepository.AddAsync(category);
 

@@ -19,6 +19,9 @@ public class AddSubCategoryViewModel
     [MaxLength(100, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public string Slug { get; set; }
 
+    [DisplayName("نمایش در منو")]
+    public bool ShowInMenu { get; set; }
+
     [DisplayName("مشخصات")]
     public List<CategorySpecificationViewModel>? Specifications { get; set; }
 }

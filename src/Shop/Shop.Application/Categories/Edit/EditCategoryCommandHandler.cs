@@ -3,13 +3,12 @@ using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
 using FluentValidation;
 using Shop.Application.Categories._DTOs;
-using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories.Edit;
 
-public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug,
+public record EditCategoryCommand(long Id, long? ParentId, string Title, string Slug, bool ShowInMenu,
     List<CategorySpecificationDto>? Specifications) : IBaseCommand;
 
 public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryCommand>
@@ -31,13 +30,14 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
         if (category == null)
             return OperationResult.NotFound();
 
-        category.Edit(request.ParentId, request.Title, request.Slug, _categoryDomainService);
+        category.Edit(request.ParentId, request.Title, request.Slug, request.ShowInMenu, _categoryDomainService);
 
-        var specifications = new List<CategorySpecification>();
-        request.Specifications.ToList().ForEach(specification =>
-            specifications.Add(new CategorySpecification(category.Id, specification.Title,
-                specification.IsImportant, specification.IsOptional)));
-        category.SetSpecifications(specifications);
+        if (request.Specifications != null && request.Specifications.Any())
+        {
+            request.Specifications.ToList().ForEach(specification =>
+            category.EditSpecification(specification.Id, specification.Title, specification.IsImportant,
+                specification.IsOptional, request.Specifications.Select(spec => spec.Id).ToList()));
+        }
 
         await _categoryRepository.SaveAsync();
         return OperationResult.Success();

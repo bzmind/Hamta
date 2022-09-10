@@ -90,11 +90,11 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"WITH category_children AS (
                        SELECT Id, ParentId, Title
-                       FROM category.Categories
+                       FROM {_dapperContext.Categories}
                        WHERE Id = @CategoryId
                        UNION ALL
                        SELECT c.Id, c.ParentId, c.Title
-                       FROM category.Categories c
+                       FROM {_dapperContext.Categories} c
                        JOIN category_children cc
                     		ON cc.Id = c.ParentId
                     )
@@ -125,7 +125,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
                     LEFT JOIN
                     	(
                     		SELECT ProductId, SUM(Quantity) AS Quantity
-                    		FROM seller.Inventories
+                    		FROM {_dapperContext.SellerInventories}
                     		GROUP BY ProductId
                     	) AS q
                     	ON p.Id = q.ProductId

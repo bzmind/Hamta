@@ -24,6 +24,14 @@ public class CategorySpecification : BaseEntity
         IsOptional = isOptional;
     }
 
+    public void Edit(string title, bool isImportant, bool isOptional)
+    {
+        Guard(title);
+        Title = title;
+        IsImportant = isImportant;
+        IsOptional = isOptional;
+    }
+
     private void Guard(string title)
     {
         NullOrEmptyDataDomainException.CheckString(title, nameof(title));

@@ -32,6 +32,7 @@ public class EditModel : BaseRazorPage
         EditCategoryViewModel.ParentId = category.ParentId;
         EditCategoryViewModel.Title = category.Title;
         EditCategoryViewModel.Slug = category.Slug;
+        EditCategoryViewModel.ShowInMenu = category.ShowInMenu;
         EditCategoryViewModel.Specifications = category.Specifications.Any()
             ? _mapper.Map<List<CategorySpecificationViewModel>>(category.Specifications)
             : new() { new() };
@@ -46,6 +47,7 @@ public class EditModel : BaseRazorPage
             ParentId = EditCategoryViewModel.ParentId,
             Title = EditCategoryViewModel.Title,
             Slug = EditCategoryViewModel.Slug,
+            ShowInMenu = EditCategoryViewModel.ShowInMenu,
             Specifications = EditCategoryViewModel.Specifications
         });
         if (!result.IsSuccessful)

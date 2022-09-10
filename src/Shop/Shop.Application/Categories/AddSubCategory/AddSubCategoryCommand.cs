@@ -9,7 +9,7 @@ using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories.AddSubCategory;
 
-public record AddSubCategoryCommand(long ParentId, string Title, string Slug,
+public record AddSubCategoryCommand(long ParentId, string Title, string Slug, bool ShowInMenu,
     List<CategorySpecificationDto>? Specifications) : IBaseCommand<long>;
 
 public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCommand, long>
@@ -26,7 +26,8 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
 
     public async Task<OperationResult<long>> Handle(AddSubCategoryCommand request, CancellationToken cancellationToken)
     {
-        var newSubCategory = new Category(request.ParentId, request.Title, request.Slug, _categoryDomainService);
+        var newSubCategory = new Category(request.ParentId, request.Title, request.Slug, request.ShowInMenu,
+            _categoryDomainService);
 
         await _categoryRepository.AddAsync(newSubCategory);
 

@@ -17,11 +17,12 @@ internal static class CategoryMapper
             ParentId = category.ParentId,
             Title = category.Title,
             Slug = category.Slug,
+            ShowInMenu = category.ShowInMenu,
             SubCategories = category.SubCategories.ToList().MapToCategoryDto(),
             Specifications = category.Specifications.ToList().MapToQueryCategorySpecificationDto()
         };
     }
-    
+
     public static List<CategoryDto> MapToCategoryDto(this List<Category> categories)
     {
         var dtoCategories = new List<CategoryDto>();
@@ -35,6 +36,7 @@ internal static class CategoryMapper
                 ParentId = category.ParentId,
                 Title = category.Title,
                 Slug = category.Slug,
+                ShowInMenu = category.ShowInMenu,
                 SubCategories = category.SubCategories.ToList().MapToCategoryDto(),
                 Specifications = category.Specifications.ToList().MapToQueryCategorySpecificationDto()
             });

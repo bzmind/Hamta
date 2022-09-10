@@ -6,8 +6,7 @@ namespace Shop.API.ViewModels.Categories;
 
 public class CategorySpecificationViewModel
 {
-    [Required(ErrorMessage = ValidationMessages.ChooseCategorySpecification)]
-    public long Id { get; set; }
+    public long? Id { get; set; }
 
     [DisplayName("عنوان")]
     [Required(ErrorMessage = ValidationMessages.TitleRequired)]

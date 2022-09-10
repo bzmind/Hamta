@@ -33,6 +33,7 @@ public class AddModel : BaseRazorPage
                 ParentId = parentId.Value,
                 Title = CreateCategoryViewModel.Title,
                 Slug = CreateCategoryViewModel.Slug,
+                ShowInMenu = CreateCategoryViewModel.ShowInMenu,
                 Specifications = CreateCategoryViewModel.Specifications
             });
 
@@ -48,6 +49,7 @@ public class AddModel : BaseRazorPage
             {
                 Title = CreateCategoryViewModel.Title,
                 Slug = CreateCategoryViewModel.Slug,
+                ShowInMenu = CreateCategoryViewModel.ShowInMenu,
                 Specifications = CreateCategoryViewModel.Specifications
             });
             if (!result.IsSuccessful)
