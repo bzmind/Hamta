@@ -5,13 +5,6 @@
   return true;
 });
 
-jQuery.validator.addMethod("enumNotNull", function (value, element, params)
-{
-  if (value === "none")
-    return false;
-  return true;
-});
-
 jQuery.validator.addMethod("listNotEmpty", function (value, element, params)
 {
   if ($(element).is("input[type='file']"))
@@ -116,7 +109,6 @@ jQuery.validator.addMethod("requiredif",
 );
 
 jQuery.validator.unobtrusive.adapters.addBool("enumNotNullOrZero");
-jQuery.validator.unobtrusive.adapters.addBool("enumNotNull");
 jQuery.validator.unobtrusive.adapters.addBool("listNotEmpty");
 jQuery.validator.unobtrusive.adapters.addBool("listMinLength");
 jQuery.validator.unobtrusive.adapters.addBool("listMaxLength");

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.API.ViewModels.Sellers.Inventories;
 using Shop.UI.Services.Sellers;
 using Shop.UI.Setup.ModelStateExtensions;

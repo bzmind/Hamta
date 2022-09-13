@@ -4,6 +4,8 @@ using Shop.API.ViewModels.Avatars;
 using Shop.API.ViewModels.Categories;
 using Shop.API.ViewModels.Colors;
 using Shop.API.ViewModels.Comments;
+using Shop.API.ViewModels.Entities.Banner;
+using Shop.API.ViewModels.Entities.Slider;
 using Shop.API.ViewModels.Orders;
 using Shop.API.ViewModels.Products;
 using Shop.API.ViewModels.Questions;
@@ -23,6 +25,10 @@ using Shop.Application.Colors.Create;
 using Shop.Application.Colors.Edit;
 using Shop.Application.Comments.Create;
 using Shop.Application.Comments.SetStatus;
+using Shop.Application.Entities.Banners.Create;
+using Shop.Application.Entities.Banners.Edit;
+using Shop.Application.Entities.Sliders.Create;
+using Shop.Application.Entities.Sliders.Edit;
 using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.SetStatus;
@@ -54,6 +60,7 @@ using Shop.Application.Users.Edit;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
 using Shop.Query.Categories._DTOs;
+using Shop.Query.Entities._DTOs;
 using Shop.Query.Products._DTOs;
 using Shop.Query.Roles._DTOs;
 using Shop.Query.Users._DTOs;
@@ -112,5 +119,9 @@ public class AutoMapperProfile : Profile
         CreateMap<RoleDto, EditRoleViewModel>().ReverseMap();
         CreateMap<CategoryDto, EditCategoryViewModel>().ReverseMap()
             .ForMember(dto => dto.SubCategories, options => options.Ignore());
+        CreateMap<CreateBannerCommand, CreateBannerViewModel>().ReverseMap();
+        CreateMap<EditBannerCommand, EditBannerViewModel>().ReverseMap();
+        CreateMap<CreateSliderCommand, CreateSliderViewModel>().ReverseMap();
+        CreateMap<EditSliderCommand, EditSliderViewModel>().ReverseMap();
     }
 }

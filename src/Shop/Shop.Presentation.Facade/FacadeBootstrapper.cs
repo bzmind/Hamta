@@ -3,6 +3,8 @@ using Shop.Presentation.Facade.Avatars;
 using Shop.Presentation.Facade.Categories;
 using Shop.Presentation.Facade.Colors;
 using Shop.Presentation.Facade.Comments;
+using Shop.Presentation.Facade.Entities.Banner;
+using Shop.Presentation.Facade.Entities.Slider;
 using Shop.Presentation.Facade.Orders;
 using Shop.Presentation.Facade.Products;
 using Shop.Presentation.Facade.Questions;
@@ -32,5 +34,7 @@ public static class FacadeBootstrapper
         services.AddScoped<IQuestionFacade, QuestionFacade>();
         services.AddScoped<IRoleFacade, RoleFacade>();
         services.AddScoped<IShippingFacade, ShippingFacade>();
+        services.AddScoped<IBannerFacade, BannerFacade>();
+        services.AddScoped<ISliderFacade, SliderFacade>();
     }
 }

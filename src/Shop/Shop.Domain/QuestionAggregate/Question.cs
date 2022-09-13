@@ -13,7 +13,12 @@ public class Question : BaseAggregateRoot
     private readonly List<Reply> _replies = new();
     public IEnumerable<Reply> Replies => _replies.ToList();
 
-    public enum QuestionStatus { Pending, Accepted, Rejected }
+    public enum QuestionStatus
+    {
+        Pending,
+        Accepted,
+        Rejected
+    }
 
     public Question(long userId, long productId, string description)
     {

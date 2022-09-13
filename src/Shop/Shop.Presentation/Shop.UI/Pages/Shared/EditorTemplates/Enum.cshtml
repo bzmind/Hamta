@@ -1,12 +1,15 @@
 ﻿@model Enum
 @{
-    var type = Model.GetType();
+  var type = Model.GetType();
 }
 
 <div class="form-element-row">
-    <select asp-for="@Model" class="select2" data-minimum-results-for-search="Infinity"
-            asp-items="Html.GetEnumSelectList(type)">
-        <option selected disabled hidden value="none">@Html.DisplayNameFor(m => m)</option>
-    </select>
+  <select asp-for="@Model" class="select2" data-minimum-results-for-search="Infinity">
+    <option selected disabled hidden value="0">@Html.DisplayNameFor(m => m)</option>
+    @foreach (var name in Enum.GetNames(type))
+    {
+      <option value="@name">@name.Replace("_", " ")</option>
+    }
+  </select>
 </div>
 <span asp-validation-for="@Model" class="d-block mb-2"></span>

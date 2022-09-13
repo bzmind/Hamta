@@ -7,6 +7,8 @@ using Shop.UI.Services.Avatars;
 using Shop.UI.Services.Categories;
 using Shop.UI.Services.Colors;
 using Shop.UI.Services.Comments;
+using Shop.UI.Services.Entities.Banners;
+using Shop.UI.Services.Entities.Sliders;
 using Shop.UI.Services.Orders;
 using Shop.UI.Services.Products;
 using Shop.UI.Services.Questions;
@@ -75,6 +77,14 @@ public static class UiBootstrapper
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 
         services.AddHttpClient<IUserAddressService, UserAddressService>
+            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
+
+        services.AddHttpClient<IBannerService, BannerService>
+            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
+
+        services.AddHttpClient<ISliderService, SliderService>
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 

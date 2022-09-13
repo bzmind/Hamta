@@ -6,7 +6,6 @@ using Shop.Application;
 using Shop.Application.Categories.Create;
 using Shop.Infrastructure;
 using Shop.Presentation.Facade;
-using Shop.Query;
 using Shop.Query.Categories.GetList;
 
 namespace Shop.Config;

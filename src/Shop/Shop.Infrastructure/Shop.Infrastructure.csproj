@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Folder Include="Persistence.EF\Avatars\" />
+    <Folder Include="Persistence.EF\Entities\Repositories\" />
     <Folder Include="Persistence.EF\Roles\" />
     <Folder Include="Utility\" />
     <Folder Include="Persistence.EF\Colors\" />

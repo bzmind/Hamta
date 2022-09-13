@@ -13,6 +13,5 @@ public class SetCommentStatusViewModel
 
     [DisplayName("وضعیت نظر")]
     [Required(ErrorMessage = ValidationMessages.CommentStatusRequired)]
-    [EnumNotNull(ErrorMessage = ValidationMessages.InvalidCommentStatus)]
     public Comment.CommentStatus Status { get; set; }
 }

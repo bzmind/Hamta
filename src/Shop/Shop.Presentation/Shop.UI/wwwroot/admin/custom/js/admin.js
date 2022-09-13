@@ -71,33 +71,6 @@ function updateDiscountSummary(discountInputs)
   });
 }
 
-function setupValidationErrors()
-{
-  const spans = $("span[data-valmsg-for][data-val-for]");
-  const observer = new MutationObserver(function (mutations)
-  {
-    mutations.forEach(function (mutation)
-    {
-      const thisSpan = $(mutation.target);
-      const errorSource = $(`[data-val-id="${thisSpan.attr("data-val-for")}"]`);
-      const className = thisSpan.prop(mutation.attributeName);
-      if (strContains(className, "field-validation-error"))
-        errorSource.css("border", "1px solid #fc3232");
-      else
-        errorSource.css("border", "");
-    });
-  });
-
-  spans.each((i, span) =>
-  {
-    observer.observe(span,
-      {
-        attributes: true,
-        attributeFilter: ["class"]
-      });
-  });
-}
-
 function setupQuillEditors()
 {
   const editors = $(".quill-editor-container");

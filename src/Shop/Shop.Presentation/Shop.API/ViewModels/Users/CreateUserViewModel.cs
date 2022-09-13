@@ -13,8 +13,7 @@ public class CreateUserViewModel
     public string FullName { get; set; }
 
     [Display(Name = "جنسیت")]
-    [Required(ErrorMessage = ValidationMessages.GenderRequired)]
-    [EnumNotNullOrZero(ErrorMessage = ValidationMessages.InvalidGender)]
+    [Required(ErrorMessage = ValidationMessages.ChooseGender)]
     public User.UserGender Gender { get; set; }
 
     [Display(Name = "شماره موبایل")]

@@ -1,0 +1,31 @@
+﻿@using Common.Application.Utility.FileUtility
+@model Shop.API.ViewModels.Entities.Banner.EditBannerViewModel
+@{
+  var guid = Guid.NewGuid();
+}
+
+<form method="post" asp-page-handler="EditBanner" enctype="multipart/form-data"
+      onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
+  @Html.HiddenFor(m => m.Id)
+  <fieldset class="form-group">
+    <label asp-for="@Model.Image"></label>
+    <label class="img-preview-label" data-val-id="imageVal">
+      <i class="bx bx-image-alt"></i>
+      <input type="file" class="custom-file-input" id="@guid" asp-for="@Model.Image" hidden=""
+             data-img-preview="@guid">
+      <img class="img-preview" data-img-preview="@guid" alt="banner image"
+           src="@ServerPaths.GetBannerImagePath(Model.PreviousImageName)"/>
+    </label>
+    <span asp-validation-for="@Model.Image" data-val-for="imageVal"></span>
+  </fieldset>
+  @Html.EditorFor(m => m.Link)
+  @Html.EditorFor(m => m.Position)
+  <button type="submit" class="btn btn-success">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">ویرایش</span>
+  </button>
+  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+    <i class="bx bx-x d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">بستن</span>
+  </button>
+</form>

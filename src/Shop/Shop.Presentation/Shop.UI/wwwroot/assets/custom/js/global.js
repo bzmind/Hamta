@@ -188,8 +188,36 @@ function reinitializeElementsScripts()
   setupPasswordInputsVisibilityToggle();
   triggerSelect2ValidationOnChange();
   triggerFileInputsValidationOnChange();
-  avatarInputChangeListener();
+  setupInputsChangeListeners();
   setupMoneyInputsFormatting();
+  setupValidationErrors();
+}
+
+function setupValidationErrors()
+{
+  const spans = $("span[data-valmsg-for][data-val-for]");
+  const observer = new MutationObserver(function (mutations)
+  {
+    mutations.forEach(function (mutation)
+    {
+      const thisSpan = $(mutation.target);
+      const errorSource = $(`[data-val-id="${thisSpan.attr("data-val-for")}"]`);
+      const className = thisSpan.prop(mutation.attributeName);
+      if (strContains(className, "field-validation-error"))
+        errorSource.css("border", "1px solid #fc3232");
+      else
+        errorSource.css("border", "");
+    });
+  });
+
+  spans.each((i, span) =>
+  {
+    observer.observe(span,
+      {
+        attributes: true,
+        attributeFilter: ["class"]
+      });
+  });
 }
 
 function setupMoneyInputsFormatting()
@@ -254,8 +282,23 @@ function reinitializeSelect2()
   }
 }
 
-function avatarInputChangeListener()
+function setupInputsChangeListeners()
 {
+  $("input[data-img-preview]:not([multiple])").unbind("change");
+  $("input[data-img-preview]:not([multiple])").change(function ()
+  {
+    const guid = $(this).attr("data-img-preview");
+    const file = $(this).prop("files")[0];
+    const imageElement = $(`img[data-img-preview="${guid}"]`);
+
+    if (file)
+    {
+      imageElement.attr("src", URL.createObjectURL(file));
+      imageElement.show();
+      URL.revokeObjectURL(file);
+    }
+  });
+
   $(".avatar-file-label input").change(function ()
   {
     $(".avatar-file-label").css("border-color", "#5a8dee");

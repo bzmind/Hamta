@@ -4,6 +4,7 @@ using Shop.Domain.AvatarAggregate.Repository;
 using Shop.Domain.CategoryAggregate.Repository;
 using Shop.Domain.ColorAggregate.Repository;
 using Shop.Domain.CommentAggregate.Repository;
+using Shop.Domain.Entities.Repositories;
 using Shop.Domain.OrderAggregate.Repository;
 using Shop.Domain.ProductAggregate.Repository;
 using Shop.Domain.QuestionAggregate.Repository;
@@ -16,6 +17,7 @@ using Shop.Infrastructure.Persistence.EF.Avatars;
 using Shop.Infrastructure.Persistence.EF.Categories;
 using Shop.Infrastructure.Persistence.EF.Colors;
 using Shop.Infrastructure.Persistence.EF.Comments;
+using Shop.Infrastructure.Persistence.EF.Entities.Repositories;
 using Shop.Infrastructure.Persistence.EF.Orders;
 using Shop.Infrastructure.Persistence.EF.Products;
 using Shop.Infrastructure.Persistence.EF.Questions;
@@ -41,6 +43,8 @@ public class InfrastructureBootstrapper
         services.AddTransient<IQuestionRepository, QuestionRepository>();
         services.AddTransient<IRoleRepository, RoleRepository>();
         services.AddTransient<IShippingRepository, ShippingRepository>();
+        services.AddTransient<IBannerRepository, BannerRepository>();
+        services.AddTransient<ISliderRepository, SliderRepository>();
         services.AddTransient(_ => new DapperContext(connectionString));
 
         services.AddDbContext<ShopContext>(option =>

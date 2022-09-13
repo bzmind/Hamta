@@ -47,19 +47,17 @@ public class CreateUserCommandValidator : AbstractValidator<CreateUserCommand>
     public CreateUserCommandValidator()
     {
         RuleFor(c => c.FullName)
-            .NotNull().WithMessage(ValidationMessages.FullNameRequired)
             .NotEmpty().WithMessage(ValidationMessages.FullNameRequired)
             .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام و نام خانوادگی", 30));
 
         RuleFor(c => c.Gender)
-            .NotNull().WithMessage(ValidationMessages.GenderRequired)
+            .NotNull().WithMessage(ValidationMessages.ChooseGender)
             .IsInEnum().WithMessage(ValidationMessages.InvalidGender);
 
         RuleFor(c => c.PhoneNumber)
             .ValidPhoneNumber();
 
         RuleFor(c => c.Password)
-            .NotNull().WithMessage(ValidationMessages.PasswordRequired)
             .NotEmpty().WithMessage(ValidationMessages.PasswordRequired)
             .MinimumLength(8).WithMessage(ValidationMessages.FieldCharactersMinLength("رمز عبور", 7));
     }

@@ -5,8 +5,12 @@
 
 <div class="form-group">
   <label asp-for="@Model"></label>
-  <select class="form-control" asp-for="@Model" asp-items="Html.GetEnumSelectList(type)">
-    <option selected disabled hidden value="none">@Html.DisplayNameFor(m => m)</option>
+  <select asp-for="@Model" class="form-control select2" data-minimum-results-for-search="Infinity">
+    <option selected disabled hidden value="0">@Html.DisplayNameFor(m => m)</option>
+    @foreach (var name in Enum.GetNames(type))
+    {
+      <option value="@name">@name.Replace("_", " ")</option>
+    }
   </select>
   <span asp-validation-for="@Model" class="d-block"></span>
 </div>

@@ -10,8 +10,8 @@ public class Avatar : BaseAggregateRoot
 
     public enum AvatarGender
     {
-        Male = 1,
-        Female = 2
+        مرد,
+        زن
     }
 
     public Avatar(string name, AvatarGender gender)

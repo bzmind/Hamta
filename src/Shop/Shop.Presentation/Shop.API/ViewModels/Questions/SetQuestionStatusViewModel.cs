@@ -1,6 +1,5 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
-using Common.Api.Attributes;
 using Common.Application.Utility.Validation;
 using Shop.Domain.QuestionAggregate;
 
@@ -13,6 +12,5 @@ public class SetQuestionStatusViewModel
 
     [DisplayName("وضعیت سوال")]
     [Required(ErrorMessage = ValidationMessages.QuestionStatusRequired)]
-    [EnumNotNull(ErrorMessage = ValidationMessages.InvalidQuestionStatus)]
     public Question.QuestionStatus Status { get; set; }
 }

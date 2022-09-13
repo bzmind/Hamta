@@ -11,7 +11,12 @@ public class Reply : BaseEntity
     public string Description { get; private set; }
     public ReplyStatus Status { get; private set; }
 
-    public enum ReplyStatus { Pending, Accepted, Rejected }
+    public enum ReplyStatus
+    {
+        Pending,
+        Accepted,
+        Rejected
+    }
 
     public Reply(long questionId, long productId, long userId, string description)
     {

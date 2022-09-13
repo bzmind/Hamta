@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Common.Api.Attributes;
 
-public class EnumNotNullOrZeroAttribute : ValidationAttribute, IClientModelValidator
+public class EnumNotNullAttribute : ValidationAttribute, IClientModelValidator
 {
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
@@ -25,29 +25,5 @@ public class EnumNotNullOrZeroAttribute : ValidationAttribute, IClientModelValid
         if (!context.Attributes.ContainsKey("data-val"))
             context.Attributes.Add("data-val", "true");
         context.Attributes.Add("data-val-enumNotNullOrZero", ErrorMessage);
-    }
-}
-
-public class EnumNotNullAttribute : ValidationAttribute, IClientModelValidator
-{
-    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
-    {
-        if (value == null)
-            return new ValidationResult(ValidationMessages.InvalidGender);
-
-        var enumMembers = value.GetType().GetEnumNames();
-
-        var valueExistInEnum = enumMembers.ToList().Any(m => m == value.ToString());
-        if (valueExistInEnum)
-            return ValidationResult.Success;
-
-        return new ValidationResult(ValidationMessages.InvalidGender);
-    }
-
-    public void AddValidation(ClientModelValidationContext context)
-    {
-        if (!context.Attributes.ContainsKey("data-val"))
-            context.Attributes.Add("data-val", "true");
-        context.Attributes.Add("data-val-enumNotNull", ErrorMessage);
     }
 }

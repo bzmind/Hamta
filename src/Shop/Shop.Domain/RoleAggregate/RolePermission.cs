@@ -10,6 +10,8 @@ public class RolePermission : BaseEntity
     public enum Permissions
     {
         AvatarManager,
+        BannerManager,
+        SliderManager,
         CategoryManager,
         ColorManager,
         CommentManager,

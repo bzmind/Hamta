@@ -13,6 +13,5 @@ public class SetOrderStatusViewModel
 
     [DisplayName("وضعیت سفارش")]
     [Required(ErrorMessage = ValidationMessages.OrderStatusRequired)]
-    [EnumNotNull(ErrorMessage = ValidationMessages.InvalidOrderStatus)]
     public Order.OrderStatus Status { get; set; }
 }

@@ -35,6 +35,5 @@ public class CreateCommentViewModel
 
     [DisplayName("پیشنهاد")]
     [Required(ErrorMessage = ValidationMessages.CommentRecommendationRequired)]
-    [EnumNotNull(ErrorMessage = ValidationMessages.InvalidCommentRecommendation)]
     public Comment.CommentRecommendation Recommendation { get; set; }
 }

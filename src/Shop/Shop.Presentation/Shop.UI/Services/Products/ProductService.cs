@@ -67,7 +67,7 @@ public class ProductService : BaseService, IProductService
         if (model.Review != null)
             formData.Add(new StringContent(model.Review), "Review");
 
-        model.GalleryImages?.ForEach(image =>
+        model.GalleryImages.ForEach(image =>
         {
             if (image.IsImage())
                 formData.Add(new StreamContent(image.OpenReadStream()), "GalleryImages", image.FileName);

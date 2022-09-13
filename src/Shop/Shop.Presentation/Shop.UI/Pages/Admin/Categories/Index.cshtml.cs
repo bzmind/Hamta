@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Shop.Query.Categories._DTOs;
 using Shop.UI.Services.Categories;
 using Shop.UI.Setup.RazorUtility;

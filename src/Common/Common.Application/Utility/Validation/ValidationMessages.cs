@@ -20,7 +20,6 @@ public static class ValidationMessages
     public const string EmailOrPhoneRequired = "لطفا شماره موبایل یا ایمیل را وارد کنید";
     public const string CategoryRequired = "لطفا دسته‌بندی را وارد کنید";
     public const string CategorySpecificationRequired = "لطفا مشخصات دسته‌بندی را وارد کنید";
-    public const string GenderRequired = "لطفا جنسیت را انتخاب کنید";
     public const string AvatarRequired = "لطفا عکس آواتار را وارد کنید";
     public const string TitleRequired = "لطفا عنوان را وارد کنید";
     public const string IntroductionRequired = "لطفا متن معرفی را وارد کنید";
@@ -42,7 +41,9 @@ public static class ValidationMessages
     public const string PermissionsRequired = "لطفا مجوز ها را وارد کنید";
     public const string NationalCodeRequired = "لطفا کدملی را وارد کنید";
     public const string ShopNameRequired = "لطفا نام فروشگاه را وارد کنید";
-    public const string StatusRequired = "لطفا وضعیت را انتخاب کنید";
+    public const string LinkRequired = "لطفا لینک را وارد کنید";
+    public const string BannerImageRequired = "لطفا عکس بنر را وارد کنید";
+    public const string SliderImageRequired = "لطفا عکس اسلایدر را وارد کنید";
 
     public const string ChooseProduct = "لطفا محصول را انتخاب کنید";
     public const string ChooseProductMainImage = "لطفا عکس اصلی محصول را انتخاب کنید";
@@ -58,8 +59,13 @@ public static class ValidationMessages
     public const string ChooseSellerInventory = "لطفا انبار را انتخاب کنید";
     public const string ChooseOrder = "لطفا سفارش را انتخاب کنید";
     public const string ChooseShipping = "لطفا روش ارسال را انتخاب کنید";
+    public const string ChooseStatusRequired = "لطفا وضعیت را انتخاب کنید";
     public const string ChooseRole = "لطفا نقش را انتخاب کنید";
     public const string ChooseAvatar = "لطفا آواتار را انتخاب کنید";
+    public const string ChooseGender = "لطفا جنسیت را انتخاب کنید";
+    public const string ChooseBanner = "لطفا بنر را انتخاب کنید";
+    public const string ChooseBannerPosition = "لطفا موقعیت بنر را انتخاب کنید";
+    public const string ChooseSlider = "لطفا اسلایدر را انتخاب کنید";
 
     public const string InvalidName = "نام نامعتبر است";
     public const string InvalidFamilyName = "نام خانوادگی نامعتبر است";
@@ -74,6 +80,8 @@ public static class ValidationMessages
     public const string InvalidConfirmNewPassword = "رمز های عبور جدید با هم یکسان نیستند";
     public const string InvalidPrice = "قیمت نامعتبر است";
     public const string InvalidGender = "جنسیت نامعتبر است";
+    public const string InvalidBannerPosition = "موقعیت بنر نامعتبر است";
+    public const string InvalidBannerImage = "عکس بنر نامعتبر است";
     public const string InvalidAvatar = "آواتار نامعتبر است";
     public const string InvalidImage = "عکس نامعتبر است";
     public const string InvalidTitle = "عنوان نامعتبر است";
@@ -89,8 +97,10 @@ public static class ValidationMessages
     public const string InvalidQuestionStatus = "وضعیت سوال نامعتبر است";
     public const string InvalidPermissions = "مجوز ها نامعتبر هستند";
     public const string InvalidNationalCode = "کدملی نامعتبر است";
-    public const string ShopNameNationalCode = "نام فروشگاه نامعتبر است";
-    public const string StatusNationalCode = "وضعیت نامعتبر است";
+    public const string InvalidShopName = "نام فروشگاه نامعتبر است";
+    public const string InvalidStatus = "وضعیت نامعتبر است";
+    public const string InvalidLink = "لینک نامعتبر است";
+    public const string InvalidSliderImage = "عکس اسلایدر نامعتبر است";
 
     public const string EmailRegex = @"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}";
     public const string IranPhoneRegex = @"^(?:0)?(9\d{9})$";

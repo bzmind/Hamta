@@ -23,46 +23,50 @@
     <ul class="navigation navigation-main" id="main-menu-navigation" data-menu="menu-navigation" data-icon-style="lines">
       <li class="nav-item @(selected == "index" ? "active" : null)">
         <a href="/admin">
-          <i class="menu-livicon" data-icon="home"></i>
+          <i class="bx bx-home-alt"></i>
           <span class="menu-title">داشبورد</span>
         </a>
       </li>
-      <li class="nav-item">
-        <a href="javascript:void(0)">
-          <i class="menu-livicon" data-icon="box"></i>
-          <span class="menu-title">مدیریت محصولات</span>
+      <li class="@(selected == "products" ? "active" : null)">
+        <a href="/admin/products">
+          <i class="bx bx-package"></i>
+          <span class="menu-title">محصولات</span>
         </a>
-        <ul class="menu-content">
-          <li class="@(selected == "products" ? "active" : null)">
-            <a href="/admin/products">
-              <i class="bx bx-left-arrow-alt"></i>
-              <span class="menu-title">محصولات</span>
-            </a>
-          </li>
-          <li class="@(selected == "categories" ? "active" : null)">
-            <a href="/admin/categories">
-              <i class="bx bx-left-arrow-alt"></i>
-              <span class="menu-title">دسته‌بندی ها</span>
-            </a>
-          </li>
-        </ul>
+      </li>
+      <li class="@(selected == "categories" ? "active" : null)">
+        <a href="/admin/categories">
+          <i class="bx bx-collection"></i>
+          <span class="menu-title">دسته‌بندی ها</span>
+        </a>
       </li>
       <li class="nav-item @(selected == "users" ? "active" : null)">
         <a href="/admin/users">
-          <i class="menu-livicon" data-icon="users"></i>
-          <span class="menu-title">مدیریت کاربران</span>
+          <i class="bx bx-group"></i>
+          <span class="menu-title">کاربران</span>
         </a>
       </li>
       <li class="nav-item @(selected == "roles" ? "active" : null)">
         <a href="/admin/roles">
-          <i class="menu-livicon" data-icon="shield"></i>
-          <span class="menu-title">مدیریت نقش ها</span>
+          <i class="bx bx-badge-check"></i>
+          <span class="menu-title">نقش ها</span>
         </a>
       </li>
       <li class="nav-item @(selected == "avatars" ? "active" : null)">
         <a href="/admin/avatars">
-          <i class="menu-livicon" data-icon="camera"></i>
-          <span class="menu-title">مدیریت آواتار ها</span>
+          <i class="bx bx-face"></i>
+          <span class="menu-title">آواتار ها</span>
+        </a>
+      </li>
+      <li class="nav-item @(selected == "banners" ? "active" : null)">
+        <a href="/admin/banners">
+          <i class="bx bxs-categories"></i>
+          <span class="menu-title">بنر ها</span>
+        </a>
+      </li>
+      <li class="nav-item @(selected == "sliders" ? "active" : null)">
+        <a href="/admin/sliders">
+          <i class="bx bxs-carousel"></i>
+          <span class="menu-title">اسلایدر ها</span>
         </a>
       </li>
     </ul>

@@ -1,0 +1,17 @@
+﻿using Shop.Domain.Entities;
+using Shop.Domain.Entities.Repositories;
+using Shop.Infrastructure.BaseClasses;
+
+namespace Shop.Infrastructure.Persistence.EF.Entities.Repositories;
+
+public class SliderRepository : BaseRepository<Slider>, ISliderRepository
+{
+    public SliderRepository(ShopContext context) : base(context)
+    {
+    }
+
+    public void RemoveSlider(Slider slider)
+    {
+        Context.Sliders.Remove(slider);
+    }
+}

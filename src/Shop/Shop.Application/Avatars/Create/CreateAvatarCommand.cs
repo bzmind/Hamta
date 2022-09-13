@@ -43,7 +43,7 @@ public class CreateAvatarCommandValidator : AbstractValidator<CreateAvatarComman
             .JustImageFile();
 
         RuleFor(r => r.Gender)
-            .NotNull().WithMessage(ValidationMessages.GenderRequired)
+            .NotNull().WithMessage(ValidationMessages.ChooseGender)
             .IsInEnum().WithMessage(ValidationMessages.InvalidGender);
     }
 }

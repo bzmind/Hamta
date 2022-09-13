@@ -62,7 +62,7 @@ public class EditUserCommandValidator : AbstractValidator<EditUserCommand>
             .MaximumLength(30).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام و نام خانوادگی", 30));
         
         RuleFor(r => r.Gender)
-            .NotNull().WithMessage(ValidationMessages.GenderRequired)
+            .NotNull().WithMessage(ValidationMessages.ChooseGender)
             .IsInEnum().WithMessage(ValidationMessages.InvalidGender);
 
         RuleFor(c => c.Email)

@@ -6,13 +6,13 @@
 <form method="post" asp-page="Index" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
   <div class="form-group d-flex align-items-center justify-content-center flex-column">
     <label asp-for="@Model.AvatarFile">انتخاب آواتار</label>
-    <label class="custom-file avatar-file-label" for="@Model.AvatarFile">
+    <label class="custom-file avatar-file-label" for="@Model.AvatarFile" data-val-id="avatarVal">
       <img data-img-preview="@guid" alt="avatar" style="display: none; z-index: 1;"
            src="/assets/images/avatar/avatar.png" />
       <i class="bx bxs-camera"></i>
       <input type="file" class="custom-file-input" asp-for="@Model.AvatarFile" data-img-preview="@guid">
     </label>
-    <span asp-validation-for="@Model.AvatarFile" class="d-block"></span>
+    <span asp-validation-for="@Model.AvatarFile" class="d-block mt-5px" data-val-for="avatarVal"></span>
   </div>
   @Html.EditorFor(m => m.Gender)
   <button type="submit" class="btn btn-success">

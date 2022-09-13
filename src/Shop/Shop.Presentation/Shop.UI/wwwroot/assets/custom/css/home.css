@@ -1,3 +1,59 @@
+﻿.field-validation-error, .field-validation-error span {
+  color: #ff4242 !important;
+  font-size: 13px;
+  margin-top: 5px;
+}
+
+.input-validation-error {
+  border-color: #ff4242 !important;
+}
+
+.select2.input-validation-error ~ span.select2-container {
+  border-color: #ff4242 !important;
+}
+
+.input-validation-error ~ label {
+  border-color: #ff4242 !important;
+}
+
+.input-validation-error ~ .select2 .select2-selection {
+  border: 1px solid #fc3232 !important;
+}
+
+.select2-results__option--disabled {
+  display: none;
+}
+
+.select2-results__option {
+  padding-top: 9px;
+  padding-right: 10px;
+}
+
+.select2-dropdown--above .select2-results__options {
+  border: 1px solid #EEEEEE;
+  border-bottom: none;
+  border-radius: 5px 5px 0 0;
+}
+
+.select2-dropdown--below .select2-results__options {
+  border: 1px solid #EEEEEE;
+  border-top: none;
+  border-radius: 0 0 5px 5px;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+  color: black;
+}
+
+.select2-container[dir="rtl"] .select2-selection--single .select2-selection__rendered {
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}
+
+.select2-container--default[dir="rtl"] .select2-selection--single .select2-selection__arrow {
+  left: 5px;
+}
+
 .auth-wrapper .auth-form {
   width: 370px;
   background-color: #fff;
@@ -113,7 +169,7 @@
 
 .modal .modal-dialog .modal-content {
   backdrop-filter: blur(15px) !important;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: rgba(255, 255, 255, 0.6);
 }
 
 .multiline-text {

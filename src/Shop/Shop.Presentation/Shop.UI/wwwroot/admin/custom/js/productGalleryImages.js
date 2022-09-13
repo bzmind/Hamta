@@ -45,21 +45,6 @@ function setupProductImagesEventListeners()
     getProductCategorySpecifications($(this));
   });
 
-  $("input[data-img-preview]:not([multiple])").unbind("change");
-  $("input[data-img-preview]:not([multiple])").change(function ()
-  {
-    const guid = $(this).attr("data-img-preview");
-    const file = $(this).prop("files")[0];
-    const imageElement = $(`img[data-img-preview="${guid}"]`);
-
-    if (file)
-    {
-      imageElement.attr("src", URL.createObjectURL(file));
-      imageElement.show();
-      URL.revokeObjectURL(file);
-    }
-  });
-
   if ($("table.productGalleryImagesTable")[0])
   {
     const productGalleryImagesTable = $("table.productGalleryImagesTable tbody");

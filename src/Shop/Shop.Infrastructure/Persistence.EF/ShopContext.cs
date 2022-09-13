@@ -3,6 +3,7 @@ using Shop.Domain.AvatarAggregate;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.ColorAggregate;
 using Shop.Domain.CommentAggregate;
+using Shop.Domain.Entities;
 using Shop.Domain.UserAggregate;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.ProductAggregate;
@@ -26,6 +27,8 @@ public class ShopContext : DbContext
     public DbSet<Question> Questions { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<Shipping> Shippings { get; set; }
+    public DbSet<Slider> Sliders { get; set; }
+    public DbSet<Banner> Banners { get; set; }
 
     public ShopContext(DbContextOptions<ShopContext> options) : base(options)
     {

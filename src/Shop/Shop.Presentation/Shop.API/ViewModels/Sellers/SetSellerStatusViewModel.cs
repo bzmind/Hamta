@@ -8,6 +8,6 @@ namespace Shop.API.ViewModels.Sellers;
 public class SetSellerStatusViewModel
 {
     [DisplayName("وضعیت")]
-    [Required(ErrorMessage = ValidationMessages.StatusRequired)]
+    [Required(ErrorMessage = ValidationMessages.ChooseStatusRequired)]
     public Seller.SellerStatus Status { get; set; }
 }

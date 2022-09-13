@@ -15,6 +15,7 @@ builder.Services.AddRazorPages().AddRazorRuntimeCompilation().AddMvcOptions(opti
 {
     options.Conventions.AuthorizeFolder("/Profile", "ProfileAuth");
     options.Conventions.AuthorizeFolder("/Seller", "SellerAuth");
+    options.Conventions.AuthorizeFolder("/Admin", "AdminAuth");
 });
 
 builder.Services.RegisterUiDependencies();
@@ -35,6 +36,12 @@ builder.Services.AddAuthorization(options =>
         config.RequireAuthenticatedUser();
         config.RequireAssertion(authContext => authContext.User.Claims
             .Any(claim => claim.Type == ClaimTypes.Role && claim.Value.ToLower().Contains("seller")));
+    });
+    options.AddPolicy("AdminAuth", config =>
+    {
+        config.RequireAuthenticatedUser();
+        config.RequireAssertion(authContext => authContext.User.Claims
+            .Any(claim => claim.Type == ClaimTypes.Role && claim.Value.ToLower().Contains("admin")));
     });
 });
 

@@ -8,7 +8,6 @@ using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Shop.API.ViewModels.Users;
 using Shop.Domain.UserAggregate;
 using Shop.UI.Services.Avatars;
-using Shop.UI.Services.UserAddresses;
 using Shop.UI.Services.Users;
 using Shop.UI.Setup.ModelStateExtensions;
 using Shop.UI.Setup.RazorUtility;
@@ -20,15 +19,12 @@ public class IndexModel : BaseRazorPage
 {
     private readonly IUserService _userService;
     private readonly IAvatarService _avatarService;
-    private readonly IUserAddressService _userAddressService;
 
     public IndexModel(IUserService userService, IAvatarService avatarService,
-        IRazorToStringRenderer razorToStringRenderer,
-        IUserAddressService userAddressService) : base(razorToStringRenderer)
+        IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
     {
         _userService = userService;
         _avatarService = avatarService;
-        _userAddressService = userAddressService;
     }
 
     [DisplayName("نام و نام خانوادگی")]
@@ -47,8 +43,7 @@ public class IndexModel : BaseRazorPage
     public string PhoneNumber { get; set; }
 
     [Display(Name = "جنسیت")]
-    [Required(ErrorMessage = ValidationMessages.GenderRequired)]
-    [EnumNotNullOrZero(ErrorMessage = ValidationMessages.InvalidGender)]
+    [Required(ErrorMessage = ValidationMessages.ChooseGender)]
     public User.UserGender Gender { get; set; }
 
     [BindNever]

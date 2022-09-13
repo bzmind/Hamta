@@ -20,8 +20,19 @@ public class Comment : BaseAggregateRoot
     private readonly List<CommentReaction> _commentReactions = new();
     public IEnumerable<CommentReaction> CommentReactions => _commentReactions.ToList();
 
-    public enum CommentRecommendation { Neutral, Positive, Negative }
-    public enum CommentStatus { Pending, Accepted, Rejected }
+    public enum CommentRecommendation
+    {
+        Neutral,
+        Positive,
+        Negative
+    }
+
+    public enum CommentStatus
+    {
+        Pending,
+        Accepted,
+        Rejected
+    }
 
     private Comment()
     {

@@ -1,0 +1,55 @@
+﻿@page "{handler?}"
+@using Common.Application.Utility.FileUtility
+@using Shop.UI.TagHelpers
+@model Shop.UI.Pages.Admin.Banners.IndexModel
+@{
+  ViewData["Title"] = "مدیریت بنر ها";
+  ViewData["Selected"] = "banners";
+}
+
+<section>
+  <open-modal url="@Url.Page("Index", "ShowAddPage")" modal-title="افزودن بنر"
+              modal-size="modal-md" class="btn btn-success mb-1">افزودن بنر</open-modal>
+  <div class="table-responsive card card-content">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>عکس</th>
+          <th>لینک</th>
+          <th>موقعیت</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var banner in Model.Banners)
+        {
+          <tr>
+            <td>
+              <img class="item-image border-0" width="150" height="100" alt="banner image" style="object-fit: cover;"
+                 src="@ServerPaths.GetBannerImagePath(banner.Image)" />
+            </td>
+            <td>@banner.Link</td>
+            <td>@banner.Position.ToString().Replace("_", " ")</td>
+            <td>
+              <open-modal url="@Url.Page("Index", "ShowEditPage", new { id = banner.Id })"
+                        class="btn-sm badge-pill bg-rgba-primary text-primary border-0"
+                        modal-title="ویرایش بنر" modal-size="modal-md">
+                ویرایش
+              </open-modal>
+              <delete url="@Url.Page("Index", "RemoveBanner", new { id = banner.Id })"
+                    class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+                حذف
+              </delete>
+            </td>
+          </tr>
+        }
+        @if (!Model.Banners.Any())
+        {
+          <tr>
+            <td colspan="4" class="text-center">موردی برای نمایش وجود ندارد</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>

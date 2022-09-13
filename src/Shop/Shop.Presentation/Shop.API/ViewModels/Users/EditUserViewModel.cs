@@ -25,7 +25,6 @@ public class EditUserViewModel
     public string PhoneNumber { get; set; }
 
     [Display(Name = "جنسیت")]
-    [Required(ErrorMessage = ValidationMessages.GenderRequired)]
-    [EnumNotNullOrZero(ErrorMessage = ValidationMessages.InvalidGender)]
+    [Required(ErrorMessage = ValidationMessages.ChooseGender)]
     public User.UserGender Gender { get; set; }
 }
