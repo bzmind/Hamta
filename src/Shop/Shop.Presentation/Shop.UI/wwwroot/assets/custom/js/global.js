@@ -80,7 +80,7 @@ function setAlertMessage(message, isSuccessful)
 
   const ul = document.createElement("ul");
   if (isSuccessful === true)
-    ul.setAttribute("class", "alert alert-primary");
+    ul.setAttribute("class", "alert alert-success");
   else
     ul.setAttribute("class", "alert alert-danger");
 
@@ -168,8 +168,18 @@ function checkResult(result)
 function reinitializeScripts()
 {
   reinitializeJqueryUnobtrusive();
-  reinitializeElementsScripts();
+  setupPasswordInputsVisibilityToggle();
+  triggerSelect2ValidationOnChange();
+  triggerFileInputsValidationOnChange();
+  setupInputsChangeListeners();
+  setupMoneyInputsFormatting();
+  setupValidationErrors();
   reinitializeSelect2();
+  if (typeof setupImageCroppers === "function")
+  {
+    setupImageCroppers();
+    setupCroppersForUpload();
+  }
 }
 
 function reinitializeJqueryUnobtrusive()
@@ -181,16 +191,6 @@ function reinitializeJqueryUnobtrusive()
     if ($(this).data("validator"))
       $(this).data("validator").settings.ignore = ".quill-editor-container *, .quill-toolbar-container *";
   });
-}
-
-function reinitializeElementsScripts()
-{
-  setupPasswordInputsVisibilityToggle();
-  triggerSelect2ValidationOnChange();
-  triggerFileInputsValidationOnChange();
-  setupInputsChangeListeners();
-  setupMoneyInputsFormatting();
-  setupValidationErrors();
 }
 
 function setupValidationErrors()
@@ -291,6 +291,9 @@ function setupInputsChangeListeners()
     const file = $(this).prop("files")[0];
     const imageElement = $(`img[data-img-preview="${guid}"]`);
 
+    if (imageElement.hasAttr("data-crop") && imageElement[0].cropper != null)
+      imageElement[0].cropper.destroy();
+
     if (file)
     {
       imageElement.attr("src", URL.createObjectURL(file));
@@ -305,7 +308,7 @@ function setupInputsChangeListeners()
   });
 }
 
-function openModal(url, modalTitle, modalSize)
+function openModal(url, modalTitle, modalSize, backdrop)
 {
   const modalName = "default-modal";
   $(`#${modalName} .modal-body`).html("");
@@ -330,7 +333,7 @@ function openModal(url, modalTitle, modalSize)
       $(`#${modalName} .modal-title`).html(modalTitle);
 
       $(`#${modalName}`).modal({
-        backdrop: "dark",
+        backdrop: backdrop,
         keyboard: true
       }, "show");
 
@@ -425,3 +428,5 @@ $.fn.attrContains = function (attrName, string) { return $(this).attr(attrName).
 $.fn.isVisible = function () { return $(this).css("display") !== "none"; };
 
 $.fn.isHidden = function () { return $(this).css("display") === "none"; };
+
+$.fn.hasAttr = function (name) { return this.attr(name) !== undefined; };

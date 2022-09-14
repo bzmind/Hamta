@@ -41,7 +41,7 @@
                asp-for="@Model.EditProductViewModel.CategoryId" value="@subCategory.Id" />
               <label class="radio-circle" for="@newId"></label>
             </label>
-            <span class="category-title" style="text-indent: 0; margin-right: 6px;">
+            <span class="category-title mr-6px" style="text-indent: 0;">
               @subCategory.Title
               @if (hasSubCategory)
               {
@@ -85,7 +85,7 @@
                 var guid = Guid.NewGuid();
                 var isMainImageNull = string.IsNullOrWhiteSpace(Model.MainImage);
               }
-              <label class="btn-sm badge-pill bg-rgba-info text-info border-0">
+              <label class="btn-sm badge-pill bg-rgba-info text-info border-0 badge-input">
                 <input asp-for="@Model.EditProductViewModel.MainImage" type="file" data-img-preview="@guid"
                        accept="image/*" />
                 انتخاب
@@ -105,7 +105,7 @@
             }
             <div class="d-flex align-items-center">
               <label>@Html.DisplayNameFor(m => m.EditProductViewModel.GalleryImages)</label>
-              <label class="btn-sm badge-pill bg-rgba-info text-info border-0" data-toggle="tooltip"
+              <label class="btn-sm badge-pill bg-rgba-info text-info border-0 badge-input" data-toggle="tooltip"
                      data-placement="top" title="" data-original-title="جایگزین کردن همه‌ی عکس های کنونی">
                 <input asp-for="@Model.EditProductViewModel.GalleryImages" type="file" multiple=""
                        data-img-preview="@imgPreview" data-replace="" accept="image/*" />
@@ -207,8 +207,14 @@
                 var hasSubCategory = category.SubCategories.Any();
                 <tr class="parent" data-depth="0" data-categoryId="@category.Id"
                   data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
-                  <td class="pl-0 pr-0">
-                    <span class="category-title">
+                  <td class="pl-0 pr-0 d-flex w-100 align-items-center">
+                    <label class="radio">
+                      <input type="radio" class="radio-primary category-radio" id="@guid"
+                             asp-for="@Model.EditProductViewModel.CategoryId" value="@category.Id" />
+                      <label class="radio-circle" for="@guid"></label>
+                    </label>
+                    <span asp-validation-for="@Model.EditProductViewModel.CategoryId"></span>
+                    <span class="category-title mr-6px">
                       @category.Title
                       @if (hasSubCategory)
                       {

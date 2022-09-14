@@ -8,8 +8,8 @@
 }
 
 <section>
-  <open-modal url="@Url.Page("Index", "ShowAddPage")" modal-title="افزودن بنر"
-              modal-size="modal-md" class="btn btn-success mb-1">افزودن بنر</open-modal>
+  <open-modal url="@Url.Page("Index", "ShowAddPage")" title="افزودن بنر" size="modal-md" backdrop="static"
+              class="btn btn-success mb-1">افزودن بنر</open-modal>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
@@ -33,7 +33,7 @@
             <td>
               <open-modal url="@Url.Page("Index", "ShowEditPage", new { id = banner.Id })"
                         class="btn-sm badge-pill bg-rgba-primary text-primary border-0"
-                        modal-title="ویرایش بنر" modal-size="modal-md">
+                        title="ویرایش بنر" size="modal-md" backdrop="static">
                 ویرایش
               </open-modal>
               <delete url="@Url.Page("Index", "RemoveBanner", new { id = banner.Id })"

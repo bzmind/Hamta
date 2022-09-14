@@ -1,7 +1,11 @@
 ﻿@page
+@using Common.Application.Utility.FileUtility
+@using Shop.UI.Services.MainPage
 @model IndexModel
+@inject IMainPageService MainPageService
 @{
   ViewData["Title"] = "فروشگاه اینترنتی همتا";
+  var mainPageData = await MainPageService.GetMainPageData();
 }
 
 <div class="container">
@@ -19,51 +23,14 @@
       <div class="main-slider">
         <div class="swiper-container main-page-slider">
           <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-1.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-2.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-3.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-4.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-5.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-6.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-7.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-8.jpg" alt="">
-              </a>
-            </div>
-            <div class="swiper-slide">
-              <a href="#">
-                <img src="/assets/images/main-slider/slider-9.jpg" alt="">
-              </a>
-            </div>
+            @foreach (var slider in mainPageData.Sliders)
+            {
+              <div class="swiper-slide">
+                <a href="@slider.Link">
+                  <img src="@ServerPaths.GetSliderImagePath(slider.Image)" alt="@slider.Title">
+                </a>
+              </div>
+            }
           </div>
           <!-- Add Arrows -->
           <div class="swiper-button-next"></div>

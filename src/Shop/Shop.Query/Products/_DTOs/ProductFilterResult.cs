@@ -17,4 +17,6 @@ public class ProductFilterParams : BaseFilterParams
     public int? AverageScore { get; set; }
     public int? MinPrice { get; set; }
     public int? MaxPrice { get; set; }
+    public int? MinDiscountPercentage { get; set; }
+    public int? MaxDiscountPercentage { get; set; }
 }

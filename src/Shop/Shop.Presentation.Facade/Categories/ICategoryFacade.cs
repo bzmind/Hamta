@@ -14,6 +14,7 @@ public interface ICategoryFacade
     Task<OperationResult> Remove(long subCategoryId);
 
     Task<List<CategoryDto>> GetAll();
+    Task<List<CategoryDto>> GetForMenu();
     Task<CategoryDto?> GetById(long id);
     Task<List<CategoryDto>> GetByParentId(long parentId);
     Task<List<QueryCategorySpecificationDto>> GetSpecificationsByCategoryId(long categoryId);

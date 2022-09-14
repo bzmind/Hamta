@@ -9,6 +9,7 @@ using Shop.UI.Services.Colors;
 using Shop.UI.Services.Comments;
 using Shop.UI.Services.Entities.Banners;
 using Shop.UI.Services.Entities.Sliders;
+using Shop.UI.Services.MainPage;
 using Shop.UI.Services.Orders;
 using Shop.UI.Services.Products;
 using Shop.UI.Services.Questions;
@@ -98,6 +99,7 @@ public static class UiBootstrapper
         services.AddScoped<HttpClientAuthorizationDelegateHandler>();
         services.AddScoped<IRazorToStringRenderer, RazorToStringRenderer>();
         services.AddScoped<IEmailSender, EmailSender>();
+        services.AddScoped<IMainPageService, MainPageService>();
         services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
     }
 }

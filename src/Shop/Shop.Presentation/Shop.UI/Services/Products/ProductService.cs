@@ -112,7 +112,8 @@ public class ProductService : BaseService, IProductService
                   $"&OldCategoryId={filterParams.OldCategoryId}&CategoryId={filterParams.CategoryId}" +
                   $"&Name={filterParams.Name}&EnglishName={filterParams.EnglishName}&Slug={filterParams.Slug}" +
                   $"&AverageScore={filterParams.AverageScore}&MinPrice={filterParams.MinPrice}" +
-                  $"&MaxPrice={filterParams.MaxPrice}";
+                  $"&MaxPrice={filterParams.MaxPrice}&MinDiscountPercentage={filterParams.MinDiscountPercentage}" +
+                  $"&MaxDiscountPercentage={filterParams.MaxDiscountPercentage}";
         var result = await GetFromJsonAsync<ProductFilterResult>(url);
         return result.Data;
     }

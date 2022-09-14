@@ -46,6 +46,11 @@ internal class CategoryFacade : ICategoryFacade
         return await _mediator.Send(new GetCategoryListQuery());
     }
 
+    public async Task<List<CategoryDto>> GetForMenu()
+    {
+        return await _mediator.Send(new GetCategoryListForMenuQuery());
+    }
+
     public async Task<CategoryDto?> GetById(long id)
     {
         return await _mediator.Send(new GetCategoryByIdQuery(id));

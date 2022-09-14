@@ -48,7 +48,7 @@
               <label class="radio-circle" for="@newId"></label>
             </label>
             <span asp-validation-for="@Model.FilterParams.CategoryId"></span>
-            <span class="category-title" style="text-indent: 0; margin-right: 6px;">
+            <span class="category-title mr-6px" style="text-indent: 0;">
               @subCategory.Title
               @if (hasSubCategory)
               {
@@ -157,11 +157,18 @@
           <tbody>
             @foreach (var category in categories)
             {
+              var guid = Guid.NewGuid();
               var hasSubCategory = category.SubCategories.Any();
               <tr class="parent" data-depth="0" data-categoryId="@category.Id"
                 data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
-                <td class="pl-0 pr-0">
-                  <span class="category-title">
+                <td class="pl-0 pr-0 d-flex w-100 align-items-center">
+                  <label class="radio">
+                    <input type="radio" class="radio-primary category-radio" id="@guid"
+                           asp-for="@Model.FilterParams.CategoryId" value="@category.Id" />
+                    <label class="radio-circle" for="@guid"></label>
+                  </label>
+                  <span asp-validation-for="@Model.FilterParams.CategoryId"></span>
+                  <span class="category-title mr-6px">
                     @category.Title
                     @if (hasSubCategory)
                     {

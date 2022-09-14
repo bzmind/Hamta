@@ -31,6 +31,18 @@ public class CategoryService : BaseService, ICategoryService
         return await DeleteAsync($"Remove/{categoryId}");
     }
 
+    public async Task<List<CategoryDto>> GetAll()
+    {
+        var result = await GetFromJsonAsync<List<CategoryDto>>("GetAll");
+        return result.Data;
+    }
+
+    public async Task<List<CategoryDto>> GetForMenu()
+    {
+        var result = await GetFromJsonAsync<List<CategoryDto>>("GetForMenu");
+        return result.Data;
+    }
+
     public async Task<CategoryDto?> GetById(long categoryId)
     {
         var result = await GetFromJsonAsync<CategoryDto>($"GetById/{categoryId}");
@@ -40,12 +52,6 @@ public class CategoryService : BaseService, ICategoryService
     public async Task<List<CategoryDto>> GetByParentId(long parentId)
     {
         var result = await GetFromJsonAsync<List<CategoryDto>>($"GetByParentId/{parentId}");
-        return result.Data;
-    }
-
-    public async Task<List<CategoryDto>> GetAll()
-    {
-        var result = await GetFromJsonAsync<List<CategoryDto>>("GetAll");
         return result.Data;
     }
 

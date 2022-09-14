@@ -44,7 +44,7 @@
               <label class="radio-circle" for="@newId"></label>
             </label>
             <span asp-validation-for="@Model.FilterParams.CategoryId"></span>
-            <span class="category-title" style="text-indent: 0; margin-right: 6px;">
+            <span class="category-title mr-6px" style="text-indent: 0;">
               @subCategory.Title
               @if (hasSubCategory)
               {
@@ -81,21 +81,29 @@
   <div class="card">
     <div class="card-body">
       <div class="row">
-        <div class="col-md-3 mb-5px">
+        <div class="col-md-3 mb-10px">
           <label>نام</label>
           <input type="text" asp-for="@Model.FilterParams.Name" class="form-control" />
         </div>
-        <div class="col-md-3 mb-5px">
+        <div class="col-md-3 mb-10px">
           <label>نام انگلیسی</label>
           <input type="text" asp-for="@Model.FilterParams.EnglishName" class="form-control" />
         </div>
-        <div class="col-md-3 mb-5px">
+        <div class="col-md-3 mb-10px">
           <label>اسلاگ</label>
           <input type="text" asp-for="@Model.FilterParams.Slug" class="form-control" />
         </div>
-        <div class="col-md-3 mb-5px">
+        <div class="col-md-3 mb-10px">
           <label>امتیاز</label>
           <input type="text" asp-for="@Model.FilterParams.AverageScore" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-5px">
+          <label>حداقل درصد تخفیف</label>
+          <input type="text" asp-for="@Model.FilterParams.MinDiscountPercentage" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-5px">
+          <label>حداکثر درصد تخفیف</label>
+          <input type="text" asp-for="@Model.FilterParams.MaxDiscountPercentage" class="form-control" />
         </div>
       </div>
       <div class="mb-5px mt-10px">
@@ -154,11 +162,18 @@
           <tbody>
             @foreach (var category in categories)
             {
+              var guid = Guid.NewGuid();
               var hasSubCategory = category.SubCategories.Any();
               <tr class="parent" data-depth="0" data-categoryId="@category.Id"
                 data-hasSubCategory="@hasSubCategory.ToString().ToLower()">
-                <td class="pl-0 pr-0">
-                  <span class="category-title">
+                <td class="pl-0 pr-0 d-flex w-100 align-items-center">
+                  <label class="radio">
+                    <input type="radio" class="radio-primary category-radio" id="@guid"
+                           asp-for="@Model.FilterParams.CategoryId" value="@category.Id" />
+                    <label class="radio-circle" for="@guid"></label>
+                  </label>
+                  <span asp-validation-for="@Model.FilterParams.CategoryId"></span>
+                  <span class="category-title mr-6px">
                     @category.Title
                     @if (hasSubCategory)
                     {

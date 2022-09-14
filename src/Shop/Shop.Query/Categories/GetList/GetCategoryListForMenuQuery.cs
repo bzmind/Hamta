@@ -7,20 +7,21 @@ using Shop.Query.Categories._Mappers;
 
 namespace Shop.Query.Categories.GetList;
 
-public record GetCategoryListQuery : IBaseQuery<List<CategoryDto>>;
+public record GetCategoryListForMenuQuery : IBaseQuery<List<CategoryDto>>;
 
-public class GetCategoryListQueryHandler : IBaseQueryHandler<GetCategoryListQuery, List<CategoryDto>>
+public class GetCategoryListForMenuQueryHandler : IBaseQueryHandler<GetCategoryListForMenuQuery, List<CategoryDto>>
 {
     private readonly ShopContext _shopContext;
 
-    public GetCategoryListQueryHandler(ShopContext shopContext)
+    public GetCategoryListForMenuQueryHandler(ShopContext shopContext)
     {
         _shopContext = shopContext;
     }
 
-    public async Task<List<CategoryDto>> Handle(GetCategoryListQuery request, CancellationToken cancellationToken)
+    public async Task<List<CategoryDto>> Handle(GetCategoryListForMenuQuery request, CancellationToken cancellationToken)
     {
         var categories = await _shopContext.Categories
+            .Where(c => c.ShowInMenu)
             .OrderBy(c => c.Id)
             .ToListAsync(cancellationToken);
 

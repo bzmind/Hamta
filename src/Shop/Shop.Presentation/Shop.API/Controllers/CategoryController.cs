@@ -67,6 +67,14 @@ public class CategoryController : BaseApiController
         return QueryResult(result);
     }
 
+    [AllowAnonymous]
+    [HttpGet("GetForMenu")]
+    public async Task<ApiResult<List<CategoryDto>>> GetForMenu()
+    {
+        var result = await _categoryFacade.GetForMenu();
+        return QueryResult(result);
+    }
+
     [HttpGet("GetById/{id}")]
     public async Task<ApiResult<CategoryDto?>> GetById(long id)
     {

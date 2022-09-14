@@ -15,7 +15,12 @@ public class Banner : BaseAggregateRoot
         بالای_اسلایدر,
         پایین_اسلایدر,
         سمت_چپ_اسلایدر,
-        سمت_راست_اسلایدر
+        سمت_راست_اسلایدر,
+        بالای_پیشنهادات,
+        پایین_پیشنهادات,
+        سمت_چپ_پیشنهادات,
+        سمت_راست_پیشنهادات
+
     }
 
     public Banner(string link, string image, BannerPosition position)

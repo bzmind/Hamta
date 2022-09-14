@@ -9,13 +9,15 @@
   @Html.HiddenFor(m => m.Id)
   <fieldset class="form-group">
     <label asp-for="@Model.Image"></label>
-    <label class="img-preview-label" data-val-id="imageVal">
-      <i class="bx bx-image-alt"></i>
-      <input type="file" class="custom-file-input" id="@guid" asp-for="@Model.Image" hidden=""
-             data-img-preview="@guid">
-      <img class="img-preview" data-img-preview="@guid" alt="banner image"
-           src="@ServerPaths.GetBannerImagePath(Model.PreviousImageName)"/>
+    <label class="btn-sm badge-pill bg-rgba-info text-info border-0 badge-input mr-0px">
+      <input asp-for="@Model.Image" type="file" data-img-preview="@guid" data-replace="" accept="image/*" />
+      انتخاب
     </label>
+    <div class="img-preview-container" data-val-id="imageVal">
+      <i class="bx bx-image-alt"></i>
+      <img class="img-preview" data-img-preview="@guid" alt="banner image" data-crop="@guid"
+           src="@ServerPaths.GetBannerImagePath(Model.PreviousImageName)" />
+    </div>
     <span asp-validation-for="@Model.Image" data-val-for="imageVal"></span>
   </fieldset>
   @Html.EditorFor(m => m.Link)

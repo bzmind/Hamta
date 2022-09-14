@@ -6,8 +6,8 @@
   ViewData["Selected"] = "roles";
 }
 <section>
-  <open-modal url="@Url.Page("Index", "ShowAddPage")" modal-title="افزودن نقش"
-              modal-size="modal-md" class="btn btn-success mb-1">افزودن نقش</open-modal>
+  <open-modal url="@Url.Page("Index", "ShowAddPage")" title="افزودن نقش"
+              size="modal-md" class="btn btn-success mb-1">افزودن نقش</open-modal>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
@@ -31,7 +31,7 @@
             <td style="width: 17%">
               <open-modal url="@Url.Page("Index", "ShowEditPage", new { roleId = role.Id })"
                         class="btn-sm badge-pill bg-rgba-primary text-primary border-0"
-                        modal-title="ویرایش نقش" modal-size="modal-md">
+                        title="ویرایش نقش" size="modal-md">
                 ویرایش
               </open-modal>
               <delete url="@Url.Page("Index", "RemoveRole", new { roleId = role.Id })"

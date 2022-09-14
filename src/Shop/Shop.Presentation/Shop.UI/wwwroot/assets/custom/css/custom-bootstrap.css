@@ -1,4 +1,8 @@
-﻿.mb-1px {
+﻿.mb-0px {
+  margin-bottom: 0 !important;
+}
+
+.mb-1px {
   margin-bottom: 1px !important;
 }
 
@@ -116,6 +120,10 @@
 
 .mb-50px {
   margin-bottom: 50px !important;
+}
+
+.mt-0px {
+  margin-top: 0 !important;
 }
 
 .mt-1px {
@@ -238,6 +246,10 @@
   margin-top: 50px !important;
 }
 
+.mr-0px {
+  margin-right: 0 !important;
+}
+
 .mr-1px {
   margin-right: 1px !important;
 }
@@ -356,6 +368,10 @@
 
 .mr-50px {
   margin-right: 50px !important;
+}
+
+.ml-0px {
+  margin-left: 0 !important;
 }
 
 .ml-1px {

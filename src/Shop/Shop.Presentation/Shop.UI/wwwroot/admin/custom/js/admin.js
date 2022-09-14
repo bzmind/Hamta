@@ -118,9 +118,6 @@ function setupQuillImageUploaderEventListeners(quills)
   });
 }
 
-// To use this, your quills should have a data-quill-id attr, and their text areas should have
-// a data-quill-for attr, which should have a matching value like data-quill-id="quillOne" and
-// data-quill-for="quillOne"
 function initQuillEditorsContent()
 {
   const quills = $("[data-quill-id]");
@@ -173,11 +170,11 @@ function turnImagesIntoInputFiles(imagesContainer, imageSelector, inputToAddFile
 {
   let currentPromise = Promise.resolve([]);
 
-  imagesContainer.find(imageSelector).each((i, img) =>
+  imagesContainer.find(imageSelector).each((i, image) =>
   {
-    img = $(img);
-    const imageName = img.attr("data-img-name");
-    const blobUrl = img.attr("src");
+    image = $(image);
+    const imageName = image.attr("data-img-name");
+    const blobUrl = image.attr("src");
     if (blobUrl === "")
       return;
 
@@ -204,7 +201,7 @@ function turnImagesIntoInputFiles(imagesContainer, imageSelector, inputToAddFile
 
 async function createFile(blobUrl, fileName)
 {
-  const defaultType = "image/jpeg";
+  const defaultType = `image/${getExtension(fileName)}`;
 
   const options = {
     mode: "cors",

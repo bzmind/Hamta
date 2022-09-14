@@ -78,9 +78,9 @@ function validateImageExtension(imageNames)
   return true;
 }
 
-function getExtension(path)
+function getExtension(name)
 {
-  const basename = path.split(/[\\/]/).pop();
+  const basename = name.split(/[\\/]/).pop();
   const pos = basename.lastIndexOf(".");
 
   if (basename === "" || pos < 1)

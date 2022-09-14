@@ -216,3 +216,7 @@
     .address-select button#remove-address:hover {
       background-color: #FF5B5C !important;
     }
+
+.main-slider .main-page-slider a img {
+  width: 100%;
+}

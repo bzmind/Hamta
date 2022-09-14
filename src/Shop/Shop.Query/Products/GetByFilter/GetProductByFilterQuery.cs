@@ -55,7 +55,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
         if (tablesResult.Any())
             highestPriceInCategory = tablesResult.Max(t => t.tables.inventory.Price.Value);
         else
-            highestPriceInCategory = @params.MaxPrice.Value;
+            highestPriceInCategory = @params.MaxPrice ?? 0;
 
         if (categoryHasChanged)
             @params.MaxPrice = highestPriceInCategory;
@@ -80,10 +80,18 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             conditions += $" AND ps.Value >= {@params.AverageScore}";
 
         if (@params.MinPrice != null)
-            conditions += $" AND i.Price >= {@params.MinPrice} OR i.Price IS NULL";
+            conditions += $" AND (i.Price >= {@params.MinPrice} OR i.Price IS NULL)";
 
         if (@params.MaxPrice != null)
-            conditions += $" AND i.Price <= {@params.MaxPrice} OR i.Price IS NULL";
+            conditions += $" AND (i.Price <= {@params.MaxPrice} OR i.Price IS NULL)";
+
+        if (@params.MinDiscountPercentage != null)
+            conditions += $" AND (i.DiscountPercentage >= {@params.MinDiscountPercentage} " +
+                          "OR i.DiscountPercentage IS NULL)";
+
+        if (@params.MaxDiscountPercentage != null)
+            conditions += $" AND (i.DiscountPercentage <= {@params.MaxDiscountPercentage} " +
+                          "OR i.DiscountPercentage IS NULL)";
 
         var skip = (@params.PageId - 1) * @params.Take;
 
@@ -129,7 +137,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
                     		GROUP BY ProductId
                     	) AS q
                     	ON p.Id = q.ProductId
-                    WHERE 1 = 1 {conditions}
+                    WHERE 1 = 1{conditions}
                     ORDER BY p.CreationDate DESC";
 
         var result = await connection

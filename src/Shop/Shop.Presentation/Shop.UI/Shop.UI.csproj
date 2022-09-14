@@ -17,6 +17,7 @@
 		<Folder Include="Services\Avatars\" />
 		<Folder Include="Services\Entities\Sliders\" />
 		<Folder Include="Services\Entities\Banners\" />
+		<Folder Include="Services\MainPage\" />
 		<Folder Include="Services\UserAddresses\" />
 		<Folder Include="Services\Users\" />
 		<Folder Include="Services\Shippings\" />
@@ -29,11 +30,13 @@
 		<Folder Include="Services\Categories\" />
 		<Folder Include="Services\Auth\" />
 		<Folder Include="Setup\Middleware\" />
+		<Folder Include="ViewModels\MainPage\" />
 	</ItemGroup>
 
 	<ItemGroup>
 		<None Include="Pages\Admin\Products\_CategorySpecifications.cshtml" />
 		<None Include="wwwroot\admin\images\ico\favicon.ico" />
+		<None Include="wwwroot\admin\js\scripts\footer.js" />
 		<None Include="wwwroot\admin\vendors\css\editors\quill\Downloads\Close.svg" />
 		<None Include="wwwroot\admin\vendors\css\editors\quill\Downloads\values" />
 		<None Include="wwwroot\favicon.ico" />
