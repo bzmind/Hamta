@@ -2,7 +2,7 @@
 
 namespace Shop.Query.Categories._DTOs;
 
-public class QueryCategorySpecificationDto : BaseDto
+public class CategorySpecificationQueryDto : BaseDto
 {
     public long CategoryId { get; set; }
     public string Title { get; set; }

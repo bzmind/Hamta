@@ -5,10 +5,10 @@ using Shop.Query.Categories._DTOs;
 
 namespace Shop.Query.Categories.Specifications;
 
-public record GetCategorySpecificationsByIdQuery(long CategoryId) : IBaseQuery<List<QueryCategorySpecificationDto>>;
+public record GetCategorySpecificationsByIdQuery(long CategoryId) : IBaseQuery<List<CategorySpecificationQueryDto>>;
 
 public class GetCategorySpecificationsByIdQueryHandler
-    : IBaseQueryHandler<GetCategorySpecificationsByIdQuery, List<QueryCategorySpecificationDto>>
+    : IBaseQueryHandler<GetCategorySpecificationsByIdQuery, List<CategorySpecificationQueryDto>>
 {
     private readonly DapperContext _dapperContext;
 
@@ -17,7 +17,7 @@ public class GetCategorySpecificationsByIdQueryHandler
         _dapperContext = dapperContext;
     }
 
-    public async Task<List<QueryCategorySpecificationDto>> Handle(GetCategorySpecificationsByIdQuery request,
+    public async Task<List<CategorySpecificationQueryDto>> Handle(GetCategorySpecificationsByIdQuery request,
         CancellationToken cancellationToken)
     {
         using var connection = _dapperContext.CreateConnection();
@@ -38,7 +38,7 @@ public class GetCategorySpecificationsByIdQueryHandler
                     JOIN {_dapperContext.CategorySpecifications} cs
                     	ON cs.CategoryId = [pi].Id
                     ORDER BY [pi].Id ASC";
-        var result = await connection.QueryAsync<QueryCategorySpecificationDto>(sql, new { Id = request.CategoryId });
+        var result = await connection.QueryAsync<CategorySpecificationQueryDto>(sql, new { Id = request.CategoryId });
         return result.ToList();
     }
 }

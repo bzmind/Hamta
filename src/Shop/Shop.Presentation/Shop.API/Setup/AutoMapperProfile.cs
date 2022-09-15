@@ -111,10 +111,10 @@ public class AutoMapperProfile : Profile
         CreateMap<CreateUserCommand, CreateUserViewModel>().ReverseMap();
         CreateMap<EditUserCommand, EditUserViewModel>().ReverseMap();
         CreateMap<CategorySpecificationDto, CategorySpecificationViewModel>().ReverseMap();
-        CreateMap<QueryCategorySpecificationDto, CategorySpecificationViewModel>().ReverseMap();
+        CreateMap<CategorySpecificationQueryDto, CategorySpecificationViewModel>().ReverseMap();
         CreateMap<ProductSpecificationDto, ProductSpecificationViewModel>().ReverseMap();
         CreateMap<ProductCategorySpecificationDto, ProductCategorySpecificationViewModel>().ReverseMap();
-        CreateMap<QueryProductSpecificationDto, ProductSpecificationViewModel>().ReverseMap();
+        CreateMap<ProductSpecificationQueryDto, ProductSpecificationViewModel>().ReverseMap();
         CreateMap<UserAddressDto, EditUserAddressViewModel>().ReverseMap();
         CreateMap<RoleDto, EditRoleViewModel>().ReverseMap();
         CreateMap<CategoryDto, EditCategoryViewModel>().ReverseMap()

@@ -9,5 +9,5 @@ public class CategoryDto : BaseDto
     public string Slug { get; set; }
     public bool ShowInMenu { get; set; }
     public List<CategoryDto> SubCategories { get; set; }
-    public List<QueryCategorySpecificationDto> Specifications { get; set; }
+    public List<CategorySpecificationQueryDto> Specifications { get; set; }
 }

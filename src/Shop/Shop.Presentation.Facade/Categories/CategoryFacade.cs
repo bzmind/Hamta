@@ -61,7 +61,7 @@ internal class CategoryFacade : ICategoryFacade
         return await _mediator.Send(new GetCategoryByParentIdQuery(parentId));
     }
 
-    public async Task<List<QueryCategorySpecificationDto>> GetSpecificationsByCategoryId(long categoryId)
+    public async Task<List<CategorySpecificationQueryDto>> GetSpecificationsByCategoryId(long categoryId)
     {
         return await _mediator.Send(new GetCategorySpecificationsByIdQuery(categoryId));
     }

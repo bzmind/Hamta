@@ -5,13 +5,13 @@ namespace Shop.Query.Products._Mappers;
 
 internal static class ProductSpecificationMapper
 {
-    public static QueryProductSpecificationDto MapToQueryProductSpecificationDto
+    public static ProductSpecificationQueryDto MapToQueryProductSpecificationDto
         (this ProductSpecification? specification)
     {
         if (specification == null)
             return null;
 
-        return new QueryProductSpecificationDto
+        return new ProductSpecificationQueryDto
         {
             Id = specification.Id,
             CreationDate = specification.CreationDate,
@@ -21,14 +21,14 @@ internal static class ProductSpecificationMapper
         };
     }
 
-    public static List<QueryProductSpecificationDto> MapToQueryProductSpecificationDto
+    public static List<ProductSpecificationQueryDto> MapToQueryProductSpecificationDto
         (this List<ProductSpecification> specifications)
     {
-        var dtoSpecifications = new List<QueryProductSpecificationDto>();
+        var dtoSpecifications = new List<ProductSpecificationQueryDto>();
 
         specifications.ForEach(specification =>
         {
-            dtoSpecifications.Add(new QueryProductSpecificationDto
+            dtoSpecifications.Add(new ProductSpecificationQueryDto
             {
                 Id = specification.Id,
                 CreationDate = specification.CreationDate,

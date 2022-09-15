@@ -90,7 +90,7 @@ public class CategoryController : BaseApiController
     }
 
     [HttpGet("GetSpecificationsByCategoryId/{categoryId}")]
-    public async Task<ApiResult<List<QueryCategorySpecificationDto>>> GetSpecificationsByCategoryId(long categoryId)
+    public async Task<ApiResult<List<CategorySpecificationQueryDto>>> GetSpecificationsByCategoryId(long categoryId)
     {
         var result = await _categoryFacade.GetSpecificationsByCategoryId(categoryId);
         return QueryResult(result);
