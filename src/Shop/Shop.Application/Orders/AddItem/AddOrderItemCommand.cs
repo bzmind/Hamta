@@ -49,7 +49,7 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
         }
 
         order.AddOrderItem(new OrderItem(order.Id, request.InventoryId, request.Quantity,
-            new Money(inventory.DiscountedPrice)));
+            new Money(inventory.TotalPrice)));
 
         if (order.Items.First(i => i.InventoryId == inventory.Id).Count > inventory.Quantity)
             return OperationResult<long>.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");

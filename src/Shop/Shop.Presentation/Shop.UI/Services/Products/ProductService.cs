@@ -100,12 +100,6 @@ public class ProductService : BaseService, IProductService
         return await PostAsFormDataAsync<string?>("AddReviewImage", formData);
     }
 
-    public async Task<ProductDto?> GetById(long productId)
-    {
-        var result = await GetFromJsonAsync<ProductDto>($"GetById/{productId}");
-        return result.Data;
-    }
-
     public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
     {
         var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
@@ -115,6 +109,36 @@ public class ProductService : BaseService, IProductService
                   $"&MaxPrice={filterParams.MaxPrice}&MinDiscountPercentage={filterParams.MinDiscountPercentage}" +
                   $"&MaxDiscountPercentage={filterParams.MaxDiscountPercentage}";
         var result = await GetFromJsonAsync<ProductFilterResult>(url);
+        return result.Data;
+    }
+
+    public async Task<ProductForShopResult> GetForShopByFilter(ProductForShopParams filterParams)
+    {
+        var url = $"GetForShopByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
+                  $"&OldCategoryId={filterParams.OldCategoryId}&CategoryId={filterParams.CategoryId}" +
+                  $"&Name={filterParams.Name}&EnglishName={filterParams.EnglishName}" +
+                  $"&OnlyAvailable={filterParams.OnlyAvailable}&OnlyDiscounted={filterParams.OnlyDiscounted}" +
+                  $"&AverageScore={filterParams.AverageScore}&MinPrice={filterParams.MinPrice}" +
+                  $"&MaxPrice={filterParams.MaxPrice}&MinDiscountPercentage={filterParams.MinDiscountPercentage}" +
+                  $"&MaxDiscountPercentage={filterParams.MaxDiscountPercentage}";
+        for (var i = 0; i < filterParams.Attributes?.Count; i++)
+        {
+            var attr = filterParams.Attributes?[i];
+            url += $"&Attributes[{i}].Id={attr?.Id}&Attributes[{i}].Values[{i}]={attr?.Values?[i]}";
+        }
+        var result = await GetFromJsonAsync<ProductForShopResult>(url);
+        return result.Data;
+    }
+
+    public async Task<ProductDto?> GetById(long productId)
+    {
+        var result = await GetFromJsonAsync<ProductDto>($"GetById/{productId}");
+        return result.Data;
+    }
+
+    public async Task<ProductDto?> GetBySlug(string slug)
+    {
+        var result = await GetFromJsonAsync<ProductDto>($"GetBySlug/{slug}");
         return result.Data;
     }
 }

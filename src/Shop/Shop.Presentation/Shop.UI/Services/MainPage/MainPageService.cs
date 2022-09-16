@@ -23,18 +23,18 @@ public class MainPageService : IMainPageService
     {
         var sliders = await _sliderService.GetAll();
         var banners = await _bannerService.GetAll();
-        var saleProducts = await _productService.GetByFilter(new ProductFilterParams
+        var saleProducts = await _productService.GetForShopByFilter(new ProductForShopParams
         {
             PageId = 1,
             Take = 5,
             MinDiscountPercentage = 15
         });
-        var mostSoldProducts = await _productService.GetByFilter(new ProductFilterParams
+        var mostSoldProducts = await _productService.GetForShopByFilter(new ProductForShopParams
         {
             PageId = 1,
             Take = 9
         });
-        var categoryProducts = await _productService.GetByFilter(new ProductFilterParams
+        var categoryProducts = await _productService.GetForShopByFilter(new ProductForShopParams
         {
             PageId = 1,
             Take = 8,

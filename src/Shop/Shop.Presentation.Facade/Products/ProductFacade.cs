@@ -8,6 +8,8 @@ using Shop.Application.Products.Remove;
 using Shop.Query.Products._DTOs;
 using Shop.Query.Products.GetByFilter;
 using Shop.Query.Products.GetById;
+using Shop.Query.Products.GetBySlug;
+using Shop.Query.Products.GetForShopByFilter;
 
 namespace Shop.Presentation.Facade.Products;
 
@@ -45,13 +47,24 @@ internal class ProductFacade : IProductFacade
         return await _mediator.Send(command);
     }
 
+    public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
+    {
+        return await _mediator.Send(new GetProductByFilterQuery(filterParams));
+    }
+
+    public async Task<ProductForShopResult> GetForShopByFilter(ProductForShopParams filterParams)
+    {
+        return await _mediator.Send(new GetProductForShopByFilterQuery(filterParams));
+
+    }
+
     public async Task<ProductDto?> GetById(long id)
     {
         return await _mediator.Send(new GetProductByIdQuery(id));
     }
 
-    public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
+    public async Task<ProductDto?> GetBySlug(string slug)
     {
-        return await _mediator.Send(new GetProductByFilterQuery(filterParams));
+        return await _mediator.Send(new GetProductBySlugQuery(slug));
     }
 }

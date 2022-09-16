@@ -48,7 +48,7 @@ public class GetColorByFilterQueryHandler : IBaseQueryHandler<GetColorByFilterQu
         return new ColorFilterResult
         {
             Data = finalQuery,
-            FilterParam = @params
+            FilterParams = @params
         };
     }
 }

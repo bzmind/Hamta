@@ -6,34 +6,34 @@ using Shop.Infrastructure;
 using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Products._DTOs;
 
-namespace Shop.Query.Products.GetByFilter;
+namespace Shop.Query.Products.GetForShopByFilter;
 
-public class GetProductByFilterQuery : BaseFilterQuery<ProductFilterResult, ProductFilterParams>
+public class GetProductForShopByFilterQuery : BaseFilterQuery<ProductForShopResult, ProductForShopParams>
 {
-    public GetProductByFilterQuery(ProductFilterParams filterParams) : base(filterParams)
+    public GetProductForShopByFilterQuery(ProductForShopParams filterParams) : base(filterParams)
     {
     }
 }
 
-public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilterQuery, ProductFilterResult>
+public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProductForShopByFilterQuery,
+    ProductForShopResult>
 {
     private readonly ShopContext _shopContext;
     private readonly DapperContext _dapperContext;
 
-    public GetProductByFilterQueryHandler(ShopContext shopContext, DapperContext dapperContext)
+    public GetProductForShopByFilterQueryHandler(ShopContext shopContext, DapperContext dapperContext)
     {
         _shopContext = shopContext;
         _dapperContext = dapperContext;
     }
 
-    public async Task<ProductFilterResult> Handle(GetProductByFilterQuery request, CancellationToken cancellationToken)
+    public async Task<ProductForShopResult> Handle(GetProductForShopByFilterQuery request,
+        CancellationToken cancellationToken)
     {
         var @params = request.FilterParams;
         var skip = (@params.PageId - 1) * @params.Take;
 
-        var categoryHasChanged = false;
-        if (@params.OldCategoryId != null)
-            categoryHasChanged = @params.OldCategoryId != @params.CategoryId;
+        var categoryHasChanged = @params.OldCategoryId != @params.CategoryId;
 
         var highestPriceWhere = "";
         if (@params.CategoryId != null && @params.CategoryId != 0)
@@ -42,16 +42,16 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
         using var highestPriceConnection = _dapperContext.CreateConnection();
         var highestPriceSql = $@"
             WITH category_children AS (
-                SELECT Id, ParentId, Title
-                FROM {_dapperContext.Categories}
-                {highestPriceWhere}
-                UNION ALL
-                SELECT c.Id, c.ParentId, c.Title
-                FROM {_dapperContext.Categories} c
-                JOIN category_children cc
-                	ON cc.Id = c.ParentId
+               SELECT Id, ParentId, Title
+               FROM {_dapperContext.Categories}
+               {highestPriceWhere}
+               UNION ALL
+               SELECT c.Id, c.ParentId, c.Title
+               FROM {_dapperContext.Categories} c
+               JOIN category_children cc
+            		ON cc.Id = c.ParentId
             )
-            SELECT TOP(1) MAX(si.Price) AS HighestPriceInCategory
+            SELECT TOP(1) MAX(si.Price) As HighestPriceInCategory
             FROM {_dapperContext.Products} p
             JOIN category_children cc
             	ON p.CategoryId = cc.Id
@@ -66,14 +66,17 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
         if (highestPrice != 0)
             highestPriceInCategory = highestPrice;
         else
-            highestPriceInCategory = @params.MaxPrice ?? await highestPriceConnection
-                .QueryFirstOrDefaultAsync<int>(highestPriceSql.Replace(highestPriceWhere, ""));
+            highestPriceInCategory = @params.MaxPrice
+                                     ?? await highestPriceConnection.QueryFirstOrDefaultAsync<int>(
+                                         highestPriceSql.Replace(highestPriceWhere, ""));
 
         if (categoryHasChanged)
             @params.MaxPrice = highestPriceInCategory;
 
         var conditions = "";
         var joinWithCategories = "";
+        var joinWithCategorySpecifications = "";
+        var inventoryOrderBy = "i.Price ASC";
 
         if (@params.CategoryId != null && @params.CategoryId != 0)
             joinWithCategories = @"JOIN category_children cc ON p.CategoryId = cc.Id";
@@ -83,9 +86,6 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
 
         if (!string.IsNullOrWhiteSpace(@params.EnglishName))
             conditions += $" AND p.EnglishName LIKE N'%{@params.EnglishName}%'";
-
-        if (!string.IsNullOrWhiteSpace(@params.Slug))
-            conditions += $" AND p.Slug LIKE N'%{@params.Slug}%'";
 
         if (@params.AverageScore != null)
             conditions += $" AND ps.Value >= {@params.AverageScore}";
@@ -104,24 +104,45 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             conditions += $" AND (i.DiscountPercentage <= {@params.MaxDiscountPercentage} " +
                           "OR i.DiscountPercentage IS NULL)";
 
+        if (@params.OnlyAvailable == true)
+            conditions += " AND i.IsAvailable = True";
+
+        if (@params.OnlyDiscounted == true)
+            conditions += " AND i.IsDiscounted = True";
+
+        if (@params.Attributes != null && @params.Attributes.Any())
+        {
+            joinWithCategorySpecifications = $@"LEFT JOIN {_dapperContext.ProductCategorySpecifications} pcs 
+                                                   ON pcs.ProductId = p.Id
+                                                LEFT JOIN {_dapperContext.CategorySpecifications} cs 
+                                                   ON cs.Id = pcs.CategorySpecificationId";
+            @params.Attributes.ForEach(attr =>
+            {
+                conditions += $"AND (cs.Id = {attr.Id} AND ";
+                for (var i = 0; i < attr.Values?.Count; i++)
+                {
+                    var nextValue = string.IsNullOrWhiteSpace(attr.Values?[i + 1]) ? " OR " : ")";
+                    conditions += @$"pcs.Description LIKE '%{attr.Values?[i]}%'{nextValue}";
+                }
+            });
+        }
+
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"
             WITH category_children AS (
-                SELECT Id, ParentId, Title
-                FROM {_dapperContext.Categories}
-                WHERE Id = @CategoryId
-                UNION ALL
-                SELECT c.Id, c.ParentId, c.Title
-                FROM {_dapperContext.Categories} c
-                JOIN category_children cc
-                	ON cc.Id = c.ParentId
+               SELECT Id, ParentId, Title
+               FROM {_dapperContext.Categories}
+               WHERE Id = @CategoryId
+               UNION ALL
+               SELECT c.Id, c.ParentId, c.Title
+               FROM {_dapperContext.Categories} c
+               JOIN category_children cc
+            		ON cc.Id = c.ParentId
             )
             SELECT DISTINCT
             	p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate,
             	AVG(ps.Value) OVER (PARTITION BY p.Id) AS AverageScore,
-                i.Id AS InventoryId,
-            	MIN(i.Price) OVER (PARTITION BY p.Id) AS LowestInventoryPrice,
-            	MAX(i.Price) OVER (PARTITION BY p.Id) AS HighestInventoryPrice,
+                i.Id AS InventoryId, i.Price, i.DiscountPercentage,
             	q.Quantity AS AllQuantityInStock,
                 c.Id, c.Name, c.Code, c.CreationDate
             FROM (
@@ -145,11 +166,12 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             	GROUP BY ProductId
             ) AS q
             	ON p.Id = q.ProductId
+            {joinWithCategorySpecifications}
             WHERE 1 = 1 {conditions}
-            ORDER BY p.CreationDate DESC";
+            ORDER BY p.Id DESC";
 
         var result = await connection
-            .QueryAsync<ProductFilterDto, Color, ProductFilterDto>(sql, (productFilterDto, color) =>
+            .QueryAsync<ProductForShopDto, Color, ProductForShopDto>(sql, (productFilterDto, color) =>
             {
                 productFilterDto.Colors.Add(color);
                 return productFilterDto;
@@ -158,17 +180,20 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
         var groupedQueryResult = result.GroupBy(p => p.Id).Select(productGroup =>
         {
             var firstItem = productGroup.First();
+            if ((@params.OnlyDiscounted != null && (bool)@params.OnlyDiscounted)
+                || @params.MinDiscountPercentage is > 0)
+                firstItem = productGroup.OrderBy(p => p.Price).First();
+
             var colorList = productGroup.Select(p => p.Colors.FirstOrDefault())
                 .DistinctBy(c => c?.Code).OrderBy(c => c?.Id).ToList();
             firstItem.Colors = colorList;
-            firstItem.LowestInventoryPrice = productGroup.First().LowestInventoryPrice;
-            firstItem.HighestInventoryPrice = productGroup.First().HighestInventoryPrice;
             firstItem.AllQuantityInStock = productGroup.First().AllQuantityInStock;
             firstItem.AverageScore = productGroup.First().AverageScore;
+
             return firstItem;
         }).ToList();
 
-        return new ProductFilterResult
+        return new ProductForShopResult
         {
             Data = groupedQueryResult,
             FilterParams = @params,

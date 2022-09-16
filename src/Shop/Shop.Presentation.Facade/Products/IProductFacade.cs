@@ -15,6 +15,8 @@ public interface IProductFacade
     Task<OperationResult> Remove(long productId);
     Task<OperationResult<string>> AddReviewImage(AddProductReviewImageCommand command);
 
-    Task<ProductDto?> GetById(long id);
     Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams);
+    Task<ProductForShopResult> GetForShopByFilter(ProductForShopParams filterParams);
+    Task<ProductDto?> GetById(long id);
+    Task<ProductDto?> GetBySlug(string slug);
 }

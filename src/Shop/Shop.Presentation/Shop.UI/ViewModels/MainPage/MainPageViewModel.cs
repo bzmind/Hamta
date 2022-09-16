@@ -7,7 +7,7 @@ public class MainPageViewModel
 {
     public List<SliderDto> Sliders { get; set; }
     public List<BannerDto> Banners { get; set; }
-    public List<ProductFilterDto> SaleProducts { get; set; }
-    public List<ProductFilterDto> MostSoldProducts { get; set; }
-    public List<ProductFilterDto> CategoryProducts { get; set; }
+    public List<ProductForShopDto> SaleProducts { get; set; }
+    public List<ProductForShopDto> MostSoldProducts { get; set; }
+    public List<ProductForShopDto> CategoryProducts { get; set; }
 }

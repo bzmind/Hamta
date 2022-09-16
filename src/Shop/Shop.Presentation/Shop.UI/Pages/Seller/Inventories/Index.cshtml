@@ -34,12 +34,12 @@
           <input type="text" asp-for="@Model.FilterParams.MaxDiscountPercentage" class="form-control" />
         </div>
         <div class="col-md-1 mb-5px">
-          <label>@Html.DisplayNameFor(m => m.FilterParams.IsAvailable)</label>
-          @Html.EditorFor(m => m.FilterParams.IsAvailable)
+          <label>@Html.DisplayNameFor(m => m.FilterParams.OnlyAvailable)</label>
+          @Html.EditorFor(m => m.FilterParams.OnlyAvailable)
         </div>
         <div class="col-md-1 mb-5px">
-          <label>@Html.DisplayNameFor(m => m.FilterParams.IsDiscounted)</label>
-          @Html.EditorFor(m => m.FilterParams.IsDiscounted)
+          <label>@Html.DisplayNameFor(m => m.FilterParams.OnlyDiscounted)</label>
+          @Html.EditorFor(m => m.FilterParams.OnlyDiscounted)
         </div>
       </div>
       <div class="mb-5px mt-10px">
@@ -120,7 +120,7 @@
                 <bold>@inventory.DiscountAmount.ToString("##,###") <small class="grayed">تومان</small></bold>
                 <br />
                 <label class="grayed">قیمت نهایی:</label>
-                <bold>@inventory.DiscountedPrice.ToString("##,###") <small class="grayed">تومان</small></bold>
+                <bold>@inventory.TotalPrice.ToString("##,###") <small class="grayed">تومان</small></bold>
               }
             </td>
             <td>
@@ -160,7 +160,7 @@
 @section Scripts
   {
   <script>
-    setupRangeSlider(0, @highestProductPrice, @(Model.FilterParams.MinPrice ?? 0),
-    @(Model.FilterParams.MaxPrice ?? highestProductPrice))
+    setupRangeSlider(0, @highestProductPrice, @(Model.FilterResult.FilterParams.MinPrice ?? 0),
+    @(Model.FilterResult.FilterParams.MaxPrice ?? highestProductPrice))
   </script>
 }

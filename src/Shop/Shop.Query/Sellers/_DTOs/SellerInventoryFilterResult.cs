@@ -35,8 +35,8 @@ public class SellerInventoryFilterParams : BaseFilterParams
     public int? MaxDiscountPercentage { get; set; }
 
     [DisplayName("دارای موجودی")]
-    public bool? IsAvailable { get; set; }
+    public bool? OnlyAvailable { get; set; }
 
     [DisplayName("دارای تخفیف")]
-    public bool? IsDiscounted { get; set; }
+    public bool? OnlyDiscounted { get; set; }
 }

@@ -1,0 +1,41 @@
+﻿@using Common.Application.Utility.FileUtility
+@model Shop.Query.Products._DTOs.ProductForShopDto
+@{
+  var link = $"/product/{Model.Slug}";
+}
+
+<div class="swiper-slide">
+  <div class="product-card">
+    <div class="product-card-top">
+      <a href="@link" class="product-image">
+        <img src="@ServerPaths.GetProductMainImagePath(Model.MainImage)" alt="@Model.Name">
+      </a>
+      <div class="product-card-actions">
+        <button class="add-to-wishlist"><i class="fas fa-heart"></i></button>
+        <button class="add-to-compare"><i class="fas fa-random"></i></button>
+      </div>
+    </div>
+    <div class="product-card-middle">
+      <div class="ratings-container">
+        <div class="ratings">
+          <div class="ratings-val" style="width: @(Model.AverageScore * 20)%;"></div>
+        </div>
+      </div>
+      <h6 class="product-name">
+        <a href="@link">
+          @Model.Name
+        </a>
+      </h6>
+      <div class="product-price product-price-clone">@Model.TotalPrice.ToString("##,###") تومان</div>
+    </div>
+    <div class="product-card-bottom">
+      <div class="product-price">
+        @Model.TotalPrice.ToString("##,###") تومان
+      </div>
+      <a href="#" class="btn-add-to-cart">
+        <i class="fad fa-cart-plus"></i>
+        افزودن به سبد خرید
+      </a>
+    </div>
+  </div>
+</div>

@@ -109,7 +109,7 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
         return new OrderFilterResult
         {
             Data = finalQuery,
-            FilterParam = @params
+            FilterParams = @params
         };
     }
 }

@@ -73,7 +73,7 @@ public class GetCommentListQueryHandler : IBaseQueryHandler<GetCommentByFilterQu
         return new CommentFilterResult
         {
             Data = groupedQueryResult,
-            FilterParam = @params
+            FilterParams = @params
         };
     }
 }

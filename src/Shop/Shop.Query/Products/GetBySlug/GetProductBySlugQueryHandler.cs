@@ -4,24 +4,24 @@ using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Products._DTOs;
 using Shop.Query.Products._Mappers;
 
-namespace Shop.Query.Products.GetById;
+namespace Shop.Query.Products.GetBySlug;
 
-public record GetProductByIdQuery(long ProductId) : IBaseQuery<ProductDto?>;
+public record GetProductBySlugQuery(string Slug) : IBaseQuery<ProductDto?>;
 
-public class GetProductByIdQueryHandler : IBaseQueryHandler<GetProductByIdQuery, ProductDto?>
+public class GetProductBySlugQueryHandler : IBaseQueryHandler<GetProductBySlugQuery, ProductDto?>
 {
     private readonly ShopContext _shopContext;
 
-    public GetProductByIdQueryHandler(ShopContext shopContext)
+    public GetProductBySlugQueryHandler(ShopContext shopContext)
     {
         _shopContext = shopContext;
     }
 
-    public async Task<ProductDto?> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ProductDto?> Handle(GetProductBySlugQuery request, CancellationToken cancellationToken)
     {
         var productDtos =
             await _shopContext.Products
-                .Where(product => product.Id == request.ProductId)
+                .Where(product => product.Slug == request.Slug)
                 .GroupJoin(
                     _shopContext.Categories,
                     product => product.CategoryId,

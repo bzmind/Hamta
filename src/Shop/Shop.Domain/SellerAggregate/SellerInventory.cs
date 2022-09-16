@@ -11,7 +11,7 @@ public class SellerInventory : BaseEntity
     public long ColorId { get; private set; }
     public int Quantity { get; private set; }
     public Money Price { get; private set; }
-    public int DiscountedPrice => Price.Value - (int)Math.Round(Price.Value * (double)DiscountPercentage / 100);
+    public int TotalPrice => Price.Value - (int)Math.Round(Price.Value * (double)DiscountPercentage / 100);
     public bool IsAvailable { get => Quantity != 0; private set { } }
     public int DiscountPercentage { get; private set; }
     public bool IsDiscounted

@@ -80,7 +80,7 @@ public class SellerService : BaseService, ISellerService
                   $"&MinPrice={filterParams.MinPrice}&MaxPrice={filterParams.MaxPrice}" +
                   $"&MinDiscountPercentage={filterParams.MinDiscountPercentage}" +
                   $"&MaxDiscountPercentage={filterParams.MaxDiscountPercentage}" +
-                  $"&IsAvailable={filterParams.IsAvailable}&IsDiscounted={filterParams.IsDiscounted}";
+                  $"&OnlyAvailable={filterParams.OnlyAvailable}&OnlyDiscounted={filterParams.OnlyDiscounted}";
         var result = await GetFromJsonAsync<SellerInventoryFilterResult>(url);
         return result.Data;
     }

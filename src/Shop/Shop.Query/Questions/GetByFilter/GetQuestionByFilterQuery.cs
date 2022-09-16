@@ -76,7 +76,7 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
         return new QuestionFilterResult
         {
             Data = finalQuery,
-            FilterParam = @params
+            FilterParams = @params
         };
     }
 }

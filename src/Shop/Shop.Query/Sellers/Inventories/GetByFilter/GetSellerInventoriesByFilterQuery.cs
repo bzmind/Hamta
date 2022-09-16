@@ -70,11 +70,11 @@ public class GetSellerInventoriesByFilterQueryHandler :
         if (@params.MaxDiscountPercentage != null)
             query = query.Where(tables => tables.tables.inventory.DiscountPercentage <= @params.MaxDiscountPercentage);
 
-        if (@params.IsAvailable == true)
-            query = query.Where(tables => tables.tables.inventory.IsAvailable == @params.IsAvailable);
+        if (@params.OnlyAvailable == true)
+            query = query.Where(tables => tables.tables.inventory.IsAvailable == @params.OnlyAvailable);
 
-        if (@params.IsDiscounted == true)
-            query = query.Where(tables => tables.tables.inventory.IsDiscounted == @params.IsDiscounted);
+        if (@params.OnlyDiscounted == true)
+            query = query.Where(tables => tables.tables.inventory.IsDiscounted == @params.OnlyDiscounted);
 
         var skip = (@params.PageId - 1) * @params.Take;
 
@@ -89,7 +89,7 @@ public class GetSellerInventoriesByFilterQueryHandler :
         return new SellerInventoryFilterResult
         {
             Data = queryResult,
-            FilterParam = @params,
+            FilterParams = @params,
             HighestPriceInInventory = highestPriceInInventory
         };
     }

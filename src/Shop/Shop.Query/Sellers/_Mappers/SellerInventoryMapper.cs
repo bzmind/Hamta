@@ -26,7 +26,7 @@ internal static class SellerInventoryMapper
             ColorCode = color.Code,
             Quantity = inventory.Quantity,
             Price = inventory.Price.Value,
-            DiscountedPrice = inventory.DiscountedPrice,
+            TotalPrice = inventory.TotalPrice,
             IsAvailable = inventory.IsAvailable,
             DiscountPercentage = inventory.DiscountPercentage,
             IsDiscounted = inventory.IsDiscounted

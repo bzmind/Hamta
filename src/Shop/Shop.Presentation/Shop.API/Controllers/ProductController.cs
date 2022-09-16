@@ -99,18 +99,26 @@ public class ProductController : BaseApiController
     }
 
     [AllowAnonymous]
-    [HttpGet("GetById/{id}")]
-    public async Task<ApiResult<ProductDto?>> GetById(long id)
-    {
-        var result = await _productFacade.GetById(id);
-        return QueryResult(result);
-    }
-
-    [AllowAnonymous]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<ProductFilterResult>> GetByFilter([FromQuery] ProductFilterParams filterParams)
     {
         var result = await _productFacade.GetByFilter(filterParams);
+        return QueryResult(result);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetForShopByFilter")]
+    public async Task<ApiResult<ProductForShopResult>> GetForShopByFilter([FromQuery] ProductForShopParams filterParams)
+    {
+        var result = await _productFacade.GetForShopByFilter(filterParams);
+        return QueryResult(result);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetById/{id}")]
+    public async Task<ApiResult<ProductDto?>> GetById(long id)
+    {
+        var result = await _productFacade.GetById(id);
         return QueryResult(result);
     }
 }

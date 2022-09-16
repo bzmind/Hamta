@@ -75,7 +75,7 @@ public class GetUserByFilterQueryHandler : IBaseQueryHandler<GetUserByFilterQuer
         return new UserFilterResult
         {
             Data = finalQuery,
-            FilterParam = @params
+            FilterParams = @params
         };
     }
 }

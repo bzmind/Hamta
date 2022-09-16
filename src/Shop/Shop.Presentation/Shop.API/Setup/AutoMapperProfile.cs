@@ -60,7 +60,6 @@ using Shop.Application.Users.Edit;
 using Shop.Application.Users.Roles.AddRole;
 using Shop.Application.Users.Roles.RemoveRole;
 using Shop.Query.Categories._DTOs;
-using Shop.Query.Entities._DTOs;
 using Shop.Query.Products._DTOs;
 using Shop.Query.Roles._DTOs;
 using Shop.Query.Users._DTOs;

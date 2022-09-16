@@ -49,7 +49,7 @@ public class GetSellersByFilterQueryHandler : IBaseQueryHandler<GetSellersByFilt
                 .Select(seller => seller.MapToSellerDto())
                 .ToListAsync(cancellationToken),
 
-            FilterParam = @params
+            FilterParams = @params
         };
     }
 }
