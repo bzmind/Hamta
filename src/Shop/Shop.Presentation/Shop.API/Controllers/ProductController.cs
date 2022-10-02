@@ -2,7 +2,6 @@
 using Common.Api.Attributes;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Edit;
 using Shop.Domain.RoleAggregate;
 using Shop.Presentation.Facade.Products;
@@ -76,14 +75,6 @@ public class ProductController : BaseApiController
         return CommandResult(result);
     }
 
-    [HttpPut("AddScore")]
-    public async Task<ApiResult> AddScore(AddProductScoreViewModel model)
-    {
-        var command = _mapper.Map<AddProductScoreCommand>(model);
-        var result = await _productFacade.AddScore(command);
-        return CommandResult(result);
-    }
-
     [HttpDelete("Remove/{productId}")]
     public async Task<ApiResult> Remove(long productId)
     {
@@ -108,9 +99,9 @@ public class ProductController : BaseApiController
 
     [AllowAnonymous]
     [HttpGet("GetForShopByFilter")]
-    public async Task<ApiResult<ProductForShopResult>> GetForShopByFilter([FromQuery] ProductForShopParams filterParams)
+    public async Task<ApiResult<ProductForShopResult>> GetForShopByFilter([FromQuery] ProductForShopFilterParams filterFilterParams)
     {
-        var result = await _productFacade.GetForShopByFilter(filterParams);
+        var result = await _productFacade.GetForShopByFilter(filterFilterParams);
         return QueryResult(result);
     }
 
@@ -119,6 +110,14 @@ public class ProductController : BaseApiController
     public async Task<ApiResult<ProductDto?>> GetById(long id)
     {
         var result = await _productFacade.GetById(id);
+        return QueryResult(result);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetSingleBySlug/{slug}")]
+    public async Task<ApiResult<SingleProductDto?>> GetBySlug(string slug)
+    {
+        var result = await _productFacade.GetSingleBySlug(slug);
         return QueryResult(result);
     }
 }

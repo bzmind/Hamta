@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using System.ComponentModel.DataAnnotations;
-using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Common.Api.Attributes;
@@ -16,8 +15,10 @@ public class ListMinLengthAttribute : ValidationAttribute, IClientModelValidator
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        if (value is not ICollection list)
-            return new ValidationResult(ValidationMessages.InvalidList);
+        if(value == null)
+            return ValidationResult.Success;
+
+        var list = (IList)value;
 
         var length = list.Count;
         if (length < _minLength)
@@ -30,6 +31,7 @@ public class ListMinLengthAttribute : ValidationAttribute, IClientModelValidator
     {
         if (!context.Attributes.ContainsKey("data-val"))
             context.Attributes.Add("data-val", "true");
+        context.Attributes.Add("data-listId", Guid.NewGuid().ToString());
         context.Attributes.Add("data-listMinLength", _minLength.ToString());
         context.Attributes.Add("data-val-listMinLength", ErrorMessage);
     }
@@ -46,8 +48,10 @@ public class ListMaxLengthAttribute : ValidationAttribute, IClientModelValidator
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        if (value is not ICollection list)
-            return new ValidationResult(ValidationMessages.InvalidList);
+        if (value == null)
+            return ValidationResult.Success;
+
+        var list = (IList)value;
 
         var length = list.Count;
         if (length > _maxLength)
@@ -60,6 +64,7 @@ public class ListMaxLengthAttribute : ValidationAttribute, IClientModelValidator
     {
         if (!context.Attributes.ContainsKey("data-val"))
             context.Attributes.Add("data-val", "true");
+        context.Attributes.Add("data-listId", Guid.NewGuid().ToString());
         context.Attributes.Add("data-listMaxLength", _maxLength.ToString());
         context.Attributes.Add("data-val-listMaxLength", ErrorMessage);
     }

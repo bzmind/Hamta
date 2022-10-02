@@ -44,8 +44,7 @@ public class QuestionService : BaseService, IQuestionService
 
     public async Task<QuestionFilterResult> GetByFilter(QuestionFilterParams filterParams)
     {
-        var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&ProductId={filterParams.ProductId}&UserId={filterParams.UserId}&Status={filterParams.Status}";
+        var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<QuestionFilterResult>(url);
         return result.Data;
     }

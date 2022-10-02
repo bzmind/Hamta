@@ -24,7 +24,7 @@ public class GetCommentByIdQueryHandler : IBaseQueryHandler<GetCommentByIdQuery,
                         cs.FullName AS UserFullName,
                         ch.*
                     FROM {_dapperContext.Comments} c
-                    INNER JOIN {_dapperContext.CommentHints} ch
+                    INNER JOIN {_dapperContext.CommentPoints} ch
                         ON c.Id = ch.CommentId
                     INNER JOIN {_dapperContext.Users} cs
                         ON c.UserId = cs.Id

@@ -76,13 +76,13 @@ public class UiCustomExceptionHandlerMiddleware
                 throw new InvalidOperationException("The response has already started, " +
                                                     "the http status code middleware will not be executed.");
 
-            //if (_environment.IsDevelopment())
-            //{
-            //    context.Response.StatusCode = (int)httpStatusCode;
-            //    context.Response.ContentType = "text/plain";
-            //    await context.Response.WriteAsync(exceptionMessage);
-            //    return;
-            //}
+            if (_environment.IsDevelopment())
+            {
+                context.Response.StatusCode = (int)httpStatusCode;
+                context.Response.ContentType = "text/plain";
+                await context.Response.WriteAsync(exceptionMessage);
+                return;
+            }
             
             var result = new ApiResult
             {

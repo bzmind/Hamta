@@ -1,7 +1,6 @@
 ﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Shop.Domain.ProductAggregate.Services;
-using Shop.Domain.ProductAggregate.Value_Objects;
 
 namespace Shop.Domain.ProductAggregate;
 
@@ -23,22 +22,6 @@ public class Product : BaseAggregateRoot
 
     private List<ProductCategorySpecification> _categorySpecifications = new();
     public IEnumerable<ProductCategorySpecification> CategorySpecifications => _categorySpecifications.ToList();
-
-    private readonly List<Score> _scores = new();
-    public IEnumerable<Score> Scores => _scores.ToList();
-
-    public float AverageScore
-    {
-        get
-        {
-            if (!_scores.Any())
-                return 0;
-
-            var values = _scores.Sum(score => score.Value);
-            var result = (float)Math.Round(values / _scores.Count, 2);
-            return result;
-        }
-    }
 
     private Product()
     {
@@ -98,11 +81,6 @@ public class Product : BaseAggregateRoot
     public void SetCategorySpecifications(List<ProductCategorySpecification> categorySpecifications)
     {
         _categorySpecifications = categorySpecifications;
-    }
-
-    public void AddScore(float scoreAmount)
-    {
-        _scores.Add(new Score(scoreAmount));
     }
 
     private void Guard(string name, string slug, IProductDomainService productService)

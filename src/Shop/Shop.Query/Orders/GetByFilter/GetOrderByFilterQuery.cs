@@ -2,6 +2,7 @@
 using Common.Query.BaseClasses.FilterQuery;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
+using Shop.Query.Colors._DTOs;
 using Shop.Query.Orders._DTOs;
 using Shop.Query.Orders._Mappers;
 
@@ -25,7 +26,7 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
 
     public async Task<OrderFilterResult> Handle(GetOrderByFilterQuery request, CancellationToken cancellationToken)
     {
-        var @params = request.FilterParams;
+        var @params = request.FilterFilterParams;
 
         var query = _shopContext.Orders
             .OrderByDescending(o => o.CreationDate)
@@ -55,14 +56,14 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
 
         var skip = (@params.PageId - 1) * @params.Take;
 
-        var finalQuery = await query
+        var queryResult = await query
             .Skip(skip)
             .Take(@params.Take)
             .ToListAsync(cancellationToken);
 
         var itemInventoryIds = new List<long>();
 
-        finalQuery.ForEach(orderDto =>
+        queryResult.ForEach(orderDto =>
         {
             orderDto.Items.ForEach(orderItem =>
             {
@@ -77,39 +78,35 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
                 _shopContext.Colors,
                 i => i.ColorId,
                 c => c.Id,
-                (inventory, color) => new
-                {
-                    inventory,
-                    color
-                })
+                (inventory, color) => new { inventory, color })
             .Join(
                 _shopContext.Products,
                 t => t.inventory.ProductId,
                 p => p.Id,
-                (tables, product) => new
-                {
-                    tables.inventory,
-                    tables.color,
-                    product
-                })
+                (tables, product) => new { tables.inventory, tables.color, product })
             .ToListAsync(cancellationToken);
 
-        finalQuery.ForEach(orderDto =>
+        queryResult.ForEach(orderDto =>
         {
             orderDto.Items.ForEach(orderItemDto =>
             {
                 var item = inventoryDetails.First(t => t.inventory.Id == orderItemDto.InventoryId);
                 orderItemDto.ProductName = item.product.Name;
+                orderItemDto.ProductMainImage = item.product.MainImage;
+                orderItemDto.ProductSlug = item.product.Slug;
+                orderItemDto.InventoryDiscountPercentage = item.inventory.DiscountPercentage;
                 orderItemDto.InventoryQuantity = item.inventory.Quantity;
                 orderItemDto.ColorName = item.color.Name;
                 orderItemDto.ColorCode = item.color.Code;
             });
         });
         
-        return new OrderFilterResult
+        var model = new OrderFilterResult
         {
-            Data = finalQuery,
+            Data = queryResult,
             FilterParams = @params
         };
+        model.GeneratePaging(query.Count(), @params.Take, @params.PageId);
+        return model;
     }
 }

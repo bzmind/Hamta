@@ -1,15 +1,12 @@
 ﻿using Shop.Domain.CategoryAggregate;
-using Shop.Domain.ColorAggregate;
 using Shop.Domain.ProductAggregate;
-using Shop.Domain.SellerAggregate;
 using Shop.Query.Products._DTOs;
 
 namespace Shop.Query.Products._Mappers;
 
 internal static class ProductMapper
 {
-    public static ProductDto? MapToProductDto(this Product product, Category category,
-        SellerInventory inventory, Color color)
+    public static ProductDto? MapToProductDto(this Product product)
     {
         if (product == null)
             return null;
@@ -24,30 +21,36 @@ internal static class ProductMapper
             Slug = product.Slug,
             Introduction = product.Introduction,
             Review = product.Review,
-            AverageScore = product.AverageScore,
             MainImage = product.MainImage,
             GalleryImages = product.GalleryImages.ToList().MapToProductImageDto(),
-            Specifications = product.Specifications.ToList().MapToQueryProductSpecificationDto(),
-            CategorySpecifications = product.CategorySpecifications
-                .ToList().MapToQueryProductCategorySpecificationDto(),
-            Inventories = new List<ProductInventoryDto>()
+            CategorySpecifications = product.CategorySpecifications.ToList()
+                .MapToProductCategorySpecificationQueryDto(),
+            Specifications = product.Specifications.ToList().MapToQueryProductSpecificationDto()
         };
-
-        if (inventory != null)
-            productDto.Inventories.Add(new()
-            {
-                Id = inventory.Id,
-                CreationDate = inventory.CreationDate,
-                ProductId = inventory.Id,
-                Quantity = inventory.Quantity,
-                Price = inventory.Price.Value,
-                ColorName = color.Name,
-                ColorCode = color.Code,
-                IsAvailable = inventory.IsAvailable,
-                DiscountPercentage = inventory.DiscountPercentage,
-                IsDiscounted = inventory.IsDiscounted
-            });
-
         return productDto;
+    }
+
+    public static List<ProductCategorySpecificationQueryDto> MapToProductCategorySpecificationQueryDto(
+        this List<CategorySpecification> categorySpecifications,
+        List<ProductCategorySpecificationQueryDto> productCategorySpecifications)
+    {
+        var productCategorySpecificationsDtos = new List<ProductCategorySpecificationQueryDto>();
+        productCategorySpecifications.ForEach(productCategorySpec =>
+        {
+            var categorySpec = categorySpecifications
+                .FirstOrDefault(s => s.Id == productCategorySpec.CategorySpecificationId);
+            productCategorySpecificationsDtos.Add(new ProductCategorySpecificationQueryDto
+            {
+                Id = productCategorySpec.Id,
+                CreationDate = categorySpec.CreationDate,
+                CategorySpecificationId = categorySpec.Id,
+                ProductId = productCategorySpec.ProductId,
+                Title = categorySpec.Title,
+                Description = productCategorySpec.Description,
+                IsImportant = categorySpec.IsImportant,
+                IsOptional = categorySpec.IsOptional
+            });
+        });
+        return productCategorySpecificationsDtos;
     }
 }

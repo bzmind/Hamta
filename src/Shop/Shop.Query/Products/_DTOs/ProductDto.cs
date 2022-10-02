@@ -15,5 +15,4 @@ public class ProductDto : BaseDto
     public List<ProductGalleryImageDto> GalleryImages { get; set; } = new();
     public List<ProductSpecificationQueryDto> Specifications { get; set; } = new();
     public List<ProductCategorySpecificationQueryDto> CategorySpecifications { get; set; } = new();
-    public List<ProductInventoryDto> Inventories { get; set; } = new();
 }

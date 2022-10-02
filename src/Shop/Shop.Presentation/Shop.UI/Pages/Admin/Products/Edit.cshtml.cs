@@ -39,7 +39,7 @@ public class EditModel : BaseRazorPage
         var product = await _productService.GetById(productId);
         if (product == null)
         {
-            MakeAlert(ValidationMessages.FieldNotFound("محصول"));
+            MakeErrorAlert(ValidationMessages.FieldNotFound("محصول"));
             return RedirectToPage("Index");
         }
         EditProductViewModel = new EditProductViewModel
@@ -53,38 +53,14 @@ public class EditModel : BaseRazorPage
             Review = product.Review,
             Specifications = product.Specifications.Any()
                 ? _mapper.Map<List<ProductSpecificationViewModel>>(product.Specifications)
+                : new() { new() },
+            CategorySpecifications = product.CategorySpecifications.Any()
+                ? _mapper.Map<List<ProductCategorySpecificationViewModel>>(product.CategorySpecifications).ToList()
                 : new() { new() }
         };
         MainImage = product.MainImage;
         GalleryImages = product.GalleryImages.Any() ? product.GalleryImages.ToList() : new() { new() };
         return Page();
-    }
-
-    public async Task<IActionResult> OnGetShowCategorySpecifications(long productId, long categoryId)
-    {
-        var product = await _productService.GetById(productId);
-        var categorySpecifications = await _categoryService.GetSpecificationsByCategoryId(categoryId);
-        if (product == null)
-        {
-            MakeAlert(ValidationMessages.FieldNotFound("محصول"));
-            return AjaxRedirectToPageResult();
-        }
-
-        var productCategorySpecifications = new List<ProductCategorySpecificationViewModel>();
-        categorySpecifications.ForEach(categorySpec =>
-        {
-            var productSpec = product.CategorySpecifications
-                .FirstOrDefault(s => s.CategorySpecificationId == categorySpec.Id);
-            productCategorySpecifications.Add(new ProductCategorySpecificationViewModel
-            {
-                CategorySpecificationId = categorySpec.Id,
-                Title = categorySpec.Title,
-                Description = productSpec == null ? "" : productSpec.Description,
-                IsOptional = categorySpec.IsOptional,
-                IsImportant = categorySpec.IsImportant
-            });
-        });
-        return await AjaxHtmlSuccessResultAsync("_CategorySpecifications", productCategorySpecifications);
     }
 
     public async Task<IActionResult> OnPost(long productId)

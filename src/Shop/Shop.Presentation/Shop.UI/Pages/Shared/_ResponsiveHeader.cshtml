@@ -26,20 +26,20 @@
           @foreach (var category in categories)
           {
             <li class="has-children">
-              <a href="#">@category.Title</a>
+              <a href="/search?FilterParams.CategorySlug=@category.Slug">@category.Title</a>
               <ul>
                 <li>
-                  <a href="/search?category=@category.Slug">همه‌ی دسته‌بندی های @category.Title</a>
+                  <a href="/search?FilterParams.CategorySlug=@category.Slug">همه‌ی دسته‌بندی های @category.Title</a>
                 </li>
                 @foreach (var subCategory in category.SubCategories)
                 {
                   <li class="@(subCategory.SubCategories.Any() ? "has-children" : null)">
-                    <a href="/search?category=@subCategory.Slug">@subCategory.Title</a>
+                    <a href="/search?FilterParams.CategorySlug=@subCategory.Slug">@subCategory.Title</a>
                     @if (subCategory.SubCategories.Any())
                     {
                       <ul>
                         <li>
-                          <a href="/search?category=@subCategory.Slug">همه‌ی دسته‌بندی های @subCategory.Title</a>
+                          <a href="/search?FilterParams.CategorySlug=@subCategory.Slug">همه‌ی دسته‌بندی های @subCategory.Title</a>
                         </li>
                         @foreach (var subSubCategory in subCategory.SubCategories)
                         {
@@ -62,7 +62,7 @@
       </a>
     </div>
     <div class="header-tools">
-      <a href="#">
+      <a href="/cart">
         <i class="far fa-shopping-basket"></i>
         <span class="bag-items-number">2</span>
       </a>

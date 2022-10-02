@@ -5,23 +5,7 @@ namespace Shop.Query.Products._Mappers;
 
 internal static class ProductCategorySpecificationMapper
 {
-    public static ProductCategorySpecificationQueryDto MapToQueryProductCategorySpecificationDto
-        (this ProductCategorySpecification? specification)
-    {
-        if (specification == null)
-            return null;
-
-        return new ProductCategorySpecificationQueryDto
-        {
-            Id = specification.Id,
-            CreationDate = specification.CreationDate,
-            ProductId = specification.ProductId,
-            CategorySpecificationId = specification.CategorySpecificationId,
-            Description = specification.Description
-        };
-    }
-
-    public static List<ProductCategorySpecificationQueryDto> MapToQueryProductCategorySpecificationDto
+    public static List<ProductCategorySpecificationQueryDto> MapToProductCategorySpecificationQueryDto
         (this List<ProductCategorySpecification> specifications)
     {
         var dtoSpecifications = new List<ProductCategorySpecificationQueryDto>();
@@ -34,7 +18,7 @@ internal static class ProductCategorySpecificationMapper
                 CreationDate = specification.CreationDate,
                 ProductId = specification.ProductId,
                 CategorySpecificationId = specification.CategorySpecificationId,
-                Description = specification.Description
+                Description = specification.Description,
             });
         });
 

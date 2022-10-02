@@ -21,9 +21,16 @@ public class BaseRazorPage : PageModel
         HttpContext.Response.Cookies.Append("alert", model);
     }
 
-    protected void MakeAlert(string message)
+    protected void MakeErrorAlert(string message)
     {
-        var apiResult = new ApiResult { MetaData = new MetaData { Message = message } };
+        var apiResult = new ApiResult { IsSuccessful = false, MetaData = new MetaData { Message = message } };
+        var model = JsonConvert.SerializeObject(apiResult);
+        HttpContext.Response.Cookies.Append("alert", model);
+    }
+
+    protected void MakeSuccessAlert(string message)
+    {
+        var apiResult = new ApiResult { IsSuccessful = true, MetaData = new MetaData { Message = message } };
         var model = JsonConvert.SerializeObject(apiResult);
         HttpContext.Response.Cookies.Append("alert", model);
     }
@@ -76,13 +83,23 @@ public class BaseRazorPage : PageModel
         if (string.IsNullOrWhiteSpace(path))
             path = $"..{page}";
 
-        var model = new AjaxResult
+        var result = new AjaxResult
         {
             IsRedirection = true,
             RedirectPath = path
         };
 
-        return Content(JsonConvert.SerializeObject(model));
+        return Content(JsonConvert.SerializeObject(result));
+    }
+
+    protected ContentResult AjaxReloadCurrentPageResult()
+    {
+        var result = new AjaxResult
+        {
+            ReloadCurrentPage = true
+        };
+
+        return Content(JsonConvert.SerializeObject(result));
     }
 
     protected ContentResult AjaxDataSuccessResult<TData>(ApiResult<TData> apiResult)
@@ -110,6 +127,7 @@ public class BaseRazorPage : PageModel
     protected class AjaxResult
     {
         public bool IsRedirection { get; set; }
+        public bool ReloadCurrentPage { get; set; }
         public string RedirectPath { get; set; }
         public bool IsHtml { get; set; }
         public string Message { get; set; }

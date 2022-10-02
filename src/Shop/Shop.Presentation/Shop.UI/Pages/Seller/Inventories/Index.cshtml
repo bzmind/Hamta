@@ -112,15 +112,15 @@
             </td>
             <td class="font-weight-bolder">
               <label class="grayed">قیمت@(inventory.IsDiscounted ? " اصلی" : ""):</label>
-              <bold>@inventory.Price.ToString("##,###") <small class="grayed">تومان</small></bold>
+              <bold>@inventory.Price.ToString("#,0") <small class="grayed">تومان</small></bold>
               @if (inventory.IsDiscounted)
               {
                 <br />
                 <label class="grayed">مقدار تخفیف:</label>
-                <bold>@inventory.DiscountAmount.ToString("##,###") <small class="grayed">تومان</small></bold>
+                <bold>@inventory.DiscountAmount.ToString("#,0") <small class="grayed">تومان</small></bold>
                 <br />
                 <label class="grayed">قیمت نهایی:</label>
-                <bold>@inventory.TotalPrice.ToString("##,###") <small class="grayed">تومان</small></bold>
+                <bold>@inventory.TotalPrice.ToString("#,0") <small class="grayed">تومان</small></bold>
               }
             </td>
             <td>

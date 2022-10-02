@@ -28,20 +28,29 @@ button:focus {
   width: 19%;
 }
 
-#alerts ul {
-  margin: 5px 0 0 0;
-  border-radius: 10px;
-  background-color: #373737;
-  color: white;
-  word-break: break-word;
-  font-weight: 400;
-  line-height: 25px;
-  padding: 10px;
-}
+  #alerts .alert-success {
+    background-color: #3abd68 !important;
+  }
 
-#alerts ul:first-child {
-  margin: 0;
-}
+  #alerts .alert-danger {
+    background-color: #e14646 !important;
+  }
+
+  #alerts ul {
+    margin: 5px 0 0 0;
+    border-radius: 10px;
+    background-color: #373737;
+    color: white;
+    border: none;
+    word-break: break-word;
+    font-weight: 400;
+    line-height: 25px;
+    padding: 10px;
+  }
+
+    #alerts ul:first-child {
+      margin: 0;
+    }
 
 .btn-loading {
   display: flex;
@@ -81,4 +90,8 @@ button:focus {
 
 .form-element-with-icon i {
   color: #7c7c7c;
+}
+
+[data-repeater-remove] {
+  cursor: pointer;
 }

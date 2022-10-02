@@ -42,13 +42,13 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
                     )
                     
                     SELECT *
-                    INTO TempTable
+                    INTO #TempTable
                     FROM parent_specs
-                    ALTER TABLE TempTable DROP COLUMN ParentId
-                    SELECT * FROM TempTable tmp
+                    ALTER TABLE #TempTable DROP COLUMN ParentId
+                    SELECT * FROM #TempTable tmp
                     WHERE tmp.Id IS NOT NULL
                     ORDER BY tmp.Id ASC
-                    DROP TABLE TempTable";
+                    DROP TABLE #TempTable";
 
         var result = await connection.QueryAsync<CategorySpecification>(sql, new { categoryId });
         return result.ToList();
@@ -63,11 +63,7 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
                 Context.Products,
                 c => c.Id,
                 p => p.CategoryId,
-                (category, product) => new
-                {
-                    category,
-                    product
-                })
+                (category, product) => new { category, product })
             .SelectMany(
                 t => t.product.DefaultIfEmpty(),
                 (c, p) => new { c.category, product = p })

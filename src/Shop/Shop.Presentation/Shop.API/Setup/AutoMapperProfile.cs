@@ -33,7 +33,6 @@ using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.SetStatus;
 using Shop.Application.Products._DTOs;
-using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 using Shop.Application.Questions.AddReply;
@@ -89,7 +88,6 @@ public class AutoMapperProfile : Profile
         CreateMap<AddOrderItemCommand, AddOrderItemViewModel>().ReverseMap();
         CreateMap<CheckoutOrderCommand, CheckoutOrderViewModel>().ReverseMap();
         CreateMap<SetOrderStatusCommand, SetOrderStatusViewModel>().ReverseMap();
-        CreateMap<AddProductScoreCommand, AddProductScoreViewModel>().ReverseMap();
         CreateMap<CreateProductCommand, CreateProductViewModel>().ReverseMap();
         CreateMap<CreateProductCommand, ControllerCreateProductViewModel>().ReverseMap();
         CreateMap<EditProductCommand, EditProductViewModel>().ReverseMap();
@@ -122,5 +120,6 @@ public class AutoMapperProfile : Profile
         CreateMap<EditBannerCommand, EditBannerViewModel>().ReverseMap();
         CreateMap<CreateSliderCommand, CreateSliderViewModel>().ReverseMap();
         CreateMap<EditSliderCommand, EditSliderViewModel>().ReverseMap();
+        CreateMap<ProductCategorySpecificationViewModel, ProductCategorySpecificationQueryDto>().ReverseMap();
     }
 }

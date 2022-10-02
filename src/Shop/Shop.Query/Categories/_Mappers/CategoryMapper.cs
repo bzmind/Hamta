@@ -19,7 +19,7 @@ internal static class CategoryMapper
             Slug = category.Slug,
             ShowInMenu = category.ShowInMenu,
             SubCategories = category.SubCategories.ToList().MapToCategoryDto(),
-            Specifications = category.Specifications.ToList().MapToQueryCategorySpecificationDto()
+            Specifications = category.Specifications.ToList().MapToCategorySpecificationQueryDto()
         };
     }
 
@@ -38,7 +38,7 @@ internal static class CategoryMapper
                 Slug = category.Slug,
                 ShowInMenu = category.ShowInMenu,
                 SubCategories = category.SubCategories.ToList().MapToCategoryDto(),
-                Specifications = category.Specifications.ToList().MapToQueryCategorySpecificationDto()
+                Specifications = category.Specifications.ToList().MapToCategorySpecificationQueryDto()
             });
         });
 

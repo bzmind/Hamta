@@ -86,6 +86,13 @@ public class OrderController : BaseApiController
         return QueryResult(result);
     }
 
+    [HttpGet("GetByUserId/{userId}")]
+    public async Task<ApiResult<OrderDto?>> GetByUserId(long userId)
+    {
+        var result = await _orderFacade.GetByUserId(userId);
+        return QueryResult(result);
+    }
+
     [CheckPermission(RolePermission.Permissions.OrderManager)]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<OrderFilterResult>> GetByFilter([FromQuery] OrderFilterParams filterParams)

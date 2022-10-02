@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using System.Text;
+using System.Text.Json;
 using Common.Api;
 
 namespace Shop.UI.Services;
@@ -128,5 +129,18 @@ public abstract class BaseService
         }
 
         return finalResult;
+    }
+
+    public string MakeQueryUrl(string endPointActionName, object obj)
+    {
+        var stringBuilder = new StringBuilder($"{endPointActionName}?");
+        foreach (var propertyInfo in obj.GetType().GetProperties())
+        {
+            var propertyValue = propertyInfo.GetValue(obj, null);
+            var end = propertyInfo.Equals(obj.GetType().GetProperties().Last()) ? "" : "&";
+            if (propertyValue != null)
+                stringBuilder.Append($"{propertyInfo.Name}={propertyValue}{end}");
+        }
+        return stringBuilder.ToString();
     }
 }

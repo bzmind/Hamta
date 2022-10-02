@@ -25,7 +25,7 @@ public class GetSellersByFilterQueryHandler : IBaseQueryHandler<GetSellersByFilt
 
     public async Task<SellerFilterResult> Handle(GetSellersByFilterQuery request, CancellationToken cancellationToken)
     {
-        var @params = request.FilterParams;
+        var @params = request.FilterFilterParams;
 
         var query = _context.Sellers
             .OrderByDescending(seller => seller.CreationDate).AsQueryable();
@@ -41,15 +41,18 @@ public class GetSellersByFilterQueryHandler : IBaseQueryHandler<GetSellersByFilt
         
         var skip = (@params.PageId - 1) * @params.Take;
 
-        return new SellerFilterResult
-        {
-            Data = await query
-                .Skip(skip)
-                .Take(@params.Take)
-                .Select(seller => seller.MapToSellerDto())
-                .ToListAsync(cancellationToken),
+        var queryResult = await query
+            .Skip(skip)
+            .Take(@params.Take)
+            .Select(seller => seller.MapToSellerDto())
+            .ToListAsync(cancellationToken);
 
+        var model = new SellerFilterResult
+        {
+            Data = queryResult,
             FilterParams = @params
         };
+        model.GeneratePaging(query.Count(), @params.Take, @params.PageId);
+        return model;
     }
 }

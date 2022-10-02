@@ -1,7 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
 using Common.Application.Utility.Validation;
-using Common.Domain.ValueObjects;
 using FluentValidation;
 using Shop.Domain.OrderAggregate;
 using Shop.Domain.OrderAggregate.Repository;
@@ -34,7 +33,7 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
 
     public async Task<OperationResult<long>> Handle(AddOrderItemCommand request, CancellationToken cancellationToken)
     {
-        var inventory = await _sellerRepository.GetInventoryByIdAsTrackingAsync(request.InventoryId);
+        var inventory = await _sellerRepository.GetInventoryByIdAsync(request.InventoryId);
         if (inventory == null)
             return OperationResult<long>.NotFound(ValidationMessages.FieldNotFound("انبار"));
 
@@ -48,8 +47,7 @@ public class AddOrderItemCommandHandler : IBaseCommandHandler<AddOrderItemComman
             await _orderRepository.AddAsync(order);
         }
 
-        order.AddOrderItem(new OrderItem(order.Id, request.InventoryId, request.Quantity,
-            new Money(inventory.TotalPrice)));
+        order.AddOrderItem(new OrderItem(order.Id, request.InventoryId, request.Quantity, inventory.Price));
 
         if (order.Items.First(i => i.InventoryId == inventory.Id).Count > inventory.Quantity)
             return OperationResult<long>.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");

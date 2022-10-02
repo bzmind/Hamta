@@ -81,11 +81,19 @@ public class CommentController : BaseApiController
         return QueryResult(result);
     }
 
-    [AllowAnonymous]
+    [CheckPermission(RolePermission.Permissions.CommentManager)]
     [HttpGet("GetByFilter")]
     public async Task<ApiResult<CommentFilterResult>> GetByFilter([FromQuery] CommentFilterParams filterParams)
     {
         var result = await _commentFacade.GetByFilter(filterParams);
+        return QueryResult(result);
+    }
+
+    [AllowAnonymous]
+    [HttpGet("GetForProduct")]
+    public async Task<ApiResult<CommentFilterResult>> GetForProduct([FromQuery] ProductCommentFilterParams filterParams)
+    {
+        var result = await _commentFacade.GetForProduct(filterParams);
         return QueryResult(result);
     }
 }

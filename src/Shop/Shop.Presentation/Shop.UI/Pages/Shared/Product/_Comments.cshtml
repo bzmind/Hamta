@@ -1,0 +1,138 @@
+﻿@using Common.Api.Utility
+@using Common.Application.Utility.FileUtility
+@using Shop.Domain.CommentAggregate
+@model Shop.Query.Comments._DTOs.CommentFilterResult
+@{
+}
+
+<div class="section-title mb-1 mt-4">
+  نظرات کاربران (@Model.Data.Count)
+</div>
+<hr>
+@foreach (var comment in Model.Data)
+{
+  <div class="row">
+    <div class="col-md-3 aside">
+      <ul class="comments-user-shopping">
+        <li class="ai-center">
+          <div class="profile-avatar">
+            <img src="@ServerPaths.GetAvatarPath(comment.UserAvatar)" alt="avatarId">
+          </div>
+          <div class="cell cell-name m-0">
+            @comment.UserFullName
+          </div>
+        </li>
+        <li>
+          <div class="cell">
+            @comment.CreationDate.ToShortDateString()
+          </div>
+        </li>
+      </ul>
+      @switch (comment.Recommendation)
+      {
+        case Comment.CommentRecommendation.پیشنهاد_میکنم:
+          <div class="alert alert-success d-flex">
+            <i class="bx bx-like ml-5px"></i> پیشنهاد می‌کنم
+          </div>
+          break;
+        case Comment.CommentRecommendation.پیشنهاد_نمیکنم:
+          <div class="alert alert-danger d-flex">
+            <i class="bx bx-dislike ml-5px"></i> پیشنهاد نمی‌کنم
+          </div>
+          break;
+        case Comment.CommentRecommendation.مطمئن_نیستم:
+        default:
+          <div class="alert alert-secondary d-flex">
+            <i class="bx bx-radio-circle ml-5px"></i> مطمئن نیستم
+          </div>
+          break;
+      }
+    </div>
+    <div class="col-md-9 article">
+      <div class="header">
+        <div>@comment.Title</div>
+      </div>
+      <p>
+        @comment.Description
+      </p>
+      @if (comment.CommentHints.Any())
+      {
+        <div class="comments-evaluation">
+          <div class="comments-evaluation-positive">
+            @if (comment.CommentHints.Any(h => h is { Status: CommentPoint.PointStatus.Positive }))
+            {
+              <ul>
+                @foreach (var positiveHint in comment.CommentHints
+               .Where(h => h.Status == CommentPoint.PointStatus.Positive))
+                {
+                  <li class="d-flex ai-center p-0">
+                    <i class="bx bx-plus ml-5px c-success"></i>
+                    @positiveHint.Hint
+                  </li>
+                }
+              </ul>
+            }
+          </div>
+          @if (comment.CommentHints.Any(h => h is { Status: CommentPoint.PointStatus.Negative }))
+          {
+            <div class="comments-evaluation-negative">
+              <ul>
+                @foreach (var negativeHint in comment.CommentHints
+               .Where(h => h.Status == CommentPoint.PointStatus.Negative))
+                {
+                  <li class="d-flex ai-center p-0">
+                    <i class="bx bx-minus ml-5px c-danger"></i>
+                    @negativeHint.Hint
+                  </li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+      }
+      <div class="footer">
+        <div class="comments-likes d-flex ai-center">
+          آیا این نظر برایتان مفید بود؟
+          <button class="btn-like" data-counter="@comment.Likes">بله</button>
+          <button class="btn-like" data-counter="@comment.Dislikes">خیر</button>
+          @if (comment.UserId == User.GetUserId())
+          {
+            <delete url="/product/slug/removeComment?commentId=@comment.Id" class="btn-like d-inline-flex ai-center">
+              <i class="bx bx-trash ml-5px"></i>
+              حذف
+            </delete>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+}
+<div class="row">
+  <div class="col-12 px-0">
+    <div class="pagination">
+      @if (Model.CurrentPage > 1)
+      {
+        <a href="#comments-list-scroll" onclick="getProductComments(@Model.CurrentPage - 1)" class="prev">
+          <i class="far fa-arrow-from-left"></i>
+        </a>
+      }
+      @for (var i = Model.StartPage; i <= Model.EndPage; i++)
+      {
+        @if (i == Model.CurrentPage)
+        {
+          <a class="current">@i</a>
+        }
+        else
+        {
+          <a href="#comments-list-scroll" onclick="getProductComments(@i)">@i</a>
+        }
+      }
+      @if (Model.CurrentPage < Model.PageCount)
+      {
+        <a href="#comments-list-scroll" onclick="getProductComments(@Model.CurrentPage + 1)" class="next">
+          <i class="far fa-arrow-to-left"></i>
+        </a>
+      }
+    </div>
+  </div>
+</div>

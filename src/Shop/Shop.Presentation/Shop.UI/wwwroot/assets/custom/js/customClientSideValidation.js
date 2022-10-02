@@ -13,6 +13,7 @@ jQuery.validator.addMethod("listNotEmpty", function (value, element, params)
       return true;
     return false;
   }
+  // TODO: This 👇 might be nonsense that I wrote just to fill here...
   if (value.length > 0)
     return true;
   return false;
@@ -20,31 +21,61 @@ jQuery.validator.addMethod("listNotEmpty", function (value, element, params)
 
 jQuery.validator.addMethod("listMinLength", function (value, element, params)
 {
-  // TODO: Check the list's length
+  element = $(element);
+  const otherElementsInList = $(`[data-listId="${element.attr("data-listId")}"]`);
+  if (otherElementsInList.length < parseInt(element.attr("data-listMinLength")))
+  {
+    return false;
+  } else
+  {
+    return true;
+  }
 });
 
 jQuery.validator.addMethod("listMaxLength", function (value, element, params)
 {
-  if ($(element).is("input[type='file']"))
+  element = $(element);
+  const otherElementsInList = $(`[data-listId="${element.attr("data-listId")}"]`);
+  if (otherElementsInList.length > parseInt(element.attr("data-listMaxLength")))
   {
-    const maxLength = parseInt($(element).attr("data-listMaxLength"));
-    if ($(element).get(0).files.length > maxLength)
-      return false;
+    return false;
+  } else
+  {
     return true;
   }
-  // TODO: Check if this attribute is on a div element for example and then, figure out how many
-  // inputs exist in that div, so it's not more than the maxlength, something like that I guess...
-  return false;
+});
+
+jQuery.validator.addMethod("listMembersNotEmpty", function (value, element, params)
+{
+  if (isEmptyOrSpaces(value))
+    return false;
+  return true;
 });
 
 jQuery.validator.addMethod("listMembersCharactersMinLength", function (value, element, params)
 {
-  // TODO: Check to see if the string type members of a list are in specified length
+  const minLength = $(element).attr("data-listMembersCharactersMinLength");
+
+  if (isEmptyOrSpaces(value))
+    return false;
+
+  if (value.length < minLength)
+    return false;
+
+  return true;
 });
 
 jQuery.validator.addMethod("listMembersCharactersMaxLength", function (value, element, params)
 {
-  // TODO: Check to see if the string type members of a list are in specified length
+  const maxLength = $(element).attr("data-listMembersCharactersMaxLength");
+
+  if (isEmptyOrSpaces(value))
+    return false;
+
+  if (value.length > maxLength)
+    return false;
+
+  return true;
 });
 
 jQuery.validator.addMethod("imageFile", function (value, element, params)
@@ -89,6 +120,11 @@ function getExtension(name)
   return basename.slice(pos + 1);
 }
 
+function isEmptyOrSpaces(str)
+{
+  return str === null || str.match(/^ *$/) !== null;
+}
+
 jQuery.validator.addMethod("requiredif",
   function (value, element, parameters)
   {
@@ -112,6 +148,7 @@ jQuery.validator.unobtrusive.adapters.addBool("enumNotNullOrZero");
 jQuery.validator.unobtrusive.adapters.addBool("listNotEmpty");
 jQuery.validator.unobtrusive.adapters.addBool("listMinLength");
 jQuery.validator.unobtrusive.adapters.addBool("listMaxLength");
+jQuery.validator.unobtrusive.adapters.addBool("listMembersNotEmpty");
 jQuery.validator.unobtrusive.adapters.addBool("listMembersCharactersMinLength");
 jQuery.validator.unobtrusive.adapters.addBool("listMembersCharactersMaxLength");
 jQuery.validator.unobtrusive.adapters.addBool("imageFile");

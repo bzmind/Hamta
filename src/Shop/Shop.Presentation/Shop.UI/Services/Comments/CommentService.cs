@@ -44,8 +44,14 @@ public class CommentService : BaseService, ICommentService
 
     public async Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams)
     {
-        var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&UserId={filterParams.UserId}&ProductId={filterParams.ProductId}&Status={filterParams.Status}";
+        var url = MakeQueryUrl("GetByFilter", filterParams);
+        var result = await GetFromJsonAsync<CommentFilterResult>(url);
+        return result.Data;
+    }
+
+    public async Task<CommentFilterResult> GetForProduct(ProductCommentFilterParams filterParams)
+    {
+        var url = MakeQueryUrl("GetForProduct", filterParams);
         var result = await GetFromJsonAsync<CommentFilterResult>(url);
         return result.Data;
     }

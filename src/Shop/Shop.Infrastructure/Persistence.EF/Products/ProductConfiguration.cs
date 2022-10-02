@@ -34,15 +34,6 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(product => product.Review)
             .HasMaxLength(10000);
 
-        builder.OwnsMany(product => product.Scores, options =>
-        {
-            options.ToTable("Scores", "product");
-
-            options.Property(score => score.Value)
-                .IsRequired()
-                .HasColumnType("float(2,1)");
-        });
-
         builder.Property(product => product.MainImage)
             .IsRequired()
             .HasMaxLength(100);

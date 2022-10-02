@@ -29,8 +29,7 @@ public class ColorService : BaseService, IColorService
 
     public async Task<ColorFilterResult> GetByFilter(ColorFilterParams filterParams)
     {
-        var url = $"GetByFilter?PageId={filterParams.PageId}" +
-                  $"&Take={filterParams.Take}&Name={filterParams.Name}&Code={filterParams.Code}";
+        var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<ColorFilterResult>(url);
         return result.Data;
     }

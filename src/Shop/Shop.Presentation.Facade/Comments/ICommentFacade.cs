@@ -17,4 +17,5 @@ public interface ICommentFacade
 
     Task<CommentDto?> GetById(long id);
     Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams);
+    Task<CommentFilterResult> GetForProduct(ProductCommentFilterParams filterParams);
 }

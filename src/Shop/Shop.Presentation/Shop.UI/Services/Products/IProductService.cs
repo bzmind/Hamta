@@ -13,7 +13,7 @@ public interface IProductService
     Task<ApiResult<string?>> AddReviewImage(AddProductReviewImageViewModel model);
 
     Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams);
-    Task<ProductForShopResult> GetForShopByFilter(ProductForShopParams filterParams);
+    Task<ProductForShopResult> GetForShopByFilter(ProductForShopFilterParams filterFilterParams);
     Task<ProductDto?> GetById(long productId);
-    Task<ProductDto?> GetBySlug(string slug);
+    Task<SingleProductDto?> GetSingleBySlug(string slug);
 }

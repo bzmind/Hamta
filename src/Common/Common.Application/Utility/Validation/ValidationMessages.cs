@@ -25,6 +25,7 @@ public static class ValidationMessages
     public const string IntroductionRequired = "لطفا متن معرفی را وارد کنید";
     public const string ReviewRequired = "لطفا متن بررسی تخصصی را وارد کنید";
     public const string DescriptionRequired = "لطفا توضیحات را وارد کنید";
+    public const string ScoreRequired = "لطفا امتیاز را وارد کنید";
     public const string SlugRequired = "لطفا اسلاگ را وارد کنید";
     public const string ColorNameRequired = "لطفا نام رنگ را وارد کنید";
     public const string ColorCodeRequired = "لطفا کد رنگ را وارد کنید";

@@ -4,8 +4,8 @@
 }
 
 <div class="form-element-row">
+  <label asp-for="@Model"></label>
   <select asp-for="@Model" class="select2" data-minimum-results-for-search="Infinity">
-    <option selected disabled hidden value="0">@Html.DisplayNameFor(m => m)</option>
     @foreach (var name in Enum.GetNames(type))
     {
       <option value="@name">@name.Replace("_", " ")</option>

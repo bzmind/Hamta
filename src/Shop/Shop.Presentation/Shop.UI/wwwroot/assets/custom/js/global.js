@@ -159,7 +159,12 @@ function checkResult(result)
     return;
   if (result.IsRedirection === true)
   {
-    window.location.replace(result.RedirectPath);
+    window.location.href = result.RedirectPath;
+    return;
+  }
+  if (result.ReloadCurrentPage === true)
+  {
+    location.reload();
     return;
   }
   checkForAlertCookies();
@@ -370,6 +375,22 @@ function sendAjaxPostWithRouteData(urlWithRouteData)
   sendAjaxPost(urlWithRouteData, data).then((result) =>
   {
     checkResult(result);
+  });
+}
+
+function sendAjaxPostWithRouteDataAndReplaceElement(e, urlWithRouteData, elementSelector)
+{
+  e.preventDefault();
+  const antiForgeryToken = getAntiForgeryToken();
+  if (antiForgeryToken == null)
+    return;
+  const data = new FormData();
+  data.append("__RequestVerificationToken", antiForgeryToken);
+  sendAjaxPost(urlWithRouteData, data).then((result) =>
+  {
+    checkResult(result);
+    replaceElementWithAjaxResult(elementSelector, result);
+    reinitializeScripts();
   });
 }
 

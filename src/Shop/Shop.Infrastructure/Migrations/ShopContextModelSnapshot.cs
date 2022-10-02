@@ -146,6 +146,9 @@ namespace Shop.Infrastructure.Migrations
                         .HasMaxLength(20)
                         .HasColumnType("nvarchar(20)");
 
+                    b.Property<byte>("Score")
+                        .HasColumnType("tinyint");
+
                     b.Property<string>("Status")
                         .IsRequired()
                         .HasMaxLength(20)
@@ -492,7 +495,7 @@ namespace Shop.Infrastructure.Migrations
 
             modelBuilder.Entity("Shop.Domain.CommentAggregate.Comment", b =>
                 {
-                    b.OwnsMany("Shop.Domain.CommentAggregate.Comment.CommentHints#Shop.Domain.CommentAggregate.CommentHint", "CommentHints", b1 =>
+                    b.OwnsMany("Shop.Domain.CommentAggregate.Comment.CommentPoints#Shop.Domain.CommentAggregate.CommentPoint", "CommentPoints", b1 =>
                         {
                             b1.Property<long>("Id")
                                 .ValueGeneratedOnAdd()
@@ -506,7 +509,7 @@ namespace Shop.Infrastructure.Migrations
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2(0)");
 
-                            b1.Property<string>("Hint")
+                            b1.Property<string>("Description")
                                 .IsRequired()
                                 .HasMaxLength(100)
                                 .HasColumnType("nvarchar(100)");
@@ -520,7 +523,7 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.HasIndex("CommentId");
 
-                            b1.ToTable("Hints", "comment");
+                            b1.ToTable("Points", "comment");
 
                             b1.WithOwner()
                                 .HasForeignKey("CommentId");
@@ -558,7 +561,7 @@ namespace Shop.Infrastructure.Migrations
                                 .HasForeignKey("CommentId");
                         });
 
-                    b.Navigation("CommentHints");
+                    b.Navigation("CommentPoints");
 
                     b.Navigation("CommentReactions");
                 });
@@ -799,28 +802,6 @@ namespace Shop.Infrastructure.Migrations
                                 .HasForeignKey("ProductId");
                         });
 
-                    b.OwnsMany("Shop.Domain.ProductAggregate.Product.Scores#Shop.Domain.ProductAggregate.Value_Objects.Score", "Scores", b1 =>
-                        {
-                            b1.Property<long>("ProductId")
-                                .HasColumnType("bigint");
-
-                            b1.Property<int>("Id")
-                                .ValueGeneratedOnAdd()
-                                .HasColumnType("int");
-
-                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"), 1L, 1);
-
-                            b1.Property<float>("Value")
-                                .HasColumnType("float(2)");
-
-                            b1.HasKey("ProductId", "Id");
-
-                            b1.ToTable("Scores", "product");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
                     b.OwnsMany("Shop.Domain.ProductAggregate.Product.Specifications#Shop.Domain.ProductAggregate.ProductSpecification", "Specifications", b1 =>
                         {
                             b1.Property<long>("Id")
@@ -858,8 +839,6 @@ namespace Shop.Infrastructure.Migrations
                     b.Navigation("CategorySpecifications");
 
                     b.Navigation("GalleryImages");
-
-                    b.Navigation("Scores");
 
                     b.Navigation("Specifications");
                 });

@@ -5,7 +5,6 @@ namespace Shop.Query.Orders._DTOs;
 
 public class OrderFilterResult : BaseFilterResult<OrderDto, OrderFilterParams>
 {
-    
 }
 
 public class OrderFilterParams : BaseFilterParams

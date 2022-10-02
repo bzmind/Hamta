@@ -18,6 +18,7 @@
     <Folder Include="Comments\_Mappers\" />
     <Folder Include="Entities\Banners\GetAll\" />
     <Folder Include="Entities\_DTOs\" />
+    <Folder Include="Orders\GetByUserId\" />
     <Folder Include="Orders\_DTOs\" />
     <Folder Include="Orders\_Mappers\" />
     <Folder Include="Roles\GetList\" />

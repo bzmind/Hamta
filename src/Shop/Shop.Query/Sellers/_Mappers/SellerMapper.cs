@@ -20,24 +20,4 @@ internal static class SellerMapper
             Status = seller.Status
         };
     }
-
-    public static List<SellerDto> MapToSellerDto(this List<Seller> sellers)
-    {
-        var dtoSellers = new List<SellerDto>();
-
-        sellers.ForEach(seller =>
-        {
-            dtoSellers.Add(new SellerDto
-            {
-                Id = seller.Id,
-                CreationDate = seller.CreationDate,
-                UserId = seller.UserId,
-                ShopName = seller.ShopName,
-                NationalCode = seller.NationalCode,
-                Status = seller.Status
-            });
-        });
-
-        return dtoSellers;
-    }
 }

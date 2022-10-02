@@ -1,7 +1,6 @@
 ﻿using Common.Application;
 using MediatR;
 using Shop.Application.Products;
-using Shop.Application.Products.AddScore;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 using Shop.Application.Products.Remove;
@@ -32,11 +31,6 @@ internal class ProductFacade : IProductFacade
         return await _mediator.Send(command);
     }
 
-    public async Task<OperationResult> AddScore(AddProductScoreCommand command)
-    {
-        return await _mediator.Send(command);
-    }
-
     public async Task<OperationResult> Remove(long productId)
     {
         return await _mediator.Send(new RemoveProductCommand(productId));
@@ -52,9 +46,9 @@ internal class ProductFacade : IProductFacade
         return await _mediator.Send(new GetProductByFilterQuery(filterParams));
     }
 
-    public async Task<ProductForShopResult> GetForShopByFilter(ProductForShopParams filterParams)
+    public async Task<ProductForShopResult> GetForShopByFilter(ProductForShopFilterParams filterFilterParams)
     {
-        return await _mediator.Send(new GetProductForShopByFilterQuery(filterParams));
+        return await _mediator.Send(new GetProductForShopByFilterQuery(filterFilterParams));
 
     }
 
@@ -63,8 +57,8 @@ internal class ProductFacade : IProductFacade
         return await _mediator.Send(new GetProductByIdQuery(id));
     }
 
-    public async Task<ProductDto?> GetBySlug(string slug)
+    public async Task<SingleProductDto?> GetSingleBySlug(string slug)
     {
-        return await _mediator.Send(new GetProductBySlugQuery(slug));
+        return await _mediator.Send(new GetSingleProductBySlugQuery(slug));
     }
 }

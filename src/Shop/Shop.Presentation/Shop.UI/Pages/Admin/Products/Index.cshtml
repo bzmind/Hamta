@@ -10,7 +10,7 @@
   var categories = await CategoryService.GetAll();
   ViewData["Title"] = "مدیریت محصولات";
   ViewData["Selected"] = "products";
-  var oldCategory = Request.Query["FilterParams.CategoryId"].ToString() ?? "0";
+  var oldCategory = Request.Query["FilterFilterParams.CategoryId"].ToString() ?? "0";
   var highestProductPrice = Model.FilterResult.HighestPriceInCategory;
 
   const int textIndentationDefaultSize = 15;
@@ -84,10 +84,6 @@
         <div class="col-md-3 mb-10px">
           <label>نام</label>
           <input type="text" asp-for="@Model.FilterParams.Name" class="form-control" />
-        </div>
-        <div class="col-md-3 mb-10px">
-          <label>نام انگلیسی</label>
-          <input type="text" asp-for="@Model.FilterParams.EnglishName" class="form-control" />
         </div>
         <div class="col-md-3 mb-10px">
           <label>اسلاگ</label>
@@ -228,13 +224,13 @@
             @if (product.InventoryId != 0)
             {
               <td class="font-weight-bolder">
-                @product.LowestInventoryPrice.ToString("##,###") <small class="grayed">تومان</small>
+                @product.LowestInventoryPrice.ToString("#,0") <small class="grayed">تومان</small>
                 @if (product.LowestInventoryPrice != product.HighestInventoryPrice)
                 {
                   <br />
                   <span class="grayed">تا</span>
                   <br />
-                  @product.HighestInventoryPrice.ToString("##,###") <small class="grayed">تومان</small>
+                  @product.HighestInventoryPrice.ToString("#,0") <small class="grayed">تومان</small>
                 }
               </td>
               <td class="font-weight-bolder">

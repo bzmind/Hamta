@@ -14,7 +14,7 @@ public class OutOfRangeValueDomainException : BaseDomainException
 
     }
 
-    public static void CheckRange(int min, int max, float value, string fieldName)
+    public static void CheckRange(int min, int max, int value, string fieldName)
     {
         if (value < min)
             throw new OutOfRangeValueDomainException($"{fieldName} is less than minimum: " +

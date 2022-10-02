@@ -1,0 +1,190 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Shop.Query.Products._DTOs
+@model Shop.UI.Pages.SearchModel
+@{
+
+}
+
+<div class="row mb-5">
+  <div class="col-lg-3 col-md-4 sticky-sidebar filter-options-sidebar">
+    <div class="d-md-none">
+      <div class="header-filter-options">
+        <span>جستجوی پیشرفته <i class="fad fa-sliders-h"></i></span>
+        <button class="btn-close-filter-sidebar"><i class="fal fa-times"></i></button>
+      </div>
+    </div>
+    <div class="sidebar-widget">
+      <div class="widget widget-filter-options shadow-around">
+        <div class="widget-title">فیلتر ها</div>
+        <div class="widget-content">
+          @if (Model.Products.Attributes != null)
+          {
+            @for (var i = 0; i < Model.Products.Attributes.Count; i++)
+            {
+              var attr = Model.Products.Attributes[i];
+              <label>@attr.Title</label>
+              for (var j = 0; j < attr.Values.Count; j++)
+              {
+                ProductForShopAttributesDto isChecked = null;
+                @if (Model.Products.FilterParams.Attributes != null)
+                {
+                  isChecked = Model.Products.FilterParams.Attributes.FirstOrDefault(a => a.Title == attr.Title);
+                }
+                <span>@isChecked?.Title</span>
+                var value = attr.Values[j];
+                <label class="container-checkbox">
+                  @value
+                  <input type="checkbox" name="FilterParams.Attributes[@i].Values[@j]" value="@value"
+                   checked="@(isChecked != null ? "checked" : null)">
+                  <span class="checkmark"></span>
+                </label>
+              }
+            }
+          }
+        </div>
+      </div>
+      <div class="widget widget-filter-options shadow-around">
+        <div class="widget-title">برند</div>
+        <div class="search-in-options form-element-row">
+          <div class="form-element-with-icon">
+            <input type="text" class="input-element" placeholder="جستجوی نام برند...">
+            <i class="fad fa-file-search"></i>
+          </div>
+        </div>
+        <div class="widget-content">
+          <label class="container-checkbox">
+            سامسونگ
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <div class="widget shadow-around">
+        <div class="widget-content">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch1">
+            <label class="custom-control-label" for="customSwitch1">
+              فقط کالاهای موجود در
+              انبار
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="widget shadow-around">
+        <div class="widget-content">
+          <div class="custom-control custom-switch">
+            <input type="checkbox" class="custom-control-input" id="customSwitch2">
+            <label class="custom-control-label" for="customSwitch2">فقط ارسال فوری</label>
+          </div>
+        </div>
+      </div>
+      <div class="widget shadow-around">
+        <div class="widget-title">محدوده قیمت</div>
+        <div class="widget-content">
+          <form action="#" class="filter-price">
+            <div class="mt-2 mb-2">
+              <div class="filter-slider">
+                <div id="slider-non-linear-step" class="price-slider"></div>
+              </div>
+              <ul class="filter-range">
+                <li data-label="از" data-currency=" تومان">
+                  <input type="text" data-value="0" value="0" name="price[min]"
+                         data-range="0" class="js-slider-range-from disabled example-val"
+                         id="skip-value-lower" disabled="disabled">
+                </li>
+                <li data-label="تا" data-currency="تومان">
+                  <input type="text" data-value="17700000" value="17700000"
+                         name="price[max]" data-range="17700000"
+                         class="js-slider-range-to disabled example-val"
+                         id="skip-value-upper" disabled="disabled">
+                </li>
+              </ul>
+            </div>
+            <div class="mt-3 mb-3">
+              <button class="btn btn-primary d-inline-flex align-items-center">
+                <i class="fad fa-funnel-dollar ml-2"></i>
+                اعمال محدوده قیمت
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="widget widget-filter-options shadow-around">
+        <div class="widget-title">رنگ</div>
+        <div class="search-in-options form-element-row">
+          <div class="form-element-with-icon">
+            <input type="text" class="input-element" placeholder="جستجوی نام رنگ...">
+            <i class="fad fa-file-search"></i>
+          </div>
+        </div>
+        <div class="widget-content pl-3">
+          <label class="container-checkbox">
+            <span class="d-flex justify-content-between align-items-center">
+              <span>مشکی</span>
+              <span class="color-option" style="background-color: #000;"></span>
+            </span>
+            <input type="checkbox">
+            <span class="checkmark"></span>
+          </label>
+        </div>
+      </div>
+      <div class="d-md-none">
+        <button class="btn-filter-product-submit">جستجوی پیشرفته</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-9 col-md-8">
+    <div class="d-md-none">
+      <button class="btn-filter-sidebar">
+        جستجوی پیشرفته <i class="fad fa-sliders-h"></i>
+      </button>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <!-- breadcrumb -->
+        <div class="breadcrumb mb-2 pt-2">
+          <nav>
+
+          </nav>
+        </div>
+        <!-- end breadcrumb -->
+      </div>
+    </div>
+    <div class="listing-items row">
+      @foreach (var product in Model.Products.Data)
+      {
+        <div class="col-lg-3 col-md-4 col-sm-6 px-0">
+          <partial name="Shared/Product/_Card" model="product" />
+        </div>
+      }
+      <div class="col-12 px-0">
+        <div class="pagination">
+          @if (Model.Products.CurrentPage > 1)
+          {
+            <a href="#comments-list-scroll" onclick="getProductComments(@Model.Products.CurrentPage - 1)" class="prev">
+              <i class="far fa-arrow-from-left"></i>
+            </a>
+          }
+          @for (var i = Model.Products.StartPage; i <= Model.Products.EndPage; i++)
+          {
+            @if (i == Model.Products.CurrentPage)
+            {
+              <a class="current">@i</a>
+            }
+            else
+            {
+              <a href="#comments-list-scroll" onclick="getProductComments(@i)">@i</a>
+            }
+          }
+          @if (Model.Products.CurrentPage < Model.Products.PageCount)
+          {
+            <a href="#comments-list-scroll" onclick="getProductComments(@Model.Products.CurrentPage + 1)" class="next">
+              <i class="far fa-arrow-to-left"></i>
+            </a>
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -36,14 +36,14 @@
       <div class="col-11">
         <div class="row">
           <div class="col-3 pl-0">
-            <input hidden="" name="@categorySpecificationIdName" value="@Model[i].CategorySpecificationId"/>
+            <input hidden="" name="@categorySpecificationIdName" value="@Model[i].CategorySpecificationId" />
             <input hidden="" name="@isImportantName" value="@(isImportant ? "True" : "False")" id="IsImportant" />
             <input hidden="" name="@isOptionalName" value="@(isOptional ? "True" : "False")"
-                   id="@("IsOptional"+guid)" />
+                 id="@("IsOptional"+guid)" />
             <span asp-validation-for="@Model[i].CategorySpecificationId"
                 data-valmsg-for="@categorySpecificationIdName" class="d-block"></span>
             <input type="text" class="form-control" readonly="" name="@titleName"
-                   placeholder="@Model[i].Title" value="@Model[i].Title"/>
+                 placeholder="@Model[i].Title" value="@Model[i].Title" />
             <label class="mt-5px ml-3px" style="display: @(isImportant ? null : "none")">
               @(isImportant ? "ویژگی مهم" : null)
             </label>
@@ -51,7 +51,8 @@
           </div>
           <div class="col-9 pl-0">
             <textarea type="text" class="form-control" name="@descriptionName" asp-for="@Model[i].Description"
-                    placeholder="@Html.DisplayNameFor(m => Model[i].Description)" data-otherPropertyGuid="@guid"></textarea>
+                    placeholder="@Html.DisplayNameFor(m => Model[i].Description)"
+                    data-otherPropertyGuid="@guid"></textarea>
             <span asp-validation-for="@Model[i].Description" data-valmsg-for="@descriptionName"
                 class="d-block"></span>
           </div>

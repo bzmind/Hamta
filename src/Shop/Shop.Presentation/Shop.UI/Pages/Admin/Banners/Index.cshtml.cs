@@ -59,7 +59,7 @@ public class IndexModel : BaseRazorPage
         var banner = await _bannerService.GetById(id);
         if (banner == null)
         {
-            MakeAlert(ValidationMessages.FieldNotFound("بنر"));
+            MakeErrorAlert(ValidationMessages.FieldNotFound("بنر"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("بنر"), ApiStatusCode.NotFound);
         }
 

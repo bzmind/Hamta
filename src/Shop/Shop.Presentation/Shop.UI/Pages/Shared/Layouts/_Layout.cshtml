@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@ViewData["Title"]</title>
-  <link rel="stylesheet" href="/admin/css/colors.css">
   <link rel="stylesheet" href="/admin/vendors/css/vendors.min.css">
   <link rel="stylesheet" href="/assets/css/font-awesome.min.css">
   <link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css">
@@ -15,10 +14,11 @@
   <link rel="stylesheet" href="/assets/css/plugins/sweetalert2.min.css">
   <link rel="stylesheet" href="/assets/css/plugins/select2.min.css">
   <link rel="stylesheet" href="/assets/css/plugins/swiper.min.css">
+  <link rel="stylesheet" href="/admin/css/core/menu/menu-types/vertical-menu.css">
   <link rel="stylesheet" href="/assets/css/theme.css">
   <link rel="stylesheet" href="/assets/css/plugins/three-dots.css">
   <link rel="stylesheet" href="/assets/css/colors/blue.css">
-  <link rel="stylesheet" href="/assets/custom/css/custom-bootstrap.css">
+  <link rel="stylesheet" href="/assets/custom/css/utility.css">
   <link rel="stylesheet" href="/assets/custom/css/global.css">
   <link rel="stylesheet" href="/assets/custom/css/home.css">
 </head>
@@ -67,9 +67,12 @@
   <script src="/assets/js/plugins/ResizeSensor.min.js"></script>
   <script src="/assets/js/plugins/theia-sticky-sidebar.min.js"></script>
   <script src="/assets/js/plugins/wNumb.js"></script>
+  <script src="/admin/js/scripts/tooltip/tooltip.js"></script>
   <script src="/assets/js/theme.js"></script>
   <partial name="Shared/_ValidationScriptsPartial" />
   <script src="/assets/custom/js/customClientSideValidation.js"></script>
+  <script src="/admin/custom/js/repeater.js"></script>
+  <script src="/assets/custom/js/home.js"></script>
   <script src="/assets/custom/js/global.js"></script>
   @await RenderSectionAsync("Scripts", false)
   <script>
@@ -81,9 +84,7 @@
         });
     });
   </script>
-  <div id="antiForgeryToken">
-    @Html.AntiForgeryToken()
-  </div>
+  <div id="antiForgeryToken">@Html.AntiForgeryToken()</div>
 </body>
 
 </html>

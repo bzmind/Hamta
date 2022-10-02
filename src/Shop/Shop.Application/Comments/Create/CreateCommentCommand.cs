@@ -13,8 +13,9 @@ public class CreateCommentCommand : IBaseCommand<long>
     public long ProductId { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
-    public List<string>? PositiveHints { get; set; }
-    public List<string>? NegativeHints { get; set; }
+    public int Score { get; set; }
+    public List<string>? PositivePoints { get; set; }
+    public List<string>? NegativePoints { get; set; }
     public Comment.CommentRecommendation Recommendation { get; set; }
 
     private CreateCommentCommand()
@@ -35,15 +36,15 @@ public class CreateCommentCommandHandler : IBaseCommandHandler<CreateCommentComm
     public async Task<OperationResult<long>> Handle(CreateCommentCommand request, CancellationToken cancellationToken)
     {
         var comment = new Comment(request.ProductId, request.UserId, request.Title, request.Description,
-            request.Recommendation);
+            request.Score, request.Recommendation);
 
         await _commentRepository.AddAsync(comment);
 
-        if (request.PositiveHints != null && request.PositiveHints.Any())
-            comment.SetPositiveHints(request.PositiveHints);
+        if (request.PositivePoints != null && request.PositivePoints.Any())
+            comment.SetPositivePoints(request.PositivePoints);
 
-        if (request.NegativeHints != null && request.NegativeHints.Any())
-            comment.SetNegativeHints(request.NegativeHints);
+        if (request.NegativePoints != null && request.NegativePoints.Any())
+            comment.SetNegativePoints(request.NegativePoints);
 
         _commentRepository.Add(comment);
         await _commentRepository.SaveAsync();
@@ -69,11 +70,11 @@ public class CreateCommentCommandValidator : AbstractValidator<CreateCommentComm
             .NotNull().WithMessage(ValidationMessages.CommentRecommendationRequired)
             .IsInEnum().WithMessage(ValidationMessages.InvalidCommentRecommendation);
 
-        RuleForEach(r => r.NegativeHints)
+        RuleForEach(r => r.NegativePoints)
             .NotNull().WithMessage(ValidationMessages.MinCharactersLength)
             .MinimumLength(3).WithMessage(ValidationMessages.FieldCharactersMinLength("متن", 3));
 
-        RuleForEach(r => r.PositiveHints)
+        RuleForEach(r => r.PositivePoints)
             .NotNull().WithMessage(ValidationMessages.MinCharactersLength)
             .MinimumLength(3).WithMessage(ValidationMessages.FieldCharactersMinLength("متن", 3));
     }

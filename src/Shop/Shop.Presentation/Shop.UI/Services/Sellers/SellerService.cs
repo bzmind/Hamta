@@ -59,9 +59,7 @@ public class SellerService : BaseService, ISellerService
 
     public async Task<SellerFilterResult> GetByFilter(SellerFilterParams filterParams)
     {
-        var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&ShopName={filterParams.ShopName}&NationalCode={filterParams.NationalCode}" +
-                  $"&Status={filterParams.Status}";
+        var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<SellerFilterResult>(url);
         return result.Data;
     }

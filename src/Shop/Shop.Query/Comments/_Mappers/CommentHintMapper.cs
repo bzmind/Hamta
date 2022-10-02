@@ -5,7 +5,7 @@ namespace Shop.Query.Comments._Mappers;
 
 internal static class CommentHintMapper
 {
-    public static CommentHintDto MapToHintDto(this CommentHint? hint)
+    public static CommentHintDto MapToHintDto(this CommentPoint? hint)
     {
         if (hint == null)
             return null;
@@ -16,11 +16,11 @@ internal static class CommentHintMapper
             CreationDate = hint.CreationDate,
             CommentId = hint.CommentId,
             Status = hint.Status,
-            Hint = hint.Hint
+            Hint = hint.Description
         };
     }
 
-    public static List<CommentHintDto> MapToHintDto(this List<CommentHint> hints)
+    public static List<CommentHintDto> MapToHintDto(this List<CommentPoint> hints)
     {
         var dtoHints = new List<CommentHintDto>();
 
@@ -32,7 +32,7 @@ internal static class CommentHintMapper
                 CreationDate = hint.CreationDate,
                 CommentId = hint.CommentId,
                 Status = hint.Status,
-                Hint = hint.Hint
+                Hint = hint.Description
             });
         });
 

@@ -61,7 +61,7 @@ public class IndexModel : BaseRazorPage
         var role = await _roleService.GetById(roleId);
         if (role == null)
         {
-            MakeAlert(ValidationMessages.FieldNotFound("نقش"));
+            MakeErrorAlert(ValidationMessages.FieldNotFound("نقش"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("نقش"), ApiStatusCode.NotFound);
         }
 

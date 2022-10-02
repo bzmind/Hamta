@@ -102,28 +102,17 @@ public class ProductService : BaseService, IProductService
 
     public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
     {
-        var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&OldCategoryId={filterParams.OldCategoryId}&CategoryId={filterParams.CategoryId}" +
-                  $"&Name={filterParams.Name}&EnglishName={filterParams.EnglishName}&Slug={filterParams.Slug}" +
-                  $"&AverageScore={filterParams.AverageScore}&MinPrice={filterParams.MinPrice}" +
-                  $"&MaxPrice={filterParams.MaxPrice}&MinDiscountPercentage={filterParams.MinDiscountPercentage}" +
-                  $"&MaxDiscountPercentage={filterParams.MaxDiscountPercentage}";
+        var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<ProductFilterResult>(url);
         return result.Data;
     }
 
-    public async Task<ProductForShopResult> GetForShopByFilter(ProductForShopParams filterParams)
+    public async Task<ProductForShopResult> GetForShopByFilter(ProductForShopFilterParams filterFilterParams)
     {
-        var url = $"GetForShopByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&OldCategoryId={filterParams.OldCategoryId}&CategoryId={filterParams.CategoryId}" +
-                  $"&Name={filterParams.Name}&EnglishName={filterParams.EnglishName}" +
-                  $"&OnlyAvailable={filterParams.OnlyAvailable}&OnlyDiscounted={filterParams.OnlyDiscounted}" +
-                  $"&AverageScore={filterParams.AverageScore}&MinPrice={filterParams.MinPrice}" +
-                  $"&MaxPrice={filterParams.MaxPrice}&MinDiscountPercentage={filterParams.MinDiscountPercentage}" +
-                  $"&MaxDiscountPercentage={filterParams.MaxDiscountPercentage}";
-        for (var i = 0; i < filterParams.Attributes?.Count; i++)
+        var url = MakeQueryUrl("GetForShopByFilter", filterFilterParams);
+        for (var i = 0; i < filterFilterParams.Attributes?.Count; i++)
         {
-            var attr = filterParams.Attributes?[i];
+            var attr = filterFilterParams.Attributes?[i];
             url += $"&Attributes[{i}].Id={attr?.Id}&Attributes[{i}].Values[{i}]={attr?.Values?[i]}";
         }
         var result = await GetFromJsonAsync<ProductForShopResult>(url);
@@ -136,9 +125,9 @@ public class ProductService : BaseService, IProductService
         return result.Data;
     }
 
-    public async Task<ProductDto?> GetBySlug(string slug)
+    public async Task<SingleProductDto?> GetSingleBySlug(string slug)
     {
-        var result = await GetFromJsonAsync<ProductDto>($"GetBySlug/{slug}");
+        var result = await GetFromJsonAsync<SingleProductDto>($"GetSingleBySlug/{slug}");
         return result.Data;
     }
 }

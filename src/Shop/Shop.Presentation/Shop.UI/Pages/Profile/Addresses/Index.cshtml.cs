@@ -47,7 +47,7 @@ public class IndexModel : BaseRazorPage
         var address = await _userAddressService.GetById(addressId);
         if (address == null)
         {
-            MakeAlert(ValidationMessages.FieldNotFound("آدرس"));
+            MakeErrorAlert(ValidationMessages.FieldNotFound("آدرس"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("آدرس"), ApiStatusCode.NotFound);
         }
         var model = _mapper.Map<EditUserAddressViewModel>(address);

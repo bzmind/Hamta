@@ -5,6 +5,37 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 
 namespace Common.Api.Attributes;
 
+public class ListMembersNotEmptyAttribute : ValidationAttribute, IClientModelValidator
+{
+    protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
+    {
+        if (value == null)
+            return ValidationResult.Success;
+
+        var list = (IList)value;
+
+        if (list.Count == 0)
+            return ValidationResult.Success;
+
+        foreach (var item in list)
+        {
+            var str = item.ToString();
+            if (str == null || string.IsNullOrWhiteSpace(str))
+                return new ValidationResult(ErrorMessage);
+            
+        }
+
+        return ValidationResult.Success;
+    }
+
+    public void AddValidation(ClientModelValidationContext context)
+    {
+        if (!context.Attributes.ContainsKey("data-val"))
+            context.Attributes.Add("data-val", "true");
+        context.Attributes.Add("data-val-listMembersNotEmpty", ErrorMessage);
+    }
+}
+
 public class ListMembersCharactersMinLengthAttribute : ValidationAttribute, IClientModelValidator
 {
     private readonly int _charactersMinLength;
@@ -16,8 +47,10 @@ public class ListMembersCharactersMinLengthAttribute : ValidationAttribute, ICli
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        if (value is not ICollection list)
-            return new ValidationResult(ValidationMessages.InvalidList);
+        if (value == null)
+            return ValidationResult.Success;
+
+        var list = (IList)value;
 
         if (list.Count == 0)
             return ValidationResult.Success;
@@ -55,8 +88,10 @@ public class ListMembersCharactersMaxLengthAttribute : ValidationAttribute, ICli
 
     protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
     {
-        if (value is not ICollection list)
-            return new ValidationResult(ValidationMessages.InvalidList);
+        if (value == null)
+            return ValidationResult.Success;
+
+        var list = (IList)value;
 
         if (list.Count == 0)
             return ValidationResult.Success;

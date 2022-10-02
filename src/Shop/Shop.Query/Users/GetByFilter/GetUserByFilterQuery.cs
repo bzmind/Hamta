@@ -25,17 +25,13 @@ public class GetUserByFilterQueryHandler : IBaseQueryHandler<GetUserByFilterQuer
 
     public async Task<UserFilterResult> Handle(GetUserByFilterQuery request, CancellationToken cancellationToken)
     {
-        var @params = request.FilterParams;
+        var @params = request.FilterFilterParams;
 
         var query = _shopContext.Users
             .Join(_shopContext.Avatars,
-                u => u.AvatarId,
-                a => a.Id,
-                (user, avatar) => new
-                {
-                    user,
-                    avatar
-                })
+                user => user.AvatarId,
+                avatar => avatar.Id,
+                (user, avatar) => new { user, avatar })
             .OrderByDescending(c => c.user.Id).AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(@params.Name))
@@ -49,33 +45,35 @@ public class GetUserByFilterQueryHandler : IBaseQueryHandler<GetUserByFilterQuer
 
         var skip = (@params.PageId - 1) * @params.Take;
 
-        var finalQuery = await query
+        var queryResult = await query
             .Skip(skip)
             .Take(@params.Take)
             .Select(c => c.user.MapToUserFilterDto(c.avatar))
             .ToListAsync(cancellationToken);
 
         var roleIds = new List<long>();
-        finalQuery.ForEach(u =>
+        queryResult.ForEach(user =>
         {
-            u.Roles.ForEach(r => roleIds.Add(r.RoleId));
+            user.Roles.ForEach(roleDto => roleIds.Add(roleDto.RoleId));
         });
 
         var roles = await _shopContext.Roles.Where(r => roleIds.Contains(r.Id)).ToListAsync(cancellationToken);
 
-        finalQuery.ForEach(u =>
+        queryResult.ForEach(user =>
         {
-            u.Roles.ForEach(r =>
+            user.Roles.ForEach(roleDto =>
             {
-                var role = roles.First(rl => rl.Id == r.RoleId);
-                r.RoleTitle = role.Title;
+                var role = roles.First(role => role.Id == roleDto.RoleId);
+                roleDto.RoleTitle = role.Title;
             });
         });
 
-        return new UserFilterResult
+        var model = new UserFilterResult
         {
-            Data = finalQuery,
+            Data = queryResult,
             FilterParams = @params
         };
+        model.GeneratePaging(query.Count(), @params.Take, @params.PageId);
+        return model;
     }
 }

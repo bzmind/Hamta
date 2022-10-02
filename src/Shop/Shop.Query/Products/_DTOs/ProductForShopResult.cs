@@ -4,9 +4,10 @@ using Shop.Domain.ColorAggregate;
 
 namespace Shop.Query.Products._DTOs;
 
-public class ProductForShopResult : BaseFilterResult<ProductForShopDto, ProductForShopParams>
+public class ProductForShopResult : BaseFilterResult<ProductForShopDto, ProductForShopFilterParams>
 {
     public int HighestPriceInCategory { get; set; }
+    public List<ProductForShopAttributesDto>? Attributes { get; set; }
 }
 
 public class ProductForShopDto : BaseDto
@@ -18,19 +19,19 @@ public class ProductForShopDto : BaseDto
     public string MainImage { get; set; }
     public int Price { get; set; }
     public int DiscountPercentage { get; set; }
-    public float AverageScore { get; set; }
+    public int AverageScore { get; set; }
     public int AllQuantityInStock { get; set; }
     public List<Color> Colors { get; set; } = new();
     public int TotalPrice => Price - (int)Math.Round(Price * (double)DiscountPercentage / 100);
 }
 
-public class ProductForShopParams : BaseFilterParams
+public class ProductForShopFilterParams : BaseFilterParams
 {
     public long? CategoryId { get; set; }
     public long? OldCategoryId { get; set; }
+    public string? CategorySlug { get; set; }
     public List<ProductForShopAttributesDto>? Attributes { get; set; }
     public string? Name { get; set; }
-    public string? EnglishName { get; set; }
     public int? AverageScore { get; set; }
     public int? MinPrice { get; set; }
     public int? MaxPrice { get; set; }

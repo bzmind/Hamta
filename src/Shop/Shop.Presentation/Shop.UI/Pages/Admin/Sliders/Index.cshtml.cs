@@ -59,7 +59,7 @@ public class IndexModel : BaseRazorPage
         var slider = await _sliderService.GetById(id);
         if (slider == null)
         {
-            MakeAlert(ValidationMessages.FieldNotFound("اسلایدر"));
+            MakeErrorAlert(ValidationMessages.FieldNotFound("اسلایدر"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("اسلایدر"), ApiStatusCode.NotFound);
         }
 

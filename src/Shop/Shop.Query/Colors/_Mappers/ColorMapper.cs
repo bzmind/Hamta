@@ -18,22 +18,4 @@ internal static class ColorMapper
             Code = color.Code
         };
     }
-
-    public static List<ColorDto> MapToColorDto(this List<Color> colors)
-    {
-        var dtoColors = new List<ColorDto>();
-
-        colors.ForEach(color =>
-        {
-            dtoColors.Add(new ColorDto
-            {
-                Id = color.Id,
-                CreationDate = color.CreationDate,
-                Name = color.Name,
-                Code = color.Code
-            });
-        });
-
-        return dtoColors;
-    }
 }

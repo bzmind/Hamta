@@ -25,7 +25,7 @@ public class GetColorByFilterQueryHandler : IBaseQueryHandler<GetColorByFilterQu
 
     public async Task<ColorFilterResult> Handle(GetColorByFilterQuery request, CancellationToken cancellationToken)
     {
-        var @params = request.FilterParams;
+        var @params = request.FilterFilterParams;
 
         var query = _shopContext.Colors.OrderBy(c => c.CreationDate).AsQueryable();
 
@@ -40,15 +40,17 @@ public class GetColorByFilterQueryHandler : IBaseQueryHandler<GetColorByFilterQu
 
         var skip = (@params.PageId - 1) * @params.Take;
 
-        var finalQuery = await query
+        var queryResult = await query
             .Skip(skip)
             .Select(c => c.MapToColorDto())
             .ToListAsync(cancellationToken);
 
-        return new ColorFilterResult
+        var model = new ColorFilterResult
         {
-            Data = finalQuery,
+            Data = queryResult,
             FilterParams = @params
         };
+        model.GeneratePaging(query.Count(), @params.Take, @params.PageId);
+        return model;
     }
 }

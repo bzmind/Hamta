@@ -9,22 +9,23 @@ public class Comment : BaseAggregateRoot
     public long ProductId { get; private set; }
     public string Title { get; private set; }
     public string Description { get; private set; }
-
-    private readonly List<CommentHint> _commentHints = new();
-    public IEnumerable<CommentHint> CommentHints => _commentHints.ToList();
     public CommentStatus Status { get; private set; }
     public CommentRecommendation Recommendation { get; private set; }
     public int Likes { get; private set; }
     public int Dislikes { get; private set; }
+    public int Score { get; set; }
+
+    private readonly List<CommentPoint> _commentPoints = new();
+    public IEnumerable<CommentPoint> CommentPoints => _commentPoints.ToList();
 
     private readonly List<CommentReaction> _commentReactions = new();
     public IEnumerable<CommentReaction> CommentReactions => _commentReactions.ToList();
 
     public enum CommentRecommendation
     {
-        Neutral,
-        Positive,
-        Negative
+        مطمئن_نیستم,
+        پیشنهاد_میکنم,
+        پیشنهاد_نمیکنم
     }
 
     public enum CommentStatus
@@ -39,10 +40,10 @@ public class Comment : BaseAggregateRoot
 
     }
 
-    public Comment(long productId, long userId, string title, string description,
+    public Comment(long productId, long userId, string title, string description, int score,
         CommentRecommendation recommendation)
     {
-        Guard(title, description);
+        Guard(title, description, score);
         ProductId = productId;
         UserId = userId;
         Title = title;
@@ -53,34 +54,34 @@ public class Comment : BaseAggregateRoot
         Dislikes = 0;
     }
 
-    public void SetPositiveHints(List<string> positiveHints)
+    public void SetPositivePoints(List<string> positivePoints)
     {
-        ValidateCommentPoints(positiveHints, nameof(positiveHints));
+        ValidateCommentPoints(positivePoints, nameof(positivePoints));
 
-        var commentHints = new List<CommentHint>();
-        positiveHints.ForEach(positiveHint =>
+        var commentPoints = new List<CommentPoint>();
+        positivePoints.ForEach(positivePoint =>
         {
-            commentHints.Add(new CommentHint(Id, CommentHint.HintStatus.Positive, positiveHint));
+            commentPoints.Add(new CommentPoint(Id, CommentPoint.PointStatus.Positive, positivePoint));
         });
-        _commentHints.AddRange(commentHints);
+        _commentPoints.AddRange(commentPoints);
 
-        if (_commentHints.Count > 20)
-            throw new OperationNotAllowedDomainException("Comment hints can't be more than 20");
+        if (_commentPoints.Count > 20)
+            throw new OperationNotAllowedDomainException("Comment points can't be more than 20");
     }
 
-    public void SetNegativeHints(List<string> negativeHints)
+    public void SetNegativePoints(List<string> negativePoints)
     {
-        ValidateCommentPoints(negativeHints, nameof(negativeHints));
+        ValidateCommentPoints(negativePoints, nameof(negativePoints));
 
-        var commentHints = new List<CommentHint>();
-        negativeHints.ForEach(negativeHint =>
+        var commentPoints = new List<CommentPoint>();
+        negativePoints.ForEach(negativePoint =>
         {
-            commentHints.Add(new CommentHint(Id, CommentHint.HintStatus.Negative, negativeHint));
+            commentPoints.Add(new CommentPoint(Id, CommentPoint.PointStatus.Negative, negativePoint));
         });
-        _commentHints.AddRange(commentHints);
+        _commentPoints.AddRange(commentPoints);
 
-        if (_commentHints.Count > 20)
-            throw new OperationNotAllowedDomainException("Comment hints can't be more than 20");
+        if (_commentPoints.Count > 20)
+            throw new OperationNotAllowedDomainException("Comment points can't be more than 20");
     }
 
     public void SetCommentStatus(CommentStatus status)
@@ -143,10 +144,11 @@ public class Comment : BaseAggregateRoot
         Dislikes++;
     }
 
-    private void Guard(string title, string description)
+    private void Guard(string title, string description, int score)
     {
         NullOrEmptyDataDomainException.CheckString(title, nameof(title));
         NullOrEmptyDataDomainException.CheckString(description, nameof(description));
+        OutOfRangeValueDomainException.CheckRange(0, 5, score, nameof(score));
     }
 
     private void ValidateCommentPoints(List<string>? points, string fieldName)

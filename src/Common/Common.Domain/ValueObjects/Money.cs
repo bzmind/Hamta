@@ -11,10 +11,10 @@ public class Money : BaseValueObject
 
     }
 
-    public Money(int tomanPrice)
+    public Money(int value)
     {
-        Guard(tomanPrice);
-        Value = tomanPrice;
+        Guard(value);
+        Value = value;
     }
 
     public static Money operator +(Money firstMoney, Money secondMoney)

@@ -2,7 +2,7 @@
 using Shop.Query.Orders._DTOs;
 using System.Text.Json;
 using Shop.API.ViewModels.Orders;
-using Shop.API.ViewModels.Comments;
+using Shop.Domain.OrderAggregate;
 
 namespace Shop.UI.Services.Orders;
 
@@ -12,7 +12,7 @@ public class OrderService : BaseService, IOrderService
 
     public OrderService(HttpClient client, JsonSerializerOptions jsonOptions) : base(client, jsonOptions) { }
 
-    public async Task<ApiResult> Create(CreateCommentViewModel model)
+    public async Task<ApiResult> AddItem(AddOrderItemViewModel model)
     {
         return await PostAsJsonAsync("AddItem", model);
     }
@@ -22,14 +22,14 @@ public class OrderService : BaseService, IOrderService
         return await PutAsJsonAsync("Checkout", model);
     }
 
-    public async Task<ApiResult> IncreaseItemCount(long orderItemId)
+    public async Task<ApiResult> IncreaseItemCount(long itemId)
     {
-        return await PutAsync($"IncreaseItemCount/{orderItemId}");
+        return await PutAsync($"IncreaseItemCount/{itemId}");
     }
 
-    public async Task<ApiResult> DecreaseItemCount(long orderItemId)
+    public async Task<ApiResult> DecreaseItemCount(long itemId)
     {
-        return await PutAsync($"DecreaseItemCount/{orderItemId}");
+        return await PutAsync($"DecreaseItemCount/{itemId}");
     }
 
     public async Task<ApiResult> SetStatus(SetOrderStatusViewModel model)
@@ -37,9 +37,9 @@ public class OrderService : BaseService, IOrderService
         return await PutAsJsonAsync("SetStatus", model);
     }
 
-    public async Task<ApiResult> Remove(long orderItemId)
+    public async Task<ApiResult> RemoveItem(long itemId)
     {
-        return await DeleteAsync($"Remove/{orderItemId}");
+        return await DeleteAsync($"RemoveItem/{itemId}");
     }
 
     public async Task<OrderDto?> GetById(long orderId)
@@ -48,11 +48,15 @@ public class OrderService : BaseService, IOrderService
         return result.Data;
     }
 
+    public async Task<OrderDto?> GetByUserId(long userId)
+    {
+        var result = await GetFromJsonAsync<OrderDto>($"GetByUserId/{userId}");
+        return result.Data;
+    }
+
     public async Task<OrderFilterResult> GetByFilter(OrderFilterParams filterParams)
     {
-        var url = $"GetByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
-                  $"&UserId={filterParams.UserId}&StartDate={filterParams.StartDate}" +
-                  $"&EndDate={filterParams.EndDate}&Status={filterParams.Status}";
+        var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<OrderFilterResult>(url);
         return result.Data;
     }

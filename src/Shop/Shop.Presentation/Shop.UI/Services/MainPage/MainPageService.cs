@@ -12,7 +12,8 @@ public class MainPageService : IMainPageService
     private readonly IBannerService _bannerService;
     private readonly IProductService _productService;
 
-    public MainPageService(ISliderService sliderService, IBannerService bannerService, IProductService productService)
+    public MainPageService(ISliderService sliderService, IBannerService bannerService,
+        IProductService productService)
     {
         _sliderService = sliderService;
         _bannerService = bannerService;
@@ -23,18 +24,18 @@ public class MainPageService : IMainPageService
     {
         var sliders = await _sliderService.GetAll();
         var banners = await _bannerService.GetAll();
-        var saleProducts = await _productService.GetForShopByFilter(new ProductForShopParams
+        var saleProducts = await _productService.GetForShopByFilter(new ProductForShopFilterParams
         {
             PageId = 1,
             Take = 5,
             MinDiscountPercentage = 15
         });
-        var mostSoldProducts = await _productService.GetForShopByFilter(new ProductForShopParams
+        var mostSoldProducts = await _productService.GetForShopByFilter(new ProductForShopFilterParams
         {
             PageId = 1,
             Take = 9
         });
-        var categoryProducts = await _productService.GetForShopByFilter(new ProductForShopParams
+        var categoryProducts = await _productService.GetForShopByFilter(new ProductForShopFilterParams
         {
             PageId = 1,
             Take = 8,

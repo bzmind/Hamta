@@ -3,6 +3,7 @@ using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.RemoveItem;
 using Shop.Application.Orders.SetStatus;
+using Shop.Domain.OrderAggregate;
 using Shop.Query.Orders._DTOs;
 
 namespace Shop.Presentation.Facade.Orders;
@@ -17,5 +18,6 @@ public interface IOrderFacade
     Task<OperationResult> Checkout(CheckoutOrderCommand command);
 
     Task<OrderDto?> GetById(long id);
+    Task<OrderDto?> GetByUserId(long userId);
     Task<OrderFilterResult> GetByFilter(OrderFilterParams filterParams);
 }

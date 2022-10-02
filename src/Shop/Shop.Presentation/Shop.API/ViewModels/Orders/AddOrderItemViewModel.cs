@@ -1,6 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using Common.Application.Utility.Validation;
+using static System.Double;
 
 namespace Shop.API.ViewModels.Orders;
 
@@ -11,6 +12,6 @@ public class AddOrderItemViewModel
 
     [DisplayName("تعداد سفارش")]
     [Required(ErrorMessage = ValidationMessages.QuantityRequired)]
-    [MinLength(1, ErrorMessage = "{0} باید بیشتر از 0 باشد")]
+    [Range(1, PositiveInfinity, ErrorMessage = "{0} باید بیشتر از 0 باشد")]
     public int Quantity { get; set; }
 }

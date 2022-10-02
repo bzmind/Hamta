@@ -1,4 +1,9 @@
-﻿.field-validation-error, .field-validation-error span {
+﻿* {
+  scroll-behavior: smooth;
+}
+
+.field-validation-error, .field-validation-error span {
+  display: block;
   color: #ff4242 !important;
   font-size: 13px;
   margin-top: 5px;
@@ -219,4 +224,57 @@
 
 .main-slider .main-page-slider a img {
   width: 100%;
+}
+
+.bx {
+  font-size: 20px;
+}
+
+.sellers .card {
+  border-radius: 10px;
+  margin: 5px 0;
+  border: 1px solid #ededed;
+}
+
+.sellers .card-body {
+  display: flex;
+  align-items: center;
+  font-size: 15px;
+}
+
+.seller-item {
+  font-size: 17px;
+  flex: 1;
+  text-align: left;
+}
+
+.seller-item.shop-name i {
+  font-size: 25px;
+}
+
+.shop-name {
+  text-align: right;
+  font-weight: bold;
+}
+
+.seller-item.add-to-cart {
+  flex: 2;
+}
+
+@media (max-width: 495px) {
+  .sellers .card-body {
+    flex-direction: column;
+  }
+
+  .seller-item {
+    margin: 10px 0;
+    text-align: center;
+    width: 100%;
+  }
+}
+
+.tooltip .tooltip-inner {
+  background-color: #525252;
+  font-size: 12px;
+  color: white;
 }

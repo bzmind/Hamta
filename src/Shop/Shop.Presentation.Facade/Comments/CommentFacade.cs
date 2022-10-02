@@ -5,6 +5,7 @@ using Shop.Application.Comments.Remove;
 using Shop.Application.Comments.SetDislikes;
 using Shop.Application.Comments.SetLikes;
 using Shop.Application.Comments.SetStatus;
+using Shop.Domain.CommentAggregate;
 using Shop.Query.Comments._DTOs;
 using Shop.Query.Comments.GetByFilter;
 using Shop.Query.Comments.GetById;
@@ -52,6 +53,17 @@ internal class CommentFacade : ICommentFacade
 
     public async Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams)
     {
-        return await _mediator.Send(new GetCommentByFilterQuery(filterParams));
+        return await _mediator.Send(new GetCommentsByFilterQuery(filterParams));
+    }
+
+    public async Task<CommentFilterResult> GetForProduct(ProductCommentFilterParams filterParams)
+    {
+        return await _mediator.Send(new GetCommentsByFilterQuery(new CommentFilterParams
+        {
+            PageId = filterParams.PageId,
+            ProductId = filterParams.ProductId,
+            Take = filterParams.Take,
+            Status = Comment.CommentStatus.Accepted
+        }));
     }
 }

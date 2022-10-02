@@ -1,0 +1,133 @@
+﻿@page "{handler?}"
+@using Common.Application.Utility.FileUtility
+@model Shop.UI.Pages.CartModel
+@{
+  ViewData["Title"] = "سبد خرید";
+}
+
+@if (Model.Order != null)
+{
+  <div class="row mb-4">
+    <div class="col-xl-9 col-lg-8 col-md-8 mb-md-0 mb-3">
+      <div class="checkout-section shadow-around">
+        <div class="checkout-step">
+          <ul>
+            <li class="active"><span>سبد خرید</span></li>
+            <li>
+              <span>نحوه ارسال و پرداخت</span>
+            </li>
+            <li>
+              <span>اتمام خرید و ارسال</span>
+            </li>
+          </ul>
+        </div>
+        <div class="checkout-section-content">
+          <div class="cart-items">
+            @foreach (var item in Model.Order.Items)
+            {
+              <div class="cart-item py-4 px-3">
+                <div class="item-thumbnail">
+                  <a href="/product/@item.ProductSlug">
+                    <img src="@ServerPaths.GetProductMainImagePath(item.ProductMainImage)" alt="@item.ProductName">
+                  </a>
+                </div>
+                <div class="item-info flex-grow-1">
+                  <div class="item-title">
+                    <h2>
+                      <a href="/product/@item.ProductSlug">
+                        @item.ProductName
+                      </a>
+                    </h2>
+                  </div>
+                  <div class="item-detail">
+                    <ul>
+                      <li>
+                        <span class="color" style="background-color: @item.ColorCode;"></span>
+                        <span>@item.ColorName</span>
+                      </li>
+                      <li>
+                        <i class="far fa-store-alt text-muted"></i>
+                        <span>@item.InventoryShopName</span>
+                      </li>
+                    </ul>
+                    <div class="item-quantity--item-price">
+                      <div id="itemQuantity" class="item-quantity">
+                        <div class="num-block">
+                          <div class="num-in">
+                            <span class="plus"
+                              onclick="sendAjaxPostWithRouteDataAndReplaceElement
+                              (event, '@Url.Page("Cart", "IncreaseItemCount", new { itemId = item.Id })', '#itemQuantity')">
+                            </span>
+                            <input type="text" value="@item.Count" readonly>
+                            @if (item.Count == 1)
+                            {
+                              <delete url="@Url.Page("Cart", "RemoveItem", new { itemId = item.Id })"
+                                class="d-flex fd-col p-0 ai-end jc-center h-32px w-30px c-danger bg-none">
+                                <i class="far fa-trash-alt fs-18px"></i>
+                              </delete>
+                            }
+                            else
+                            {
+                              <span class="minus @(item.Count > 1 ? null : "dis")"
+                              onclick="sendAjaxPostWithRouteDataAndReplaceElement
+                              (event, '@Url.Page("Cart", "DecreaseItemCount", new { itemId = item.Id })', '#itemQuantity')">
+                              </span>
+                            }
+                          </div>
+                        </div>
+                      </div>
+                      <div class="item-price">
+                        @((item.SingleTotalPrice * item.Count).ToString("#,0"))<span class="text-sm mr-1">تومان</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-xl-3 col-lg-4 col-md-4">
+      @{
+        var totalPriceWithoutDiscount = Model.Order.Items.Sum(i => i.Price * i.Count);
+        var totalDiscountAmount = Model.Order.Items.Sum(i => i.DiscountAmount * i.Count);
+        var discount = totalDiscountAmount * 100 / totalPriceWithoutDiscount;
+      }
+      <div class="shadow-around pt-3">
+        <div class="d-flex jc-between px-3 py-2">
+          <span class="text-muted">قیمت کالاها (@Model.Order.Items.Sum(i => i.Count))</span>
+          <span class="text-muted">
+            @totalPriceWithoutDiscount.ToString("#,0")
+            <span class="text-sm">تومان</span>
+          </span>
+        </div>
+        <div class="d-flex jc-between px-3 py-2">
+          <span class="text-muted">تخفیف کالاها</span>
+          <b class="text-danger">
+            (٪@discount) @totalDiscountAmount.ToString("#,0")
+            <span class="text-sm">تومان</span>
+          </b>
+        </div>
+        <hr>
+        <div class="d-flex jc-between px-3 py-2">
+          <span class="font-weight-bold">مبلغ قابل پرداخت</span>
+          <span class="font-weight-bold">
+            @Model.Order.OrderTotalPrice.ToString("#,0")
+            <span class="text-sm">تومان</span>
+          </span>
+        </div>
+        <div class="d-flex px-3 py-4">
+          <a href="#" class="btn btn-primary btn-block py-2">ادامه فرایند خرید</a>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+else
+{
+  <div class="text-center">
+    <div class="alert alert-info">سبد خرید شما خالی می باشد</div>
+    <a class="btn btn-lg btn-primary" asp-page="Index">بازگشت به فروشگاه</a>
+  </div>
+}

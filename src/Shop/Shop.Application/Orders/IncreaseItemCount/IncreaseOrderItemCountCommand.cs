@@ -24,15 +24,15 @@ public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<Increase
         if (order == null)
             return OperationResult.NotFound("سفارش یافت نشد");
 
-        var itemToBeIncreased = order.Items.FirstOrDefault(oi => oi.Id == request.OrderItemId);
-        if (itemToBeIncreased == null)
+        var itemToIncrease = order.Items.FirstOrDefault(oi => oi.Id == request.OrderItemId);
+        if (itemToIncrease == null)
             return OperationResult.NotFound("محصول یافت نشد");
 
-        var inventory = await _sellerRepository.GetInventoryByIdAsTrackingAsync(itemToBeIncreased.InventoryId);
+        var inventory = await _sellerRepository.GetInventoryByIdAsync(itemToIncrease.InventoryId);
         if (inventory == null)
             return OperationResult.NotFound("انبار یافت نشد");
 
-        if (inventory.Quantity - 1 == 0)
+        if (inventory.Quantity - itemToIncrease.Count == 0)
             return OperationResult.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
 
         order.IncreaseItemCount(request.OrderItemId);

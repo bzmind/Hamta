@@ -4,7 +4,6 @@ namespace Shop.Query.Users._DTOs;
 
 public class UserFilterResult : BaseFilterResult<UserFilterDto, UserFilterParams>
 {
-
 }
 
 public class UserFilterParams : BaseFilterParams

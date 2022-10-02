@@ -4,7 +4,6 @@ namespace Shop.Query.Colors._DTOs;
 
 public class ColorFilterResult : BaseFilterResult<ColorDto, ColorFilterParams>
 {
-    
 }
 
 public class ColorFilterParams : BaseFilterParams

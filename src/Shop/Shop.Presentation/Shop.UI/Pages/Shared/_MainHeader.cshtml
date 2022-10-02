@@ -15,20 +15,14 @@
         </div>
         <div class="search-box">
           <form action="/search">
-            <input type="text" placeholder="نام محصول یا برند را جستجو کنید...">
+            <input type="text" name="FilterParams.Name" placeholder="نام محصول را جستجو کنید...">
             <i class="far fa-search"></i>
           </form>
         </div>
       </div>
       <div class="user-items">
-        <div class="user-item">
-          <a href="#">
-            <i class="fal fa-heart"></i>
-            <span class="bag-items-number">3</span>
-          </a>
-        </div>
         <div class="user-item cart-list">
-          <a href="#">
+          <a href="/cart">
             <i class="fal fa-shopping-basket"></i>
             <span class="bag-items-number">2</span>
           </a>
@@ -109,7 +103,7 @@
                 <span class="total">4,050,000 تومان</span>
               </span>
               <span class="d-block text-center px-2">
-                <a href="#" class="btn-cart">
+                <a href="/cart" class="btn-cart">
                   مشاهده سبد خرید
                   <i class="mi mi-ShoppingCart"></i>
                 </a>
@@ -184,19 +178,19 @@
             @foreach (var category in categories)
             {
               <li>
-                <a href="">@category.Title</a>
+                <a href="/search?FilterParams.CategorySlug=@category.Slug">@category.Title</a>
                 <ul class="row">
                   <li class="col-12">
-                    <a href="/search?category=@category.Slug">همه دسته بندی های @category.Title</a>
+                    <a href="/search?FilterParams.CategorySlug=@category.Slug">همه دسته بندی های @category.Title</a>
                   </li>
                   @foreach (var subCategory in category.SubCategories)
                   {
                     <li class="col-3">
-                      <a href="/search?category=@subCategory.Slug">@subCategory.Title</a>
+                      <a href="/search?FilterParams.CategorySlug=@subCategory.Slug">@subCategory.Title</a>
                       <ul>
                         @foreach (var subSubCategory in subCategory.SubCategories)
                         {
-                          <li><a href="/search?category=@subSubCategory.Slug">@subSubCategory.Title</a></li>
+                          <li><a href="/search?FilterParams.CategorySlug=@subSubCategory.Slug">@subSubCategory.Title</a></li>
                         }
                       </ul>
                     </li>

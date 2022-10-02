@@ -25,7 +25,7 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
 
     public async Task<QuestionFilterResult> Handle(GetQuestionByFilterQuery request, CancellationToken cancellationToken)
     {
-        var @params = request.FilterParams;
+        var @params = request.FilterFilterParams;
 
         var query = _shopContext.Questions
             .OrderByDescending(q => q.CreationDate)
@@ -47,13 +47,13 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
 
         var skip = (@params.PageId - 1) * @params.Take;
 
-        var finalQuery = await query
+        var queryResult = await query
             .Skip(skip)
             .Take(@params.Take)
             .ToListAsync(cancellationToken);
 
         var repliesUserIds = new List<long>();
-        finalQuery.ForEach(qDto =>
+        queryResult.ForEach(qDto =>
         {
             qDto.Replies.ForEach(rDto =>
             {
@@ -64,7 +64,7 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
         var users = await _shopContext.Users
             .Where(c => repliesUserIds.Contains(c.Id)).ToListAsync(cancellationToken);
 
-        finalQuery.ForEach(qDto =>
+        queryResult.ForEach(qDto =>
         {
             qDto.Replies.ForEach(rDto =>
             {
@@ -73,10 +73,12 @@ public class GetQuestionByFilterQueryHandler : IBaseQueryHandler<GetQuestionByFi
             });
         });
 
-        return new QuestionFilterResult
+        var model = new QuestionFilterResult
         {
-            Data = finalQuery,
+            Data = queryResult,
             FilterParams = @params
         };
+        model.GeneratePaging(query.Count(), @params.Take, @params.PageId);
+        return model;
     }
 }

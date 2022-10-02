@@ -1,12 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
+﻿using Microsoft.AspNetCore.Mvc.RazorPages;
+using Shop.UI.Services.MainPage;
+using Shop.UI.ViewModels.MainPage;
 
 namespace Shop.UI.Pages;
 
 public class IndexModel : PageModel
 {
-    public async Task<IActionResult> OnGet()
+    private readonly IMainPageService _mainPageService;
+
+    public IndexModel(IMainPageService mainPageService)
     {
-        return Page();
+        _mainPageService = mainPageService;
+    }
+
+    public MainPageViewModel PageData { get; set; }
+
+    public async Task OnGet()
+    {
+        PageData = await _mainPageService.GetMainPageData();
     }
 }

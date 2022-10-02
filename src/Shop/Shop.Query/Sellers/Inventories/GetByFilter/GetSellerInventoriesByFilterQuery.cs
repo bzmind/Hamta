@@ -28,7 +28,7 @@ public class GetSellerInventoriesByFilterQueryHandler :
     public async Task<SellerInventoryFilterResult> Handle(GetSellerInventoriesByFilterQuery request,
         CancellationToken cancellationToken)
     {
-        var @params = request.FilterParams;
+        var @params = request.FilterFilterParams;
 
         var query = _shopContext.Sellers
             .Where(seller => seller.UserId == @params.UserId)
@@ -86,11 +86,13 @@ public class GetSellerInventoriesByFilterQueryHandler :
             .Select(tables => tables.tables.inventory.MapToSellerInventoryDto(tables.color, tables.tables.product))
             .ToListAsync(cancellationToken);
 
-        return new SellerInventoryFilterResult
+        var model = new SellerInventoryFilterResult
         {
             Data = queryResult,
             FilterParams = @params,
             HighestPriceInInventory = highestPriceInInventory
         };
+        model.GeneratePaging(query.Count(), @params.Take, @params.PageId);
+        return model;
     }
 }

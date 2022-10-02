@@ -3,10 +3,10 @@
 public class BaseFilterQuery<TResponse, TParam> : IBaseQuery<TResponse> where TResponse : BaseFilter
     where TParam : BaseFilterParams
 {
-    public TParam FilterParams { get; set; }
+    public TParam FilterFilterParams { get; set; }
 
-    public BaseFilterQuery(TParam filterParams)
+    public BaseFilterQuery(TParam filterFilterParams)
     {
-        FilterParams = filterParams;
+        FilterFilterParams = filterFilterParams;
     }
 }

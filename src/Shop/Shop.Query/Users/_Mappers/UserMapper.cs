@@ -87,22 +87,20 @@ internal static class UserMapper
     public static async Task<UserDto> GetFavoriteItemsDto(this UserDto userDto, DapperContext dapperContext)
     {
         using var connection = dapperContext.CreateConnection();
-        var sql = $@"SELECT
-                        fi.UserId, fi.ProductId, p.Name AS ProductName, p.MainImage,
-                        i.Price AS ProductPrice, AVG(ps.Value) AS AverageScore, i.IsAvailable
-                    FROM {dapperContext.UserFavoriteItems} fi
-                    LEFT JOIN {dapperContext.Products} p
-                        ON p.id = fi.ProductId
-                    LEFT JOIN {dapperContext.ProductScores} ps
-                        ON ps.ProductId = p.Id
-                    LEFT JOIN {dapperContext.SellerInventories} i
-                        ON i.ProductId = fi.ProductId
-                    WHERE fi.UserId = @UserDtoId
-                    GROUP BY
-                        fi.UserId, fi.ProductId, p.Name, p.MainImage, i.Price, i.IsAvailable";
+        var sql = $@"
+            SELECT
+                fi.UserId, fi.ProductId, p.Name AS ProductName, p.MainImage, i.Price AS ProductPrice,
+                AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore, i.IsAvailable
+            FROM {dapperContext.UserFavoriteItems} fi
+            LEFT JOIN {dapperContext.Products} p
+                ON p.id = fi.ProductId
+            LEFT JOIN {dapperContext.Comments} c
+                ON c.ProductId = p.Id
+            LEFT JOIN {dapperContext.SellerInventories} i
+                ON i.ProductId = fi.ProductId
+            WHERE fi.UserId = @UserDtoId";
 
-        var result = await connection
-            .QueryAsync<UserFavoriteItemDto>(sql, new { UserDtoId = userDto.Id });
+        var result = await connection.QueryAsync<UserFavoriteItemDto>(sql, new { UserDtoId = userDto.Id });
 
         userDto.FavoriteItems = result.ToList();
         return userDto;

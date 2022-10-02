@@ -4,14 +4,14 @@ namespace Shop.Infrastructure.Utility;
 
 public static class Utility
 {
-    public static void FillSubCategories(this Category parentToBeFilled, List<Category> categories)
+    public static void FillSubCategories(this Category categoryToFill, List<Category> categoriesToFillFrom)
     {
-        categories.ForEach(category =>
+        categoriesToFillFrom.ForEach(category =>
         {
-            if (category.ParentId == parentToBeFilled.Id)
+            if (category.ParentId == categoryToFill.Id)
             {
-                parentToBeFilled.AddSubCategory(category);
-                FillSubCategories(category, categories);
+                categoryToFill.AddSubCategory(category);
+                FillSubCategories(category, categoriesToFillFrom);
             }
         });
     }

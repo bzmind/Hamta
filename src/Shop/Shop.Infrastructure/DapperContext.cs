@@ -5,6 +5,7 @@ namespace Shop.Infrastructure;
 
 public class DapperContext
 {
+    public string Avatars => "[avatar].Avatars";
     public string Categories => "[category].Categories";
     public string CategorySpecifications => "[category].Specifications";
     public string Sellers => "[seller].Sellers";
@@ -18,10 +19,11 @@ public class DapperContext
     public string OrderItems => "[order].Items";
     public string Products => "[product].Products";
     public string ProductCategorySpecifications => "[product].CategorySpecifications";
-    public string ProductScores => "[product].Scores";
+    public string ProductSpecifications => "[product].Specifications";
+    public string ProductGalleryImages => "[product].GalleryImages";
     public string Colors => "[color].Colors";
     public string Comments => "[comment].Comments";
-    public string CommentHints => "[comment].Hints";
+    public string CommentPoints => "[comment].Points";
     public string Roles => "[role].Roles";
     public string Shippings => "[shipping].Shippings";
 

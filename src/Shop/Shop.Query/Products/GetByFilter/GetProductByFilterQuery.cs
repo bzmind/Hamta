@@ -28,7 +28,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
 
     public async Task<ProductFilterResult> Handle(GetProductByFilterQuery request, CancellationToken cancellationToken)
     {
-        var @params = request.FilterParams;
+        var @params = request.FilterFilterParams;
         var skip = (@params.PageId - 1) * @params.Take;
 
         var categoryHasChanged = false;
@@ -79,16 +79,13 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             joinWithCategories = @"JOIN category_children cc ON p.CategoryId = cc.Id";
 
         if (!string.IsNullOrWhiteSpace(@params.Name))
-            conditions += $" AND p.Name LIKE N'%{@params.Name}%'";
-
-        if (!string.IsNullOrWhiteSpace(@params.EnglishName))
-            conditions += $" AND p.EnglishName LIKE N'%{@params.EnglishName}%'";
+            conditions += $" AND (p.Name LIKE N'%{@params.Name}%' OR p.EnglishName LIKE N'%{@params.Name}%')";
 
         if (!string.IsNullOrWhiteSpace(@params.Slug))
             conditions += $" AND p.Slug LIKE N'%{@params.Slug}%'";
 
         if (@params.AverageScore != null)
-            conditions += $" AND ps.Value >= {@params.AverageScore}";
+            conditions += $" AND c.Score >= {@params.AverageScore}";
 
         if (@params.MinPrice != null)
             conditions += $" AND (i.Price >= {@params.MinPrice} OR i.Price IS NULL)";
@@ -118,7 +115,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             )
             SELECT DISTINCT
             	p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate,
-            	AVG(ps.Value) OVER (PARTITION BY p.Id) AS AverageScore,
+            	AVG(cmnt.Score) OVER (PARTITION BY p.Id) AS AverageScore,
                 i.Id AS InventoryId,
             	MIN(i.Price) OVER (PARTITION BY p.Id) AS LowestInventoryPrice,
             	MAX(i.Price) OVER (PARTITION BY p.Id) AS HighestInventoryPrice,
@@ -133,8 +130,8 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             	FETCH NEXT @take ROWS ONLY
             ) AS p
             {joinWithCategories}
-            LEFT JOIN {_dapperContext.ProductScores} ps
-            	ON p.Id = ps.ProductId
+            LEFT JOIN {_dapperContext.Comments} cmnt
+            	ON p.Id = cmnt.ProductId
             LEFT JOIN {_dapperContext.SellerInventories} i
             	ON p.Id = i.ProductId
             LEFT JOIN {_dapperContext.Colors} c
@@ -148,14 +145,14 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             WHERE 1 = 1 {conditions}
             ORDER BY p.CreationDate DESC";
 
-        var result = await connection
+        var query = await connection
             .QueryAsync<ProductFilterDto, Color, ProductFilterDto>(sql, (productFilterDto, color) =>
             {
                 productFilterDto.Colors.Add(color);
                 return productFilterDto;
             }, param: new { skip, take = @params.Take, @params.CategoryId }, splitOn: "Id");
 
-        var groupedQueryResult = result.GroupBy(p => p.Id).Select(productGroup =>
+        var groupedQueryResult = query.GroupBy(p => p.Id).Select(productGroup =>
         {
             var firstItem = productGroup.First();
             var colorList = productGroup.Select(p => p.Colors.FirstOrDefault())
@@ -168,11 +165,13 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             return firstItem;
         }).ToList();
 
-        return new ProductFilterResult
+        var model = new ProductFilterResult
         {
             Data = groupedQueryResult,
             FilterParams = @params,
             HighestPriceInCategory = highestPriceInCategory
         };
+        model.GeneratePaging(query.Count(), @params.Take, @params.PageId);
+        return model;
     }
 }
