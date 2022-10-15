@@ -1,10 +1,12 @@
 ﻿using Common.Query.BaseClasses;
 using Common.Query.BaseClasses.FilterQuery;
 using Dapper;
+using MailKit.Search;
 using Shop.Domain.ColorAggregate;
+using Shop.Domain.OrderAggregate;
 using Shop.Infrastructure;
-using Shop.Infrastructure.Persistence.EF;
 using Shop.Query.Products._DTOs;
+using OrderBy = Shop.Query.Products._DTOs.OrderBy;
 
 namespace Shop.Query.Products.GetByFilter;
 
@@ -17,16 +19,15 @@ public class GetProductByFilterQuery : BaseFilterQuery<ProductFilterResult, Prod
 
 public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilterQuery, ProductFilterResult>
 {
-    private readonly ShopContext _shopContext;
     private readonly DapperContext _dapperContext;
 
-    public GetProductByFilterQueryHandler(ShopContext shopContext, DapperContext dapperContext)
+    public GetProductByFilterQueryHandler(DapperContext dapperContext)
     {
-        _shopContext = shopContext;
         _dapperContext = dapperContext;
     }
 
-    public async Task<ProductFilterResult> Handle(GetProductByFilterQuery request, CancellationToken cancellationToken)
+    public async Task<ProductFilterResult> Handle(GetProductByFilterQuery request,
+        CancellationToken cancellationToken)
     {
         var @params = request.FilterFilterParams;
         var skip = (@params.PageId - 1) * @params.Take;
@@ -74,6 +75,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
 
         var conditions = "";
         var joinWithCategories = "";
+        var orderBy = "";
 
         if (@params.CategoryId != null && @params.CategoryId != 0)
             joinWithCategories = @"JOIN category_children cc ON p.CategoryId = cc.Id";
@@ -101,6 +103,25 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             conditions += $" AND (i.DiscountPercentage <= {@params.MaxDiscountPercentage} " +
                           "OR i.DiscountPercentage IS NULL)";
 
+        switch (@params.OrderBy)
+        {
+            case OrderBy.Cheapest:
+                orderBy = "ORDER BY i.Price";
+                break;
+
+            case OrderBy.MostExpensive:
+                orderBy = "ORDER BY i.Price DESC";
+                break;
+
+            case OrderBy.Latest:
+                orderBy = "ORDER BY p.Id DESC";
+                break;
+
+            default:
+                orderBy = "ORDER BY AverageScore DESC";
+                break;
+        }
+
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"
             WITH category_children AS (
@@ -123,9 +144,14 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
                 c.Id, c.Name, c.Code, c.CreationDate
             FROM (
             	SELECT DISTINCT
-                    Id, Name, EnglishName, Slug, MainImage, CreationDate, CategoryId
-            	FROM {_dapperContext.Products}
-                ORDER BY CreationDate DESC
+                    p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate, p.CategoryId,
+					i.Price, AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore
+            	FROM {_dapperContext.Products} p
+                LEFT JOIN {_dapperContext.Comments} c
+                	ON p.Id = c.ProductId
+                LEFT JOIN {_dapperContext.SellerInventories} i
+                	ON p.Id = i.ProductId
+                {orderBy}
             	OFFSET @skip ROWS
             	FETCH NEXT @take ROWS ONLY
             ) AS p
@@ -143,7 +169,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             ) AS q
             	ON p.Id = q.ProductId
             WHERE 1 = 1 {conditions}
-            ORDER BY p.CreationDate DESC";
+            {orderBy}";
 
         var query = await connection
             .QueryAsync<ProductFilterDto, Color, ProductFilterDto>(sql, (productFilterDto, color) =>
@@ -154,7 +180,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
 
         var groupedQueryResult = query.GroupBy(p => p.Id).Select(productGroup =>
         {
-            var firstItem = productGroup.First();
+            var firstItem = productGroup.OrderBy(p => p.LowestInventoryPrice).First();
             var colorList = productGroup.Select(p => p.Colors.FirstOrDefault())
                 .DistinctBy(c => c?.Code).OrderBy(c => c?.Id).ToList();
             firstItem.Colors = colorList;
@@ -164,6 +190,25 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             firstItem.AverageScore = productGroup.First().AverageScore;
             return firstItem;
         }).ToList();
+
+        switch (@params.OrderBy)
+        {
+            case OrderBy.Cheapest:
+                groupedQueryResult = groupedQueryResult.OrderBy(p => p.LowestInventoryPrice).ToList();
+                break;
+
+            case OrderBy.MostExpensive:
+                groupedQueryResult = groupedQueryResult.OrderByDescending(p => p.LowestInventoryPrice).ToList();
+                break;
+
+            case OrderBy.Latest:
+                groupedQueryResult = groupedQueryResult.OrderByDescending(p => p.Id).ToList();
+                break;
+
+            default:
+                groupedQueryResult = groupedQueryResult.OrderByDescending(p => p.AverageScore).ToList();
+                break;
+        }
 
         var model = new ProductFilterResult
         {

@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections;
+using System.Text;
 using System.Text.Json;
 using Common.Api;
 
@@ -128,6 +129,8 @@ public abstract class BaseService
                 (string.IsNullOrWhiteSpace(resultError) ? reasonPhrase : e.Message);
         }
 
+        if (finalResult != null && finalResult.MetaData.ApiStatusCode != ApiStatusCode.Success)
+            throw new Exception(finalResult.MetaData.Message);
         return finalResult;
     }
 
@@ -137,8 +140,10 @@ public abstract class BaseService
         foreach (var propertyInfo in obj.GetType().GetProperties())
         {
             var propertyValue = propertyInfo.GetValue(obj, null);
+            var isCollection = typeof(IEnumerable).IsAssignableFrom(propertyInfo.PropertyType) &&
+                                   propertyInfo.PropertyType != typeof(string);
             var end = propertyInfo.Equals(obj.GetType().GetProperties().Last()) ? "" : "&";
-            if (propertyValue != null)
+            if (propertyValue != null && !isCollection)
                 stringBuilder.Append($"{propertyInfo.Name}={propertyValue}{end}");
         }
         return stringBuilder.ToString();

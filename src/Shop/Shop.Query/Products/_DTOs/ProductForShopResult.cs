@@ -7,7 +7,7 @@ namespace Shop.Query.Products._DTOs;
 public class ProductForShopResult : BaseFilterResult<ProductForShopDto, ProductForShopFilterParams>
 {
     public int HighestPriceInCategory { get; set; }
-    public List<ProductForShopAttributesDto>? Attributes { get; set; }
+    public List<ProductForShopAttributesDto> Attributes { get; set; } = new();
 }
 
 public class ProductForShopDto : BaseDto
@@ -30,7 +30,7 @@ public class ProductForShopFilterParams : BaseFilterParams
     public long? CategoryId { get; set; }
     public long? OldCategoryId { get; set; }
     public string? CategorySlug { get; set; }
-    public List<ProductForShopAttributesDto>? Attributes { get; set; }
+    public List<string>? Attributes { get; set; }
     public string? Name { get; set; }
     public int? AverageScore { get; set; }
     public int? MinPrice { get; set; }
@@ -39,4 +39,13 @@ public class ProductForShopFilterParams : BaseFilterParams
     public int? MaxDiscountPercentage { get; set; }
     public bool? OnlyAvailable { get; set; }
     public bool? OnlyDiscounted { get; set; }
+    public OrderBy OrderBy { get; set; } = OrderBy.MostPopular;
+}
+
+public enum OrderBy
+{
+    MostPopular,
+    Cheapest,
+    MostExpensive,
+    Latest
 }

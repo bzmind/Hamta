@@ -34,4 +34,5 @@ public class ProductFilterParams : BaseFilterParams
     public int? MaxPrice { get; set; }
     public int? MinDiscountPercentage { get; set; }
     public int? MaxDiscountPercentage { get; set; }
+    public OrderBy OrderBy { get; set; } = OrderBy.MostPopular;
 }

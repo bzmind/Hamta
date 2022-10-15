@@ -2,6 +2,7 @@
 @model Shop.Query.Products._DTOs.ProductForShopDto
 @{
   var link = $"/product/{Model.Slug}";
+  var inventoryIsNullOrOutOfStock = Model.InventoryId == 0 || Model.AllQuantityInStock == 0;
 }
 
 <div class="swiper-slide">
@@ -12,7 +13,6 @@
       </a>
       <div class="product-card-actions">
         <button class="add-to-wishlist"><i class="fas fa-heart"></i></button>
-        <button class="add-to-compare"><i class="fas fa-random"></i></button>
       </div>
     </div>
     <div class="product-card-middle">
@@ -26,18 +26,28 @@
           @Model.Name
         </a>
       </h6>
-      <div class="product-price product-price-clone">@Model.TotalPrice.ToString("#,0") تومان</div>
+      @if (inventoryIsNullOrOutOfStock)
+      {
+        <div class="ta-center bgc-gray p-5px br-6px mt--5px c-white">ناموجود</div>
+      }
+      else
+      {
+        <div class="product-price product-price-clone">@Model.TotalPrice.ToString("#,0") تومان</div>
+      }
     </div>
-    <div class="product-card-bottom">
-      <div class="product-price">
-        @Model.TotalPrice.ToString("#,0") تومان
+    @if (!inventoryIsNullOrOutOfStock)
+    {
+      <div class="product-card-bottom">
+        <div class="product-price">
+          @Model.TotalPrice.ToString("#,0") تومان
+        </div>
+        <button class="btn-add-to-cart"
+              onclick="sendAjaxPostWithRouteData('@Url.Page("Cart", "AddItem",
+              new { inventoryId = Model.InventoryId, quantity = 1 })')">
+          <i class="fad fa-cart-plus"></i>
+          افزودن به سبد خرید
+        </button>
       </div>
-      <button class="btn-add-to-cart"
-         onclick="sendAjaxPostWithRouteData('@Url.Page("Cart", "AddItem",
-         new { inventoryId = Model.InventoryId, quantity = 1 })')">
-        <i class="fad fa-cart-plus"></i>
-        افزودن به سبد خرید
-      </button>
-    </div>
+    }
   </div>
 </div>

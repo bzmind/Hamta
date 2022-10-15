@@ -1,7 +1,6 @@
 ﻿$(document).ready(function ()
 {
   setupColorsRadio();
-  setupFilterCheckboxes();
 });
 
 function setupColorsRadio()
@@ -48,46 +47,119 @@ function getProductComments(pageId)
   });
 }
 
-function changeUrlParamValue(paramName, paramValue)
+function toggleUrlParam(paramName, paramValue)
 {
-  const url = new URL(window.location.href);
-  const searchParams = url.searchParams;
-
-  searchParams.set(paramName, paramValue);
-  url.search = searchParams.toString();
-
-  const newUrl = url.toString();
-  window.location.replace(newUrl);
+  toggleParam(paramName, paramValue);
 }
 
-function setOrRemoveParam(paramName, paramValue)
+function toggleUrlParamByElement(paramName, elementWithParamValue)
 {
-  const isChecked = paramValue;
+  const paramValue = $(elementWithParamValue).val();
+  if (deleteParamIfValueIsNull(paramName, paramValue))
+    return;
+  toggleParam(paramName, paramValue);
+}
+
+function deleteParamIfValueIsNull(paramName, paramValue)
+{
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  if (paramValue == null || paramValue == "" || paramValue == 0)
+  {
+    url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
+    const newUrl = url.toString();
+    window.location.href = newUrl;
+    return true;
+  }
+  return false;
+}
+
+function toggleParam(paramName, paramValue)
+{
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
 
-  if (isChecked)
+  const exists = searchParams.has(paramName) && searchParams.getAll(paramName).includes(paramValue);
+  if (exists)
   {
-    searchParams.set(paramName, "true");
-    url.search = searchParams.toString();
+    url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
     const newUrl = url.toString();
-    window.location.replace(newUrl);
+    window.location.href = newUrl;
   }
   else
   {
-    searchParams.delete(paramName);
+    searchParams.set(paramName, paramValue);
     url.search = searchParams.toString();
     const newUrl = url.toString();
-    window.location.replace(newUrl);
+    window.location.href = newUrl;
   }
 }
 
-function setupFilterCheckboxes()
+function addUrlParam(paramName, paramValue)
 {
-  $(".widget-content input:checkbox").on("change", function ()
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+
+  const exists = searchParams.has(paramName) && searchParams.getAll(paramName).includes(paramValue);
+  if (exists)
   {
-    const value = $(this).val();
-    const name = $(this).attr("name");
-    setOrRemoveParam(name, value);
+    url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
+    const newUrl = url.toString();
+    window.location.href = newUrl;
+  }
+  else
+  {
+    searchParams.append(paramName, paramValue);
+    url.search = searchParams.toString();
+    const newUrl = url.toString();
+    window.location.href = newUrl;
+  }
+}
+
+function setUrlParam(paramName, paramValue)
+{
+  setParam(paramName, paramValue);
+}
+
+function setUrlParamByElement(paramName, elementWithParamValue)
+{
+  const paramValue = $(elementWithParamValue).val();
+  if (deleteParamIfValueIsNull(paramName, paramValue))
+    return;
+  setParam(paramName, paramValue);
+}
+
+function setUrlParamByMultipleElements(inputsContainerSelector)
+{
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  $(inputsContainerSelector).find("input").each((i, input) =>
+  {
+    input = $(input);
+    let paramValue = input.val();
+    if (input.attr("data-range") != null)
+      paramValue = paramValue.replace(/,/g, "");
+    const paramName = input.attr("name");
+    searchParams.set(paramName, paramValue);
   });
+  url.search = searchParams.toString();
+  const newUrl = url.toString();
+  window.location.href = newUrl;
+}
+
+function setParam(paramName, paramValue)
+{
+  const url = new URL(window.location.href);
+  const searchParams = url.searchParams;
+  searchParams.set(paramName, paramValue);
+
+  url.search = searchParams.toString();
+  const newUrl = url.toString();
+  window.location.href = newUrl;
+}
+
+function deleteSpecificParamFromUrl(searchParams, parameterName, parameterValue)
+{
+  const exactParam = `${parameterName}=${encodeURIComponent(parameterValue).replace(/%20/g, "+")}`;
+  return searchParams.toString().replace(exactParam, "").replace("&&", "&").replace(/&$/, "");
 }

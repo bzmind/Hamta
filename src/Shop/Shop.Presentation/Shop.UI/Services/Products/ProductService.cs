@@ -113,7 +113,7 @@ public class ProductService : BaseService, IProductService
         for (var i = 0; i < filterFilterParams.Attributes?.Count; i++)
         {
             var attr = filterFilterParams.Attributes?[i];
-            url += $"&Attributes[{i}].Id={attr?.Id}&Attributes[{i}].Values[{i}]={attr?.Values?[i]}";
+            url += $"&Attributes={attr}";
         }
         var result = await GetFromJsonAsync<ProductForShopResult>(url);
         return result.Data;

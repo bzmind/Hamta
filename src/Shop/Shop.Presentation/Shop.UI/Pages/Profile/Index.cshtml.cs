@@ -15,7 +15,7 @@ public class IndexModel : BaseRazorPage
         _emailSender = emailSender;
     }
 
-    public async Task<IActionResult> OnGet()
+    public void OnGet()
     {
         //await _emailSender.SendEmail(new EmailDto
         //{
@@ -23,6 +23,5 @@ public class IndexModel : BaseRazorPage
         //    Subject = "Test Email",
         //    Body = "<h1>Hi, this is a test email</h1>"
         //});
-        return Page();
     }
 }
