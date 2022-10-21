@@ -22,7 +22,7 @@ public class ProductForShopDto : BaseDto
     public int AverageScore { get; set; }
     public int AllQuantityInStock { get; set; }
     public List<Color> Colors { get; set; } = new();
-    public int TotalPrice => Price - (int)Math.Round(Price * (double)DiscountPercentage / 100);
+    public int TotalDiscountedPrice => Price - (int)Math.Round(Price * (double)DiscountPercentage / 100);
 }
 
 public class ProductForShopFilterParams : BaseFilterParams

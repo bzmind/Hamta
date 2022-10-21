@@ -15,5 +15,5 @@ public class ProductInventoryDto : BaseDto
     public bool IsAvailable { get; set; }
     public int DiscountPercentage { get; set; }
     public bool IsDiscounted { get; set; }
-    public int TotalPrice => Price - (int)Math.Round(Price * (double)DiscountPercentage / 100);
+    public int TotalDiscountedPrice => Price - (int)Math.Round(Price * (double)DiscountPercentage / 100);
 }

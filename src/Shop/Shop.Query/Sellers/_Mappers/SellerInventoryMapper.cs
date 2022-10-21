@@ -7,8 +7,8 @@ namespace Shop.Query.Sellers._Mappers;
 
 internal static class SellerInventoryMapper
 {
-    public static SellerInventoryDto MapToSellerInventoryDto(this SellerInventory? inventory, Color color,
-        Product product)
+    public static SellerInventoryDto MapToSellerInventoryDto(this SellerInventory? inventory, Seller seller,
+        Color color, Product product)
     {
         if (inventory == null)
             return null;
@@ -19,6 +19,7 @@ internal static class SellerInventoryMapper
             CreationDate = inventory.CreationDate,
             ProductId = inventory.ProductId,
             ColorId = color.Id,
+            ShopName = seller.ShopName,
             ProductName = product.Name,
             ProductEnglishName = product.EnglishName,
             ProductMainImage = product.MainImage,

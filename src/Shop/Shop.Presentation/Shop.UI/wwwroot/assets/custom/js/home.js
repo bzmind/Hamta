@@ -1,6 +1,7 @@
 ﻿$(document).ready(function ()
 {
   setupColorsRadio();
+  getCartSummary();
 });
 
 function setupColorsRadio()
@@ -40,126 +41,82 @@ function setupColorsRadio()
 function getProductComments(pageId)
 {
   const productId = $("#productId").val();
-  sendAjaxGetWithRouteData(`/product/slug/ShowComments?productId=${productId}&pageId=${pageId}`).then((result) =>
+  sendAjaxGet(`/product/slug/ShowComments?productId=${productId}&pageId=${pageId}`).then((result) =>
   {
     checkResult(result);
     replaceElementWithAjaxResult(".comments-list", result);
   });
 }
 
-function toggleUrlParam(paramName, paramValue)
+function getCartSummary()
 {
-  toggleParam(paramName, paramValue);
-}
-
-function toggleUrlParamByElement(paramName, elementWithParamValue)
-{
-  const paramValue = $(elementWithParamValue).val();
-  if (deleteParamIfValueIsNull(paramName, paramValue))
-    return;
-  toggleParam(paramName, paramValue);
-}
-
-function deleteParamIfValueIsNull(paramName, paramValue)
-{
-  const url = new URL(window.location.href);
-  const searchParams = url.searchParams;
-  if (paramValue == null || paramValue == "" || paramValue == 0)
+  sendAjaxGet("/cart/cartSummary").then(result =>
   {
-    url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
-    const newUrl = url.toString();
-    window.location.href = newUrl;
-    return true;
-  }
-  return false;
-}
+    if (result.items == null)
+    {
+      $(".cart-list ul").remove();
+      return;
+    }
 
-function toggleParam(paramName, paramValue)
-{
-  const url = new URL(window.location.href);
-  const searchParams = url.searchParams;
+    const cartItemsNumberElements = $(".bag-items-number");
+    cartItemsNumberElements.html(result.itemsCount);
 
-  const exists = searchParams.has(paramName) && searchParams.getAll(paramName).includes(paramValue);
-  if (exists)
-  {
-    url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
-    const newUrl = url.toString();
-    window.location.href = newUrl;
-  }
-  else
-  {
-    searchParams.set(paramName, paramValue);
-    url.search = searchParams.toString();
-    const newUrl = url.toString();
-    window.location.href = newUrl;
-  }
-}
+    const cartPrice = $(".cart-footer .total");
+    cartPrice.html(result.price);
 
-function addUrlParam(paramName, paramValue)
-{
-  const url = new URL(window.location.href);
-  const searchParams = url.searchParams;
+    if (result.items.length == 0)
+      $(".cart-list ul").remove();
+    else
+    {
+      result.items.map((item) =>
+      {
+        let numBlock = `
+          <span class="minus" onclick="sendAjaxPostWithRouteDataAndReplaceElement
+            (event, '/cart/decreaseitemcount?itemid=${item.id}', '')">
+          </span>`;
 
-  const exists = searchParams.has(paramName) && searchParams.getAll(paramName).includes(paramValue);
-  if (exists)
-  {
-    url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
-    const newUrl = url.toString();
-    window.location.href = newUrl;
-  }
-  else
-  {
-    searchParams.append(paramName, paramValue);
-    url.search = searchParams.toString();
-    const newUrl = url.toString();
-    window.location.href = newUrl;
-  }
-}
+        if (item.count == 1)
+          numBlock = `
+            <button class="d-flex fd-col p-0 ai-end jc-center h-32px w-30px c-danger bg-none"
+                onclick="deleteItem('/cart/removeitem?itemid=${item.id}')">
+              <i class="far fa-trash-alt fs-18px"></i>
+            </button>`;
 
-function setUrlParam(paramName, paramValue)
-{
-  setParam(paramName, paramValue);
-}
-
-function setUrlParamByElement(paramName, elementWithParamValue)
-{
-  const paramValue = $(elementWithParamValue).val();
-  if (deleteParamIfValueIsNull(paramName, paramValue))
-    return;
-  setParam(paramName, paramValue);
-}
-
-function setUrlParamByMultipleElements(inputsContainerSelector)
-{
-  const url = new URL(window.location.href);
-  const searchParams = url.searchParams;
-  $(inputsContainerSelector).find("input").each((i, input) =>
-  {
-    input = $(input);
-    let paramValue = input.val();
-    if (input.attr("data-range") != null)
-      paramValue = paramValue.replace(/,/g, "");
-    const paramName = input.attr("name");
-    searchParams.set(paramName, paramValue);
+        $(".cart-items .cart-items-ul").append(`
+          <li class="cart-item">
+            <span class="d-flex align-items-center mb-2">
+              <a href="/product/${item.productSlug}">
+                <img src="https://localhost:7087/images/products/main/${item.productMainImage}" alt="${item.productName}">
+              </a>
+              <span>
+                <a href="/product/${item.productSlug}">
+                  <span class="title-item">${item.productName}</span>
+                </a>
+                <span class="color d-flex align-items-center">
+                  رنگ:
+                  <span class="hw-15px b-none" style="background-color: ${item.colorCode}"></span>
+                </span>
+              </span>
+            </span>
+            <span class="price">${splitNumber(item.eachItemDiscountedPrice * item.count)} تومان</span>
+            <div class="item-quantity remove-item">
+              <div class="num-block">
+                <div class="num-in">
+                  <span class="plus" onclick="sendAjaxPostWithRouteDataAndReplaceElement
+                    (event, '/cart/increaseitemcount?inventoryid=${item.inventoryId}&itemid=${item.id}', '')">
+                  </span>
+                  <input type="text" value="${item.count}" readonly="">
+                  ${numBlock}
+                </div>
+              </div>
+            </div>
+          </li>`);
+      });
+    }
   });
-  url.search = searchParams.toString();
-  const newUrl = url.toString();
-  window.location.href = newUrl;
 }
 
-function setParam(paramName, paramValue)
+function splitNumber(value)
 {
-  const url = new URL(window.location.href);
-  const searchParams = url.searchParams;
-  searchParams.set(paramName, paramValue);
-
-  url.search = searchParams.toString();
-  const newUrl = url.toString();
-  window.location.href = newUrl;
-}
-
-function deleteSpecificParamFromUrl(searchParams, parameterName, parameterValue)
-{
-  const exactParam = `${parameterName}=${encodeURIComponent(parameterValue).replace(/%20/g, "+")}`;
-  return searchParams.toString().replace(exactParam, "").replace("&&", "&").replace(/&$/, "");
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

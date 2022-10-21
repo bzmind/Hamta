@@ -211,7 +211,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
 
         var groupedQueryResult = query.GroupBy(p => p.Id).Select(productGroup =>
         {
-            var firstItem = productGroup.OrderBy(p => p.TotalPrice).First();
+            var firstItem = productGroup.OrderBy(p => p.TotalDiscountedPrice).First();
             if ((@params.OnlyDiscounted != null && (bool)@params.OnlyDiscounted)
                 || @params.MinDiscountPercentage is > 0)
                 firstItem = productGroup.OrderBy(p => p.Price).First();
@@ -227,8 +227,8 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
 
         groupedQueryResult = @params.OrderBy switch
         {
-            OrderBy.Cheapest => groupedQueryResult.OrderBy(p => p.TotalPrice).ToList(),
-            OrderBy.MostExpensive => groupedQueryResult.OrderByDescending(p => p.TotalPrice).ToList(),
+            OrderBy.Cheapest => groupedQueryResult.OrderBy(p => p.TotalDiscountedPrice).ToList(),
+            OrderBy.MostExpensive => groupedQueryResult.OrderByDescending(p => p.TotalDiscountedPrice).ToList(),
             OrderBy.Latest => groupedQueryResult.OrderByDescending(p => p.Id).ToList(),
             OrderBy.MostPopular => groupedQueryResult.OrderByDescending(p => p.AverageScore).ToList(),
             _ => groupedQueryResult.OrderByDescending(p => p.AverageScore).ToList()

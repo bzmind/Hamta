@@ -3,7 +3,6 @@ using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.RemoveItem;
 using Shop.Application.Orders.SetStatus;
-using Shop.Domain.OrderAggregate;
 using Shop.Query.Orders._DTOs;
 
 namespace Shop.Presentation.Facade.Orders;

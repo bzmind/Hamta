@@ -129,8 +129,6 @@ public abstract class BaseService
                 (string.IsNullOrWhiteSpace(resultError) ? reasonPhrase : e.Message);
         }
 
-        if (finalResult != null && finalResult.MetaData.ApiStatusCode != ApiStatusCode.Success)
-            throw new Exception(finalResult.MetaData.Message);
         return finalResult;
     }
 

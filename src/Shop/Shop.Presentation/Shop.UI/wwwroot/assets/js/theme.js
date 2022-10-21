@@ -224,7 +224,7 @@
   HAMTA.NiceScroll = function ()
   {
     $(".do-nice-scroll").niceScroll({
-      railalign: "left",
+      railalign: "right"
     });
   };
   /*====== end NiceScroll ======*/

@@ -32,7 +32,7 @@ public class IncreaseOrderItemCountCommandHandler : IBaseCommandHandler<Increase
         if (inventory == null)
             return OperationResult.NotFound("انبار یافت نشد");
 
-        if (inventory.Quantity - itemToIncrease.Count == 0)
+        if (inventory.Quantity - itemToIncrease.Count <= 0)
             return OperationResult.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است");
 
         order.IncreaseItemCount(request.OrderItemId);

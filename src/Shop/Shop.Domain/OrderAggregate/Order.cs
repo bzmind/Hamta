@@ -54,7 +54,7 @@ public class Order : BaseAggregateRoot
             return;
         }
 
-        item.IncreaseCount();
+        item.IncreaseCountBy(orderItem.Count + item.Count);
     }
 
     public void RemoveOrderItem(long orderItemId)

@@ -1,13 +1,19 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 using Common.Api;
 using Common.Api.Attributes;
 using Common.Application.Utility;
 using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Auth;
+using Shop.API.ViewModels.Orders;
+using Shop.Application.Orders.AddItem;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Services.Auth;
+using Shop.UI.Services.Orders;
 using Shop.UI.Services.Users;
+using Shop.UI.Setup.CookieUtility;
 using Shop.UI.Setup.RazorUtility;
 using Shop.UI.ViewModels.Auth;
 
@@ -18,12 +24,17 @@ public class LoginModel : BaseRazorPage
 {
     private readonly IUserService _userService;
     private readonly IAuthService _authService;
+    private readonly IOrderService _orderService;
+    private readonly CartCookieManager _cartCookieManager;
 
     public LoginModel(IUserService userService, IAuthService authService,
-        IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
+        IRazorToStringRenderer razorToStringRenderer, CartCookieManager cartCookieManager,
+        IOrderService orderService) : base(razorToStringRenderer)
     {
         _userService = userService;
         _authService = authService;
+        _cartCookieManager = cartCookieManager;
+        _orderService = orderService;
     }
 
     [Display(Name = "شماره موبایل یا ایمیل")]
@@ -140,10 +151,38 @@ public class LoginModel : BaseRazorPage
             Expires = DateTimeOffset.Now.AddDays(30)
         });
 
+        await SyncShopCart(token);
+
         var redirectTo = TempData["redirectTo"]?.ToString();
         if (!string.IsNullOrWhiteSpace(redirectTo) && Url.IsLocalUrl(redirectTo))
             return AjaxRedirectToPageResult(redirectTo);
 
         return AjaxRedirectToPageResult("../Index");
+    }
+
+    private async Task SyncShopCart(string token)
+    {
+        var shopCart = _cartCookieManager.GetCart();
+        if (shopCart == null || shopCart.Items.Any() == false)
+            return;
+
+        HttpContext.Request.Headers.Append("Authorization", $"Bearer {token}");
+        var handler = new JwtSecurityTokenHandler();
+        var jwtSecurityToken = handler.ReadJwtToken(token);
+
+        var userId = Convert.ToInt64(jwtSecurityToken.Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
+        foreach (var item in shopCart.Items)
+        {
+            var result = await _orderService.AddItem(new AddOrderItemViewModel
+            {
+                UserId = userId,
+                Quantity = item.Count,
+                InventoryId = item.InventoryId
+            });
+
+            if (!result.IsSuccessful)
+                MakeAlert(result);
+        }
+        _cartCookieManager.RemoveCart();
     }
 }

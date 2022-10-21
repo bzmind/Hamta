@@ -7,6 +7,9 @@ namespace Shop.API.ViewModels.Orders;
 
 public class AddOrderItemViewModel
 {
+    [Required(ErrorMessage = ValidationMessages.ChooseUser)]
+    public long UserId { get; set; }
+
     [Required(ErrorMessage = ValidationMessages.ChooseSellerInventory)]
     public long InventoryId { get; set; }
 

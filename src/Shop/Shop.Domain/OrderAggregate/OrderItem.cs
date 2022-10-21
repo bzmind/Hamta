@@ -38,6 +38,13 @@ public class OrderItem : BaseEntity
         Count--;
     }
 
+    public void IncreaseCountBy(int amount)
+    {
+        if (amount < 0)
+            return;
+        Count = amount;
+    }
+
     public void SetPrice(Money price)
     {
         ValidatePrice(price.Value);

@@ -394,12 +394,12 @@ function sendAjaxPostWithRouteDataAndReplaceElement(e, urlWithRouteData, element
   });
 }
 
-function sendAjaxGetWithRouteData(urlWithRouteData)
+function sendAjaxGet(url)
 {
   return new Promise(function (resolve)
   {
     $.ajax({
-      url: urlWithRouteData,
+      url: url,
       type: "GET",
       success: function (result)
       {

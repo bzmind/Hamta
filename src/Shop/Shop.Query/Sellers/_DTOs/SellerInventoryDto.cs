@@ -6,6 +6,7 @@ public class SellerInventoryDto : BaseDto
 {
     public long ProductId { get; set; }
     public long ColorId { get; set; }
+    public string ShopName { get; set; }
     public string ProductName { get; set; }
     public string? ProductEnglishName { get; set; }
     public string ProductMainImage { get; set; }
@@ -16,6 +17,6 @@ public class SellerInventoryDto : BaseDto
     public bool IsAvailable { get; set; }
     public int DiscountPercentage { get; set; }
     public bool IsDiscounted { get; set; }
-    public int TotalPrice => Price - (int)Math.Round(Price * (double)DiscountPercentage / 100);
-    public int DiscountAmount => Price - TotalPrice;
+    public int TotalDiscountedPrice => Price - (int)Math.Round(Price * (double)DiscountPercentage / 100);
+    public int DiscountAmount => Price - TotalDiscountedPrice;
 }

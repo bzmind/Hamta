@@ -1,9 +1,7 @@
 ﻿using Common.Query.BaseClasses;
 using Common.Query.BaseClasses.FilterQuery;
 using Dapper;
-using MailKit.Search;
 using Shop.Domain.ColorAggregate;
-using Shop.Domain.OrderAggregate;
 using Shop.Infrastructure;
 using Shop.Query.Products._DTOs;
 using OrderBy = Shop.Query.Products._DTOs.OrderBy;

@@ -34,8 +34,13 @@ public class GetSellerInventoryByIdQueryHandler : IBaseQueryHandler<GetSellerInv
                 tables => tables.inventory.ProductId,
                 product => product.Id,
                 (tables, product) => new { tables, product })
+            .Join(
+                _shopContext.Sellers,
+                tables => tables.tables.inventory.SellerId,
+                seller => seller.Id,
+                (tables, seller) => new { tables.tables.inventory, tables.tables.color, seller, tables.product })
             .FirstOrDefaultAsync(cancellationToken);
 
-        return tables.tables.inventory.MapToSellerInventoryDto(tables.tables.color, tables.product);
+        return tables.inventory.MapToSellerInventoryDto(tables.seller, tables.color, tables.product);
     }
 }

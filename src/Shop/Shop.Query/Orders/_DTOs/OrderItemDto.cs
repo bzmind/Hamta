@@ -1,5 +1,4 @@
 ﻿using Common.Query.BaseClasses;
-using Shop.Query.Colors._DTOs;
 
 namespace Shop.Query.Orders._DTOs;
 
@@ -18,6 +17,6 @@ public class OrderItemDto : BaseDto
     public string ColorName  { get; set; }
     public string ColorCode  { get; set; }
 
-    public int SingleTotalPrice => Price - Price * InventoryDiscountPercentage / 100;
-    public int DiscountAmount => Price - SingleTotalPrice;
+    public int EachItemDiscountedPrice => Price - Price * InventoryDiscountPercentage / 100;
+    public int DiscountAmount => Price - EachItemDiscountedPrice;
 }

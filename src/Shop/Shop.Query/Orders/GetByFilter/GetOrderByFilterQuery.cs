@@ -2,7 +2,6 @@
 using Common.Query.BaseClasses.FilterQuery;
 using Microsoft.EntityFrameworkCore;
 using Shop.Infrastructure.Persistence.EF;
-using Shop.Query.Colors._DTOs;
 using Shop.Query.Orders._DTOs;
 using Shop.Query.Orders._Mappers;
 

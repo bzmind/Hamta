@@ -1,6 +1,5 @@
 ﻿using Common.Api;
 using Shop.API.ViewModels.Orders;
-using Shop.Domain.OrderAggregate;
 using Shop.Query.Orders._DTOs;
 
 namespace Shop.UI.Services.Orders;

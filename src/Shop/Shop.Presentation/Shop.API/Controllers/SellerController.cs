@@ -5,6 +5,7 @@ using Shop.Domain.RoleAggregate;
 using System.Net;
 using AutoMapper;
 using Common.Api.Utility;
+using Microsoft.AspNetCore.Authorization;
 using Shop.API.ViewModels.Sellers;
 using Shop.Application.Sellers.Create;
 using Shop.Application.Sellers.Edit;
@@ -116,6 +117,7 @@ public class SellerController : BaseApiController
         return CommandResult(result);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetInventoryById/{inventoryId}")]
     public async Task<ApiResult<SellerInventoryDto?>> GetInventoryById(long inventoryId)
     {

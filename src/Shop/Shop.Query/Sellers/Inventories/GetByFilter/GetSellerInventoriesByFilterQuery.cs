@@ -45,36 +45,41 @@ public class GetSellerInventoriesByFilterQueryHandler :
                 (tables, colors) => new { tables, colors })
             .SelectMany(
                 tables => tables.colors.DefaultIfEmpty(),
-                (tables, color) => new { tables.tables, color })
-            .OrderByDescending(tables => tables.tables.inventory.CreationDate)
+                (tables, color) => new { tables.tables.inventory, tables.tables.product, color })
+            .OrderByDescending(tables => tables.inventory.CreationDate)
+            .Join(
+                _shopContext.Sellers,
+                table => table.inventory.SellerId,
+                seller => seller.Id,
+                (tables, seller) => new { tables.color, tables.inventory, tables.product, seller })
             .AsQueryable();
 
         if (@params.ProductName != null && !string.IsNullOrWhiteSpace(@params.ProductName))
-            query = query.Where(tables => tables.tables.product.Name.Contains(@params.ProductName));
+            query = query.Where(tables => tables.product.Name.Contains(@params.ProductName));
 
         if (@params.MinQuantity != null)
-            query = query.Where(tables => tables.tables.inventory.Quantity >= @params.MinQuantity);
+            query = query.Where(tables => tables.inventory.Quantity >= @params.MinQuantity);
 
         if (@params.MaxQuantity != null)
-            query = query.Where(tables => tables.tables.inventory.Quantity <= @params.MaxQuantity);
+            query = query.Where(tables => tables.inventory.Quantity <= @params.MaxQuantity);
 
         if (@params.MinPrice != null)
-            query = query.Where(tables => tables.tables.inventory.Price.Value >= @params.MinPrice);
+            query = query.Where(tables => tables.inventory.Price.Value >= @params.MinPrice);
 
         if (@params.MaxPrice != null)
-            query = query.Where(tables => tables.tables.inventory.Price.Value <= @params.MaxPrice);
+            query = query.Where(tables => tables.inventory.Price.Value <= @params.MaxPrice);
 
         if (@params.MinDiscountPercentage != null)
-            query = query.Where(tables => tables.tables.inventory.DiscountPercentage >= @params.MinDiscountPercentage);
+            query = query.Where(tables => tables.inventory.DiscountPercentage >= @params.MinDiscountPercentage);
 
         if (@params.MaxDiscountPercentage != null)
-            query = query.Where(tables => tables.tables.inventory.DiscountPercentage <= @params.MaxDiscountPercentage);
+            query = query.Where(tables => tables.inventory.DiscountPercentage <= @params.MaxDiscountPercentage);
 
         if (@params.OnlyAvailable == true)
-            query = query.Where(tables => tables.tables.inventory.IsAvailable == @params.OnlyAvailable);
+            query = query.Where(tables => tables.inventory.IsAvailable == @params.OnlyAvailable);
 
         if (@params.OnlyDiscounted == true)
-            query = query.Where(tables => tables.tables.inventory.IsDiscounted == @params.OnlyDiscounted);
+            query = query.Where(tables => tables.inventory.IsDiscounted == @params.OnlyDiscounted);
 
         var skip = (@params.PageId - 1) * @params.Take;
 
@@ -83,7 +88,7 @@ public class GetSellerInventoriesByFilterQueryHandler :
         var highestPriceInInventory = highestPriceQuery.Max(si => si.Price.Value);
 
         var queryResult = await query.Skip(skip).Take(@params.Take)
-            .Select(tables => tables.tables.inventory.MapToSellerInventoryDto(tables.color, tables.tables.product))
+            .Select(tables => tables.inventory.MapToSellerInventoryDto(tables.seller, tables.color, tables.product))
             .ToListAsync(cancellationToken);
 
         var model = new SellerInventoryFilterResult

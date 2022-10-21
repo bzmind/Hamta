@@ -1,10 +1,9 @@
-using Common.Api.Utility;
+﻿using Common.Api.Utility;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
 using Shop.API.ViewModels.Orders;
 using Shop.Query.Orders._DTOs;
-using Shop.Query.Orders._Mappers;
 using Shop.UI.Services.Orders;
+using Shop.UI.Setup.CookieUtility;
 using Shop.UI.Setup.RazorUtility;
 
 namespace Shop.UI.Pages;
@@ -12,11 +11,13 @@ namespace Shop.UI.Pages;
 public class CartModel : BaseRazorPage
 {
     private readonly IOrderService _orderService;
+    private readonly CartCookieManager _cartCookieManager;
 
-    public CartModel(IRazorToStringRenderer razorToStringRenderer,
-        IOrderService orderService) : base(razorToStringRenderer)
+    public CartModel(IRazorToStringRenderer razorToStringRenderer, IOrderService orderService,
+        CartCookieManager cartCookieManager) : base(razorToStringRenderer)
     {
         _orderService = orderService;
+        _cartCookieManager = cartCookieManager;
     }
 
     public OrderDto? Order { get; set; }
@@ -29,6 +30,7 @@ public class CartModel : BaseRazorPage
         }
         else
         {
+            Order = _cartCookieManager.GetCart();
         }
     }
 
@@ -38,6 +40,7 @@ public class CartModel : BaseRazorPage
         {
             var result = await _orderService.AddItem(new AddOrderItemViewModel
             {
+                UserId = User.GetUserId(),
                 InventoryId = inventoryId,
                 Quantity = quantity
             });
@@ -48,11 +51,15 @@ public class CartModel : BaseRazorPage
         }
         else
         {
-            return Page();
+            var result = await _cartCookieManager.AddItem(inventoryId, quantity);
+            if (!result.IsSuccessful)
+                MakeAlert(result);
+
+            return AjaxRedirectToPageResult("Cart");
         }
     }
 
-    public async Task<IActionResult> OnPostIncreaseItemCount(long itemId)
+    public async Task<IActionResult> OnPostIncreaseItemCount(long inventoryId, long itemId)
     {
         if (User.Identity.IsAuthenticated)
         {
@@ -66,7 +73,13 @@ public class CartModel : BaseRazorPage
         }
         else
         {
-            return Page();
+            var result = await _cartCookieManager.Increase(inventoryId, itemId);
+            if (!result.IsSuccessful)
+            {
+                MakeAlert(result);
+                return AjaxErrorMessageResult(result);
+            }
+            return AjaxReloadCurrentPageResult();
         }
     }
 
@@ -84,7 +97,13 @@ public class CartModel : BaseRazorPage
         }
         else
         {
-            return Page();
+            var result = _cartCookieManager.Decrease(itemId);
+            if (!result.IsSuccessful)
+            {
+                MakeAlert(result);
+                return AjaxErrorMessageResult(result);
+            }
+            return AjaxReloadCurrentPageResult();
         }
     }
 
@@ -100,7 +119,31 @@ public class CartModel : BaseRazorPage
         }
         else
         {
-            return Page();
+            var result = _cartCookieManager.RemoveItem(itemId);
+            if (!result.IsSuccessful)
+                MakeAlert(result);
+
+            return AjaxRedirectToPageResult("Cart");
         }
+    }
+
+    public async Task<IActionResult> OnGetCartSummary()
+    {
+        var orderDto = new OrderDto();
+        if (User.Identity.IsAuthenticated)
+        {
+            orderDto = await _orderService.GetByUserId(User.GetUserId());
+        }
+        else
+        {
+            orderDto = _cartCookieManager.GetCart();
+        }
+
+        return new ObjectResult(new
+        {
+            items = orderDto?.Items,
+            itemsCount = orderDto?.Items.Sum(i => i.Count),
+            price = $"{orderDto?.Items.Sum(i => i.EachItemDiscountedPrice * i.Count):#,0} تومان"
+        });
     }
 }

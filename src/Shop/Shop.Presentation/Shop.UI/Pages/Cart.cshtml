@@ -5,7 +5,7 @@
   ViewData["Title"] = "سبد خرید";
 }
 
-@if (Model.Order != null)
+@if (Model.Order != null && Model.Order.Items.Any())
 {
   <div class="row mb-4">
     <div class="col-xl-9 col-lg-8 col-md-8 mb-md-0 mb-3">
@@ -51,12 +51,13 @@
                       </li>
                     </ul>
                     <div class="item-quantity--item-price">
-                      <div id="itemQuantity" class="item-quantity">
+                      <div class="item-quantity">
                         <div class="num-block">
                           <div class="num-in">
                             <span class="plus"
                               onclick="sendAjaxPostWithRouteDataAndReplaceElement
-                              (event, '@Url.Page("Cart", "IncreaseItemCount", new { itemId = item.Id })', '#itemQuantity')">
+                              (event, '@Url.Page("Cart", "IncreaseItemCount",
+                                         new { inventoryId = item.InventoryId, itemId = item.Id })', '')">
                             </span>
                             <input type="text" value="@item.Count" readonly>
                             @if (item.Count == 1)
@@ -70,14 +71,14 @@
                             {
                               <span class="minus @(item.Count > 1 ? null : "dis")"
                               onclick="sendAjaxPostWithRouteDataAndReplaceElement
-                              (event, '@Url.Page("Cart", "DecreaseItemCount", new { itemId = item.Id })', '#itemQuantity')">
+                              (event, '@Url.Page("Cart", "DecreaseItemCount", new { itemId = item.Id })', '')">
                               </span>
                             }
                           </div>
                         </div>
                       </div>
                       <div class="item-price">
-                        @((item.SingleTotalPrice * item.Count).ToString("#,0"))<span class="text-sm mr-1">تومان</span>
+                        @((item.EachItemDiscountedPrice * item.Count).ToString("#,0"))<span class="text-sm mr-1">تومان</span>
                       </div>
                     </div>
                   </div>
@@ -113,12 +114,21 @@
         <div class="d-flex jc-between px-3 py-2">
           <span class="font-weight-bold">مبلغ قابل پرداخت</span>
           <span class="font-weight-bold">
-            @Model.Order.OrderTotalPrice.ToString("#,0")
+            @Model.Order.TotalOrderDiscountedPrice.ToString("#,0")
             <span class="text-sm">تومان</span>
           </span>
         </div>
         <div class="d-flex px-3 py-4">
-          <a href="#" class="btn btn-primary btn-block py-2">ادامه فرایند خرید</a>
+          @if (User.Identity.IsAuthenticated)
+          {
+            <a href="/checkout" class="btn btn-primary btn-block py-2">ادامه فرایند خرید</a>
+          }
+          else
+          {
+            <a href="/login?redirectTo=/checkout" class="btn btn-primary btn-block py-2">
+              ادامه فرایند خرید
+            </a>
+          }
         </div>
       </div>
     </div>

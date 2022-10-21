@@ -12,5 +12,5 @@ public class OrderDto : BaseDto
     public int ShippingCost { get; set; }
     public List<OrderItemDto> Items { get; set; } = new();
 
-    public int OrderTotalPrice => Items.Sum(i => i.SingleTotalPrice * i.Count) + ShippingCost;
+    public int TotalOrderDiscountedPrice => Items.Sum(i => i.EachItemDiscountedPrice * i.Count) + ShippingCost;
 }

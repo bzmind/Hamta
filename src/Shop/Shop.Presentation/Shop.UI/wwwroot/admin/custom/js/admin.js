@@ -153,7 +153,7 @@ function getProductCategorySpecifications(currentSelectedRadioInput)
   if (currentSelectedRadioInput.length === 0 || $(".category-specifications").length === 0)
     return;
   const categoryId = currentSelectedRadioInput.val();
-  sendAjaxGetWithRouteData(`${$(location).attr("pathname")}/showCategorySpecifications?categoryId=${categoryId}`)
+  sendAjaxGet(`${$(location).attr("pathname")}/showCategorySpecifications?categoryId=${categoryId}`)
     .then((result) =>
     {
       checkResult(result);

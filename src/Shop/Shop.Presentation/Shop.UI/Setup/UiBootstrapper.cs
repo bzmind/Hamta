@@ -18,6 +18,7 @@ using Shop.UI.Services.Sellers;
 using Shop.UI.Services.Shippings;
 using Shop.UI.Services.UserAddresses;
 using Shop.UI.Services.Users;
+using Shop.UI.Setup.CookieUtility;
 using Shop.UI.Setup.HttpClient;
 using Shop.UI.Setup.RazorUtility;
 
@@ -89,6 +90,10 @@ public static class UiBootstrapper
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 
+        services.AddCookieManager();
+
+        services.AddScoped<CartCookieManager>();
+        
         services.AddSingleton(new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
