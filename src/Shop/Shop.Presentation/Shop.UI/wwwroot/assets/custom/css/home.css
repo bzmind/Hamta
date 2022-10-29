@@ -291,3 +291,7 @@ input[type="radio"]:checked + label {
   width: 130px;
   max-width: 130px;
 }
+
+.table--order table thead th {
+  border-bottom: 1px solid transparent;
+}

@@ -14,6 +14,7 @@ using System.Net;
 using AutoMapper;
 using Shop.API.ViewModels.Orders;
 using Shop.Application.Orders.Finalize;
+using Shop.Domain.OrderAggregate;
 
 namespace Shop.API.Controllers;
 
@@ -96,6 +97,23 @@ public class OrderController : BaseApiController
     public async Task<ApiResult<OrderDto?>> GetByUserId(long userId)
     {
         var result = await _orderFacade.GetByUserId(userId);
+        return QueryResult(result);
+    }
+
+    [HttpGet("GetByFilterForUser")]
+    public async Task<ApiResult<OrderFilterResult>> GetByFilterForUser(int pageId = 1, int take = 10,
+        Order.OrderStatus? status = null)
+    {
+        var filterParams = new OrderFilterParams
+        {
+            PageId = pageId,
+            Take = take,
+            Status = status,
+            UserId = User.GetUserId(),
+            StartDate = null,
+            EndDate = null
+        };
+        var result = await _orderFacade.GetByFilter(filterParams);
         return QueryResult(result);
     }
 

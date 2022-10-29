@@ -124,6 +124,14 @@ public class BaseRazorPage : PageModel
         return Content(JsonConvert.SerializeObject(model));
     }
 
+    protected async Task<T> GetData<T>(Func<Task<ApiResult<T>>> func)
+    {
+        var result = await func();
+        if (!result.IsSuccessful || result.Data == null)
+            MakeAlert(result);
+        return result.Data;
+    }
+
     protected class AjaxResult
     {
         public bool IsRedirection { get; set; }

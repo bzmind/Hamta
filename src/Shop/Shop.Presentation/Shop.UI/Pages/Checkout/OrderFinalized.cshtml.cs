@@ -21,7 +21,7 @@ public class OrderFinalizedModel : BaseRazorPage
 
     public async Task<IActionResult> OnGet(long orderId)
     {
-        Order = await _orderService.GetById(orderId);
+        Order = await GetData(async () => await _orderService.GetById(orderId));
         if (Order == null || Order.UserId != User.GetUserId())
         {
             MakeErrorAlert(ValidationMessages.FieldNotFound("سفارش"));

@@ -36,8 +36,8 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
                 UserId = o.UserId,
                 Status = o.Status,
                 Address = o.Address.MapToOrderAddressDto(),
-                ShippingName = o.ShippingInfo.ShippingName,
-                ShippingCost = o.ShippingInfo.ShippingCost.Value,
+                ShippingName = o.ShippingInfo == null ? null : o.ShippingInfo.ShippingName,
+                ShippingCost = o.ShippingInfo == null ? 0 : o.ShippingInfo.ShippingCost.Value,
                 Items = o.Items.ToList().MapToOrderItemDto()
             }).AsQueryable();
 

@@ -18,10 +18,11 @@ public class Order : BaseAggregateRoot
 
     public enum OrderStatus
     {
+        Canceled,
         Pending,
         Preparing,
         Sending,
-        Received
+        Delivered
     }
 
     public int? TotalPrice

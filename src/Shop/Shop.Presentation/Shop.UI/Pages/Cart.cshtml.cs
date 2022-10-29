@@ -26,7 +26,7 @@ public class CartModel : BaseRazorPage
     {
         if (User.Identity.IsAuthenticated)
         {
-            Order = await _orderService.GetByUserId(User.GetUserId());
+            Order = await GetData(async () => await _orderService.GetByUserId(User.GetUserId()));
         }
         else
         {
@@ -132,7 +132,7 @@ public class CartModel : BaseRazorPage
         var orderDto = new OrderDto();
         if (User.Identity.IsAuthenticated)
         {
-            orderDto = await _orderService.GetByUserId(User.GetUserId());
+            orderDto = await GetData(async () => await _orderService.GetByUserId(User.GetUserId()));
         }
         else
         {

@@ -2,6 +2,8 @@
 using Shop.Query.Orders._DTOs;
 using System.Text.Json;
 using Shop.API.ViewModels.Orders;
+using Shop.Domain.OrderAggregate;
+using Shop.Domain.UserAggregate;
 
 namespace Shop.UI.Services.Orders;
 
@@ -46,22 +48,38 @@ public class OrderService : BaseService, IOrderService
         return await DeleteAsync($"RemoveItem/{itemId}");
     }
 
-    public async Task<OrderDto?> GetById(long orderId)
+    public async Task<ApiResult<OrderDto?>> GetById(long orderId)
     {
         var result = await GetFromJsonAsync<OrderDto>($"GetById/{orderId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<OrderDto?> GetByUserId(long userId)
+    public async Task<ApiResult<OrderDto?>> GetByUserId(long userId)
     {
         var result = await GetFromJsonAsync<OrderDto>($"GetByUserId/{userId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<OrderFilterResult> GetByFilter(OrderFilterParams filterParams)
+    public async Task<ApiResult<OrderFilterResult>> GetByFilter(OrderFilterParams filterParams)
     {
         var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<OrderFilterResult>(url);
-        return result.Data;
+        return result;
+    }
+
+    public async Task<ApiResult<OrderFilterResult>> GetByFilterForUser(int pageId, int take, Order.OrderStatus? status)
+    {
+        var filterParams = new OrderFilterParams
+        {
+            PageId = pageId,
+            Take = take,
+            Status = status,
+            UserId = null,
+            StartDate = null,
+            EndDate = null
+        };
+        var url = MakeQueryUrl("GetByFilterForUser", filterParams);
+        var result = await GetFromJsonAsync<OrderFilterResult>(url);
+        return result;
     }
 }

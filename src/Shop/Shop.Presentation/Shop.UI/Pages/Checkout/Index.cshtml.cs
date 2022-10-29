@@ -37,9 +37,10 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGet()
     {
-        Order = await _orderService.GetByUserId(User.GetUserId());
+        Order = await GetData(async () => await _orderService.GetByUserId(User.GetUserId()));
         if (Order == null)
             return RedirectToPage("../Index");
+
         UserAddresses = await _userAddressService.GetAll(User.GetUserId());
         Shippings = await _shippingService.GetAll();
 
@@ -58,7 +59,7 @@ public class IndexModel : BaseRazorPage
             return RedirectToPage("Index").WithModelStateOf(this);
         }
 
-        var order = await _orderService.GetByUserId(User.GetUserId());
+        var order = await GetData(async () => await _orderService.GetByUserId(User.GetUserId()));
         var transaction = await _transactionService.CreateTransaction(new CreateTransactionViewModel
         {
             OrderId = order.Id,
