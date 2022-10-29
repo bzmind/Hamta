@@ -3017,7 +3017,7 @@ header.page-header {
         }
 
           .checkout-section .checkout-step ul li.active:before, .checkout-section .checkout-step ul li.active:after {
-            background-color: #979797;
+            background-color: #26cd83;
           }
 
   .checkout-section .checkout-section-content .checkout-section-title {
@@ -3059,7 +3059,6 @@ header.page-header {
       display: -ms-flexbox;
       display: flex;
       font-size: 13px;
-      color: #997799;
       margin-bottom: 10px;
     }
 

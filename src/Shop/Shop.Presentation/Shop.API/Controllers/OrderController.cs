@@ -13,6 +13,7 @@ using Shop.Query.Orders._DTOs;
 using System.Net;
 using AutoMapper;
 using Shop.API.ViewModels.Orders;
+using Shop.Application.Orders.Finalize;
 
 namespace Shop.API.Controllers;
 
@@ -38,12 +39,17 @@ public class OrderController : BaseApiController
         return CommandResult(result, HttpStatusCode.Created, resultUrl);
     }
 
-    [HttpPut("Checkout")]
-    public async Task<ApiResult> Checkout(CheckoutOrderViewModel model)
+    [HttpPut("Checkout/{shippingMethodId}")]
+    public async Task<ApiResult> Checkout(long shippingMethodId)
     {
-        var command = _mapper.Map<CheckoutOrderCommand>(model);
-        command.UserId = User.GetUserId();
-        var result = await _orderFacade.Checkout(command);
+        var result = await _orderFacade.Checkout(User.GetUserId(), shippingMethodId);
+        return CommandResult(result);
+    }
+
+    [HttpPut("Finalize/{orderId}")]
+    public async Task<ApiResult> Finalize(long orderId)
+    {
+        var result = await _orderFacade.Finalize(orderId);
         return CommandResult(result);
     }
 
@@ -79,7 +85,7 @@ public class OrderController : BaseApiController
     }
 
     [CheckPermission(RolePermission.Permissions.OrderManager)]
-    [HttpGet("GetById/{orderId}")]
+    [HttpGet("GetById/{OrderId}")]
     public async Task<ApiResult<OrderDto?>> GetById(long orderId)
     {
         var result = await _orderFacade.GetById(orderId);

@@ -6,12 +6,12 @@ namespace Shop.Infrastructure.Persistence.EF.Entities.Repositories;
 
 public class SliderRepository : BaseRepository<Slider>, ISliderRepository
 {
-    public SliderRepository(ShopContext context) : base(context)
+    public SliderRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 
     public void RemoveSlider(Slider slider)
     {
-        Context.Sliders.Remove(slider);
+        ShopContext.Sliders.Remove(slider);
     }
 }

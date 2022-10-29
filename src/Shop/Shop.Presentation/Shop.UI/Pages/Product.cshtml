@@ -7,8 +7,8 @@
 @inject IProductService ProductService
 @model Shop.UI.Pages.ProductModel
 @{
-  var cheapestInventory = Model.Product.Inventories.MinBy(i => i.TotalDiscountedPrice);
-  var inventoryIdsOrdered = Model.Product.Inventories.OrderBy(i => i.TotalDiscountedPrice).Select(i => i.ColorId).ToList();
+  var cheapestInventory = Model.Product.Inventories?.MinBy(i => i.TotalDiscountedPrice);
+  var inventoryIdsOrdered = Model.Product.Inventories?.OrderBy(i => i.TotalDiscountedPrice).Select(i => i.ColorId).ToList();
 
   var categoriesInOrder = new List<CategoryDto>();
 

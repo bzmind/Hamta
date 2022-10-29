@@ -7,12 +7,13 @@ namespace Shop.Infrastructure.Persistence.EF.Orders;
 
 public class OrderRepository : BaseRepository<Order>, IOrderRepository
 {
-    public OrderRepository(ShopContext context) : base(context)
+    public OrderRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 
     public async Task<Order?> GetOrderByUserIdAsTracking(long userId)
     {
-        return await Context.Set<Order>().AsTracking().FirstOrDefaultAsync(o => o.UserId == userId);
+        return await ShopContext.Orders.AsTracking()
+            .FirstOrDefaultAsync(o => o.UserId == userId && o.Status == Order.OrderStatus.Pending);
     }
 }

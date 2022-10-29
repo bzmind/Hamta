@@ -16,6 +16,7 @@ using Shop.UI.Services.Questions;
 using Shop.UI.Services.Roles;
 using Shop.UI.Services.Sellers;
 using Shop.UI.Services.Shippings;
+using Shop.UI.Services.Transactions;
 using Shop.UI.Services.UserAddresses;
 using Shop.UI.Services.Users;
 using Shop.UI.Setup.CookieUtility;
@@ -87,6 +88,10 @@ public static class UiBootstrapper
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 
         services.AddHttpClient<ISliderService, SliderService>
+            (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
+            .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
+
+        services.AddHttpClient<ITransactionService, TransactionService>
             (httpClient => httpClient.BaseAddress = new Uri(baseAddress))
             .AddHttpMessageHandler<HttpClientAuthorizationDelegateHandler>();
 

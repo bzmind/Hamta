@@ -6,7 +6,7 @@ namespace Shop.Infrastructure.Persistence.EF.Shippings;
 
 public class ShippingRepository : BaseRepository<Shipping>, IShippingRepository
 {
-    public ShippingRepository(ShopContext context) : base(context)
+    public ShippingRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 }

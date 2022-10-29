@@ -6,7 +6,7 @@ namespace Shop.Infrastructure.Persistence.EF.Users;
 
 public class UserRepository : BaseRepository<User>, IUserRepository
 {
-    public UserRepository(ShopContext context) : base(context)
+    public UserRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 }

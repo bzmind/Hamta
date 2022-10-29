@@ -9,13 +9,13 @@ namespace Shop.Infrastructure.Persistence.EF.Avatars;
 
 public class AvatarRepository : BaseRepository<Avatar>, IAvatarRepository
 {
-    public AvatarRepository(ShopContext context) : base(context)
+    public AvatarRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 
     public async Task<Avatar> GetRandomAvatarNameByUserGender(User.UserGender gender)
     {
-        var avatars = await Context.Avatars.ToListAsync();
+        var avatars = await ShopContext.Avatars.ToListAsync();
         return avatars.Where(a => a.Gender == gender.MapUserGenderToAvatarGender())
             .OrderBy(_ => new Random().Next())
             .First();
@@ -23,7 +23,7 @@ public class AvatarRepository : BaseRepository<Avatar>, IAvatarRepository
 
     public bool RemoveAvatar(Avatar avatar)
     {
-        Context.Avatars.Remove(avatar);
+        ShopContext.Avatars.Remove(avatar);
         return true;
     }
 }

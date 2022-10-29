@@ -1,4 +1,5 @@
-﻿@using Shop.UI.Services.Categories
+﻿@using Common.Application.Utility.FileUtility
+@using Shop.UI.Services.Categories
 @inject ICategoryService CategoryService
 @{
   var categories = await CategoryService.GetForMenu();
@@ -137,4 +138,5 @@
       </ul>
     </nav>
   </div>
+  <span id="productMainImagePath" hidden="">@ServerPaths.GetProductMainImagePath("")</span>
 </header>

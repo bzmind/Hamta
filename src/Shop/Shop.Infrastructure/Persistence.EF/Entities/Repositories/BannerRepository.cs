@@ -6,12 +6,12 @@ namespace Shop.Infrastructure.Persistence.EF.Entities.Repositories;
 
 public class BannerRepository : BaseRepository<Banner>, IBannerRepository
 {
-    public BannerRepository(ShopContext context) : base(context)
+    public BannerRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 
     public void RemoveBanner(Banner banner)
     {
-        Context.Banners.Remove(banner);
+        ShopContext.Banners.Remove(banner);
     }
 }

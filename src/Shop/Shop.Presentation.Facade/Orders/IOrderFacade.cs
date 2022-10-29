@@ -1,6 +1,7 @@
 ﻿using Common.Application;
 using Shop.Application.Orders.AddItem;
 using Shop.Application.Orders.Checkout;
+using Shop.Application.Orders.Finalize;
 using Shop.Application.Orders.RemoveItem;
 using Shop.Application.Orders.SetStatus;
 using Shop.Query.Orders._DTOs;
@@ -14,7 +15,8 @@ public interface IOrderFacade
     Task<OperationResult> IncreaseItemCount(long userId, long orderItemId);
     Task<OperationResult> DecreaseItemCount(long userId, long orderItemId);
     Task<OperationResult> SetStatus(SetOrderStatusCommand command);
-    Task<OperationResult> Checkout(CheckoutOrderCommand command);
+    Task<OperationResult> Checkout(long userId, long shippingMethodId);
+    Task<OperationResult> Finalize(long orderId);
 
     Task<OrderDto?> GetById(long id);
     Task<OrderDto?> GetByUserId(long userId);

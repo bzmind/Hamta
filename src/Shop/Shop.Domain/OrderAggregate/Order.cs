@@ -1,6 +1,7 @@
 ﻿using Common.Domain.BaseClasses;
 using Common.Domain.Exceptions;
 using Common.Domain.ValueObjects;
+using Shop.Domain.OrderAggregate.Events;
 using Shop.Domain.OrderAggregate.ValueObjects;
 
 namespace Shop.Domain.OrderAggregate;
@@ -101,10 +102,15 @@ public class Order : BaseAggregateRoot
     public void Checkout(OrderAddress address, string shippingMethod, int shippingCost)
     {
         OrderEditGuard();
-
         Address = address;
-        Status = OrderStatus.Preparing;
         ShippingInfo = new ShippingInfo(shippingMethod, new Money(shippingCost));
+    }
+
+    public void Finalize()
+    {
+        OrderEditGuard();
+        Status = OrderStatus.Preparing;
+        AddDomainEvent(new OrderFinalizedEvent(Id));
     }
 
     private void OrderEditGuard()

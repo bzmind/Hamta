@@ -6,7 +6,7 @@ namespace Shop.Infrastructure.Persistence.EF.Roles;
 
 public class RoleRepository : BaseRepository<Role>, IRoleRepository
 {
-    public RoleRepository(ShopContext context) : base(context)
+    public RoleRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 }

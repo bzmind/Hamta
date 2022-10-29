@@ -6,7 +6,7 @@ namespace Shop.Infrastructure.Persistence.EF.Questions;
 
 public class QuestionRepository : BaseRepository<Question>, IQuestionRepository
 {
-    public QuestionRepository(ShopContext context) : base(context)
+    public QuestionRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 }

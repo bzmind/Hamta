@@ -1,0 +1,49 @@
+﻿@page "{handler?}"
+@using Shop.UI.TagHelpers
+@model Shop.UI.Pages.Admin.Shippings.IndexModel
+@{
+  ViewData["Title"] = "مدیریت روش‌های ارسال";
+  ViewData["Selected"] = "shippings";
+}
+
+<section>
+  <open-modal url="@Url.Page("Index", "ShowAddPage")" title="افزودن روش ارسال"
+              size="modal-sm" class="btn btn-success mb-1">افزودن روش ارسال</open-modal>
+  <div class="table-responsive card card-content">
+    <table class="table table-striped mb-0">
+      <thead>
+      <tr>
+        <th>نام</th>
+        <th>هزینه</th>
+        <th>عملیات</th>
+      </tr>
+      </thead>
+      <tbody>
+      @foreach (var shipping in Model.Shippings)
+      {
+        <tr>
+          <td>@shipping.Name</td>
+          <td>@shipping.Cost.ToString("#,0") تومان</td>
+          <td>
+            <open-modal url="@Url.Page("Index", "ShowEditPage", new { id = shipping.Id })"
+                        class="btn-sm badge-pill bg-rgba-primary text-primary border-0"
+                        title="ویرایش بنر" size="modal-md" backdrop="static">
+              ویرایش
+            </open-modal>
+            <delete url="@Url.Page("Index", "RemoveShipping", new { id = shipping.Id })"
+                    class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
+              حذف
+            </delete>
+          </td>
+        </tr>
+      }
+      @if (!Model.Shippings.Any())
+      {
+        <tr>
+          <td colspan="3" class="text-center">موردی برای نمایش وجود ندارد</td>
+        </tr>
+      }
+      </tbody>
+    </table>
+  </div>
+</section>

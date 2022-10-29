@@ -86,7 +86,6 @@ public class AutoMapperProfile : Profile
         CreateMap<IncreaseSellerInventoryQuantityCommand, IncreaseSellerInventoryQuantityViewModel>().ReverseMap();
         CreateMap<DecreaseSellerInventoryQuantityCommand, DecreaseSellerInventoryQuantityViewModel>().ReverseMap();
         CreateMap<AddOrderItemCommand, AddOrderItemViewModel>().ReverseMap();
-        CreateMap<CheckoutOrderCommand, CheckoutOrderViewModel>().ReverseMap();
         CreateMap<SetOrderStatusCommand, SetOrderStatusViewModel>().ReverseMap();
         CreateMap<CreateProductCommand, CreateProductViewModel>().ReverseMap();
         CreateMap<CreateProductCommand, ControllerCreateProductViewModel>().ReverseMap();

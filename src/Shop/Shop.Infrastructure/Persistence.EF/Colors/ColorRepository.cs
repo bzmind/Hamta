@@ -6,7 +6,7 @@ namespace Shop.Infrastructure.Persistence.EF.Colors;
 
 public class ColorRepository : BaseRepository<Color>, IColorRepository
 {
-    public ColorRepository(ShopContext context) : base(context)
+    public ColorRepository(ShopContext shopContext) : base(shopContext)
     {
     }
 }

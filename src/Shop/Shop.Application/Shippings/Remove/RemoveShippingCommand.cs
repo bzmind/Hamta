@@ -1,5 +1,6 @@
 ﻿using Common.Application;
 using Common.Application.BaseClasses;
+using Common.Application.Utility.Validation;
 using Shop.Domain.ShippingAggregate.Repository;
 
 namespace Shop.Application.Shippings.Remove;
@@ -20,7 +21,7 @@ public class RemoveShippingCommandHandler : IBaseCommandHandler<RemoveShippingCo
         var shipping = await _shippingRepository.GetAsync(request.ShippingId);
 
         if (shipping == null)
-            return OperationResult.NotFound();
+            return OperationResult.NotFound(ValidationMessages.FieldNotFound("روش ارسال"));
 
         _shippingRepository.Delete(shipping);
         await _shippingRepository.SaveAsync();

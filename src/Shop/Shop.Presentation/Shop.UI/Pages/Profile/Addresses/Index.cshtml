@@ -2,7 +2,6 @@
 @model Shop.UI.Pages.Profile.Addresses.IndexModel
 @{
   ViewData["Title"] = "آدرس ها";
-  var i = 1;
 }
 
 <div class="row mb-5">
@@ -16,12 +15,13 @@
         <div class="row mx-0">
           @foreach (var address in Model.Addresses)
           {
+            var guid = Guid.NewGuid();
             <div class="col-xl-3 col-lg-4 col-sm-6">
               <div class="custom-control custom-radio">
                 <div class="address-select">
-                  <input type="radio" id="@($"customRadio{i}")" name="customRadio"
+                  <input type="radio" id="@($"customRadio{guid}")" name="customRadio"
                        class="custom-control-input" checked="@(address.IsActive ? "checked" : null)">
-                  <label class="custom-control-label" for="@($"customRadio{i}")"
+                  <label class="custom-control-label" for="@($"customRadio{guid}")"
                        onclick="sendAjaxPostWithRouteData('@Url.Page("Index", "ActivateAddress", new { addressId = address.Id })')">
                     <span class="head-address-select">
                       به این آدرس ارسال شود
@@ -45,7 +45,6 @@
                 </div>
               </div>
             </div>
-            i++;
           }
           <div class="col-xl-3 col-lg-4 col-sm-6">
             <div class="custom-control custom-radio">

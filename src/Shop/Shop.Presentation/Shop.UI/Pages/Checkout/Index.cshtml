@@ -1,0 +1,195 @@
+﻿@page
+@model Shop.UI.Pages.Checkout.IndexModel
+@{
+}
+
+<div class="row mb-4">
+  <div class="col-xl-9 col-lg-8 col-md-8 mb-md-0 mb-3">
+    <div class="checkout-section shadow-around">
+      <div class="checkout-step">
+        <ul>
+          <li class="active">
+            <a href="/cart"><span>سبد خرید</span></a>
+          </li>
+          <li class="active">
+            <span>نحوه ارسال و پرداخت</span>
+          </li>
+          <li>
+            <span>اتمام خرید و ارسال</span>
+          </li>
+        </ul>
+      </div>
+      <div class="checkout-section-content">
+        <div class="checkout-section-title">آدرس تحویل سفارش</div>
+        <div class="row mx-0">
+          @foreach (var address in Model.UserAddresses)
+          {
+            var guid = Guid.NewGuid();
+            <div class="col-xl-3 col-lg-4 col-sm-6">
+              <div class="custom-control custom-radio">
+                <div class="address-select">
+                  <input type="radio" id="@guid" name="customRadio"
+                       class="custom-control-input" checked="@(address.IsActive ? "checked" : null)">
+                  <label class="custom-control-label" for="@guid"
+                       onclick="sendAjaxPostWithRouteData('@Url.Page("../Profile/Addresses/Index", "ActivateAddress", new { addressId = address.Id })')">
+                    <span class="head-address-select">
+                      به این آدرس ارسال شود
+                    </span>
+                  </label>
+                  <span class="mt-1">@address.FullAddress</span>
+                  <span>
+                    <i class="fa fa-user"></i>
+                    @address.FullName
+                  </span>
+                  <delete id="remove-address" url="@Url.Page("../Profile/Addresses/Index", "RemoveAddress",
+                                                     new { addressId = address.Id })">
+                    حذف
+                    <i class="far fa-trash"></i>
+                  </delete>
+                  <open-modal url="@Url.Page("../Profile/Addresses/Index", "ShowEditPage", new { addressId = address.Id })"
+                            class="edit-address-btn btn btn-primary btn-sm"
+                            title="ویرایش آدرس" size="modal-md">
+                    ویرایش
+                    <i class="far fa-edit"></i>
+                  </open-modal>
+                </div>
+              </div>
+            </div>
+          }
+          <div class="col-xl-3 col-lg-4 col-sm-6">
+            <div class="custom-control custom-radio">
+              <open-modal url="@Url.Page("../Profile/Addresses/Index", "ShowAddPage")" class="add-address"
+                          title="آدرس جدید" size="modal-md">
+                <i class="fa fa-plus"></i>
+              </open-modal>
+            </div>
+          </div>
+        </div>
+        <hr class="mt-40px">
+        <div class="checkout-section-title">شیوه ارسال</div>
+        <div class="payment-selection">
+          @foreach (var shipping in Model.Shippings.OrderBy(s => s.Cost))
+          {
+            var guid = Guid.NewGuid();
+            if (Model.Order.ShippingName != null)
+            {
+              <div class="custom-control custom-radio custom-control-inline mb-3">
+                <input type="radio" id="@guid" name="shippingMethodId" class="custom-control-input"
+                   checked="@(shipping.Name == Model.Order.ShippingName ? "checked" : null)"
+                   onchange="updateShippingPrice(@shipping.Cost)" value="@shipping.Id">
+                <label class="custom-control-label payment-select" for="@guid">
+                  <span class="d-flex align-items-center">
+                    <i class="fad fa-credit-card"></i>
+                    <span>
+                      <span class="title fs-15px">@shipping.Name</span>
+                      <span class="title">@shipping.Cost.ToString("#,0") تومان</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            }
+            else
+            {
+              <div class="custom-control custom-radio custom-control-inline mb-3">
+                <input type="radio" id="@guid" name="shippingMethodId" class="custom-control-input"
+                   checked="@(shipping.Id == Model.Shippings.OrderBy(s => s.Cost).First().Id ? "checked" : null)"
+                   onchange="updateShippingPrice(@shipping.Cost)" value="@shipping.Id">
+                <label class="custom-control-label payment-select" for="@guid">
+                  <span class="d-flex align-items-center">
+                    <i class="fad fa-credit-card"></i>
+                    <span>
+                      <span class="title fs-15px">@shipping.Name</span>
+                      <span class="title">@shipping.Cost.ToString("#,0") تومان</span>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            }
+          }
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-3 col-lg-4 col-md-4">
+    @{
+      var totalPriceWithoutDiscount = Model.Order.Items.Sum(i => i.Price * i.Count);
+      var totalDiscountAmount = Model.Order.Items.Sum(i => i.DiscountAmount * i.Count);
+      var discount = totalDiscountAmount * 100 / totalPriceWithoutDiscount;
+    }
+    <input id="tpwsc" hidden="" value="@Model.Order.TotalOrderPriceWithoutShippingCost"></input>
+    <div class="shadow-around pt-3">
+      <div class="d-flex jc-between px-3 py-2">
+        <span class="text-muted">قیمت کالاها (@Model.Order.Items.Sum(i => i.Count))</span>
+        <span class="text-muted">
+          @totalPriceWithoutDiscount.ToString("#,0")
+          <span class="text-sm">تومان</span>
+        </span>
+      </div>
+      <div class="d-flex jc-between px-3 py-2">
+        <span class="text-muted">تخفیف کالاها</span>
+        <span class="text-danger">
+          (٪@discount) @totalDiscountAmount.ToString("#,0")
+          <span class="text-sm">تومان</span>
+        </span>
+      </div>
+      <div class="d-flex justify-content-between px-3 py-2">
+        <span class="text-muted">هزینه ارسال سفارش</span>
+        <span class="text-muted">
+          @if (Model.Order.ShippingName == null)
+          {
+            <label id="shippingPriceLabel">@Model.Shippings.OrderBy(s => s.Cost).First().Cost.ToString("#,0")</label>
+          }
+          else
+          {
+            <label id="shippingPriceLabel">@Model.Order.ShippingCost.ToString("#,0")</label>
+          }
+          <span class="text-sm">تومان</span>
+        </span>
+      </div>
+      <hr>
+      <div class="d-flex justify-content-between px-3 py-2">
+        <span class="font-weight-bold">مبلغ قابل پرداخت</span>
+        <span class="font-weight-bold">
+          @if (Model.Order.ShippingName == null)
+          {
+            var price = Model.Order.TotalOrderDiscountedPrice + Model.Shippings.OrderBy(s => s.Cost).First().Cost;
+            <label id="orderTotalPriceLabel">@price.ToString("#,0")</label>
+          }
+          else
+          {
+            <label id="orderTotalPriceLabel">@Model.Order.TotalOrderDiscountedPrice.ToString("#,0")</label>
+          }
+          <span class="text-sm">تومان</span>
+        </span>
+      </div>
+      <div class="d-flex px-3 py-4">
+        <form method="post">
+          <button class="btn btn-primary btn-block py-2 w-100" onclick="submitShippingMethodId(event)">
+            پرداخت و ثبت نهایی سفارش
+          </button>
+          <input name="shippingMethodId" id="shippingMethodId" hidden="" value="" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+@section Scripts
+  {
+  <script>
+    function updateShippingPrice(cost)
+    {
+        const orderPrice = $("#tpwsc").val();
+        const finalPrice = parseInt(orderPrice) + parseInt(cost);
+        $("#shippingPriceLabel").html(splitNumber(cost));
+        $("#orderTotalPriceLabel").html(splitNumber(finalPrice));
+    }
+
+    function submitShippingMethodId(e)
+    {
+        e.preventDefault();
+        const selectedShippingMethodId = $("input[name='shippingMethodId'][type='radio']:checked").val();
+        $("#shippingMethodId").val(selectedShippingMethodId);
+        e.target.form.submit();
+    }
+  </script>
+}

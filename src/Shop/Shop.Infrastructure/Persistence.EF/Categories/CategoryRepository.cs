@@ -11,14 +11,14 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 {
     private readonly DapperContext _dapperContext;
 
-    public CategoryRepository(ShopContext context, DapperContext dapperContext) : base(context)
+    public CategoryRepository(ShopContext shopContext, DapperContext dapperContext) : base(shopContext)
     {
         _dapperContext = dapperContext;
     }
 
     public Category? GetCategoryBySlug(string slug)
     {
-        return Context.Categories.FirstOrDefault(category => category.Slug == slug);
+        return ShopContext.Categories.FirstOrDefault(category => category.Slug == slug);
     }
 
     public async Task<List<CategorySpecification>> GetCategoryAndParentsSpecifications(long categoryId)
@@ -56,11 +56,11 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
 
     public async Task<bool> RemoveCategory(long categoryId)
     {
-        var categories = await Context.Categories
+        var categories = await ShopContext.Categories
             .OrderBy(c => c.Id)
             .Where(c => c.Id >= categoryId)
             .GroupJoin(
-                Context.Products,
+                ShopContext.Products,
                 c => c.Id,
                 p => p.CategoryId,
                 (category, product) => new { category, product })
@@ -96,8 +96,8 @@ public class CategoryRepository : BaseRepository<Category>, ICategoryRepository
         if (CategoryHasProduct(exactCategory, categoriesWithProduct.ToList()))
             return false;
 
-        RecursivelyRemoveSubCategories(exactCategory, Context);
-        Context.Categories.Remove(exactCategory);
+        RecursivelyRemoveSubCategories(exactCategory, ShopContext);
+        ShopContext.Categories.Remove(exactCategory);
 
         return true;
     }

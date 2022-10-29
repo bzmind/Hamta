@@ -26,7 +26,7 @@ public class GetOrderByUserIdQueryHandler : IBaseQueryHandler<GetOrderByUserIdQu
             SELECT
                 o.Id, o.CreationDate, o.UserId, o.Status, o.ShippingName, o.ShippingCost,
                 oa.Id, oa.CreationDate, oa.OrderId, oa.FullName, oa.Province, oa.City,
-                oa.FullAddress, oa.PostalCode, oa.PhoneNumber, oi.Id, oi.CreationDate,
+                oa.FullAddress, oa.PostalCode, oa.PhoneNumber AS Value, oi.Id, oi.CreationDate,
                 oi.OrderId, oi.InventoryId, p.Name AS ProductName, p.MainImage AS ProductMainImage,
                 p.Slug AS ProductSlug, oi.Count, oi.Price, i.DiscountPercentage AS InventoryDiscountPercentage,
                 s.ShopName AS InventoryShopName, i.Quantity AS InventoryQuantity,
@@ -44,7 +44,7 @@ public class GetOrderByUserIdQueryHandler : IBaseQueryHandler<GetOrderByUserIdQu
                 ON i.ProductId = p.Id
             LEFT JOIN {_dapperContext.Sellers} s
                 ON s.Id = i.SellerId
-            WHERE o.UserId = @UserId";
+            WHERE o.UserId = @UserId AND o.Status = 'Pending'";
 
         var result = await connection.QueryAsync<OrderDto, OrderAddressDto, PhoneNumber, OrderItemDto,
             ColorDto, OrderDto>
@@ -59,7 +59,7 @@ public class GetOrderByUserIdQueryHandler : IBaseQueryHandler<GetOrderByUserIdQu
             itemDto.ColorCode = colorDto.Code;
             orderDto.Items.Add(itemDto);
             return orderDto;
-        }, splitOn: "Id,PhoneNumber,Id,Id", param: new { request.UserId });
+        }, splitOn: "Id,Value,Id,Id", param: new { request.UserId });
 
         var groupedResult = result.GroupBy(o => o.Id).Select(orderGroup =>
         {

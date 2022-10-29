@@ -26,22 +26,24 @@ public class GetOrderByIdQueryHandler : IBaseQueryHandler<GetOrderByIdQuery, Ord
             SELECT
                 o.Id, o.CreationDate, o.UserId, o.Status, o.ShippingName, o.ShippingCost,
                 oa.Id, oa.CreationDate, oa.OrderId, oa.FullName, oa.Province, oa.City,
-                oa.FullAddress, oa.PostalCode, oa.PhoneNumber, oi.Id, oi.CreationDate,
+                oa.FullAddress, oa.PostalCode, oa.PhoneNumber AS Value, oi.Id, oi.CreationDate,
                 oi.OrderId, oi.InventoryId, p.Name AS ProductName, p.MainImage AS ProductMainImage,
                 p.Slug AS ProductSlug, oi.Count, oi.Price, i.DiscountPercentage AS InventoryDiscountPercentage,
                 s.ShopName AS InventoryShopName, i.Quantity AS InventoryQuantity,
                 c.Id, c.CreationDate, c.Name, c.Code
             FROM {_dapperContext.Orders} o
-            INNER JOIN {_dapperContext.OrderAddresses} oa
+            LEFT JOIN {_dapperContext.OrderAddresses} oa
                 ON oa.OrderId = @OrderId
-            INNER JOIN {_dapperContext.OrderItems} oi
+            LEFT JOIN {_dapperContext.OrderItems} oi
                 ON oi.OrderId = @OrderId
-            INNER JOIN {_dapperContext.SellerInventories} i
+            LEFT JOIN {_dapperContext.SellerInventories} i
                 ON oi.InventoryId = i.Id
-            INNER JOIN {_dapperContext.Colors} c
+            LEFT JOIN {_dapperContext.Colors} c
                 ON i.ColorId = c.Id
-            INNER JOIN {_dapperContext.Products} p
+            LEFT JOIN {_dapperContext.Products} p
                 ON i.ProductId = p.Id
+            LEFT JOIN {_dapperContext.Sellers} s
+                ON s.Id = i.SellerId
             WHERE o.Id = @OrderId";
 
         var result = await connection.QueryAsync<OrderDto, OrderAddressDto, PhoneNumber, OrderItemDto,
@@ -57,7 +59,7 @@ public class GetOrderByIdQueryHandler : IBaseQueryHandler<GetOrderByIdQuery, Ord
             itemDto.ColorCode = colorDto.Code;
             orderDto.Items.Add(itemDto);
             return orderDto;
-        }, splitOn: "Id,PhoneNumber,Id,Id", param: new { request.OrderId });
+        }, splitOn: "Id,Value,Id,Id", param: new { request.OrderId });
 
         var groupedResult = result.GroupBy(o => o.Id).Select(orderGroup =>
         {

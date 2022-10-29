@@ -16,9 +16,14 @@ public class OrderService : BaseService, IOrderService
         return await PostAsJsonAsync("AddItem", model);
     }
 
-    public async Task<ApiResult> Checkout(CheckoutOrderViewModel model)
+    public async Task<ApiResult> Checkout(long shippingMethodId)
     {
-        return await PutAsJsonAsync("Checkout", model);
+        return await PutAsync($"Checkout/{shippingMethodId}");
+    }
+
+    public async Task<ApiResult> Finalize(long orderId)
+    {
+        return await PutAsync($"Finalize/{orderId}");
     }
 
     public async Task<ApiResult> IncreaseItemCount(long itemId)

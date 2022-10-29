@@ -4,6 +4,6 @@ namespace Shop.Query.Shippings._DTOs;
 
 public class ShippingDto : BaseDto
 {
-    public string ShippingMethod { get; set; }
-    public int ShippingCost { get; set; }
+    public string Name { get; set; }
+    public int Cost { get; set; }
 }

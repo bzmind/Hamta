@@ -25,6 +25,7 @@ using Shop.Infrastructure.Persistence.EF.Roles;
 using Shop.Infrastructure.Persistence.EF.Sellers;
 using Shop.Infrastructure.Persistence.EF.Shippings;
 using Shop.Infrastructure.Persistence.EF.Users;
+using Shop.Infrastructure.Utility.MediatR;
 
 namespace Shop.Infrastructure;
 
@@ -46,7 +47,7 @@ public class InfrastructureBootstrapper
         services.AddTransient<IBannerRepository, BannerRepository>();
         services.AddTransient<ISliderRepository, SliderRepository>();
         services.AddTransient(_ => new DapperContext(connectionString));
-
+        services.AddSingleton<ICustomEventPublisher, CustomEventPublisher>();
         services.AddDbContext<ShopContext>(option =>
         {
             option.UseSqlServer(connectionString);

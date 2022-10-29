@@ -8,6 +8,7 @@ namespace Shop.UI.Services;
 public abstract class BaseService
 {
     private readonly HttpClient _client;
+    private readonly HttpContext _httpContext;
     private readonly JsonSerializerOptions _jsonOptions;
 
     protected BaseService(HttpClient client, JsonSerializerOptions jsonOptions)
@@ -100,6 +101,7 @@ public abstract class BaseService
     {
         ApiResult finalResult;
         var reasonPhrase = $"Status Code: {(int)result.StatusCode} {result.ReasonPhrase}";
+
         try
         {
             finalResult = await result.Content.ReadFromJsonAsync<ApiResult>(_jsonOptions);
@@ -118,6 +120,7 @@ public abstract class BaseService
     {
         ApiResult<TData> finalResult;
         var reasonPhrase = $"Status Code: {(int)result.StatusCode} {result.ReasonPhrase}";
+
         try
         {
             finalResult = await result.Content.ReadFromJsonAsync<ApiResult<TData>>(_jsonOptions);

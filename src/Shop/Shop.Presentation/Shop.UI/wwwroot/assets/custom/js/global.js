@@ -115,7 +115,7 @@ function submitFormWithAjaxAndReplaceElement(e, elementSelector)
   if (form.valid() === false)
     return false;
 
-  sendAjaxPost(url, formData).then(function (result)
+  sendAjaxPost(url, formData).then(result =>
   {
     checkResult(result);
     replaceElementWithAjaxResult(elementSelector, result);

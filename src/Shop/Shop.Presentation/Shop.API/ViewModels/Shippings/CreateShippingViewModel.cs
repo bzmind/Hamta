@@ -12,6 +12,6 @@ public class CreateShippingViewModel
 
     [Display(Name = "هزینه روش ارسال")]
     [Required(ErrorMessage = "لطفا {0} را وارد کنید")]
-    [MinLength(0, ErrorMessage = "{0} باید بیشتر از 0 باشد")]
+    [Range(0, double.PositiveInfinity, ErrorMessage = "{0} باید بیشتر از 0 باشد")]
     public int Cost { get; set; }
 }

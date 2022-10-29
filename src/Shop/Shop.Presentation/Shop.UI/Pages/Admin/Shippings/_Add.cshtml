@@ -1,0 +1,14 @@
+﻿@model Shop.API.ViewModels.Shippings.CreateShippingViewModel
+
+<form method="post" asp-page="Index" onsubmit="return submitFormWithAjaxAndReplaceElement(event, '')">
+  @Html.EditorFor(m => m.Name)
+  @Html.EditorFor(m => m.Cost)
+  <button type="submit" class="btn btn-success">
+    <i class="bx bx-check d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">ایجاد</span>
+  </button>
+  <button type="button" class="btn btn-light-secondary" data-dismiss="modal">
+    <i class="bx bx-x d-block d-sm-none"></i>
+    <span class="d-none d-sm-block">بستن</span>
+  </button>
+</form>

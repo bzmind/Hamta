@@ -14,6 +14,7 @@
     <Folder Include="Comments\Remove\" />
     <Folder Include="Orders\AddItem\" />
     <Folder Include="Orders\Checkout\" />
+    <Folder Include="Orders\_EventHandlers\" />
     <Folder Include="Orders\RemoveItem\" />
     <Folder Include="Orders\SetStatus\" />
     <Folder Include="Products\Create\" />
@@ -35,7 +36,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.1.0" />
+    <PackageReference Include="FluentValidation.DependencyInjectionExtensions" Version="11.2.2" />
   </ItemGroup>
 
   <ItemGroup>

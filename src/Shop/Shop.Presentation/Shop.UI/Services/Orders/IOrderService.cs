@@ -7,7 +7,8 @@ namespace Shop.UI.Services.Orders;
 public interface IOrderService
 {
     Task<ApiResult> AddItem(AddOrderItemViewModel command);
-    Task<ApiResult> Checkout(CheckoutOrderViewModel model);
+    Task<ApiResult> Checkout(long shippingMethodId);
+    Task<ApiResult> Finalize(long orderId);
     Task<ApiResult> IncreaseItemCount(long itemId);
     Task<ApiResult> DecreaseItemCount(long itemId);
     Task<ApiResult> SetStatus(SetOrderStatusViewModel model);

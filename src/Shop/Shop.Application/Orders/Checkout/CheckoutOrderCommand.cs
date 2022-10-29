@@ -10,17 +10,7 @@ using Shop.Domain.ShippingAggregate.Repository;
 
 namespace Shop.Application.Orders.Checkout;
 
-public class CheckoutOrderCommand : IBaseCommand
-{
-    public long UserId { get; set; }
-    public long UserAddressId { get; set; }
-    public long ShippingMethodId { get; set; }
-
-    private CheckoutOrderCommand()
-    {
-
-    }
-}
+public record CheckoutOrderCommand(long UserId, long ShippingMethodId) : IBaseCommand;
 
 public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderCommand>
 {
@@ -48,7 +38,7 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
         if (user == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("کاربر"));
 
-        var userAddress = user.Addresses.FirstOrDefault(a => a.Id == request.UserAddressId);
+        var userAddress = user.Addresses.FirstOrDefault(a => a.IsActive);
         if (userAddress == null)
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("آدرس کاربر"));
 
@@ -61,13 +51,6 @@ public class CheckoutOrderCommandHandler : IBaseCommandHandler<CheckoutOrderComm
             return OperationResult.NotFound(ValidationMessages.FieldNotFound("روش ارسال"));
 
         order.Checkout(orderAddress, shipping.Name, shipping.Cost.Value);
-
-        var inventories = await _sellerRepository.GetOrderItemInventoriesAsTrackingAsync(order.Items.ToList());
-        order.Items.ToList().ForEach(orderItem =>
-        {
-            var inventory = inventories.First(inventory => inventory.Id == orderItem.InventoryId);
-            inventory.DecreaseQuantity(orderItem.Count);
-        });
 
         await _orderRepository.SaveAsync();
         return OperationResult.Success();

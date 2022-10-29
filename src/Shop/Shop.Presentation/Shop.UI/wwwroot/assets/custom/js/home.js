@@ -86,7 +86,7 @@ function getCartSummary()
           <li class="cart-item">
             <span class="d-flex align-items-center mb-2">
               <a href="/product/${item.productSlug}">
-                <img src="https://localhost:7087/images/products/main/${item.productMainImage}" alt="${item.productName}">
+                <img src="${$("#productMainImagePath").html()}${item.productMainImage}" alt="${item.productName}">
               </a>
               <span>
                 <a href="/product/${item.productSlug}">

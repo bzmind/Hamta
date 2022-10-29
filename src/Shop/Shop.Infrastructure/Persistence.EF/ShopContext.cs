@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Common.Domain.BaseClasses;
+using Microsoft.EntityFrameworkCore;
 using Shop.Domain.AvatarAggregate;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.ColorAggregate;
@@ -11,6 +12,8 @@ using Shop.Domain.QuestionAggregate;
 using Shop.Domain.RoleAggregate;
 using Shop.Domain.SellerAggregate;
 using Shop.Domain.ShippingAggregate;
+using MediatR;
+using Shop.Infrastructure.Utility.MediatR;
 
 namespace Shop.Infrastructure.Persistence.EF;
 
@@ -30,9 +33,35 @@ public class ShopContext : DbContext
     public DbSet<Slider> Sliders { get; set; }
     public DbSet<Banner> Banners { get; set; }
 
-    public ShopContext(DbContextOptions<ShopContext> options) : base(options)
+    private readonly ICustomEventPublisher _publisher;
+
+    public ShopContext(DbContextOptions<ShopContext> options, ICustomEventPublisher publisher) : base(options)
     {
-        
+        _publisher = publisher;
+    }
+
+    public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = new())
+    {
+        var modifiedEntities = GetModifiedEntities();
+        await PublishEvents(modifiedEntities);
+        return await base.SaveChangesAsync(cancellationToken);
+    }
+    private List<BaseAggregateRoot> GetModifiedEntities() =>
+        ChangeTracker.Entries<BaseAggregateRoot>()
+            .Where(entity => entity.State != EntityState.Detached)
+            .Select(entity => entity.Entity)
+            .Where(aggregateRoot => aggregateRoot.DomainEvents.Any()).ToList();
+
+    private async Task PublishEvents(List<BaseAggregateRoot> modifiedEntities)
+    {
+        foreach (var entity in modifiedEntities)
+        {
+            var events = entity.DomainEvents;
+            foreach (var domainEvent in events)
+            {
+                await _publisher.Publish(domainEvent, PublishStrategy.ParallelNoWait);
+            }
+        }
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

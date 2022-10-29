@@ -18,6 +18,7 @@
 		<Folder Include="Services\Entities\Sliders\" />
 		<Folder Include="Services\Entities\Banners\" />
 		<Folder Include="Services\MainPage\" />
+		<Folder Include="Services\Transactions\" />
 		<Folder Include="Services\UserAddresses\" />
 		<Folder Include="Services\Users\" />
 		<Folder Include="Services\Shippings\" />
@@ -45,7 +46,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="CookieManager" Version="2.0.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.6" />
+		<PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="6.0.10" />
 	</ItemGroup>
 
 	<ItemGroup>

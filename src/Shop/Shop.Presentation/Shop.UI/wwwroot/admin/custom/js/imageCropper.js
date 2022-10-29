@@ -29,7 +29,8 @@ function createCropper(image)
 function setupCroppersForUpload()
 {
   const defaultType = "image/jpeg";
-  $("form button:submit").on("click", function (e)
+  const formsWithImageCrops = $("form").has("img[data-crop]");
+  formsWithImageCrops.find("button:submit").on("click", function (e)
   {
     e.preventDefault();
     const cropImages = $("img[data-crop]");
