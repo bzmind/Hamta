@@ -23,7 +23,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task OnGet()
     {
-        FilterResult = await _productService.GetByFilter(FilterParams);
+        FilterResult = await GetData(async () => await _productService.GetByFilter(FilterParams));
     }
 
     public async Task<IActionResult> OnPostRemoveProduct(long productId)

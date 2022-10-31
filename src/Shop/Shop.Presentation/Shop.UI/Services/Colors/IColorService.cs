@@ -9,6 +9,6 @@ public interface IColorService
     Task<ApiResult> Create(CreateColorViewModel model);
     Task<ApiResult> Edit(EditColorViewModel model);
 
-    Task<ColorDto?> GetById(long colorId);
-    Task<ColorFilterResult> GetByFilter(ColorFilterParams filterParams);
+    Task<ApiResult<ColorDto?>> GetById(long colorId);
+    Task<ApiResult<ColorFilterResult>> GetByFilter(ColorFilterParams filterParams);
 }

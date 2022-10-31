@@ -12,7 +12,7 @@ public interface ICommentService
     Task<ApiResult> SetDislikes(long commentId);
     Task<ApiResult> Remove(long commentId);
 
-    Task<CommentDto?> GetById(long commentId);
-    Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams);
-    Task<CommentFilterResult> GetForProduct(ProductCommentFilterParams filterParams);
+    Task<ApiResult<CommentDto?>> GetById(long commentId);
+    Task<ApiResult<CommentFilterResult>> GetByFilter(CommentFilterParams filterParams);
+    Task<ApiResult<CommentFilterResult>> GetForProduct(ProductCommentFilterParams filterParams);
 }

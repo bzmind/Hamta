@@ -25,10 +25,9 @@ public class IndexModel : BaseRazorPage
 
     public List<UserAddressDto> Addresses { get; set; } = new();
 
-    public async Task<IActionResult> OnGet()
+    public async Task OnGet()
     {
-        Addresses = await _userAddressService.GetAll(User.GetUserId());
-        return Page();
+        Addresses = await GetData(async () => await _userAddressService.GetAll(User.GetUserId()));
     }
 
     public async Task<IActionResult> OnPost(CreateUserAddressViewModel model)
@@ -44,12 +43,10 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowEditPage(long addressId)
     {
-        var address = await _userAddressService.GetById(addressId);
+        var address = await GetData(async () => await _userAddressService.GetById(addressId));
         if (address == null)
-        {
-            MakeErrorAlert(ValidationMessages.FieldNotFound("آدرس"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("آدرس"), ApiStatusCode.NotFound);
-        }
+
         var model = _mapper.Map<EditUserAddressViewModel>(address);
         return await AjaxHtmlSuccessResultAsync("_Edit", model);
     }

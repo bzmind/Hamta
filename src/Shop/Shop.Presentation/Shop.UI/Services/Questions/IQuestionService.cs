@@ -12,6 +12,6 @@ public interface IQuestionService
     Task<ApiResult> RemoveReply(RemoveReplyViewModel model);
     Task<ApiResult> Remove(long questionId);
 
-    Task<QuestionDto?> GetById(long questionId);
-    Task<QuestionFilterResult> GetByFilter(QuestionFilterParams filterParams);
+    Task<ApiResult<QuestionDto?>> GetById(long questionId);
+    Task<ApiResult<QuestionFilterResult>> GetByFilter(QuestionFilterParams filterParams);
 }

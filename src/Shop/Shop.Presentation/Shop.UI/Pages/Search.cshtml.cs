@@ -23,7 +23,6 @@ public class SearchModel : BaseRazorPage
     public async Task OnGet()
     {
         FilterParams.Take = 20;
-        var result = await _productService.GetForShopByFilter(FilterParams);
-        Products = result;
+        Products = await GetData(async () => await _productService.GetForShopByFilter(FilterParams));
     }
 }

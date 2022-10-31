@@ -481,7 +481,7 @@
   </div>
   <div class="swiper-container slider-lg">
     <div class="swiper-wrapper">
-      @foreach (var product in sameCategoryProducts.Data)
+      @foreach (var product in sameCategoryProducts.Data.Data)
       {
         <partial name="Shared/Product/_Card" model="product" />
       }

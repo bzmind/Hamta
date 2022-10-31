@@ -32,10 +32,11 @@ public class CartCookieManager
     {
         var cart = GetCart();
 
-        var inventory = await _sellerService.GetInventoryById(inventoryId);
-        if (inventory == null)
+        var result = await _sellerService.GetInventoryById(inventoryId);
+        if (result.Data == null)
             return ApiResult.Error(ValidationMessages.FieldNotFound("انبار"));
 
+        var inventory = result.Data;
         var product = await _productService.GetById(inventory.ProductId);
 
         if (cart == null)
@@ -61,7 +62,7 @@ public class CartCookieManager
                         ColorCode = inventory.ColorCode,
                         ProductName = inventory.ProductName,
                         ProductMainImage = inventory.ProductMainImage,
-                        ProductSlug = product.Slug,
+                        ProductSlug = product.Data.Slug,
                         Count = count,
                         Price = inventory.Price
                     }
@@ -95,7 +96,7 @@ public class CartCookieManager
                 ColorCode = inventory.ColorCode,
                 ProductName = inventory.ProductName,
                 ProductMainImage = inventory.ProductMainImage,
-                ProductSlug = product.Slug,
+                ProductSlug = product.Data.Slug,
                 Count = count,
                 Price = inventory.Price
             };
@@ -132,9 +133,11 @@ public class CartCookieManager
         if (item == null)
             return ApiResult.Error("محصول در سبد خرید یافت نشد.");
 
-        var inventory = await _sellerService.GetInventoryById(inventoryId);
-        if (inventory == null)
+        var result = await _sellerService.GetInventoryById(inventoryId);
+        if (result.Data == null)
             return ApiResult.Error(ValidationMessages.FieldNotFound("انبار"));
+
+        var inventory = result.Data;
 
         if (inventory.Quantity - item.Count <= 0)
             return ApiResult.Error("تعداد محصولات سفارش داده شده بیشتر از موجودی است.");

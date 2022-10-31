@@ -10,6 +10,6 @@ public interface IRoleService
     Task<ApiResult> Edit(EditRoleViewModel model);
     Task<ApiResult> Remove(long roleId);
 
-    Task<RoleDto?> GetById(long roleId);
-    Task<List<RoleDto>> GetAll();
+    Task<ApiResult<RoleDto?>> GetById(long roleId);
+    Task<ApiResult<List<RoleDto>>> GetAll();
 }

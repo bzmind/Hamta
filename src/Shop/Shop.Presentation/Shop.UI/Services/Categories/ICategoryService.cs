@@ -11,9 +11,9 @@ public interface ICategoryService
     Task<ApiResult> Edit(EditCategoryViewModel model);
     Task<ApiResult> Remove(long categoryId);
 
-    Task<List<CategoryDto>> GetAll();
-    Task<List<CategoryDto>> GetForMenu();
-    Task<CategoryDto?> GetById(long categoryId);
-    Task<List<CategoryDto>> GetByParentId(long parentId);
-    Task<List<CategorySpecificationQueryDto>> GetSpecificationsByCategoryId(long categoryId);
+    Task<ApiResult<List<CategoryDto>>> GetAll();
+    Task<ApiResult<List<CategoryDto>>> GetForMenu();
+    Task<ApiResult<CategoryDto?>> GetById(long categoryId);
+    Task<ApiResult<List<CategoryDto>>> GetByParentId(long parentId);
+    Task<ApiResult<List<CategorySpecificationQueryDto>>> GetSpecificationsByCategoryId(long categoryId);
 }

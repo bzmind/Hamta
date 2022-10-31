@@ -1,4 +1,5 @@
-﻿using Shop.Domain.CommentAggregate;
+﻿using Microsoft.EntityFrameworkCore;
+using Shop.Domain.CommentAggregate;
 using Shop.Domain.CommentAggregate.Repository;
 using Shop.Infrastructure.BaseClasses;
 
@@ -8,5 +9,10 @@ public class CommentRepository : BaseRepository<Comment>, ICommentRepository
 {
     public CommentRepository(ShopContext shopContext) : base(shopContext)
     {
+    }
+
+    public void Remove(Comment comment)
+    {
+        ShopContext.Remove(comment);
     }
 }

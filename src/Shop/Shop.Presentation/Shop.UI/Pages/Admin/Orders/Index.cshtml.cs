@@ -18,7 +18,6 @@ public class IndexModel : BaseRazorPage
 
     [BindProperty(SupportsGet = true)]
     public OrderFilterParams FilterParams { get; set; }
-
     public OrderFilterResult Orders { get; set; }
 
     public async Task OnGet(string? startDate, string? endDate)

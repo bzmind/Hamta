@@ -44,11 +44,11 @@ public class MainPageService : IMainPageService
 
         return new MainPageViewModel
         {
-            Sliders = sliders,
-            Banners = banners,
-            SaleProducts = saleProducts.Data,
-            MostSoldProducts = mostSoldProducts.Data,
-            CategoryProducts = categoryProducts.Data
+            Sliders = sliders.Data,
+            Banners = banners.Data,
+            SaleProducts = saleProducts.Data.Data,
+            MostSoldProducts = mostSoldProducts.Data.Data,
+            CategoryProducts = categoryProducts.Data.Data
         };
     }
 }

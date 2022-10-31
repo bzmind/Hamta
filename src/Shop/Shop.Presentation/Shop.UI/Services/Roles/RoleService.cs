@@ -26,15 +26,15 @@ public class RoleService : BaseService, IRoleService
         return await DeleteAsync($"Remove/{roleId}");
     }
 
-    public async Task<RoleDto?> GetById(long roleId)
+    public async Task<ApiResult<RoleDto?>> GetById(long roleId)
     {
         var result = await GetFromJsonAsync<RoleDto>($"GetById/{roleId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<RoleDto>> GetAll()
+    public async Task<ApiResult<List<RoleDto>>> GetAll()
     {
         var result = await GetFromJsonAsync<List<RoleDto>>("GetAll");
-        return result.Data;
+        return result;
     }
 }

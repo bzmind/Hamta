@@ -25,21 +25,21 @@ public class AvatarService : BaseService, IAvatarService
         return await DeleteAsync($"Remove/{avatarId}");
     }
 
-    public async Task<AvatarDto?> GetById(long avatarId)
+    public async Task<ApiResult<AvatarDto?>> GetById(long avatarId)
     {
         var result = await GetFromJsonAsync<AvatarDto>($"GetById/{avatarId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<AvatarDto?> GetByGender(Avatar.AvatarGender gender)
+    public async Task<ApiResult<AvatarDto?>> GetByGender(Avatar.AvatarGender gender)
     {
         var result = await GetFromJsonAsync<AvatarDto>($"GetByGender/{gender}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<AvatarDto>> GetAll()
+    public async Task<ApiResult<List<AvatarDto>>> GetAll()
     {
         var result = await GetFromJsonAsync<List<AvatarDto>>("GetAll");
-        return result.Data;
+        return result;
     }
 }

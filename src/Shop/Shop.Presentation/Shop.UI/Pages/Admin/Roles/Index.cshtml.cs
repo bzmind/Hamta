@@ -25,7 +25,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task OnGet()
     {
-        Roles = await _roleService.GetAll();
+        Roles = await GetData(async () => await _roleService.GetAll());
     }
 
     public async Task<IActionResult> OnPost(CreateRoleViewModel viewModel)

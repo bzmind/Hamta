@@ -25,11 +25,9 @@ public class ProductModel : BaseRazorPage
     public SingleProductDto Product { get; set; }
     public CreateCommentViewModel Comment { get; set; } = new();
 
-    public async Task<IActionResult> OnGet(string slug)
+    public async Task OnGet(string slug)
     {
-        var product = await _productService.GetSingleBySlug(slug);
-        Product = product;
-        return Page();
+        Product = await GetData(async () => await _productService.GetSingleBySlug(slug));
     }
 
     public async Task<IActionResult> OnPost(string slug)

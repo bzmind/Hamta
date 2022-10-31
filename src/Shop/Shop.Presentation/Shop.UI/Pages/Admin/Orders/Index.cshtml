@@ -8,7 +8,6 @@
   ViewData["Selected"] = "orders";
 }
 
-@Model.FilterParams.EndDate
 <form method="get">
   <div class="card">
     <div class="card-body">
@@ -109,7 +108,7 @@
             <td>@order.TotalOrderDiscountedPrice.ToString("#,0") تومان</td>
             <td>
               <a class="btn-sm badge-pill bg-rgba-primary text-primary"
-               asp-page="Show" asp-route-orderId="@order.Id">نمایش</a>
+               asp-page="Show" asp-route-orderId="@order.Id">جزئیات</a>
             </td>
           </tr>
         }

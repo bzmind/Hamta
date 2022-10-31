@@ -37,15 +37,15 @@ public class BannerService : BaseService, IBannerService
         return await DeleteAsync($"Remove/{id}");
     }
 
-    public async Task<BannerDto?> GetById(long id)
+    public async Task<ApiResult<BannerDto?>> GetById(long id)
     {
         var result = await GetFromJsonAsync<BannerDto>($"GetById/{id}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<BannerDto>> GetAll()
+    public async Task<ApiResult<List<BannerDto>>> GetAll()
     {
         var result = await GetFromJsonAsync<List<BannerDto>>("GetAll");
-        return result.Data;
+        return result;
     }
 }

@@ -53,7 +53,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task OnGet()
     {
-        var user = await _userService.GetById(User.GetUserId());
+        var user = await GetData(async () => await _userService.GetById(User.GetUserId()));
         FullName = user.FullName;
         Email = user.Email;
         PhoneNumber = user.PhoneNumber.Value;

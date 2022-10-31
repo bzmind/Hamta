@@ -51,26 +51,26 @@ public class SellerService : BaseService, ISellerService
         return await DeleteAsync($"Remove/{sellerId}");
     }
 
-    public async Task<SellerDto?> GetCurrentSeller()
+    public async Task<ApiResult<SellerDto?>> GetCurrentSeller()
     {
         var result = await GetFromJsonAsync<SellerDto>("GetCurrentSeller");
-        return result.Data;
+        return result;
     }
 
-    public async Task<SellerFilterResult> GetByFilter(SellerFilterParams filterParams)
+    public async Task<ApiResult<SellerFilterResult>> GetByFilter(SellerFilterParams filterParams)
     {
         var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<SellerFilterResult>(url);
-        return result.Data;
+        return result;
     }
 
-    public async Task<SellerInventoryDto?> GetInventoryById(long inventoryId)
+    public async Task<ApiResult<SellerInventoryDto?>> GetInventoryById(long inventoryId)
     {
         var result = await GetFromJsonAsync<SellerInventoryDto>($"GetInventoryById/{inventoryId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<SellerInventoryFilterResult> GetInventoryByFilter(SellerInventoryFilterParams filterParams)
+    public async Task<ApiResult<SellerInventoryFilterResult>> GetInventoryByFilter(SellerInventoryFilterParams filterParams)
     {
         var url = $"GetInventoriesByFilter?PageId={filterParams.PageId}&Take={filterParams.Take}" +
                   $"&UserId={filterParams.UserId}&ProductName={filterParams.ProductName}" +
@@ -80,6 +80,6 @@ public class SellerService : BaseService, ISellerService
                   $"&MaxDiscountPercentage={filterParams.MaxDiscountPercentage}" +
                   $"&OnlyAvailable={filterParams.OnlyAvailable}&OnlyDiscounted={filterParams.OnlyDiscounted}";
         var result = await GetFromJsonAsync<SellerInventoryFilterResult>(url);
-        return result.Data;
+        return result;
     }
 }

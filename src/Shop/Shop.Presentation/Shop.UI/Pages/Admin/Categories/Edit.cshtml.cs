@@ -24,7 +24,7 @@ public class EditModel : BaseRazorPage
 
     public async Task<IActionResult> OnGet(long categoryId)
     {
-        var category = await _categoryService.GetById(categoryId);
+        var category = await GetData(async () => await _categoryService.GetById(categoryId));
         if (category == null)
             return RedirectToPage("Index");
 

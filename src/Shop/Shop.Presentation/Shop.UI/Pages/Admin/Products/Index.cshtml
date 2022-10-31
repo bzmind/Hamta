@@ -156,7 +156,7 @@
         </label>
         <table class="table mb-0 category-table">
           <tbody>
-            @foreach (var category in categories)
+            @foreach (var category in categories.Data)
             {
               var guid = Guid.NewGuid();
               var hasSubCategory = category.SubCategories.Any();

@@ -22,7 +22,7 @@
         {
           <label class="avatar-single">
             <input type="radio" name="avatarId" value="@avatar.Id"
-             checked="@(currentUser.Avatar.Id == avatar.Id ? "checked" : null)" />
+             checked="@(currentUser.Data?.Avatar.Id == avatar.Id ? "checked" : null)" />
             <span class="d-block checkmark">
               <img src="@ServerPaths.GetAvatarPath(avatar.Name)"
              alt="@($"{gender} avatar")" />

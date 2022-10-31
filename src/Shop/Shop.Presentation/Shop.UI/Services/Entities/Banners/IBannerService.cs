@@ -10,6 +10,6 @@ public interface IBannerService
     Task<ApiResult> Edit(EditBannerViewModel model);
     Task<ApiResult> Remove(long id);
 
-    Task<BannerDto?> GetById(long id);
-    Task<List<BannerDto>> GetAll();
+    Task<ApiResult<BannerDto?>> GetById(long id);
+    Task<ApiResult<List<BannerDto>>> GetAll();
 }

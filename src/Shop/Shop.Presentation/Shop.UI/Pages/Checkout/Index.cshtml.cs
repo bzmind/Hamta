@@ -41,8 +41,8 @@ public class IndexModel : BaseRazorPage
         if (Order == null)
             return RedirectToPage("../Index");
 
-        UserAddresses = await _userAddressService.GetAll(User.GetUserId());
-        Shippings = await _shippingService.GetAll();
+        UserAddresses = await GetData(async () => await _userAddressService.GetAll(User.GetUserId()));
+        Shippings = await GetData(async () => await _shippingService.GetAll());
 
         if (!Shippings.Any())
             return RedirectToPage("../Index");

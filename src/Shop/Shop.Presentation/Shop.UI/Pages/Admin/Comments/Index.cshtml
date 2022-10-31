@@ -1,0 +1,125 @@
+﻿@page "{handler?}"
+@using Common.Application.Utility.FileUtility
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Shop.Domain.CommentAggregate
+@model Shop.UI.Pages.Admin.Comments.IndexModel
+@{
+  ViewData["Title"] = "مدیریت نظرات";
+  ViewData["Selected"] = "comments";
+}
+
+<form method="get">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3 mb-5px">
+          <label>وضعیت</label>
+          <select name="FilterParams.Status" class="select2 form-control"
+                  data-minimum-results-for-search="Infinity">
+            <option value="null">همه</option>
+            <option value="@Comment.CommentStatus.Pending">در انتظار تایید</option>
+            <option value="@Comment.CommentStatus.Rejected">رد شده</option>
+            <option value="@Comment.CommentStatus.Accepted">تایید شده</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-10px">
+          <label>شناسه کاربر</label>
+          <input type="text" asp-for="@Model.FilterParams.UserId" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-10px">
+          <label>شناسه محصول</label>
+          <input type="text" asp-for="@Model.FilterParams.ProductId" class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-left pt-0">
+      <a asp-page="Index" class="btn btn-danger btn-sm">حذف فیلتر</a>
+      <button type="submit" class="btn btn-primary btn-sm">اعمال فیلتر</button>
+    </div>
+  </div>
+</form>
+<section>
+  <div class="table-responsive card card-content">
+    <table class="table table-striped mb-0" width="100%">
+      <thead>
+        <tr>
+          <th>کاربر</th>
+          <th>نظر</th>
+          <th>وضعیت</th>
+          <th>واکنش‌ها</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var comment in Model.Comments.Data)
+        {
+          <tr>
+            <td>
+              <div class="d-inline-flex ai-center jc-center fd-col">
+                <img class="item-image br-100px mb-10px" width="50" height="50" alt="avatar"
+                   src="@ServerPaths.GetAvatarPath(comment.UserAvatar)" />
+                @comment.UserFullName
+              </div>
+            </td>
+            <td style="white-space: normal; width: 100%">
+              <b>@comment.Title</b>
+              <br />
+              <p class="fs-11px mt-5px">@comment.Description</p>
+            </td>
+            <td>
+              @switch (comment.Status)
+              {
+                case Comment.CommentStatus.Pending:
+                  {
+                    <span class="btn-sm badge-pill bg-rgba-warning text-warning">در انتظار تایید</span>
+                    break;
+                  }
+                case Comment.CommentStatus.Rejected:
+                  {
+                    <span class="btn-sm badge-pill bg-rgba-danger text-danger">رد شده</span>
+                    break;
+                  }
+                case Comment.CommentStatus.Accepted:
+                  {
+                    <span class="btn-sm badge-pill bg-rgba-success text-success">تایید شده</span>
+                    break;
+                  }
+              }
+            </td>
+            <td>
+              <div class="d-flex ai-center fd-col">
+                <span class="btn-sm badge-pill bg-rgba-success text-success d-inline-flex ai-center mb-5px">
+                  <i class="bx bx-like ml-5px"></i>
+                  @comment.Likes
+                </span>
+                <span class="btn-sm badge-pill bg-rgba-danger text-danger d-inline-flex ai-center">
+                  <i class="bx bx-dislike ml-5px"></i>
+                  @comment.Dislikes
+                </span>
+              </div>
+            </td>
+            <td>
+              <div class="d-flex fd-col">
+                @if (comment.Status is Comment.CommentStatus.Rejected or Comment.CommentStatus.Pending)
+                {
+                  <a href="javascript:void(0)" class="btn-sm badge-pill bg-rgba-success text-success mb-5px ta-center"
+                 onclick="sendAjaxPostWithRouteData('@Url.Page("Index", new { commentId = comment.Id })')">
+                    تایید
+                  </a>
+                }
+                @if (comment.Status is not Comment.CommentStatus.Rejected)
+                {
+                  <a href="javascript:void(0)" class="btn-sm badge-pill bg-rgba-danger text-danger ta-center"
+                 onclick="sendAjaxPostWithRouteData('@Url.Page("Index", "RejectComment", new { commentId = comment.Id })')">
+                    رد
+                  </a>
+                }
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+<partial name="Admin/Shared/_Pagination" model="Model.Comments" />

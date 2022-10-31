@@ -36,12 +36,10 @@ public class EditModel : BaseRazorPage
 
     public async Task<IActionResult> OnGet(long productId)
     {
-        var product = await _productService.GetById(productId);
+        var product = await GetData(async () => await _productService.GetById(productId));
         if (product == null)
-        {
-            MakeErrorAlert(ValidationMessages.FieldNotFound("محصول"));
             return RedirectToPage("Index");
-        }
+
         EditProductViewModel = new EditProductViewModel
         {
             ProductId = product.Id,

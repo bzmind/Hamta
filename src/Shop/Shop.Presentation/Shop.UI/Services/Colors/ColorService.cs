@@ -21,16 +21,16 @@ public class ColorService : BaseService, IColorService
         return await PutAsJsonAsync("Edit", model);
     }
 
-    public async Task<ColorDto?> GetById(long colorId)
+    public async Task<ApiResult<ColorDto?>> GetById(long colorId)
     {
         var result = await GetFromJsonAsync<ColorDto>($"GetById/{colorId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<ColorFilterResult> GetByFilter(ColorFilterParams filterParams)
+    public async Task<ApiResult<ColorFilterResult>> GetByFilter(ColorFilterParams filterParams)
     {
         var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<ColorFilterResult>(url);
-        return result.Data;
+        return result;
     }
 }

@@ -37,15 +37,15 @@ public class SliderService : BaseService, ISliderService
         return await DeleteAsync($"Remove/{id}");
     }
 
-    public async Task<SliderDto?> GetById(long id)
+    public async Task<ApiResult<SliderDto?>> GetById(long id)
     {
         var result = await GetFromJsonAsync<SliderDto>($"GetById/{id}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<SliderDto>> GetAll()
+    public async Task<ApiResult<List<SliderDto>>> GetAll()
     {
         var result = await GetFromJsonAsync<List<SliderDto>>("GetAll");
-        return result.Data;
+        return result;
     }
 }

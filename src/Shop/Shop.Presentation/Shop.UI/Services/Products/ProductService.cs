@@ -100,14 +100,14 @@ public class ProductService : BaseService, IProductService
         return await PostAsFormDataAsync<string?>("AddReviewImage", formData);
     }
 
-    public async Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams)
+    public async Task<ApiResult<ProductFilterResult>> GetByFilter(ProductFilterParams filterParams)
     {
         var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<ProductFilterResult>(url);
-        return result.Data;
+        return result;
     }
 
-    public async Task<ProductForShopResult> GetForShopByFilter(ProductForShopFilterParams filterFilterParams)
+    public async Task<ApiResult<ProductForShopResult>> GetForShopByFilter(ProductForShopFilterParams filterFilterParams)
     {
         var url = MakeQueryUrl("GetForShopByFilter", filterFilterParams);
         for (var i = 0; i < filterFilterParams.Attributes?.Count; i++)
@@ -116,18 +116,18 @@ public class ProductService : BaseService, IProductService
             url += $"&Attributes={attr}";
         }
         var result = await GetFromJsonAsync<ProductForShopResult>(url);
-        return result.Data;
+        return result;
     }
 
-    public async Task<ProductDto?> GetById(long productId)
+    public async Task<ApiResult<ProductDto?>> GetById(long productId)
     {
         var result = await GetFromJsonAsync<ProductDto>($"GetById/{productId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<SingleProductDto?> GetSingleBySlug(string slug)
+    public async Task<ApiResult<SingleProductDto?>> GetSingleBySlug(string slug)
     {
         var result = await GetFromJsonAsync<SingleProductDto>($"GetSingleBySlug/{slug}");
-        return result.Data;
+        return result;
     }
 }

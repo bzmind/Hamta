@@ -29,7 +29,8 @@ public class AddModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowCategorySpecifications(long categoryId)
     {
-        var categorySpecifications = await _categoryService.GetSpecificationsByCategoryId(categoryId);
+        var categorySpecifications =
+            await GetData(async () => await _categoryService.GetSpecificationsByCategoryId(categoryId));
         var productCategorySpecifications = new List<ProductCategorySpecificationViewModel>();
         categorySpecifications.ForEach(categorySpec =>
         {

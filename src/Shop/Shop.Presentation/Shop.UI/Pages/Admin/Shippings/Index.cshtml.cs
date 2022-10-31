@@ -22,7 +22,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGet()
     {
-        Shippings = await _shippingService.GetAll();
+        Shippings = await GetData(async () => await _shippingService.GetAll());
         return Page();
     }
 
@@ -55,12 +55,9 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowEditPage(long id)
     {
-        var shipping = await _shippingService.GetById(id);
+        var shipping = await GetData(async () => await _shippingService.GetById(id));
         if (shipping == null)
-        {
-            MakeErrorAlert(ValidationMessages.FieldNotFound("روش ارسال"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("روش ارسال"), ApiStatusCode.NotFound);
-        }
 
         var model = new EditShippingViewModel
         {

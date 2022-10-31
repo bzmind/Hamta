@@ -10,7 +10,7 @@ public interface IAvatarService
     Task<ApiResult> Create(CreateAvatarViewModel model);
     Task<ApiResult> Remove(long avatarId);
 
-    Task<AvatarDto?> GetById(long avatarId);
-    Task<AvatarDto?> GetByGender(Avatar.AvatarGender gender);
-    Task<List<AvatarDto>> GetAll();
+    Task<ApiResult<AvatarDto?>> GetById(long avatarId);
+    Task<ApiResult<AvatarDto?>> GetByGender(Avatar.AvatarGender gender);
+    Task<ApiResult<List<AvatarDto>>> GetAll();
 }

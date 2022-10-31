@@ -36,16 +36,16 @@ public class QuestionService : BaseService, IQuestionService
         return await DeleteAsync($"Remove/{questionId}");
     }
 
-    public async Task<QuestionDto?> GetById(long questionId)
+    public async Task<ApiResult<QuestionDto?>> GetById(long questionId)
     {
         var result = await GetFromJsonAsync<QuestionDto>($"GetById/{questionId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<QuestionFilterResult> GetByFilter(QuestionFilterParams filterParams)
+    public async Task<ApiResult<QuestionFilterResult>> GetByFilter(QuestionFilterParams filterParams)
     {
         var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<QuestionFilterResult>(url);
-        return result.Data;
+        return result;
     }
 }

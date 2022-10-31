@@ -10,6 +10,6 @@ public interface ISliderService
     Task<ApiResult> Edit(EditSliderViewModel model);
     Task<ApiResult> Remove(long id);
 
-    Task<SliderDto?> GetById(long id);
-    Task<List<SliderDto>> GetAll();
+    Task<ApiResult<SliderDto?>> GetById(long id);
+    Task<ApiResult<List<SliderDto>>> GetAll();
 }

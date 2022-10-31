@@ -24,15 +24,11 @@ public class IndexModel : BaseRazorPage
 
     public SellerInventoryFilterResult FilterResult { get; set; }
 
-    public async Task<IActionResult> OnGet()
+    public async Task OnGet()
     {
-        var seller = await _sellerService.GetCurrentSeller();
-        if (seller == null)
-            return RedirectToPage("../Index");
-        Seller = seller;
+        Seller = await GetData(async () => await _sellerService.GetCurrentSeller());
         FilterParams.UserId = User.GetUserId();
-        FilterResult = await _sellerService.GetInventoryByFilter(FilterParams);
-        return Page();
+        FilterResult = await GetData(async () => await _sellerService.GetInventoryByFilter(FilterParams));
     }
 
     public async Task<IActionResult> OnPostRemoveInventory(long inventoryId)

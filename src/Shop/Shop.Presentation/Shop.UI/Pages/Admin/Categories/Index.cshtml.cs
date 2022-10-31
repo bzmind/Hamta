@@ -19,7 +19,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task OnGet()
     {
-        Categories = await _categoryService.GetAll();
+        Categories = await GetData(async () => await _categoryService.GetAll());
     }
 
     public async Task<IActionResult> OnPostRemoveCategory(long categoryId)

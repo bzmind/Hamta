@@ -31,34 +31,34 @@ public class CategoryService : BaseService, ICategoryService
         return await DeleteAsync($"Remove/{categoryId}");
     }
 
-    public async Task<List<CategoryDto>> GetAll()
+    public async Task<ApiResult<List<CategoryDto>>> GetAll()
     {
         var result = await GetFromJsonAsync<List<CategoryDto>>("GetAll");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<CategoryDto>> GetForMenu()
+    public async Task<ApiResult<List<CategoryDto>>> GetForMenu()
     {
         var result = await GetFromJsonAsync<List<CategoryDto>>("GetForMenu");
-        return result.Data;
+        return result;
     }
 
-    public async Task<CategoryDto?> GetById(long categoryId)
+    public async Task<ApiResult<CategoryDto?>> GetById(long categoryId)
     {
         var result = await GetFromJsonAsync<CategoryDto>($"GetById/{categoryId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<CategoryDto>> GetByParentId(long parentId)
+    public async Task<ApiResult<List<CategoryDto>>> GetByParentId(long parentId)
     {
         var result = await GetFromJsonAsync<List<CategoryDto>>($"GetByParentId/{parentId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<CategorySpecificationQueryDto>> GetSpecificationsByCategoryId(long categoryId)
+    public async Task<ApiResult<List<CategorySpecificationQueryDto>>> GetSpecificationsByCategoryId(long categoryId)
     {
         var result = await GetFromJsonAsync<List<CategorySpecificationQueryDto>>
             ($"GetSpecificationsByCategoryId/{categoryId}");
-        return result.Data;
+        return result;
     }
 }

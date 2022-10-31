@@ -12,8 +12,8 @@ public interface IProductService
     Task<ApiResult> Remove(long productId);
     Task<ApiResult<string?>> AddReviewImage(AddProductReviewImageViewModel model);
 
-    Task<ProductFilterResult> GetByFilter(ProductFilterParams filterParams);
-    Task<ProductForShopResult> GetForShopByFilter(ProductForShopFilterParams filterFilterParams);
-    Task<ProductDto?> GetById(long productId);
-    Task<SingleProductDto?> GetSingleBySlug(string slug);
+    Task<ApiResult<ProductFilterResult>> GetByFilter(ProductFilterParams filterParams);
+    Task<ApiResult<ProductForShopResult>> GetForShopByFilter(ProductForShopFilterParams filterFilterParams);
+    Task<ApiResult<ProductDto?>> GetById(long productId);
+    Task<ApiResult<SingleProductDto?>> GetSingleBySlug(string slug);
 }

@@ -21,7 +21,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task OnGet()
     {
-        Avatars = await _avatarService.GetAll();
+        Avatars = await GetData(async () => await _avatarService.GetAll());
     }
 
     public async Task<IActionResult> OnPost(CreateAvatarViewModel viewModel)

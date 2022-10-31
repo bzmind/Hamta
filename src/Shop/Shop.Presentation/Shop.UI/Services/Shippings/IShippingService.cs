@@ -10,6 +10,6 @@ public interface IShippingService
     Task<ApiResult> Edit(EditShippingViewModel model);
     Task<ApiResult> Remove(long shippingId);
 
-    Task<ShippingDto?> GetById(long shippingId);
-    Task<List<ShippingDto>> GetAll();
+    Task<ApiResult<ShippingDto?>> GetById(long shippingId);
+    Task<ApiResult<List<ShippingDto>>> GetAll();
 }

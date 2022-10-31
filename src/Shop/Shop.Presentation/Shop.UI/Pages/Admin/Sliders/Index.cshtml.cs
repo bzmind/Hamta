@@ -21,10 +21,9 @@ public class IndexModel : BaseRazorPage
 
     public List<SliderDto> Sliders { get; set; }
 
-    public async Task<IActionResult> OnGet()
+    public async Task OnGet()
     {
-        Sliders = await _sliderService.GetAll();
-        return Page();
+        Sliders = await GetData(async () => await _sliderService.GetAll());
     }
 
     public async Task<IActionResult> OnPost(CreateSliderViewModel viewModel)
@@ -56,12 +55,9 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowEditPage(long id)
     {
-        var slider = await _sliderService.GetById(id);
+        var slider = await GetData(async () => await _sliderService.GetById(id));
         if (slider == null)
-        {
-            MakeErrorAlert(ValidationMessages.FieldNotFound("اسلایدر"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("اسلایدر"), ApiStatusCode.NotFound);
-        }
 
         var model = new EditSliderViewModel
         {

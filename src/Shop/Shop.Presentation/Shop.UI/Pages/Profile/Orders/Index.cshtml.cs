@@ -19,9 +19,8 @@ public class IndexModel : BaseRazorPage
 
     public OrderFilterResult? Orders { get; set; }
 
-    public async Task<IActionResult> OnGet(int pageId = 1, Order.OrderStatus? status = null)
+    public async Task OnGet(int pageId = 1, Order.OrderStatus? status = null)
     {
         Orders = await GetData(async () => await _orderService.GetByFilterForUser(pageId, 30, status));
-        return Page();
     }
 }

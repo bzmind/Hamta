@@ -18,8 +18,8 @@ public interface IUserService
     Task<ApiResult> RemoveRole(long roleId);
     Task<ApiResult> Remove(long userId);
 
-    Task<UserDto?> GetById(long userId);
-    Task<UserDto?> GetByEmailOrPhone(string emailOrPhone);
+    Task<ApiResult<UserDto?>> GetById(long userId);
+    Task<ApiResult<UserDto?>> GetByEmailOrPhone(string emailOrPhone);
     Task<ApiResult<LoginNextStep>> SearchByEmailOrPhone(string emailOrPhone);
-    Task<UserFilterResult> GetByFilter(UserFilterParams filterParams);
+    Task<ApiResult<UserFilterResult>> GetByFilter(UserFilterParams filterParams);
 }

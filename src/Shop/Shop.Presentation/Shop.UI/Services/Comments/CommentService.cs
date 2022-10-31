@@ -36,23 +36,23 @@ public class CommentService : BaseService, ICommentService
         return await DeleteAsync($"Remove/{commentId}");
     }
 
-    public async Task<CommentDto?> GetById(long commentId)
+    public async Task<ApiResult<CommentDto?>> GetById(long commentId)
     {
         var result = await GetFromJsonAsync<CommentDto>($"Remove/{commentId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<CommentFilterResult> GetByFilter(CommentFilterParams filterParams)
+    public async Task<ApiResult<CommentFilterResult>> GetByFilter(CommentFilterParams filterParams)
     {
         var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<CommentFilterResult>(url);
-        return result.Data;
+        return result;
     }
 
-    public async Task<CommentFilterResult> GetForProduct(ProductCommentFilterParams filterParams)
+    public async Task<ApiResult<CommentFilterResult>> GetForProduct(ProductCommentFilterParams filterParams)
     {
         var url = MakeQueryUrl("GetForProduct", filterParams);
         var result = await GetFromJsonAsync<CommentFilterResult>(url);
-        return result.Data;
+        return result;
     }
 }

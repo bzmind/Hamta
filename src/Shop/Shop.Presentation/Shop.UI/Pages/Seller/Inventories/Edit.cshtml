@@ -90,7 +90,7 @@
               </div>
             </fieldset>
             <div id="product-colors" data-val-id="productColorsVal">
-              @foreach (var color in colors.Data)
+              @foreach (var color in colors.Data.Data)
               {
                 var colorGuid = Guid.NewGuid();
                 <div class="product-color">

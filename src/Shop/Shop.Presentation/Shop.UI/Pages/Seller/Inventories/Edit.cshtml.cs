@@ -31,7 +31,7 @@ public class EditModel : BaseRazorPage
 
     public async Task<IActionResult> OnGet(long inventoryId)
     {
-        var inventory = await _sellerService.GetInventoryById(inventoryId);
+        var inventory = await GetData(async () => await _sellerService.GetInventoryById(inventoryId));
         if (inventory == null)
             return RedirectToPage("Index");
 

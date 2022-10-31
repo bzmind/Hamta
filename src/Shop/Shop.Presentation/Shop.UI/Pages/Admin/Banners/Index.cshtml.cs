@@ -21,10 +21,9 @@ public class IndexModel : BaseRazorPage
 
     public List<BannerDto> Banners { get; set; }
 
-    public async Task<IActionResult> OnGet()
+    public async Task OnGet()
     {
-        Banners = await _bannerService.GetAll();
-        return Page();
+        Banners = await GetData(async () => await _bannerService.GetAll());
     }
 
     public async Task<IActionResult> OnPost(CreateBannerViewModel viewModel)
@@ -56,12 +55,9 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowEditPage(long id)
     {
-        var banner = await _bannerService.GetById(id);
+        var banner = await GetData(async () => await _bannerService.GetById(id));
         if (banner == null)
-        {
-            MakeErrorAlert(ValidationMessages.FieldNotFound("بنر"));
             return AjaxErrorMessageResult(ValidationMessages.FieldNotFound("بنر"), ApiStatusCode.NotFound);
-        }
 
         var model = new EditBannerViewModel
         {

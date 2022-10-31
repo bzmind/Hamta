@@ -64,16 +64,16 @@ public class UserService : BaseService, IUserService
         return await DeleteAsync($"Remove/{userId}");
     }
 
-    public async Task<UserDto?> GetById(long userId)
+    public async Task<ApiResult<UserDto?>> GetById(long userId)
     {
         var result = await GetFromJsonAsync<UserDto>($"GetById/{userId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<UserDto?> GetByEmailOrPhone(string emailOrPhone)
+    public async Task<ApiResult<UserDto?>> GetByEmailOrPhone(string emailOrPhone)
     {
         var result = await GetFromJsonAsync<UserDto>($"GetByEmailOrPhone/{emailOrPhone}");
-        return result.Data;
+        return result;
     }
 
     public async Task<ApiResult<LoginNextStep>> SearchByEmailOrPhone(string emailOrPhone)
@@ -81,10 +81,10 @@ public class UserService : BaseService, IUserService
         return await GetFromJsonAsync<LoginNextStep>($"SearchByEmailOrPhone/{emailOrPhone}");
     }
 
-    public async Task<UserFilterResult> GetByFilter(UserFilterParams filterParams)
+    public async Task<ApiResult<UserFilterResult>> GetByFilter(UserFilterParams filterParams)
     {
         var url = MakeQueryUrl("GetByFilter", filterParams);
         var result = await GetFromJsonAsync<UserFilterResult>(url);
-        return result.Data;
+        return result;
     }
 }

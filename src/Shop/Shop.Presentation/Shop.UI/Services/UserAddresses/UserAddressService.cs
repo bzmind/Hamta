@@ -31,15 +31,15 @@ public class UserAddressService : BaseService, IUserAddressService
         return await DeleteAsync($"Remove/{addressId}");
     }
 
-    public async Task<UserAddressDto?> GetById(long addressId)
+    public async Task<ApiResult<UserAddressDto?>> GetById(long addressId)
     {
         var result = await GetFromJsonAsync<UserAddressDto>($"GetById/{addressId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<UserAddressDto>> GetAll(long userId)
+    public async Task<ApiResult<List<UserAddressDto>>> GetAll(long userId)
     {
         var result = await GetFromJsonAsync<List<UserAddressDto>>($"GetAll/{userId}");
-        return result.Data;
+        return result;
     }
 }

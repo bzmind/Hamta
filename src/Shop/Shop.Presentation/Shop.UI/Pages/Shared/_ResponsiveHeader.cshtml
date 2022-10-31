@@ -23,7 +23,7 @@
         </ul>
         <div class="divider"></div>
         <ul class="category-list">
-          @foreach (var category in categories)
+          @foreach (var category in categories.Data)
           {
             <li class="has-children">
               <a href="/search?FilterParams.CategorySlug=@category.Slug">@category.Title</a>

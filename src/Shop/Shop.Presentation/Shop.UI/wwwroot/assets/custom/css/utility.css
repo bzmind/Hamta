@@ -11263,3 +11263,11 @@
   text-align: right;
 }
 /*#endregion*/
+
+.no-bullets {
+  list-style-type: none !important;
+}
+
+.ta-center {
+  text-align: center !important;
+}

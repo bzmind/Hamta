@@ -26,15 +26,15 @@ public class ShippingService : BaseService, IShippingService
         return await DeleteAsync($"Remove/{shippingId}");
     }
 
-    public async Task<ShippingDto?> GetById(long shippingId)
+    public async Task<ApiResult<ShippingDto?>> GetById(long shippingId)
     {
         var result = await GetFromJsonAsync<ShippingDto>($"GetById/{shippingId}");
-        return result.Data;
+        return result;
     }
 
-    public async Task<List<ShippingDto>> GetAll()
+    public async Task<ApiResult<List<ShippingDto>>> GetAll()
     {
         var result = await GetFromJsonAsync<List<ShippingDto>>("GetAll");
-        return result.Data;
+        return result;
     }
 }

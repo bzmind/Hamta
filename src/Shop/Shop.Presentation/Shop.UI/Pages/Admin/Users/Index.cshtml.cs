@@ -18,6 +18,6 @@ public class IndexModel : BaseRazorPage
 
     public async Task OnGet()
     {
-        UserFilterResult = await _userService.GetByFilter(new UserFilterParams());
+        UserFilterResult = await GetData(async () => await _userService.GetByFilter(new UserFilterParams()));
     }
 }
