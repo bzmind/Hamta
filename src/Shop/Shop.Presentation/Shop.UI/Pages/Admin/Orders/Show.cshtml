@@ -1,0 +1,80 @@
+﻿@page "{orderId}"
+@using Common.Application.Utility.FileUtility
+@using Shop.Domain.OrderAggregate
+@using Shop.Infrastructure.Utility
+@model Shop.UI.Pages.Admin.Orders.ShowModel
+@{
+  ViewData["Title"] = "جزئیات سفارش";
+  ViewData["Selected"] = "orders";
+}
+
+<h6>اطلاعات سفارش</h6>
+<div class="card card-body">
+  <div class="row">
+    <span class="col-md-12 mb-10px">تاریخ ثبت : @Model.Order.CreationDate.ToPersianDateTime()</span>
+    <span class="col-md-12 mb-10px">
+      @switch (Model.Order.Status)
+      {
+        case Order.OrderStatus.Canceled:
+          {
+            <span>وضعیت : لغو شده</span>
+            break;
+          }
+        case Order.OrderStatus.Pending:
+          {
+            <span>وضعیت : در انتظار پرداخت</span>
+            break;
+          }
+        case Order.OrderStatus.Preparing:
+          {
+            <span>وضعیت : در حال پردازش</span>
+            break;
+          }
+        case Order.OrderStatus.Sending:
+          {
+            <span>وضعیت : در حال ارسال</span>
+            break;
+          }
+        case Order.OrderStatus.Delivered:
+          {
+            <span>وضعیت : ارسال شده</span>
+            break;
+          }
+      }
+    </span>
+    <span class="col-md-12 mb-10px">قیمت کل : @Model.Order.TotalOrderDiscountedPrice.ToString("#,0") تومان</span>
+    <span class="col-md-12 mb-10px">روش ارسال : @Model.Order.ShippingName</span>
+    <span class="col-md-12">هزینه ارسال : @Model.Order.ShippingCost.ToString("#,0") تومان</span>
+  </div>
+</div>
+@if (Model.Order.Status != Order.OrderStatus.Pending)
+{
+  <h6>اطلاعات خریدار</h6>
+  <div class="card card-body">
+    <div class="row">
+      <span class="col-md-12 mb-10px">نام و نام خانوادگی : @Model.Order.Address.FullName</span>
+      <span class="col-md-12 mb-10px">شماره تماس : @Model.Order.Address.PhoneNumber.Value</span>
+      <span class="col-md-12 mb-10px">استان : @Model.Order.Address.Province</span>
+      <span class="col-md-12 mb-10px">شهر : @Model.Order.Address.City</span>
+      <span class="col-md-12 mb-10px">آدرس پستی : @Model.Order.Address.FullAddress</span>
+      <span class="col-md-12">کد پستی : @Model.Order.Address.PostalCode</span>
+    </div>
+  </div>
+}
+<h6>محصولات سفارش</h6>
+@foreach (var item in Model.Order.Items)
+{
+  <div class="card card-body">
+    <div class="row">
+      <span class="col-md-2 d-flex ai-center jc-center">
+        <img class="w-100" src="@ServerPaths.GetProductMainImagePath(item.ProductMainImage)" />
+      </span>
+      <div class="col-md-10">
+        <span class="d-block mb-10px">@item.ProductName</span>
+        <span class="d-block mb-10px">تعداد : @item.Count</span>
+        <span class="d-block mb-10px">فروشنده : @item.InventoryShopName</span>
+        <span class="d-block">مبلغ کل : @item.EachItemDiscountedPrice.ToString("#,0") تومان</span>
+      </div>
+    </div>
+  </div>
+}

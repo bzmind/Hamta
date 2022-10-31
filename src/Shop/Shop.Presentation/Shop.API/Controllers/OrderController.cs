@@ -110,6 +110,7 @@ public class OrderController : BaseApiController
             Take = take,
             Status = status,
             UserId = User.GetUserId(),
+            OrderId = null,
             StartDate = null,
             EndDate = null
         };

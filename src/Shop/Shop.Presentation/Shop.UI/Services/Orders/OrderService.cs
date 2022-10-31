@@ -67,13 +67,15 @@ public class OrderService : BaseService, IOrderService
         return result;
     }
 
-    public async Task<ApiResult<OrderFilterResult>> GetByFilterForUser(int pageId, int take, Order.OrderStatus? status)
+    public async Task<ApiResult<OrderFilterResult>> GetByFilterForUser(int pageId, int take,
+        Order.OrderStatus? status)
     {
         var filterParams = new OrderFilterParams
         {
             PageId = pageId,
             Take = take,
             Status = status,
+            OrderId = null,
             UserId = null,
             StartDate = null,
             EndDate = null

@@ -4737,10 +4737,14 @@ table.dataTable th.dt-checkboxes-cell {
 
 .ui-datepicker td span,
 .ui-datepicker td a {
-	padding: 5px;
-	height: 34px;
+	padding: 4px !important;
+	height: 30px;
+  width: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
 	line-height: 24px;
-	border-radius: 100% !important;
+  border-radius: 8px !important;
 }
 
 .ui-datepicker .ui-datepicker-header {

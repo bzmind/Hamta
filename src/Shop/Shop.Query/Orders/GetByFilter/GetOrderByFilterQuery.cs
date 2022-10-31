@@ -44,6 +44,9 @@ public class GetOrderByFilterQueryHandler : IBaseQueryHandler<GetOrderByFilterQu
         if (@params.UserId != null)
             query = query.Where(o => o.UserId == @params.UserId);
 
+        if (@params.OrderId != null)
+            query = query.Where(o => o.Id == @params.OrderId);
+
         if (@params.StartDate != null)
             query = query.Where(o => o.CreationDate >= @params.StartDate);
 

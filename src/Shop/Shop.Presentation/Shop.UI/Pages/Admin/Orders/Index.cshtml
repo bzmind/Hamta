@@ -1,0 +1,131 @@
+﻿@page
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Shop.Domain.OrderAggregate
+@using Shop.Infrastructure.Utility
+@model Shop.UI.Pages.Admin.Orders.IndexModel
+@{
+  ViewData["Title"] = "مدیریت سفارشات";
+  ViewData["Selected"] = "orders";
+}
+
+@Model.FilterParams.EndDate
+<form method="get">
+  <div class="card">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-md-3 mb-5px">
+          <label>وضعیت</label>
+          <select name="FilterParams.Status" class="select2 form-control"
+                  data-minimum-results-for-search="Infinity">
+            <option value="null">همه</option>
+            <option value="@Order.OrderStatus.Canceled">لغو شده</option>
+            <option value="@Order.OrderStatus.Pending">در انتظار پرداخت</option>
+            <option value="@Order.OrderStatus.Preparing">در حال پردازش</option>
+            <option value="@Order.OrderStatus.Sending">در حال ارسال</option>
+            <option value="@Order.OrderStatus.Delivered">ارسال شده</option>
+          </select>
+        </div>
+        <div class="col-md-3 mb-10px">
+          <label>از تاریخ</label>
+          <input type="text" name="startDate" class="form-control select-date" autocomplete="off"
+                 value="@Model.FilterParams.StartDate.ToPersianDate()" />
+        </div>
+        <div class="col-md-3 mb-10px">
+          <label>تا تاریخ</label>
+          <input type="text" name="endDate" class="form-control select-date" autocomplete="off"
+                 value="@Model.FilterParams.EndDate.ToPersianDate()" />
+        </div>
+        <div class="col-md-3 mb-10px">
+          <label>شناسه کاربر</label>
+          <input type="text" asp-for="@Model.FilterParams.UserId" class="form-control" />
+        </div>
+        <div class="col-md-3 mb-10px">
+          <label>شناسه سفارش</label>
+          <input type="text" asp-for="@Model.FilterParams.OrderId" class="form-control" />
+        </div>
+      </div>
+    </div>
+    <div class="card-footer text-left pt-0">
+      <a asp-page="Index" class="btn btn-danger btn-sm">حذف فیلتر</a>
+      <button type="submit" class="btn btn-primary btn-sm">اعمال فیلتر</button>
+    </div>
+  </div>
+</form>
+<section>
+  <div class="table-responsive card card-content">
+    <table class="table table-striped mb-0">
+      <thead>
+        <tr>
+          <th>شناسه سفارش</th>
+          <th>استان - شهر</th>
+          <th>تعداد محصولات</th>
+          <th>وضعیت</th>
+          <th>مبلغ</th>
+          <th>عملیات</th>
+        </tr>
+      </thead>
+      <tbody>
+        @foreach (var order in Model.Orders.Data)
+        {
+          <tr>
+            <td>@order.Id</td>
+            <td>
+              @if (order.Address != null)
+              {
+                <span>@order.Address.Province، @order.Address.City</span>
+              }
+            </td>
+            <td>@order.Items.Sum(i => i.Count)</td>
+            <td>
+              @switch (order.Status)
+              {
+                case Order.OrderStatus.Canceled:
+                {
+                  <span>لغو شده</span>
+                  break;
+                }
+                case Order.OrderStatus.Pending:
+                {
+                  <span>در انتظار پرداخت</span>
+                  break;
+                }
+                case Order.OrderStatus.Preparing:
+                {
+                  <span>در حال پردازش</span>
+                  break;
+                }
+                case Order.OrderStatus.Sending:
+                {
+                  <span>در حال ارسال</span>
+                  break;
+                }
+                case Order.OrderStatus.Delivered:
+                {
+                  <span>ارسال شده</span>
+                  break;
+                }
+              }
+            </td>
+            <td>@order.TotalOrderDiscountedPrice.ToString("#,0") تومان</td>
+            <td>
+              <a class="btn-sm badge-pill bg-rgba-primary text-primary"
+               asp-page="Show" asp-route-orderId="@order.Id">نمایش</a>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+<partial name="Admin/Shared/_Pagination" model="Model.Orders"/>
+
+@section Scripts
+  {
+  <script>
+    $(".select-date").datepicker({
+        dateFormat: "yy/mm/dd",
+        showOtherMonths: true,
+        selectOtherMonths: false
+    });
+  </script>
+}
