@@ -44,13 +44,35 @@ public class ProductModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowComments(long productId, int pageId)
     {
-        var comments = await _commentService.GetForProduct(new ProductCommentFilterParams
+        var comments = await GetData(async () => await _commentService.GetForProduct(new ProductCommentFilterParams
         {
             PageId = pageId,
             Take = 15,
             ProductId = productId
-        });
+        }));
         return await AjaxHtmlSuccessResultAsync("Shared/Product/_Comments", comments);
+    }
+
+    public async Task<IActionResult> OnPostLikeComment(long commentId)
+    {
+        var result = await _commentService.SetLikes(commentId);
+        if (!result.IsSuccessful)
+        {
+            MakeAlert(result);
+            return AjaxErrorMessageResult(result);
+        }
+        return AjaxSuccessResult();
+    }
+
+    public async Task<IActionResult> OnPostDislikeComment(long commentId)
+    {
+        var result = await _commentService.SetDislikes(commentId);
+        if (!result.IsSuccessful)
+        {
+            MakeAlert(result);
+            return AjaxErrorMessageResult(result);
+        }
+        return AjaxSuccessResult();
     }
 
     public async Task<IActionResult> OnPostRemoveComment(long commentId)

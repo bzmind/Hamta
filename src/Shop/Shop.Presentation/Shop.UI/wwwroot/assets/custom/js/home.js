@@ -45,6 +45,21 @@ function getProductComments(pageId)
   {
     checkResult(result);
     replaceElementWithAjaxResult(".comments-list", result);
+    setupCommentReactionButtons();
+  });
+}
+
+function setupCommentReactionButtons()
+{
+  $("[data-counter][data-comment-reaction]").on("click", function ()
+  {
+    const counterAttr = $(this).attr("data-counter");
+    if (counterAttr > 0)
+      $(this).attr("data-counter", 0);
+    else {
+      $(this).parent().find("[data-counter][data-comment-reaction]").attr("data-counter", 0);
+      $(this).attr("data-counter", 1);
+    }
   });
 }
 

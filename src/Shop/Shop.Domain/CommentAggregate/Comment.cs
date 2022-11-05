@@ -91,7 +91,7 @@ public class Comment : BaseAggregateRoot
 
     public void SetLikes(long userId)
     {
-        var user = CommentReactions.FirstOrDefault(c => c.UserId == userId);
+        var user = CommentReactions.FirstOrDefault(reaction => reaction.UserId == userId);
 
         if (user != null)
         {

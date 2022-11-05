@@ -62,8 +62,8 @@
           <div class="swiper-wrapper">
             <div class="swiper-slide">
               <img src="@ServerPaths.GetProductMainImagePath(Model.Product.MainImage)"
-                   data-zoom-image="@ServerPaths.GetProductMainImagePath(Model.Product.MainImage)" class="zoom-image"
-                   alt="@Model.Product.Name">
+                   data-zoom-image="@ServerPaths.GetProductMainImagePath(Model.Product.MainImage)"
+                   class="zoom-image" alt="@Model.Product.Name">
             </div>
             @foreach (var galleryImage in Model.Product.GalleryImages.OrderBy(g => g.Sequence))
             {
@@ -96,13 +96,13 @@
         </div>
         <ul class="product--actions">
           <li>
-            <a href="#" data-toggle="modal" data-target="#shareLinkModal">
+            <a href="javascript:void(0)" data-toggle="modal" data-target="#shareLinkModal">
               <i class="fas fa-share-alt"></i>
             </a>
             <span class="tooltip--action">اشتراک گذاری</span>
           </li>
           <li>
-            <a href="#" class="is-action add-to-favorite"><i class="fas fa-heart"></i></a>
+            <a href="javascript:void(0)" class="is-action add-to-favorite"><i class="fas fa-heart"></i></a>
             <span class="tooltip--action">افزودن به علاقمندی</span>
           </li>
         </ul>
@@ -189,11 +189,20 @@
               </div>
             </div>
             <div class="d-flex ai-center">
-              <button class="add-to-cart m-0 w-100"
-             onclick="sendAjaxPostWithRouteData('@Url.Page("Cart", "AddItem",
-                 new { inventoryId = inventory.Id, quantity = 1 })')">
-                افزودن به سبد خرید
-              </button>
+              @if (inventory.IsAvailable)
+              {
+                <button class="add-to-cart m-0 w-100"
+                        onclick="sendAjaxPostWithRouteData('@Url.Page("Cart", "AddItem",
+                                                              new { inventoryId = inventory.Id, quantity = 1 })')">
+                  افزودن به سبد خرید
+                </button>
+              }
+              else
+              {
+                <a href="javascript:void(0)" class="add-to-cart m-0 w-100 bgc-gray">
+                  ناموجود
+                </a>
+              }
             </div>
           </div>
         }
@@ -202,7 +211,7 @@
       {
         <div class="box-info-product">
           <div class="d-flex ai-center">
-            <a href="#" class="add-to-cart m-0 w-100">
+            <a href="javascript:void(0)" class="add-to-cart m-0 w-100 bgc-gray">
               ناموجود
             </a>
           </div>
@@ -462,7 +471,7 @@
               <div class="alert alert-warning">
                 <p>
                   برای ثبت نظر باید
-                  <a asp-page="/login" asp-route-redirectTo="/product/@Model.Product.Slug">وارد حساب کاربری</a>
+                  <a asp-page="/Auth/Login" asp-route-redirectTo="/product/@Model.Product.Slug">وارد حساب کاربری</a>
                   خود شوید.
                 </p>
               </div>

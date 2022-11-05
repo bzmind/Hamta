@@ -1,5 +1,6 @@
 ﻿using Shop.Domain.AvatarAggregate;
 using Shop.Domain.CommentAggregate;
+using Shop.Domain.ProductAggregate;
 using Shop.Domain.UserAggregate;
 using Shop.Query.Comments._DTOs;
 
@@ -7,7 +8,7 @@ namespace Shop.Query.Comments._Mappers;
 
 internal static class CommentMapper
 { 
-    public static CommentDto MapToCommentDto(this Comment? comment, User user, Avatar avatar)
+    public static CommentDto MapToCommentDto(this Comment? comment, User user, Avatar avatar, Product product)
     {
         if (comment == null)
             return null;
@@ -18,6 +19,7 @@ internal static class CommentMapper
             CreationDate = comment.CreationDate,
             UserId = comment.UserId,
             ProductId = comment.ProductId,
+            ProductSlug = product.Slug,
             UserFullName = user.FullName,
             UserAvatar = avatar.Name,
             Title = comment.Title,

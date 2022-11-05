@@ -25,11 +25,13 @@ public class GetSingleProductBySlugQueryHandler : IBaseQueryHandler<GetSinglePro
     {
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"
-            SELECT DISTINCT p.Id, p.CreationDate, p.CategoryId, p.Name, p.EnglishName, p.Slug, p.Introduction,
-            p.Review, p.MainImage, AVG(cmnt.Score) OVER (PARTITION BY p.Id) AS AverageScore,
-            pg.*, pspec.*, pcs.*,
-            si.Id, si.CreationDate, si.SellerId, si.ProductId, s.ShopName, clr.Id AS ColorID, clr.Name AS ColorName,
-            clr.Code AS ColorCode, si.Quantity, si.Price, si.IsAvailable, si.DiscountPercentage, si.IsDiscounted
+            SELECT DISTINCT
+                p.Id, p.CreationDate, p.CategoryId, p.Name, p.EnglishName, p.Slug, p.Introduction,
+                p.Review, p.MainImage, AVG(cmnt.Score) OVER (PARTITION BY p.Id) AS AverageScore,
+                pg.*, pspec.*, pcs.*,
+                si.Id, si.CreationDate, si.SellerId, si.ProductId, s.ShopName,
+                clr.Id AS ColorID, clr.Name AS ColorName, clr.Code AS ColorCode,
+                si.Quantity, si.Price, si.IsAvailable, si.DiscountPercentage, si.IsDiscounted
             FROM product.Products p
             LEFT JOIN {_dapperContext.Comments} cmnt
             	ON cmnt.ProductId = p.Id

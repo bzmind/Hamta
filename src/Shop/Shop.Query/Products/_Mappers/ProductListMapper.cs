@@ -23,7 +23,7 @@ internal static class ProductListMapper
             Slug = product.Slug,
             MainImage = product.MainImage,
             LowestInventoryPrice = inventory.Price.Value,
-            AllQuantityInStock = inventory.Quantity,
+            InventoryQuantity = inventory.Quantity,
             Colors = new List<Color>
             {
                 color

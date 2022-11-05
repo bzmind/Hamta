@@ -19,7 +19,7 @@ public class ProductFilterDto : BaseDto
     public int LowestInventoryPrice { get; set; }
     public int HighestInventoryPrice { get; set; }
     public float AverageScore { get; set; }
-    public int AllQuantityInStock { get; set; }
+    public int InventoryQuantity { get; set; }
     public List<Color> Colors { get; set; } = new();
 }
 

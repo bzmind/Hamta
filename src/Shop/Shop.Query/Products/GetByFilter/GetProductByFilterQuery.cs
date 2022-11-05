@@ -138,7 +138,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
                 i.Id AS InventoryId,
             	MIN(i.Price) OVER (PARTITION BY p.Id) AS LowestInventoryPrice,
             	MAX(i.Price) OVER (PARTITION BY p.Id) AS HighestInventoryPrice,
-            	q.Quantity AS AllQuantityInStock,
+            	q.Quantity AS InventoryQuantity,
                 c.Id, c.Name, c.Code, c.CreationDate
             FROM (
             	SELECT DISTINCT
@@ -184,7 +184,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             firstItem.Colors = colorList;
             firstItem.LowestInventoryPrice = productGroup.First().LowestInventoryPrice;
             firstItem.HighestInventoryPrice = productGroup.First().HighestInventoryPrice;
-            firstItem.AllQuantityInStock = productGroup.First().AllQuantityInStock;
+            firstItem.InventoryQuantity = productGroup.First().InventoryQuantity;
             firstItem.AverageScore = productGroup.First().AverageScore;
             return firstItem;
         }).ToList();

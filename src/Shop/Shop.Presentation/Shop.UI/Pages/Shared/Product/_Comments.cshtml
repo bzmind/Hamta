@@ -93,8 +93,16 @@
       <div class="footer">
         <div class="comments-likes d-flex ai-center">
           آیا این نظر برایتان مفید بود؟
-          <button class="btn-like" data-counter="@comment.Likes">بله</button>
-          <button class="btn-like" data-counter="@comment.Dislikes">خیر</button>
+          <button class="btn-like" data-counter="@comment.Likes" data-comment-reaction=""
+                onclick="sendAjaxPostWithRouteData('@(Url.Page("Product", "LikeComment",
+                                                      new { slug = comment.ProductSlug, commentId = comment.Id }))')">
+            بله
+          </button>
+          <button class="btn-like" data-counter="@comment.Dislikes" data-comment-reaction=""
+                onclick="sendAjaxPostWithRouteData('@(Url.Page("Product", "DislikeComment",
+                                                      new { slug = comment.ProductSlug, commentId = comment.Id }))')">
+            خیر
+          </button>
           @if (comment.UserId == User.GetUserId())
           {
             <delete url="/product/slug/removeComment?commentId=@comment.Id" class="btn-like d-inline-flex ai-center">

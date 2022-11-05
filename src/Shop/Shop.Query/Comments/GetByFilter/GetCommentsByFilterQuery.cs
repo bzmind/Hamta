@@ -39,6 +39,11 @@ public class GetCommentsByFilterQueryHandler : IBaseQueryHandler<GetCommentsByFi
                 tables => tables.user.AvatarId,
                 avatar => avatar.Id,
                 (tables, avatar) => new { tables.comment, tables.user, avatar })
+            .Join(
+                _shopContext.Products,
+                tables => tables.comment.ProductId,
+                product => product.Id,
+                (tables, product) => new { tables.comment, tables.user, tables.avatar, product })
             .AsQueryable();
 
         if (@params.UserId != null)
@@ -61,7 +66,7 @@ public class GetCommentsByFilterQueryHandler : IBaseQueryHandler<GetCommentsByFi
 
         queryResult.ForEach(tables =>
         {
-            dtoComments.Add(tables.comment.MapToCommentDto(tables.user, tables.avatar));
+            dtoComments.Add(tables.comment.MapToCommentDto(tables.user, tables.avatar, tables.product));
         });
 
         var groupedQueryResult = dtoComments.GroupBy(t => t.Id).Select(commentGroup =>

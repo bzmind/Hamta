@@ -2,7 +2,7 @@
 @model Shop.Query.Products._DTOs.ProductForShopDto
 @{
   var link = $"/product/{Model.Slug}";
-  var inventoryIsNullOrOutOfStock = Model.InventoryId == 0 || Model.AllQuantityInStock == 0;
+  var inventoryIsNullOrOutOfStock = Model.InventoryId == 0 || Model.InventoryQuantity == 0;
 }
 
 <div class="swiper-slide">

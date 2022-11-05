@@ -1,40 +1,40 @@
 ﻿/*#region color*/
 .c-white {
-  color: white;
+  color: white !important;
 }
 
 .c-black {
-  color: black;
+  color: black !important;
 }
 
 .c-danger {
-  color: #ff637d;
+  color: #ff637d !important;
 }
 
 .c-success {
-  color: #03c35b;
+  color: #03c35b !important;
 }
 
 .c-gray {
-  color: #a1a3a8;
+  color: #a1a3a8 !important;
 }
 /*#endregion*/
 
 /*#region background-color*/
 .bg-none {
-  background: none;
+  background: none !important;
 }
 
 .bgc-danger {
-  background-color: #ff637d;
+  background-color: #ff637d !important;
 }
 
 .bgc-success {
-  background-color: #03c35b;
+  background-color: #03c35b !important;
 }
 
 .bgc-gray {
-  background-color: #a1a3a8;
+  background-color: #a1a3a8 !important;
 }
 /*#endregion*/
 

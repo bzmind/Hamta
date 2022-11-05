@@ -239,7 +239,7 @@
                   <span>@(product.AverageScore != 0 ? product.AverageScore.ToString("#.#") : 0)</span>
                   <br />
                   <label class="grayed">موجودی:</label>
-                  <span>@product.AllQuantityInStock <small class="grayed">عدد</small></span>
+                  <span>@product.InventoryQuantity <small class="grayed">عدد</small></span>
                   <br />
                   @if (product.Colors.Any())
                   {

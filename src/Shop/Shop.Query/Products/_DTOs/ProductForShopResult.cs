@@ -20,7 +20,7 @@ public class ProductForShopDto : BaseDto
     public int Price { get; set; }
     public int DiscountPercentage { get; set; }
     public int AverageScore { get; set; }
-    public int AllQuantityInStock { get; set; }
+    public int InventoryQuantity { get; set; }
     public List<Color> Colors { get; set; } = new();
     public int TotalDiscountedPrice => Price - (int)Math.Round(Price * (double)DiscountPercentage / 100);
 }

@@ -7,6 +7,7 @@ public class CommentDto : BaseDto
 {
     public long UserId { get; set; }
     public long ProductId { get; set; }
+    public string ProductSlug { get; set; }
     public string UserFullName { get; set; }
     public string UserAvatar { get; set; }
     public string Title { get; set; }

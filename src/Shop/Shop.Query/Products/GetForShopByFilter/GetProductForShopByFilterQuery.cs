@@ -167,7 +167,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             	p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate,
             	AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore,
                 i.Id AS InventoryId, MIN(i.Price) OVER (PARTITION BY p.Id) AS Price, i.DiscountPercentage,
-            	q.Quantity AS AllQuantityInStock,
+            	q.Quantity AS InventoryQuantity,
                 clr.Id, clr.Name, clr.Code, clr.CreationDate
             FROM (
             	SELECT DISTINCT
@@ -194,7 +194,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             LEFT JOIN (
             	SELECT ProductId, SUM(Quantity) AS Quantity
             	FROM {_dapperContext.SellerInventories}
-            	GROUP BY ProductId
+	        GROUP BY ProductId
             ) AS q
             	ON p.Id = q.ProductId
             {joinWithCategorySpecifications}
@@ -209,20 +209,27 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
                 return productFilterDto;
             }, param: new { skip, take = @params.Take, @params.CategoryId, @params.CategorySlug }, splitOn: "Id");
 
-        var groupedQueryResult = query.GroupBy(p => p.Id).Select(productGroup =>
+        var groupedQueryResult = query.GroupBy(p => p.Id).Select(productsGroup =>
         {
-            var firstItem = productGroup.OrderBy(p => p.TotalDiscountedPrice).First();
+            var firstItemInGroup = productsGroup.OrderBy(p => p.TotalDiscountedPrice).First();
+
             if ((@params.OnlyDiscounted != null && (bool)@params.OnlyDiscounted)
                 || @params.MinDiscountPercentage is > 0)
-                firstItem = productGroup.OrderBy(p => p.Price).First();
+                firstItemInGroup = productsGroup.OrderBy(p => p.Price).First();
 
-            var colorList = productGroup.Select(p => p.Colors.FirstOrDefault())
+            var colorList = productsGroup.Select(p => p.Colors.FirstOrDefault())
                 .Where(c => c != null).DistinctBy(c => c.Id).OrderBy(c => c.Id).ToList();
-            firstItem.Colors = colorList;
-            firstItem.AllQuantityInStock = productGroup.First().AllQuantityInStock;
-            firstItem.AverageScore = productGroup.First().AverageScore;
-
-            return firstItem;
+            firstItemInGroup.Colors = colorList;
+            firstItemInGroup.InventoryQuantity = productsGroup.First().InventoryQuantity;
+            firstItemInGroup.AverageScore = productsGroup.First().AverageScore;
+            firstItemInGroup.InventoryQuantity = productsGroup.GroupBy(p => p.InventoryId)
+                .Select(group =>
+                {
+                    var firstItem = group.First();
+                    firstItem.InventoryQuantity = group.Sum(p => p.InventoryQuantity);
+                    return firstItem;
+                }).Sum(p => p.InventoryQuantity);
+            return firstItemInGroup;
         }).ToList();
 
         groupedQueryResult = @params.OrderBy switch
@@ -254,7 +261,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             		ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.Id) AS RN,
             		AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore,
             	    i.Id AS InventoryId, MIN(i.Price) OVER (PARTITION BY p.Id) AS Price, i.DiscountPercentage,
-            		q.Quantity AS AllQuantityInStock,
+            		q.Quantity AS InventoryQuantity,
             	    clr.Id AS ColorId, clr.Name AS ColorName, clr.Code AS ColorCode,
                     clr.CreationDate ColorCreationDate
                 FROM (
@@ -309,7 +316,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
 
         dtos.ForEach(dto =>
         {
-            if (dto.InventoryId == 0 || dto.AllQuantityInStock == 0)
+            if (dto.InventoryId == 0 || dto.InventoryQuantity == 0)
                 outOfStocks.Add(dto);
             else
                 inStocks.Add(dto);
