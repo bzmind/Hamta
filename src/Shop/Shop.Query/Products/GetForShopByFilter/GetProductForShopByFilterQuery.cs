@@ -220,15 +220,10 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             var colorList = productsGroup.Select(p => p.Colors.FirstOrDefault())
                 .Where(c => c != null).DistinctBy(c => c.Id).OrderBy(c => c.Id).ToList();
             firstItemInGroup.Colors = colorList;
-            firstItemInGroup.InventoryQuantity = productsGroup.First().InventoryQuantity;
-            firstItemInGroup.AverageScore = productsGroup.First().AverageScore;
-            firstItemInGroup.InventoryQuantity = productsGroup.GroupBy(p => p.InventoryId)
-                .Select(group =>
-                {
-                    var firstItem = group.First();
-                    firstItem.InventoryQuantity = group.Sum(p => p.InventoryQuantity);
-                    return firstItem;
-                }).Sum(p => p.InventoryQuantity);
+            firstItemInGroup.InventoryQuantity = productsGroup.OrderBy(p => p.TotalDiscountedPrice)
+                .First().InventoryQuantity;
+            firstItemInGroup.AverageScore = productsGroup.OrderBy(p => p.TotalDiscountedPrice)
+                .First().AverageScore;
             return firstItemInGroup;
         }).ToList();
 

@@ -38,12 +38,7 @@ internal static class UserMapper
                 Id = fi.Id,
                 CreationDate = fi.CreationDate,
                 UserId = fi.UserId,
-                ProductId = fi.ProductId,
-                ProductName = null,
-                ProductMainImage = null,
-                ProductPrice = null,
-                AverageScore = null,
-                IsAvailable = null
+                ProductId = fi.ProductId
             }).ToList(),
             Roles = user.Roles.Select(r => new UserRoleDto
             {
@@ -89,7 +84,8 @@ internal static class UserMapper
         using var connection = dapperContext.CreateConnection();
         var sql = $@"
             SELECT
-                fi.UserId, fi.ProductId, p.Name AS ProductName, p.MainImage, i.Price AS ProductPrice,
+                fi.Id, fi.UserId, fi.ProductId, p.Name AS ProductName, p.MainImage AS ProductMainImage,
+                p.Slug AS ProductSlug, i.Id AS InventoryId, i.Price AS Price, i.DiscountPercentage,
                 AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore, i.IsAvailable
             FROM {dapperContext.UserFavoriteItems} fi
             LEFT JOIN {dapperContext.Products} p
@@ -102,7 +98,15 @@ internal static class UserMapper
 
         var result = await connection.QueryAsync<UserFavoriteItemDto>(sql, new { UserDtoId = userDto.Id });
 
-        userDto.FavoriteItems = result.ToList();
+        var groupedItems = result.GroupBy(i => i.ProductId).Select(itemsGroup =>
+        {
+            var firstItem = itemsGroup.OrderBy(p => p.TotalDiscountedPrice).First();
+            firstItem.AverageScore = itemsGroup.OrderBy(p => p.TotalDiscountedPrice)
+                .First().AverageScore;
+            return firstItem;
+        }).ToList();
+
+        userDto.FavoriteItems = groupedItems;
         return userDto;
     }
 

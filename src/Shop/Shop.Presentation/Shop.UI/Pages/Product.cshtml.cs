@@ -4,6 +4,7 @@ using Shop.Query.Comments._DTOs;
 using Shop.Query.Products._DTOs;
 using Shop.UI.Services.Comments;
 using Shop.UI.Services.Products;
+using Shop.UI.Services.Users;
 using Shop.UI.Setup.ModelStateExtensions;
 using Shop.UI.Setup.RazorUtility;
 
@@ -14,12 +15,14 @@ public class ProductModel : BaseRazorPage
 {
     private readonly IProductService _productService;
     private readonly ICommentService _commentService;
+    private readonly IUserService _userService;
 
-    public ProductModel(IRazorToStringRenderer razorToStringRenderer,
-        IProductService productService, ICommentService commentService) : base(razorToStringRenderer)
+    public ProductModel(IRazorToStringRenderer razorToStringRenderer, IProductService productService,
+        ICommentService commentService, IUserService userService) : base(razorToStringRenderer)
     {
         _productService = productService;
         _commentService = commentService;
+        _userService = userService;
     }
 
     public SingleProductDto Product { get; set; }
@@ -40,6 +43,17 @@ public class ProductModel : BaseRazorPage
         }
         MakeSuccessAlert("نظر شما ثبت شد، و پس از تایید در سایت نمایش داده خواهد شد.");
         return RedirectToPage("Product", new { slug });
+    }
+
+    public async Task<IActionResult> OnPostAddToFavorites(long productId)
+    {
+        var result = await _userService.AddFavoriteItem(productId);
+        if (!result.IsSuccessful)
+        {
+            MakeAlert(result);
+            return AjaxErrorMessageResult(result);
+        }
+        return AjaxRedirectToPageResult("/Profile/Favorites");
     }
 
     public async Task<IActionResult> OnGetShowComments(long productId, int pageId)

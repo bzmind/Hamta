@@ -13,7 +13,6 @@
 
 	<ItemGroup>
 		<Folder Include="Pages\Profile\Comments\" />
-		<Folder Include="Pages\Profile\Favorites\" />
 		<Folder Include="Services\Avatars\" />
 		<Folder Include="Services\Entities\Sliders\" />
 		<Folder Include="Services\Entities\Banners\" />

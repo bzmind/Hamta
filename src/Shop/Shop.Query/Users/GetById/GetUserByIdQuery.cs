@@ -26,11 +26,7 @@ public class GetUserByIdQueryHandler : IBaseQueryHandler<GetUserByIdQuery, UserD
             .Join(_shopContext.Avatars,
                 u => u.AvatarId,
                 a => a.Id,
-                (user, avatar) => new
-                {
-                    user,
-                    avatar
-                })
+                (user, avatar) => new { user, avatar })
             .FirstOrDefaultAsync(c => c.user.Id == request.UserId, cancellationToken);
 
         var userDto = tables.user.MapToUserDto(tables.avatar);

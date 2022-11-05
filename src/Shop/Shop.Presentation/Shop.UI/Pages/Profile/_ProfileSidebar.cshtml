@@ -3,84 +3,72 @@
 @using Shop.UI.Services.Users
 @inject IUserService UserService
 @{
-    var currentUser = await UserService.GetById(User.GetUserId());
+  var currentUser = await UserService.GetById(User.GetUserId());
 }
 
 <div class="col-lg-3 col-md-4 mb-md-0 mb-3 pl-0 sticky-sidebar">
-    <div class="sidebar-widget">
-        <div class="banner mb-3">
-            <a href="#">
-                <img src="/assets/images/banner/banner-profile-sidebar.jpg"
-                     class="box-shaow-unset has-border" alt="banner">
-            </a>
-        </div>
-        <div class="profile-sidebar shadow-around">
-            <div class="d-flex align-items-center">
-                <div class="profile-avatar">
-                    <img src="@ServerPaths.GetAvatarPath(currentUser.Data.Avatar.Name)" alt="avatarId">
-                </div>
-                <div class="profile-info">
-                    <div class="d-block">
-                        <h6><strong>@currentUser.Data.FullName</strong></h6>
-                    </div>
-                    <div class="d-block">
-                        <strong class="text-muted">@currentUser.Data.PhoneNumber.Value</strong>
-                    </div>
-                </div>
-            </div>
-            <div class="user-options mt-3 mb-3"></div>
-            <div class="user-menu">
-                <ul>
-                    <li>
-                        <a href="/profile/edit">
-                            <i class="far fa-user-cog"></i>
-                            ویرایش حساب
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/profile/orders">
-                            <i class="far fa-clipboard-list-check"></i>
-                            سفارش های من
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/profile/favorites">
-                            <i class="far fa-heart"></i>
-                            لیست علاقمندی
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="far fa-clock"></i>
-                            بازدید های اخیر
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/profile/addresses">
-                            <i class="far fa-map-marked"></i>
-                            آدرس ها
-                        </a>
-                    </li>
-                    <li>
-                        <a href="#">
-                            <i class="far fa-envelope"></i>
-                            پیغام ها
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/profile/comments">
-                            <i class="far fa-comment-alt-lines"></i>
-                            نظرات
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/auth/logout">
-                            <i class="far fa-sign-in-alt"></i>
-                            خروج
-                        </a>
-                    </li>
-                </ul>
-            </div>
-        </div>
+  <div class="sidebar-widget">
+    <div class="banner mb-3">
+      <a href="#">
+        <img src="/assets/images/banner/banner-profile-sidebar.jpg"
+             class="box-shaow-unset has-border" alt="banner">
+      </a>
     </div>
+    <div class="profile-sidebar shadow-around">
+      <div class="d-flex align-items-center">
+        <div class="profile-avatar">
+          <img src="@ServerPaths.GetAvatarPath(currentUser.Data.Avatar.Name)" alt="avatarId">
+        </div>
+        <div class="profile-info">
+          <div class="d-block">
+            <h6><strong>@currentUser.Data.FullName</strong></h6>
+          </div>
+          <div class="d-block">
+            <strong class="text-muted">@currentUser.Data.PhoneNumber.Value</strong>
+          </div>
+        </div>
+      </div>
+      <div class="user-options mt-3 mb-3"></div>
+      <div class="user-menu">
+        <ul>
+          <li>
+            <a href="/profile/edit">
+              <i class="far fa-user-cog"></i>
+              ویرایش حساب
+            </a>
+          </li>
+          <li>
+            <a href="/profile/orders">
+              <i class="far fa-clipboard-list-check"></i>
+              سفارش های من
+            </a>
+          </li>
+          <li>
+            <a href="/profile/favorites">
+              <i class="far fa-heart"></i>
+              لیست علاقه‌مندی
+            </a>
+          </li>
+          <li>
+            <a href="/profile/addresses">
+              <i class="far fa-map-marked"></i>
+              آدرس ها
+            </a>
+          </li>
+          <li>
+            <a href="/profile/comments">
+              <i class="far fa-comment-alt-lines"></i>
+              نظرات
+            </a>
+          </li>
+          <li>
+            <a asp-page="/auth/logout">
+              <i class="far fa-sign-in-alt"></i>
+              خروج
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </div>
