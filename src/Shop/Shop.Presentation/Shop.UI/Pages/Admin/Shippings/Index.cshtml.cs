@@ -20,10 +20,9 @@ public class IndexModel : BaseRazorPage
 
     public List<ShippingDto> Shippings { get; set; }
 
-    public async Task<IActionResult> OnGet()
+    public async Task OnGet()
     {
         Shippings = await GetData(async () => await _shippingService.GetAll());
-        return Page();
     }
 
     public async Task<IActionResult> OnPost(CreateShippingViewModel viewModel)

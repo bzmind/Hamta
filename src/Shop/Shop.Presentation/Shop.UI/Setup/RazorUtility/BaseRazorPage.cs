@@ -127,7 +127,7 @@ public class BaseRazorPage : PageModel
     protected async Task<T> GetData<T>(Func<Task<ApiResult<T>>> func)
     {
         var result = await func();
-        if (!result.IsSuccessful || result.Data == null)
+        if (!result.IsSuccessful)
             MakeAlert(result);
         return result.Data;
     }

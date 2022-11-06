@@ -1,4 +1,5 @@
-﻿using Shop.UI.ViewModels.MainPage;
+﻿using Common.Api;
+using Shop.UI.ViewModels.MainPage;
 
 namespace Shop.UI.Services.MainPage;
 
