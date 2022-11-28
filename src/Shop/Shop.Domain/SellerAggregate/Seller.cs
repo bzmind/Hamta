@@ -57,7 +57,7 @@ public class Seller : BaseAggregateRoot
 
         existingInventories.ForEach(existingInventory =>
         {
-            if (existingInventory.ColorId == inventory.ColorId || existingInventory.Price == inventory.Price)
+            if (existingInventory.ColorId == inventory.ColorId)
                 throw new InvalidDataDomainException("Inventory is duplicate");
         });
 

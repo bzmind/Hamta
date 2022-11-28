@@ -22,13 +22,13 @@ public class IndexModel : BaseRazorPage
     [BindProperty(SupportsGet = true)]
     public SellerInventoryFilterParams FilterParams { get; set; }
 
-    public SellerInventoryFilterResult FilterResult { get; set; }
+    public SellerInventoryFilterResult Inventories { get; set; }
 
     public async Task OnGet()
     {
         Seller = await GetData(async () => await _sellerService.GetCurrentSeller());
         FilterParams.UserId = User.GetUserId();
-        FilterResult = await GetData(async () => await _sellerService.GetInventoryByFilter(FilterParams));
+        Inventories = await GetData(async () => await _sellerService.GetInventoryByFilter(FilterParams));
     }
 
     public async Task<IActionResult> OnPostRemoveInventory(long inventoryId)

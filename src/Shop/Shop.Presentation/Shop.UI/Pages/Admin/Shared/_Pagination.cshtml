@@ -18,7 +18,7 @@
       </a>
     </li>
   }
-  @if (Model.CurrentPage != Model.PageCount)
+  @if (Model.PageCount != 0 && Model.CurrentPage != Model.PageCount)
   {
     <li class="page-item next">
       <a href="javascript:void(0)" class="page-link"

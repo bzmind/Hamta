@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Shop.Domain.CommentAggregate;
+﻿using Shop.Domain.CommentAggregate;
 using Shop.Domain.CommentAggregate.Repository;
 using Shop.Infrastructure.BaseClasses;
 

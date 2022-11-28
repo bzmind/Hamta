@@ -30,7 +30,6 @@ using Shop.Application.Entities.Banners.Edit;
 using Shop.Application.Entities.Sliders.Create;
 using Shop.Application.Entities.Sliders.Edit;
 using Shop.Application.Orders.AddItem;
-using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.SetStatus;
 using Shop.Application.Products._DTOs;
 using Shop.Application.Products.Create;

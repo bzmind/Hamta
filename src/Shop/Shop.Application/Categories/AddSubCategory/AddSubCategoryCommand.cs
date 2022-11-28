@@ -35,7 +35,7 @@ public class AddSubCategoryCommandHandler : IBaseCommandHandler<AddSubCategoryCo
 
         request.Specifications.ToList().ForEach(specification =>
             specifications.Add(new CategorySpecification(newSubCategory.Id, specification.Title,
-                specification.IsImportant, specification.IsOptional)));
+                specification.IsImportant, specification.IsOptional, specification.IsFilterable)));
 
         newSubCategory.SetSpecifications(specifications);
 

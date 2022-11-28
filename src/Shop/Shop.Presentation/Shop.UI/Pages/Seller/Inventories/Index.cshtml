@@ -5,7 +5,7 @@
 @{
   ViewData["Title"] = "مدیریت انبار ها";
   ViewData["Selected"] = "inventories";
-  var highestProductPrice = Model.FilterResult.HighestPriceInInventory;
+  var highestProductPrice = Model.Inventories?.HighestPriceInInventory;
 }
 
 <a asp-page="Add" class="btn btn-success mb-1">افزودن انبار</a>
@@ -80,24 +80,26 @@
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
-        <tr>
-          <th>عکس</th>
-          <th>اطلاعات</th>
-          <th>قیمت</th>
-          <th>موجود در انبار</th>
-          <th>موجودی</th>
-          <th>تخفیف</th>
-        </tr>
+      <tr>
+        <th>عکس</th>
+        <th>اطلاعات</th>
+        <th>قیمت</th>
+        <th>وضعیت موجودی</th>
+        <th>موجودی</th>
+        <th>تخفیف</th>
+      </tr>
       </thead>
       <tbody>
-        @foreach (var inventory in Model.FilterResult.Data)
+      @if (Model.Inventories != null && Model.Inventories.Data.Any())
+      {
+        @foreach (var inventory in Model.Inventories.Data)
         {
           <tr>
             <td class="item-image-container">
               <img alt="product image" width="100" height="100" class="item-image"
-                 src="@ServerPaths.GetProductMainImagePath(inventory.ProductMainImage)" />
+                   src="@ServerPaths.GetProductMainImagePath(inventory.ProductMainImage)" />
             </td>
-            <td class="font-weight-bolder">
+            <td class="font-weight-bolder w-60">
               <label class="grayed">نام:</label>
               <span>@inventory.ProductName</span>
               <br />
@@ -110,7 +112,7 @@
                 <span class="item-color" style="background-color: @inventory.ColorCode;"></span>
               </div>
             </td>
-            <td class="font-weight-bolder">
+            <td class="font-weight-bolder w-25">
               <label class="grayed">قیمت@(inventory.IsDiscounted ? " اصلی" : ""):</label>
               <bold>@inventory.Price.ToString("#,0") <small class="grayed">تومان</small></bold>
               @if (inventory.IsDiscounted)
@@ -136,31 +138,35 @@
             <td class="font-weight-bolder">@inventory.Quantity <small class="grayed">عدد</small></td>
             <td class="font-weight-bolder">@inventory.DiscountPercentage%</td>
             <td>
-              <a asp-page="Edit" asp-route-inventoryId="@inventory.Id"
-               class="btn-sm badge-pill bg-rgba-primary text-primary">
-                ویرایش
-              </a>
-              <delete url="@Url.Page("Index", "RemoveInventory", new { inventoryId = inventory.Id })"
-                    class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
-                حذف
-              </delete>
+              <div class="d-flex fd-col ai-center">
+                <a asp-page="Edit" asp-route-inventoryId="@inventory.Id"
+                   class="btn-sm badge-pill bg-rgba-primary text-primary">
+                  ویرایش
+                </a>
+                <delete url="@Url.Page("Index", "RemoveInventory", new { inventoryId = inventory.Id })"
+                        class="btn-sm badge-pill bg-rgba-danger text-danger border-0 mt-3px">
+                  حذف
+                </delete>
+              </div>
             </td>
           </tr>
         }
-        @if (!Model.FilterResult.Data.Any())
-        {
-          <tr>
-            <td colspan="6" class="text-center">موردی برای نمایش وجود ندارد</td>
-          </tr>
-        }
+      }
+      else
+      {
+        <tr>
+          <td colspan="6" class="text-center">موردی برای نمایش وجود ندارد</td>
+        </tr>
+      }
       </tbody>
     </table>
   </div>
 </section>
+<partial name="Admin/Shared/_Pagination" model="Model.Inventories" />
 @section Scripts
   {
   <script>
-    setupRangeSlider(0, @highestProductPrice, @(Model.FilterResult.FilterParams.MinPrice ?? 0),
-    @(Model.FilterResult.FilterParams.MaxPrice ?? highestProductPrice))
+    setupRangeSlider(0, @highestProductPrice, @(Model.Inventories?.FilterParams.MinPrice ?? 0),
+    @(Model.Inventories?.FilterParams.MaxPrice ?? highestProductPrice))
   </script>
 }

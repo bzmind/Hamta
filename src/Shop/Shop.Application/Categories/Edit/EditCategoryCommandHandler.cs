@@ -36,7 +36,8 @@ public class EditCategoryCommandHandler : IBaseCommandHandler<EditCategoryComman
         {
             request.Specifications.ToList().ForEach(specification =>
             category.EditSpecification(specification.Id, specification.Title, specification.IsImportant,
-                specification.IsOptional, request.Specifications.Select(spec => spec.Id).ToList()));
+                specification.IsOptional, specification.IsFilterable,
+                request.Specifications.Select(spec => spec.Id).ToList()));
         }
 
         await _categoryRepository.SaveAsync();

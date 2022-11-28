@@ -314,8 +314,8 @@ $(document).ready(function () {
 				'<div class="dropdown">' +
 				'<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
 				'<div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> ' +
-				'<a class="dropdown-item" href="#"><i class="bx bx-link mr-50"></i>کپی لینک</a>' +
-				'<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>حذف</a>' +
+				'<a class="dropdown-item" href="javascript:void(0)"><i class="bx bx-link mr-50"></i>کپی لینک</a>' +
+				'<a class="dropdown-item kanban-delete" id="kanban-delete" href="javascript:void(0)"><i class="bx bx-trash mr-50"></i>حذف</a>' +
 				"</div>" + "</div>";
 			var kanbanNewDropdown = $(kanbanNewBoard).find("header");
 			$(kanbanNewDropdown).append(kanbanNewBoardData);
@@ -347,8 +347,8 @@ $(document).ready(function () {
 		kanban_dropdown.innerHTML =
 			'<div class="dropdown-toggle cursor-pointer" role="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="bx bx-dots-vertical-rounded"></i></div>' +
 			'<div class="dropdown-menu" aria-labelledby="dropdownMenuButton"> ' +
-			'<a class="dropdown-item" href="#"><i class="bx bx-link-alt mr-50"></i>کپی لینک</a>' +
-			'<a class="dropdown-item kanban-delete" id="kanban-delete" href="#"><i class="bx bx-trash mr-50"></i>حذف</a>' +
+			'<a class="dropdown-item" href="javascript:void(0)"><i class="bx bx-link-alt mr-50"></i>کپی لینک</a>' +
+			'<a class="dropdown-item kanban-delete" id="kanban-delete" href="javascript:void(0)"><i class="bx bx-trash mr-50"></i>حذف</a>' +
 			"</div>";
 		if (!$(".kanban-board-header div").hasClass("dropdown")) {
 			$(".kanban-board-header").append(kanban_dropdown);

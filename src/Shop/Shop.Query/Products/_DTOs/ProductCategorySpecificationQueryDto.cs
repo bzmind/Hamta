@@ -10,4 +10,5 @@ public class ProductCategorySpecificationQueryDto : BaseDto
     public string Description { get; set; }
     public bool IsImportant { get; set; }
     public bool IsOptional { get; set; }
+    public bool IsFilterable { get; set; }
 }

@@ -3,6 +3,7 @@ using Common.Application.BaseClasses;
 using Common.Application.Utility.FileUtility;
 using Common.Application.Utility.Validation;
 using Common.Application.Utility.Validation.CustomFluentValidations;
+using Common.Domain.Utility;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using Shop.Application.Products._DTOs;
@@ -48,11 +49,10 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
         var product = new Product(request.CategoryId, request.Name, request.EnglishName, request.Slug,
             request.Introduction, request.Review, _productDomainService);
 
-        var category = await _categoryRepository.GetAsTrackingAsync(request.CategoryId);
-        if (category == null)
-            return OperationResult<long>.NotFound(ValidationMessages.FieldNotFound("دسته‌بندی"));
+        var categoryAndParentsSpecs = await _categoryRepository
+            .GetCategoryAndParentsSpecifications(request.CategoryId);
 
-        if (category.Specifications.Any()
+        if (categoryAndParentsSpecs.Any()
             && (request.CategorySpecifications == null || !request.CategorySpecifications.Any()))
             return OperationResult<long>.Error(ValidationMessages.CategorySpecificationRequired);
 
@@ -64,7 +64,7 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
 
             foreach (var spec in request.CategorySpecifications)
             {
-                var categorySpec = category.Specifications.FirstOrDefault(s => s.Id == spec.CategorySpecificationId);
+                var categorySpec = categoryAndParentsSpecs.FirstOrDefault(s => s.Id == spec.CategorySpecificationId);
 
                 if (categorySpec == null)
                     return OperationResult<long>.Error("مشخصه دسته‌بندی یافت نشد");
@@ -85,7 +85,8 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
             var categorySpecifications = new List<ProductCategorySpecification>();
 
             request.CategorySpecifications.ToList().ForEach(specification =>
-                categorySpecifications.Add(new ProductCategorySpecification(product.Id, specification.CategorySpecificationId, specification.Description)));
+                categorySpecifications.Add(new ProductCategorySpecification(product.Id,
+                    specification.CategorySpecificationId, specification.Description.ReplaceFarsiDigits())));
 
             product.SetCategorySpecifications(categorySpecifications);
         }
@@ -106,11 +107,11 @@ public class CreateProductCommandHandler : IBaseCommandHandler<CreateProductComm
 
             request.Specifications.ToList().ForEach(specification =>
                 customSpecifications.Add(new ProductSpecification(product.Id, specification.Title,
-                    specification.Description)));
+                    specification.Description.ReplaceFarsiDigits())));
 
             product.SetSpecifications(customSpecifications);
         }
-        
+
         await _productRepository.SaveAsync();
         return OperationResult<long>.Success(product.Id);
     }
@@ -125,14 +126,14 @@ public class CreateProductCommandValidator : AbstractValidator<CreateProductComm
 
         RuleFor(p => p.Name)
             .NotEmpty().WithMessage(ValidationMessages.ProductNameRequired)
-            .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام محصول", 50));
+            .MaximumLength(150).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام محصول", 150));
 
         RuleFor(p => p.EnglishName)
-            .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام انگلیسی محصول", 50));
+            .MaximumLength(150).WithMessage(ValidationMessages.FieldCharactersMaxLength("نام انگلیسی محصول", 150));
 
         RuleFor(p => p.Slug)
             .NotEmpty().WithMessage(ValidationMessages.SlugRequired)
-            .MaximumLength(100).WithMessage(ValidationMessages.FieldCharactersMaxLength("اسلاگ", 100));
+            .MaximumLength(150).WithMessage(ValidationMessages.FieldCharactersMaxLength("اسلاگ", 150));
 
         RuleFor(p => p.Introduction)
             .MaximumLength(2000).WithMessage(ValidationMessages.FieldCharactersMaxLength("معرفی", 2000));

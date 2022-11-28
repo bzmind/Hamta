@@ -116,8 +116,7 @@
                         <div class="offer-slide-content">
                           <div class="product-thumbnail">
                             <a href="/product/@product.Slug">
-                              <img src="@ServerPaths.GetProductMainImagePath(product.MainImage)"
-                                 alt="@product.Name">
+                              <img src="@ServerPaths.GetProductMainImagePath(product.MainImage)" alt="@product.Name">
                             </a>
                           </div>
                         </div>
@@ -168,28 +167,28 @@
   <div class="row mb-5">
     <div class="col-md-3 col-6 mb-lg-0 mb-3">
       <div class="banner">
-        <a href="#">
+        <a href="javascript:void(0)">
           <img src="./assets/images/banner/banner-sm-01.jpg" alt="banner">
         </a>
       </div>
     </div>
     <div class="col-md-3 col-6 mb-lg-0 mb-3">
       <div class="banner">
-        <a href="#">
+        <a href="javascript:void(0)">
           <img src="./assets/images/banner/banner-sm-02.jpg" alt="banner">
         </a>
       </div>
     </div>
     <div class="col-md-3 col-6 mb-lg-0 mb-3">
       <div class="banner">
-        <a href="#">
+        <a href="javascript:void(0)">
           <img src="./assets/images/banner/banner-sm-03.jpg" alt="banner">
         </a>
       </div>
     </div>
     <div class="col-md-3  col-6 mb-lg-0 mb-3">
       <div class="banner">
-        <a href="#">
+        <a href="javascript:void(0)">
           <img src="./assets/images/banner/banner-sm-04.jpg" alt="banner">
         </a>
       </div>
@@ -198,14 +197,14 @@
   <div class="row mb-5">
     <div class="col-md-6 mb-lg-0 mb-3">
       <div class="banner">
-        <a href="#">
+        <a href="javascript:void(0)">
           <img src="/assets/images/banner/banner-md-01.jpg" alt="banner">
         </a>
       </div>
     </div>
     <div class="col-md-6 mb-lg-0 mb-3">
       <div class="banner">
-        <a href="#">
+        <a href="javascript:void(0)">
           <img src="/assets/images/banner/banner-md-02.jpg" alt="banner">
         </a>
       </div>
@@ -225,7 +224,7 @@
           <div class="col-lg-4">
             <div class="product-card product-card-horizontal border-bottom">
               <div class="product-card-top">
-                <a href="" class="product-image">
+                <a href="javascript:void(0)" class="product-image">
                   <img src="@ServerPaths.GetProductMainImagePath(product.MainImage)" alt="@product.Name">
                 </a>
                 <div class="product-card-actions">
@@ -250,7 +249,9 @@
                 <div class="product-price">
                   @product.TotalDiscountedPrice.ToString("#,0") تومان
                 </div>
-                <a href="#" class="btn-add-to-cart">
+                <a href="javascript:void(0)" class="btn-add-to-cart"
+                   onclick="sendAjaxPostWithRouteData('@Url.Page("Cart", "AddItem",
+                                                         new { inventoryId = product.InventoryId, quantity = 1 })')">
                   <i class="fad fa-cart-plus"></i>
                   افزودن به سبد خرید
                 </a>

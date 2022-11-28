@@ -13,43 +13,44 @@
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
-        <tr>
-          <th>عکس</th>
-          <th>عنوان</th>
-          <th>لینک</th>
-          <th>عملیات</th>
-        </tr>
+      <tr>
+        <th>عکس</th>
+        <th>عنوان</th>
+        <th>لینک</th>
+        <th>عملیات</th>
+      </tr>
       </thead>
       <tbody>
-        @foreach (var slider in Model.Sliders)
-        {
-          <tr>
-            <td>
-              <img class="item-image border-0" width="150" height="100" alt="slider image" style="object-fit: cover;"
+      @foreach (var slider in Model.Sliders)
+      {
+        <tr>
+          <td>
+            <img class="item-image border-0" width="150" height="100" alt="slider image" style="object-fit: cover;"
                  src="@ServerPaths.GetSliderImagePath(slider.Image)" />
-            </td>
-            <td>@slider.Title</td>
-            <td>@slider.Link</td>
-            <td>
-              <open-modal url="@Url.Page("Index", "ShowEditPage", new { id = slider.Id })"
+          </td>
+          <td>@slider.Title</td>
+          <td>@slider.Link</td>
+          <td>
+            <open-modal url="@Url.Page("Index", "ShowEditPage", new { id = slider.Id })"
                         class="btn-sm badge-pill bg-rgba-primary text-primary border-0"
                         title="ویرایش اسلایدر" size="modal-md">
-                ویرایش
-              </open-modal>
-              <delete url="@Url.Page("Index", "RemoveSlider", new { id = slider.Id })"
+              ویرایش
+            </open-modal>
+            <delete url="@Url.Page("Index", "RemoveSlider", new { id = slider.Id })"
                     class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
-                حذف
-              </delete>
-            </td>
-          </tr>
-        }
-        @if (!Model.Sliders.Any())
-        {
-          <tr>
-            <td colspan="4" class="text-center">موردی برای نمایش وجود ندارد</td>
-          </tr>
-        }
+              حذف
+            </delete>
+          </td>
+        </tr>
+      }
+      @if (!Model.Sliders.Any())
+      {
+        <tr>
+          <td colspan="4" class="text-center">موردی برای نمایش وجود ندارد</td>
+        </tr>
+      }
       </tbody>
     </table>
   </div>
 </section>
+<partial name="Admin/Shared/_Pagination" model="Model.Sliders" />

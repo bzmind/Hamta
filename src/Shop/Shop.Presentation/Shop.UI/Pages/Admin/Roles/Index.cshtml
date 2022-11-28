@@ -11,43 +11,44 @@
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
-        <tr>
-          <th>عنوان</th>
-          <th>مجوز ها</th>
-          <th>عملیات</th>
-        </tr>
+      <tr>
+        <th>عنوان</th>
+        <th>مجوز ها</th>
+        <th>عملیات</th>
+      </tr>
       </thead>
       <tbody>
       @foreach (var role in Model.Roles)
-        {
-          <tr>
-            <td>@role.Title</td>
-            <td class="d-flex flex-wrap-reverse w-100">
-              @foreach (var permission in role.Permissions)
-              {
-                <div class="badge-pill bg-rgba-info text-info permission-badges">@permission</div>
-              }
-            </td>
-            <td style="width: 17%">
-              <open-modal url="@Url.Page("Index", "ShowEditPage", new { roleId = role.Id })"
+      {
+        <tr>
+          <td>@role.Title</td>
+          <td class="d-flex flex-wrap-reverse w-100">
+            @foreach (var permission in role.Permissions)
+            {
+              <div class="badge-pill bg-rgba-info text-info permission-badges">@permission</div>
+            }
+          </td>
+          <td style="width: 17%">
+            <open-modal url="@Url.Page("Index", "ShowEditPage", new { roleId = role.Id })"
                         class="btn-sm badge-pill bg-rgba-primary text-primary border-0"
                         title="ویرایش نقش" size="modal-md">
-                ویرایش
-              </open-modal>
-              <delete url="@Url.Page("Index", "RemoveRole", new { roleId = role.Id })"
+              ویرایش
+            </open-modal>
+            <delete url="@Url.Page("Index", "RemoveRole", new { roleId = role.Id })"
                     class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
-                حذف
-              </delete>
-            </td>
-          </tr>
-        }
-        @if (!Model.Roles.Any())
-        {
-          <tr>
-            <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
-          </tr>
-        }
+              حذف
+            </delete>
+          </td>
+        </tr>
+      }
+      @if (!Model.Roles.Any())
+      {
+        <tr>
+          <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
+        </tr>
+      }
       </tbody>
     </table>
   </div>
 </section>
+<partial name="Admin/Shared/_Pagination" model="Model.Roles" />

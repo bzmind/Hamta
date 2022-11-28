@@ -13,36 +13,37 @@
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
-        <tr>
-          <th>عکس</th>
-          <th>جنسیت</th>
-          <th>عملیات</th>
-        </tr>
+      <tr>
+        <th>عکس</th>
+        <th>جنسیت</th>
+        <th>عملیات</th>
+      </tr>
       </thead>
       <tbody>
-        @foreach (var avatar in Model.Avatars)
-        {
-          <tr>
-            <td>
-              <img class="avatar-img" width="50" height="50" alt="avatar"
+      @foreach (var avatar in Model.Avatars)
+      {
+        <tr>
+          <td>
+            <img class="avatar-img" width="50" height="50" alt="avatar"
                  src="@ServerPaths.GetAvatarPath(avatar.Name)" />
-            </td>
-            <td>@avatar.Gender</td>
-            <td>
-              <delete url="@Url.Page("Index", "RemoveAvatar", new { avatarId = avatar.Id })"
+          </td>
+          <td>@avatar.Gender</td>
+          <td>
+            <delete url="@Url.Page("Index", "RemoveAvatar", new { avatarId = avatar.Id })"
                     class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
-                حذف
-              </delete>
-            </td>
-          </tr>
-        }
-        @if (!Model.Avatars.Any())
-        {
-          <tr>
-            <td colspan="3" class="text-center">موردی برای نمایش وجود ندارد</td>
-          </tr>
-        }
+              حذف
+            </delete>
+          </td>
+        </tr>
+      }
+      @if (!Model.Avatars.Any())
+      {
+        <tr>
+          <td colspan="3" class="text-center">موردی برای نمایش وجود ندارد</td>
+        </tr>
+      }
       </tbody>
     </table>
   </div>
 </section>
+<partial name="Admin/Shared/_Pagination" model="Model.Avatars" />

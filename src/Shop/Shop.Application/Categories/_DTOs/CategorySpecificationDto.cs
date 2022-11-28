@@ -6,4 +6,5 @@ public class CategorySpecificationDto
     public string Title { get; set; }
     public bool IsImportant { get; set; }
     public bool IsOptional { get; set; }
+    public bool IsFilterable { get; set; }
 }

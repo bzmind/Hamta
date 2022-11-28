@@ -451,3 +451,5 @@ $.fn.isVisible = function () { return $(this).css("display") !== "none"; };
 $.fn.isHidden = function () { return $(this).css("display") === "none"; };
 
 $.fn.hasAttr = function (name) { return this.attr(name) !== undefined; };
+
+const toEnglishDigits = s => s.replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));

@@ -30,7 +30,7 @@ $(document).ready(function () {
 			type: 'error',
 			title: 'اوپس ...',
 			text: 'یه مشکلی پیش اومد!',
-			footer: '<a href="#">من چرا این مشکلو دارم؟</a>',
+			footer: '<a href="javascript:void(0)">من چرا این مشکلو دارم؟</a>',
 			confirmButtonClass: 'btn btn-primary',
 			confirmButtonText: 'باشه',
 			buttonsStyling: false,
@@ -42,7 +42,7 @@ $(document).ready(function () {
 			title: '<strong><u>مثال</u> HTML</strong>',
 			type: 'info',
 			html: 'میتونید از <b>متن ضخیم</b> ، ' +
-				'<a href="#" target="_blank">لینک</a> ' +
+				'<a href="javascript:void(0)" target="_blank">لینک</a> ' +
 				'و سایر تگ های HTML استفاده کنین',
 			showCloseButton: true,
 			showCancelButton: true,

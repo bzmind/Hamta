@@ -19,14 +19,14 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
 
         builder.Property(product => product.Name)
             .IsRequired()
-            .HasMaxLength(50);
+            .HasMaxLength(150);
 
         builder.Property(product => product.EnglishName)
-            .HasMaxLength(50);
+            .HasMaxLength(150);
 
         builder.Property(product => product.Slug)
             .IsRequired()
-            .HasMaxLength(100);
+            .HasMaxLength(150);
 
         builder.Property(product => product.Introduction)
             .HasMaxLength(2000);

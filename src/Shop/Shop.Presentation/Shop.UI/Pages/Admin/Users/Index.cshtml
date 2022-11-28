@@ -13,44 +13,45 @@
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
-        <tr>
-          <th>آواتار</th>
-          <th>نام</th>
-          <th>ایمیل</th>
-          <th>شماره موبایل</th>
-          <th>جنسیت</th>
-          <th>ثبت‌نام در خبرنامه</th>
-          <th>عملیات</th>
-        </tr>
+      <tr>
+        <th>آواتار</th>
+        <th>نام</th>
+        <th>ایمیل</th>
+        <th>شماره موبایل</th>
+        <th>جنسیت</th>
+        <th>ثبت‌نام در خبرنامه</th>
+        <th>عملیات</th>
+      </tr>
       </thead>
       <tbody>
-        @foreach (var user in Model.UserFilterResult.Data)
-        {
-          <tr>
-            <td>
-              <img class="avatar-img" width="50" height="50" alt="avatar"
+      @foreach (var user in Model.Users.Data)
+      {
+        <tr>
+          <td>
+            <img class="avatar-img" width="50" height="50" alt="avatar"
                  src="@ServerPaths.GetAvatarPath(user.AvatarName)" />
-            </td>
-            <td>@user.FullName</td>
-            <td>@user.Email</td>
-            <td>@user.PhoneNumber.Value</td>
-            <td>@user.Gender</td>
-            <td>@user.IsSubscribedToNewsletter</td>
-            <td>
-              <delete url="@Url.Page("Index", "RemoveUser", new { userId = user.Id })"
+          </td>
+          <td>@user.FullName</td>
+          <td>@user.Email</td>
+          <td>@user.PhoneNumber.Value</td>
+          <td>@user.Gender</td>
+          <td>@user.IsSubscribedToNewsletter</td>
+          <td>
+            <delete url="@Url.Page("Index", "RemoveUser", new { userId = user.Id })"
                     class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
-                حذف
-              </delete>
-            </td>
-          </tr>
-        }
-        @if (!Model.UserFilterResult.Data.Any())
-        {
-          <tr>
-            <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
-          </tr>
-        }
+              حذف
+            </delete>
+          </td>
+        </tr>
+      }
+      @if (!Model.Users.Data.Any())
+      {
+        <tr>
+          <td colspan="5" class="text-center">موردی برای نمایش وجود ندارد</td>
+        </tr>
+      }
       </tbody>
     </table>
   </div>
 </section>
+<partial name="Admin/Shared/_Pagination" model="Model.Users" />

@@ -50,7 +50,7 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
                 JOIN category_children cc
                 	ON cc.Id = c.ParentId
             )
-            SELECT TOP(1) MAX(si.Price) AS HighestPriceInCategory
+            SELECT TOP(1) MAX(si.Price - si.Price * si.DiscountPercentage / 100) AS HighestPriceInCategory
             FROM {_dapperContext.Products} p
             JOIN category_children cc
             	ON p.CategoryId = cc.Id
@@ -61,12 +61,17 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
 
         var highestPrice = await highestPriceConnection.QueryFirstOrDefaultAsync<int>(highestPriceSql);
 
-        int highestPriceInCategory;
+        int highestPriceInCategory = 0;
+
         if (highestPrice != 0)
+        {
             highestPriceInCategory = highestPrice;
-        else
-            highestPriceInCategory = @params.MaxPrice ?? await highestPriceConnection
+        }
+        else if (@params.MaxPrice == null && highestPriceWhere != "")
+        {
+            highestPriceInCategory = await highestPriceConnection
                 .QueryFirstOrDefaultAsync<int>(highestPriceSql.Replace(highestPriceWhere, ""));
+        }
 
         if (categoryHasChanged)
             @params.MaxPrice = highestPriceInCategory;
@@ -143,7 +148,8 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             FROM (
             	SELECT DISTINCT
                     p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate, p.CategoryId,
-					i.Price, AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore
+					MIN(i.Price) OVER (PARTITION BY p.Id) AS Price,
+                    AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore
             	FROM {_dapperContext.Products} p
                 LEFT JOIN {_dapperContext.Comments} c
                 	ON p.Id = c.ProductId
@@ -172,7 +178,8 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
         var query = await connection
             .QueryAsync<ProductFilterDto, Color, ProductFilterDto>(sql, (productFilterDto, color) =>
             {
-                productFilterDto.Colors.Add(color);
+                if (color != null)
+                    productFilterDto.Colors.Add(color);
                 return productFilterDto;
             }, param: new { skip, take = @params.Take, @params.CategoryId }, splitOn: "Id");
 
@@ -182,10 +189,6 @@ public class GetProductByFilterQueryHandler : IBaseQueryHandler<GetProductByFilt
             var colorList = productGroup.Select(p => p.Colors.FirstOrDefault())
                 .DistinctBy(c => c?.Code).OrderBy(c => c?.Id).ToList();
             firstItem.Colors = colorList;
-            firstItem.LowestInventoryPrice = productGroup.First().LowestInventoryPrice;
-            firstItem.HighestInventoryPrice = productGroup.First().HighestInventoryPrice;
-            firstItem.InventoryQuantity = productGroup.First().InventoryQuantity;
-            firstItem.AverageScore = productGroup.First().AverageScore;
             return firstItem;
         }).ToList();
 

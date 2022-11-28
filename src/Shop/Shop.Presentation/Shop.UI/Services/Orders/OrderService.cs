@@ -3,7 +3,6 @@ using Shop.Query.Orders._DTOs;
 using System.Text.Json;
 using Shop.API.ViewModels.Orders;
 using Shop.Domain.OrderAggregate;
-using Shop.Domain.UserAggregate;
 
 namespace Shop.UI.Services.Orders;
 

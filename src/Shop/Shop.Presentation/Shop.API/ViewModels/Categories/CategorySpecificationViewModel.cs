@@ -18,4 +18,7 @@ public class CategorySpecificationViewModel
 
     [DisplayName("ویژگی اختیاری")]
     public bool IsOptional { get; set; }
+
+    [DisplayName("ویژگی قابل فیلتر")]
+    public bool IsFilterable { get; set; }
 }

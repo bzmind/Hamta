@@ -47,17 +47,18 @@ public class Category : BaseAggregateRoot
         _subCategories.Add(subCategory);
     }
 
-    public void EditSpecification(long? id, string title, bool isImportant, bool isOptional, List<long?> ids)
+    public void EditSpecification(long? id, string title, bool isImportant, bool isOptional, bool isFilterable,
+        List<long?> ids)
     {
         if (id == null)
         {
-            _specifications.Add(new CategorySpecification(Id, title, isImportant, isOptional));
+            _specifications.Add(new CategorySpecification(Id, title, isImportant, isOptional, isFilterable));
             return;
         }
         var spec = _specifications.FirstOrDefault(spec => spec.Id == id);
         if (spec == null)
             throw new DataNotFoundDomainException("Specification not found");
-        spec.Edit(title, isImportant, isOptional);
+        spec.Edit(title, isImportant, isOptional, isFilterable);
 
         var existingIds = _specifications.Select(s => s.Id).ToList();
         existingIds.ForEach(existingId =>

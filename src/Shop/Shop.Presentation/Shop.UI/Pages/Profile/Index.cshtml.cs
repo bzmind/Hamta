@@ -1,27 +1,32 @@
-using Microsoft.AspNetCore.Mvc;
-using Shop.Infrastructure.EmailService;
+using Common.Api.Utility;
+using Shop.Query.Orders._DTOs;
+using Shop.Query.Users._DTOs;
+using Shop.UI.Services.Orders;
+using Shop.UI.Services.Users;
 using Shop.UI.Setup.RazorUtility;
 
 namespace Shop.UI.Pages.Profile;
 
-[BindProperties]
 public class IndexModel : BaseRazorPage
 {
-    private readonly IEmailSender _emailSender;
+    private readonly IUserService _userService;
+    private readonly IOrderService _orderService;
 
-    public IndexModel(IEmailSender emailSender,
-        IRazorToStringRenderer razorToStringRenderer) : base(razorToStringRenderer)
+    public IndexModel(IRazorToStringRenderer razorToStringRenderer,
+        IUserService userService, IOrderService orderService) : base(razorToStringRenderer)
     {
-        _emailSender = emailSender;
+        _userService = userService;
+        _orderService = orderService;
     }
 
-    public void OnGet()
+    public UserDto UserDto { get; set; }
+    public List<UserFavoriteItemDto> FavoriteItems { get; set; }
+    public OrderFilterResult Orders { get; set; }
+
+    public async Task OnGet()
     {
-        //await _emailSender.SendEmail(new EmailDto
-        //{
-        //    To = "smh.gamism@gmail.com",
-        //    Subject = "Test Email",
-        //    Body = "<h1>Hi, this is a test email</h1>"
-        //});
+        UserDto = await GetData(async () => await _userService.GetById(User.GetUserId()));
+        FavoriteItems = UserDto.FavoriteItems;
+        Orders = await GetData(async () => await _orderService.GetByFilterForUser(1, 10, null));
     }
 }

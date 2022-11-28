@@ -18,11 +18,17 @@ function deleteParamIfValueIsNull(paramName, paramValue)
   if (paramValue == null || paramValue == "" || paramValue == 0)
   {
     url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
-    const newUrl = url.toString();
-    window.location.href = newUrl;
+    setWindowUrl(searchParams);
     return true;
   }
   return false;
+}
+
+function setWindowUrl(searchParams) {
+  const url = new URL(window.location.href);
+  url.search = searchParams.toString();
+  const newUrl = url.toString();
+  window.location.href = newUrl;
 }
 
 function toggleParam(paramName, paramValue)
@@ -34,15 +40,12 @@ function toggleParam(paramName, paramValue)
   if (exists)
   {
     url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
-    const newUrl = url.toString();
-    window.location.href = newUrl;
+    setWindowUrl(searchParams);
   }
   else
   {
     searchParams.set(paramName, paramValue);
-    url.search = searchParams.toString();
-    const newUrl = url.toString();
-    window.location.href = newUrl;
+    setWindowUrl(searchParams);
   }
 }
 
@@ -55,15 +58,12 @@ function addUrlParam(paramName, paramValue)
   if (exists)
   {
     url.search = deleteSpecificParamFromUrl(searchParams, paramName, paramValue);
-    const newUrl = url.toString();
-    window.location.href = newUrl;
+    setWindowUrl(searchParams);
   }
   else
   {
     searchParams.append(paramName, paramValue);
-    url.search = searchParams.toString();
-    const newUrl = url.toString();
-    window.location.href = newUrl;
+    setWindowUrl(searchParams);
   }
 }
 
@@ -93,9 +93,7 @@ function setUrlParamByMultipleElements(inputsContainerSelector)
     const paramName = input.attr("name");
     searchParams.set(paramName, paramValue);
   });
-  url.search = searchParams.toString();
-  const newUrl = url.toString();
-  window.location.href = newUrl;
+  setWindowUrl(searchParams);
 }
 
 function setParam(paramName, paramValue)
@@ -103,10 +101,7 @@ function setParam(paramName, paramValue)
   const url = new URL(window.location.href);
   const searchParams = url.searchParams;
   searchParams.set(paramName, paramValue);
-
-  url.search = searchParams.toString();
-  const newUrl = url.toString();
-  window.location.href = newUrl;
+  setWindowUrl(searchParams);
 }
 
 function deleteSpecificParamFromUrl(searchParams, parameterName, parameterValue)

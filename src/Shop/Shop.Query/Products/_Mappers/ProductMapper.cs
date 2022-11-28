@@ -48,7 +48,8 @@ internal static class ProductMapper
                 Title = categorySpec.Title,
                 Description = productCategorySpec.Description,
                 IsImportant = categorySpec.IsImportant,
-                IsOptional = categorySpec.IsOptional
+                IsOptional = categorySpec.IsOptional,
+                IsFilterable = categorySpec.IsFilterable
             });
         });
         return productCategorySpecificationsDtos;

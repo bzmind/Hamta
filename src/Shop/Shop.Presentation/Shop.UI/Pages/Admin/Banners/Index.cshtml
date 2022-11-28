@@ -13,43 +13,44 @@
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
-        <tr>
-          <th>عکس</th>
-          <th>لینک</th>
-          <th>موقعیت</th>
-          <th>عملیات</th>
-        </tr>
+      <tr>
+        <th>عکس</th>
+        <th>لینک</th>
+        <th>موقعیت</th>
+        <th>عملیات</th>
+      </tr>
       </thead>
       <tbody>
-        @foreach (var banner in Model.Banners)
-        {
-          <tr>
-            <td>
-              <img class="item-image border-0" width="150" height="100" alt="banner image" style="object-fit: cover;"
+      @foreach (var banner in Model.Banners)
+      {
+        <tr>
+          <td>
+            <img class="item-image border-0" width="150" height="100" alt="banner image" style="object-fit: cover;"
                  src="@ServerPaths.GetBannerImagePath(banner.Image)" />
-            </td>
-            <td>@banner.Link</td>
-            <td>@banner.Position.ToString().Replace("_", " ")</td>
-            <td>
-              <open-modal url="@Url.Page("Index", "ShowEditPage", new { id = banner.Id })"
+          </td>
+          <td>@banner.Link</td>
+          <td>@banner.Position.ToString().Replace("_", " ")</td>
+          <td>
+            <open-modal url="@Url.Page("Index", "ShowEditPage", new { id = banner.Id })"
                         class="btn-sm badge-pill bg-rgba-primary text-primary border-0"
                         title="ویرایش بنر" size="modal-md" backdrop="static">
-                ویرایش
-              </open-modal>
-              <delete url="@Url.Page("Index", "RemoveBanner", new { id = banner.Id })"
+              ویرایش
+            </open-modal>
+            <delete url="@Url.Page("Index", "RemoveBanner", new { id = banner.Id })"
                     class="btn-sm badge-pill bg-rgba-danger text-danger border-0">
-                حذف
-              </delete>
-            </td>
-          </tr>
-        }
-        @if (!Model.Banners.Any())
-        {
-          <tr>
-            <td colspan="4" class="text-center">موردی برای نمایش وجود ندارد</td>
-          </tr>
-        }
+              حذف
+            </delete>
+          </td>
+        </tr>
+      }
+      @if (!Model.Banners.Any())
+      {
+        <tr>
+          <td colspan="4" class="text-center">موردی برای نمایش وجود ندارد</td>
+        </tr>
+      }
       </tbody>
     </table>
   </div>
 </section>
+<partial name="Admin/Shared/_Pagination" model="Model.Banners" />

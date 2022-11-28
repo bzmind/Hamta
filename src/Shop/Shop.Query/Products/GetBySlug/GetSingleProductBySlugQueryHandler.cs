@@ -70,7 +70,8 @@ public class GetSingleProductBySlugQueryHandler : IBaseQueryHandler<GetSinglePro
         {
             var product = group.First();
 
-            product.GalleryImages = group.Select(p => p.GalleryImages.First()).DistinctBy(p => p.Id).ToList();
+            if (group.Select(p => p.GalleryImages).Any(list => list.Any()))
+                product.GalleryImages = group.Select(p => p.GalleryImages.First()).DistinctBy(p => p.Id).ToList();
 
             if (group.Select(p => p.Specifications).Any(list => list.Any()))
                 product.Specifications = group.Select(p => p.Specifications.First()).DistinctBy(p => p.Id).ToList();

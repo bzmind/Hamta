@@ -4754,7 +4754,7 @@ header.page-header {
   }
 
   .sidebar-widget .widget.widget-filter-options .widget-content {
-    max-height: 250px;
+    max-height: 600px;
     overflow-y: auto;
   }
 

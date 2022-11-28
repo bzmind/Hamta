@@ -1,6 +1,5 @@
 ﻿using System.Net.Mime;
 using System.Text;
-using System.Text.Json;
 using Common.Application.Exceptions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;

@@ -8,4 +8,5 @@ public class CategorySpecificationQueryDto : BaseDto
     public string Title { get; set; }
     public bool IsImportant { get; set; }
     public bool IsOptional { get; set; }
+    public bool IsFilterable { get; set; }
 }

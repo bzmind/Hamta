@@ -12,7 +12,6 @@ using Shop.Domain.QuestionAggregate;
 using Shop.Domain.RoleAggregate;
 using Shop.Domain.SellerAggregate;
 using Shop.Domain.ShippingAggregate;
-using MediatR;
 using Shop.Infrastructure.Utility.MediatR;
 
 namespace Shop.Infrastructure.Persistence.EF;

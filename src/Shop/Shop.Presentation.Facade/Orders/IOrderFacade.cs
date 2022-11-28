@@ -1,7 +1,5 @@
 ﻿using Common.Application;
 using Shop.Application.Orders.AddItem;
-using Shop.Application.Orders.Checkout;
-using Shop.Application.Orders.Finalize;
 using Shop.Application.Orders.RemoveItem;
 using Shop.Application.Orders.SetStatus;
 using Shop.Query.Orders._DTOs;

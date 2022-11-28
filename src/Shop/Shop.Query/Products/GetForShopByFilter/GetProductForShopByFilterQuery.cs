@@ -2,7 +2,6 @@
 using Common.Query.BaseClasses.FilterQuery;
 using Dapper;
 using Shop.Domain.CategoryAggregate;
-using Shop.Domain.ColorAggregate;
 using Shop.Infrastructure;
 using Shop.Query.Products._DTOs;
 
@@ -39,17 +38,20 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
 
         using var highestPriceConnection = _dapperContext.CreateConnection();
         var highestPriceSql = $@"
-            WITH category_children AS (
+            WITH category_children
+            AS (
                 SELECT Id, ParentId, Title
                 FROM {_dapperContext.Categories}
                 {highestPriceWhere}
+
                 UNION ALL
+
                 SELECT c.Id, c.ParentId, c.Title
                 FROM {_dapperContext.Categories} c
                 JOIN category_children cc
                     ON cc.Id = c.ParentId
             )
-            SELECT TOP(1) MAX(si.Price) As HighestPriceInCategory
+            SELECT TOP(1) MIN(si.Price - si.Price * si.DiscountPercentage / 100) AS HighestPriceInCategory
             FROM {_dapperContext.Products} p
             JOIN category_children cc
             	ON p.CategoryId = cc.Id
@@ -64,9 +66,8 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
         if (highestPrice != 0)
             highestPriceInCategory = highestPrice;
         else
-            highestPriceInCategory = @params.MaxPrice
-                                     ?? await highestPriceConnection.QueryFirstOrDefaultAsync<int>(
-                                         highestPriceSql.Replace(highestPriceWhere, ""));
+            highestPriceInCategory = @params.MaxPrice ?? await highestPriceConnection
+                .QueryFirstOrDefaultAsync<int>(highestPriceSql.Replace(highestPriceWhere, ""));
 
         if (categoryHasChanged)
             @params.MaxPrice = highestPriceInCategory;
@@ -75,7 +76,10 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
         var joinWithCategories = "";
         var joinWithCategorySpecifications = "";
         var categoryWhereCondition = "";
-        var totalPrice = "p.Price - p.Price * DiscountPercentage / 100";
+        var totalPriceWithP = "p.Price - p.Price * p.DiscountPercentage / 100";
+        var totalPriceWithI = "i.Price - i.Price * DiscountPercentage / 100";
+        var totalPriceConditionWithI = "";
+        var totalPriceConditionWithP = "";
 
         if (@params.CategoryId != null && @params.CategoryId != 0)
         {
@@ -107,18 +111,22 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             conditions += $" AND c.Score >= {@params.AverageScore}";
 
         if (@params.MinPrice != null)
-            conditions += $" AND ({totalPrice} >= {@params.MinPrice} OR p.Price IS NULL)";
+        {
+            totalPriceConditionWithP += $" AND ({totalPriceWithP} >= {@params.MinPrice})";
+            totalPriceConditionWithI += $" AND ({totalPriceWithI} >= {@params.MinPrice})";
+        }
 
         if (@params.MaxPrice != null)
-            conditions += $" AND ({totalPrice} <= {@params.MaxPrice} OR p.Price IS NULL)";
+        {
+            totalPriceConditionWithP += $" AND ({totalPriceWithP} <= {@params.MaxPrice})";
+            totalPriceConditionWithI += $" AND ({totalPriceWithI} <= {@params.MaxPrice})";
+        }
 
         if (@params.MinDiscountPercentage != null)
-            conditions += $" AND (i.DiscountPercentage >= {@params.MinDiscountPercentage} " +
-                          "OR i.DiscountPercentage IS NULL)";
+            conditions += $" AND (i.DiscountPercentage >= {@params.MinDiscountPercentage})";
 
         if (@params.MaxDiscountPercentage != null)
-            conditions += $" AND (i.DiscountPercentage <= {@params.MaxDiscountPercentage} " +
-                          "OR i.DiscountPercentage IS NULL)";
+            conditions += $" AND (i.DiscountPercentage <= {@params.MaxDiscountPercentage})";
 
         if (@params.OnlyAvailable == true)
             conditions += " AND i.IsAvailable = 'True'";
@@ -137,9 +145,8 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             conditions += " AND (";
             @params.Attributes.ToList().ForEach(attr =>
             {
-                var lastAttr = @params.Attributes.ToList().Last();
-                var end = attr.Equals(lastAttr) ? ")" : " OR ";
-                conditions += @$"pcs.Description LIKE '%{attr}%'{end}";
+                var end = attr.Equals(@params.Attributes.ToList().Last()) ? ")" : " OR ";
+                conditions += @$"pcs.Description LIKE N'%{attr}%'{end}";
             });
         }
 
@@ -153,44 +160,47 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
 
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"
-            WITH category_children AS (
+            WITH category_children
+            AS (
                 SELECT Id, ParentId, Title, Slug
                 FROM {_dapperContext.Categories}
                 {categoryWhereCondition}
+
                 UNION ALL
+
                 SELECT c.Id, c.ParentId, c.Title, c.Slug
                 FROM {_dapperContext.Categories} c
                 JOIN category_children cc
                     ON cc.Id = c.ParentId
-            )
-            SELECT DISTINCT
-            	p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate,
-            	AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore,
-                i.Id AS InventoryId, MIN(i.Price) OVER (PARTITION BY p.Id) AS Price, i.DiscountPercentage,
-            	q.Quantity AS InventoryQuantity,
-                clr.Id, clr.Name, clr.Code, clr.CreationDate
-            FROM (
+            ),
+            Products
+            AS (
             	SELECT DISTINCT
-                    p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate, p.CategoryId,
-					MIN(i.Price) OVER (PARTITION BY p.Id) AS Price,
+            		ROW_NUMBER() OVER (PARTITION BY i.ProductId ORDER BY i.Price - i.Price * i.DiscountPercentage / 100 ASC) AS RN,
+            		p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate, p.CategoryId,
+            		i.Id AS InventoryId, i.Price, i.DiscountPercentage,
                     AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore
             	FROM {_dapperContext.Products} p
                 {joinWithCategories}
-                LEFT JOIN {_dapperContext.Comments} c
-                	ON p.Id = c.ProductId
-                LEFT JOIN {_dapperContext.SellerInventories} i
-                	ON p.Id = i.ProductId
-                {orderBy}
+            	LEFT JOIN {_dapperContext.Comments} c
+            		ON p.Id = c.ProductId
+            	LEFT JOIN {_dapperContext.SellerInventories} i
+            		ON p.Id = i.ProductId
+            	WHERE i.Id IS NOT NULL
+            	{orderBy}
             	OFFSET @skip ROWS
             	FETCH NEXT @take ROWS ONLY
-            ) AS p
+            )
+            SELECT DISTINCT
+            	p.RN, p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate,
+            	AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore, p.Price,
+                p.DiscountPercentage, q.Quantity AS InventoryQuantity
+            FROM Products AS p
             {joinWithCategories}
             LEFT JOIN {_dapperContext.Comments} c
             	ON p.Id = c.ProductId
             LEFT JOIN {_dapperContext.SellerInventories} i
             	ON p.Id = i.ProductId
-            LEFT JOIN {_dapperContext.Colors} clr
-            	ON clr.Id = i.ColorId
             LEFT JOIN (
             	SELECT ProductId, SUM(Quantity) AS Quantity
             	FROM {_dapperContext.SellerInventories}
@@ -198,48 +208,31 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             ) AS q
             	ON p.Id = q.ProductId
             {joinWithCategorySpecifications}
-            WHERE 1 = 1 {conditions}
+            WHERE RN = 1 {conditions}{totalPriceConditionWithP}
             {orderBy}";
 
-        var query = await connection
-            .QueryAsync<ProductForShopDto, Color, ProductForShopDto>(sql, (productFilterDto, color) =>
-            {
-                if (color != null)
-                    productFilterDto.Colors.Add(color);
-                return productFilterDto;
-            }, param: new { skip, take = @params.Take, @params.CategoryId, @params.CategorySlug }, splitOn: "Id");
-
-        var groupedQueryResult = query.GroupBy(p => p.Id).Select(productsGroup =>
+        var result = await connection.QueryAsync<ProductForShopDto>(sql, new
         {
-            var firstItemInGroup = productsGroup.OrderBy(p => p.TotalDiscountedPrice).First();
+            skip,
+            take = @params.Take,
+            @params.CategoryId,
+            @params.CategorySlug
+        });
 
-            if ((@params.OnlyDiscounted != null && (bool)@params.OnlyDiscounted)
-                || @params.MinDiscountPercentage is > 0)
-                firstItemInGroup = productsGroup.OrderBy(p => p.Price).First();
-
-            var colorList = productsGroup.Select(p => p.Colors.FirstOrDefault())
-                .Where(c => c != null).DistinctBy(c => c.Id).OrderBy(c => c.Id).ToList();
-            firstItemInGroup.Colors = colorList;
-            firstItemInGroup.InventoryQuantity = productsGroup.OrderBy(p => p.TotalDiscountedPrice)
-                .First().InventoryQuantity;
-            firstItemInGroup.AverageScore = productsGroup.OrderBy(p => p.TotalDiscountedPrice)
-                .First().AverageScore;
-            return firstItemInGroup;
-        }).ToList();
-
-        groupedQueryResult = @params.OrderBy switch
+        result = @params.OrderBy switch
         {
-            OrderBy.Cheapest => groupedQueryResult.OrderBy(p => p.TotalDiscountedPrice).ToList(),
-            OrderBy.MostExpensive => groupedQueryResult.OrderByDescending(p => p.TotalDiscountedPrice).ToList(),
-            OrderBy.Latest => groupedQueryResult.OrderByDescending(p => p.Id).ToList(),
-            OrderBy.MostPopular => groupedQueryResult.OrderByDescending(p => p.AverageScore).ToList(),
-            _ => groupedQueryResult.OrderByDescending(p => p.AverageScore).ToList()
+            OrderBy.Cheapest => result.OrderBy(p => p.TotalDiscountedPrice).ToList(),
+            OrderBy.MostExpensive => result.OrderByDescending(p => p.TotalDiscountedPrice).ToList(),
+            OrderBy.Latest => result.OrderByDescending(p => p.Id).ToList(),
+            OrderBy.MostPopular => result.OrderByDescending(p => p.AverageScore).ToList(),
+            _ => result.OrderByDescending(p => p.AverageScore).ToList()
         };
 
-        groupedQueryResult = MoveOutOfStocksToLast(groupedQueryResult);
+        result = MoveOutOfStocksToLast(result.ToList());
 
         var countSql = $@"
-            WITH category_children AS (
+            WITH category_children
+            AS (
                SELECT Id, ParentId, Title, Slug
                FROM {_dapperContext.Categories}
                {categoryWhereCondition}
@@ -255,21 +248,21 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             		p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate,
             		ROW_NUMBER() OVER (PARTITION BY p.Id ORDER BY p.Id) AS RN,
             		AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore,
-            	    i.Id AS InventoryId, MIN(i.Price) OVER (PARTITION BY p.Id) AS Price, i.DiscountPercentage,
+            	    i.Id AS InventoryId, i.Price, i.DiscountPercentage,
             		q.Quantity AS InventoryQuantity,
             	    clr.Id AS ColorId, clr.Name AS ColorName, clr.Code AS ColorCode,
                     clr.CreationDate ColorCreationDate
                 FROM (
             	    SELECT DISTINCT
                         p.Id, p.Name, p.EnglishName, p.Slug, p.MainImage, p.CreationDate, p.CategoryId,
-				    	MIN(i.Price) OVER (PARTITION BY p.Id) AS Price,
-                        AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore
+				    	i.Price, AVG(c.Score) OVER (PARTITION BY p.Id) AS AverageScore
             	    FROM {_dapperContext.Products} p
                     {joinWithCategories}
                     LEFT JOIN {_dapperContext.Comments} c
                     	ON p.Id = c.ProductId
                     LEFT JOIN {_dapperContext.SellerInventories} i
                     	ON p.Id = i.ProductId
+                    WHERE i.Id IS NOT NULL
                 ) AS p
             	{joinWithCategories}
             	LEFT JOIN {_dapperContext.Comments} c
@@ -287,14 +280,14 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
                 {joinWithCategorySpecifications}
                 WHERE 1 = 1 {conditions}
             ) AS A
-            WHERE 1 = 1 AND A.RN = 1";
+            WHERE A.RN = 1";
 
         var count = await connection.QueryFirstAsync<int>(countSql,
             new { skip, take = @params.Take, @params.CategoryId, @params.CategorySlug });
 
         var model = new ProductForShopResult
         {
-            Data = groupedQueryResult,
+            Data = result.ToList(),
             FilterParams = @params,
             HighestPriceInCategory = highestPriceInCategory,
             Attributes = await GetCategoryAndParentsSpecificationsAndValues(@params.CategorySlug)
@@ -330,7 +323,8 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
 
         using var connection = _dapperContext.CreateConnection();
         var sql = $@"
-            WITH parent_specs AS (
+            WITH parent_specs
+            AS (
             	SELECT c.Id AS cId, c.ParentId, cs.*
             	FROM {_dapperContext.Categories} c
             	LEFT JOIN {_dapperContext.CategorySpecifications} cs
@@ -338,6 +332,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             	WHERE c.Slug = @categorySlug
 
             	UNION ALL
+
             	SELECT c.Id, c.ParentId, cs.*
             	FROM {_dapperContext.Categories} c
             	JOIN parent_specs p
@@ -346,6 +341,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             		ON cs.CategoryId = c.Id
 
                 UNION ALL
+
             	SELECT c.Id, c.ParentId, cs.*
             	FROM {_dapperContext.Categories} c
             	JOIN parent_specs p
@@ -361,7 +357,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             	ON ps.Id = pcs.CategorySpecificationId
             ALTER TABLE #TempTable DROP COLUMN ParentId
             SELECT * FROM #TempTable tmp
-            WHERE tmp.Id IS NOT NULL
+            WHERE tmp.Id IS NOT NULL AND tmp.IsFilterable = 1
             ORDER BY tmp.Id ASC
             DROP TABLE #TempTable";
 

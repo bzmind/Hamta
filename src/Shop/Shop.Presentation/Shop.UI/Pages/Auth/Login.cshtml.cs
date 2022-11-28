@@ -8,7 +8,6 @@ using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Shop.API.ViewModels.Auth;
 using Shop.API.ViewModels.Orders;
-using Shop.Application.Orders.AddItem;
 using Shop.Query.Users._DTOs;
 using Shop.UI.Services.Auth;
 using Shop.UI.Services.Orders;

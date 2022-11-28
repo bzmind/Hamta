@@ -16,16 +16,16 @@ public class EditProductViewModel
 
     [Display(Name = "نام محصول")]
     [Required(ErrorMessage = ValidationMessages.ProductNameRequired)]
-    [MaxLength(50, ErrorMessage = ValidationMessages.MaxCharactersLength)]
+    [MaxLength(150, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public string Name { get; set; }
 
     [Display(Name = "نام انگلیسی محصول")]
-    [MaxLength(50, ErrorMessage = ValidationMessages.MaxCharactersLength)]
+    [MaxLength(150, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public string? EnglishName { get; set; }
 
     [DisplayName("اسلاگ")]
     [Required(ErrorMessage = ValidationMessages.SlugRequired)]
-    [MaxLength(100, ErrorMessage = ValidationMessages.MaxCharactersLength)]
+    [MaxLength(150, ErrorMessage = ValidationMessages.MaxCharactersLength)]
     public string Slug { get; set; }
 
     [DisplayName("معرفی")]

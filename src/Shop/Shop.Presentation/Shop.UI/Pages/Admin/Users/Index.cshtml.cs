@@ -14,10 +14,10 @@ public class IndexModel : BaseRazorPage
         _userService = userService;
     }
 
-    public UserFilterResult UserFilterResult { get; set; }
+    public UserFilterResult Users { get; set; }
 
     public async Task OnGet()
     {
-        UserFilterResult = await GetData(async () => await _userService.GetByFilter(new UserFilterParams()));
+        Users = await GetData(async () => await _userService.GetByFilter(new UserFilterParams()));
     }
 }

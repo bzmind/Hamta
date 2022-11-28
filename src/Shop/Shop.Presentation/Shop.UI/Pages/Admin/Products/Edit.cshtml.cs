@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Common.Application.Utility.Validation;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Shop.API.ViewModels.Products;

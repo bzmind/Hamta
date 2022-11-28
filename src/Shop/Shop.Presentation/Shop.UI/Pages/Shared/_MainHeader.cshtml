@@ -1,8 +1,12 @@
-﻿@using Common.Application.Utility.FileUtility
+﻿@using Common.Api.Utility
+@using Common.Application.Utility.FileUtility
 @using Shop.UI.Services.Categories
+@using Shop.UI.Services.Users
 @inject ICategoryService CategoryService
+@inject IUserService UserService
 @{
   var categories = await CategoryService.GetForMenu();
+  var currentUser = await UserService.GetById(User.GetUserId());
 }
 
 <header class="page-header">
@@ -22,7 +26,7 @@
         </div>
       </div>
       <div class="user-items">
-        <div class="user-item cart-list">
+        <div class="user-item cart-list ml-5px">
           <a href="/cart">
             <i class="fal fa-shopping-basket"></i>
             <span class="bag-items-number">0</span>
@@ -46,69 +50,58 @@
             </li>
           </ul>
         </div>
-        <div class="user-item account">
-          <!-- <a href="#" class="btn-auth">
-              <i class="fal fa-user-circle"></i>
-              ورود و عضویت
-          </a> -->
-          <a href="/profile">
-            جلال بهرامی راد
-            <i class="fad fa-chevron-down text-sm mr-1"></i>
-          </a>
-          <ul class="dropdown--wrapper">
-            <li class="header-profile-dropdown-account-container">
-              <a href="/profile" class="d-block">
-                <span class="header-profile-dropdown-user">
-                  <span class="header-profile-dropdown-user-img">
-                    <img src="/assets/images/avatar/avatar.png">
-                  </span>
-                  <span class="header-profile-dropdown-user-info">
-                    <p class="header-profile-dropdown-user-name">
-                      جلال بهرامی راد
-                    </p>
-                    <span class="header-profile-dropdown-user-profile-link">
-                      مشاهده حساب
-                      کاربری
+        @if (User.Identity.IsAuthenticated)
+        {
+          <div class="user-item account ml-13px">
+            <a href="/profile">
+              @currentUser.Data.FullName
+              <i class="fad fa-chevron-down text-sm mr-1"></i>
+            </a>
+            <ul class="dropdown--wrapper">
+              <li class="header-profile-dropdown-account-container">
+                <a href="/profile" class="d-block">
+                  <span class="header-profile-dropdown-user">
+                    <span class="header-profile-dropdown-user-img br-100px hw-40px">
+                      <img class="br-100px c-pointer" src="@ServerPaths.GetAvatarPath(currentUser.Data.Avatar.Name)" alt="avatar">
+                    </span>
+                    <span class="header-profile-dropdown-user-info">
+                      <p class="header-profile-dropdown-user-name">
+                        @currentUser.Data.FullName
+                      </p>
+                      <span class="header-profile-dropdown-user-profile-link">
+                        مشاهده حساب کاربری
+                      </span>
                     </span>
                   </span>
-                </span>
-                <span class="header-profile-dropdown-account">
-                  <span class="header-profile-dropdown-account-item">
-                    <span class="header-profile-dropdown-account-item-title">اعتبار</span>
-                    <span class="header-profile-dropdown-account-item-amount">
-                      <span class="header-profile-dropdown-account-item-amount-number">7,500,000</span>
-                      تومان
-                    </span>
-                  </span>
-                </span>
-              </a>
-            </li>
-            <li>
-              <a href="/auth/login" class="dropdown--btn-primary">وارد شوید</a>
-            </li>
-            <li>
-              <span>کاربر جدید هستید؟</span>
-              <a href="#" class="border-bottom-dt">ثبت نام</a>
-            </li>
-            <hr>
-            <li>
-              <a href="/profile">
-                پروفایل
-              </a>
-            </li>
-            <li>
-              <a href="/profile/orders">
-                پیگیری سفارش
-              </a>
-            </li>
-          </ul>
-        </div>
+                </a>
+              </li>
+              @if (User.Identity.IsAuthenticated)
+              {
+                <li>
+                  <a asp-page="/auth/logout" class="dropdown--btn-primary">خروج از حساب</a>
+                </li>
+              }
+              else
+              {
+                <li>
+                  <a asp-page="/auth/login" class="dropdown--btn-primary">ورود به حساب</a>
+                </li>
+              }
+            </ul>
+          </div>
+        }
+        else
+        {
+          <div class="user-item account ml-13px">
+              <a asp-page="/auth/login">ورود به حساب</a>
+          </div>
+        }
       </div>
     </div>
     <nav class="nav-wrapper">
       <ul>
         <li class="category-list">
-          <a href="#"><i class="fal fa-bars"></i>دسته بندی کالاها</a>
+          <a href="javascript:void(0)"><i class="fal fa-bars"></i>دسته بندی کالاها</a>
           <ul>
             @foreach (var category in categories.Data)
             {

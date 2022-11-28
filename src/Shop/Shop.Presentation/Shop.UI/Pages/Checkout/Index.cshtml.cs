@@ -1,6 +1,5 @@
 using Common.Api.Utility;
 using Microsoft.AspNetCore.Mvc;
-using Shop.API.ViewModels.Orders;
 using Shop.API.ViewModels.Transactions;
 using Shop.Query.Orders._DTOs;
 using Shop.Query.Shippings._DTOs;

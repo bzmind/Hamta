@@ -4,7 +4,6 @@ using Common.Api.Utility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Application.Orders.AddItem;
-using Shop.Application.Orders.Checkout;
 using Shop.Application.Orders.RemoveItem;
 using Shop.Application.Orders.SetStatus;
 using Shop.Domain.RoleAggregate;
@@ -13,7 +12,6 @@ using Shop.Query.Orders._DTOs;
 using System.Net;
 using AutoMapper;
 using Shop.API.ViewModels.Orders;
-using Shop.Application.Orders.Finalize;
 using Shop.Domain.OrderAggregate;
 
 namespace Shop.API.Controllers;

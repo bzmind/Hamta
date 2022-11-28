@@ -112,7 +112,7 @@ public class IndexModel : BaseRazorPage
 
     public async Task<IActionResult> OnGetShowAvatarsPage()
     {
-        var avatars = await _avatarService.GetAll();
+        var avatars = await GetData(async () => await _avatarService.GetAll());
         return await AjaxHtmlSuccessResultAsync("_AvatarsModal", avatars);
     }
 

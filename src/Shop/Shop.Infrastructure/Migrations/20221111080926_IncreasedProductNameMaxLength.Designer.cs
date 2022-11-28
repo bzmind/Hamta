@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Shop.Infrastructure.Persistence.EF;
 
@@ -11,9 +12,10 @@ using Shop.Infrastructure.Persistence.EF;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    partial class ShopContextModelSnapshot : ModelSnapshot
+    [Migration("20221111080926_IncreasedProductNameMaxLength")]
+    partial class IncreasedProductNameMaxLength
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -468,9 +470,6 @@ namespace Shop.Infrastructure.Migrations
 
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2(0)");
-
-                            b1.Property<bool>("IsFilterable")
-                                .HasColumnType("bit");
 
                             b1.Property<bool>("IsImportant")
                                 .HasColumnType("bit");

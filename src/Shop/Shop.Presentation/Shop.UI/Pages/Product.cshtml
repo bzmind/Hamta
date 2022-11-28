@@ -75,25 +75,28 @@
             }
           </div>
         </div>
-        <div class="swiper-container gallery-slider-thumbs">
-          <div class="swiper-wrapper">
-            <div class="swiper-slide">
-              <img src="@ServerPaths.GetProductMainImagePath(Model.Product.MainImage)"
+        @if (Model.Product.GalleryImages.Any())
+        {
+          <div class="swiper-container gallery-slider-thumbs">
+            <div class="swiper-wrapper">
+              <div class="swiper-slide">
+                <img src="@ServerPaths.GetProductMainImagePath(Model.Product.MainImage)"
                    data-zoom-image="@ServerPaths.GetProductMainImagePath(Model.Product.MainImage)"
                    alt="@Model.Product.Name">
-            </div>
-            @foreach (var galleryImage in Model.Product.GalleryImages.OrderBy(g => g.Sequence))
-            {
-              <div class="swiper-slide">
-                <img src="@ServerPaths.GetProductGalleryImagePath(galleryImage.Name)"
+              </div>
+              @foreach (var galleryImage in Model.Product.GalleryImages.OrderBy(g => g.Sequence))
+              {
+                <div class="swiper-slide">
+                  <img src="@ServerPaths.GetProductGalleryImagePath(galleryImage.Name)"
                    data-zoom-image="@ServerPaths.GetProductGalleryImagePath(galleryImage.Name)"
                    alt="@Model.Product.Name">
-              </div>
-            }
+                </div>
+              }
+            </div>
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
           </div>
-          <div class="swiper-button-next"></div>
-          <div class="swiper-button-prev"></div>
-        </div>
+        }
         <ul class="product--actions">
           <li>
             <a href="javascript:void(0)" class="is-action add-to-favorite"
@@ -167,25 +170,28 @@
               <span class="mb-5px">فروشنده: <b>@inventory.ShopName</b></span>
             </div>
             <hr />
-            <div class="d-flex ai-center jc-end">
-              <div class="product-price">
-                @if (inventory.IsDiscounted)
-                {
-                  <div class="product-price-info">
-                    <div class="product-price-off d-flex ai-center pt-1px pr-15px">
-                      %@inventory.DiscountPercentage
+            @if (inventory.IsAvailable)
+            {
+              <div class="d-flex ai-center jc-end">
+                <div class="product-price">
+                  @if (inventory.IsDiscounted)
+                  {
+                    <div class="product-price-info">
+                      <div class="product-price-off d-flex ai-center pt-1px pr-15px">
+                        %@inventory.DiscountPercentage
+                      </div>
+                      <div class="product-price-prev">
+                        @inventory.Price.ToString("#,0")
+                      </div>
                     </div>
-                    <div class="product-price-prev">
-                      @inventory.Price.ToString("#,0")
-                    </div>
+                  }
+                  <div class="product-price-real">
+                    <div class="product-price-raw">@inventory.TotalDiscountedPrice.ToString("#,0") </div>
+                    تومان
                   </div>
-                }
-                <div class="product-price-real">
-                  <div class="product-price-raw">@inventory.TotalDiscountedPrice.ToString("#,0") </div>
-                  تومان
                 </div>
               </div>
-            </div>
+            }
             <div class="d-flex ai-center">
               @if (inventory.IsAvailable)
               {
@@ -280,17 +286,20 @@
               <i class="bx bx-store ml-2"></i>
               @inventory.ShopName
             </p>
-            <div class="seller-item add-to-cart d-flex ai-center">
-              <div class="product-price-info ml-10px">
-                <div class="product-price-off d-flex ai-center pt-1px pr-15px">
-                  %@inventory.DiscountPercentage
+            <div class="seller-item add-to-cart d-flex ai-center jc-end">
+              @if (inventory.IsDiscounted)
+              {
+                <div class="product-price-info ml-10px">
+                  <div class="product-price-off d-flex ai-center pt-1px pr-15px">
+                    %@inventory.DiscountPercentage
+                  </div>
+                  <div class="product-price-prev">
+                    @inventory.Price.ToString("#,0")
+                  </div>
                 </div>
-                <div class="product-price-prev">
-                  @inventory.Price.ToString("#,0")
-                </div>
-              </div>
+              }
               <b class="text-primary ml-4px">@inventory.TotalDiscountedPrice.ToString("#,0")</b> <small>تومان</small>
-              <a class="btn btn-primary mr-3 w-35">
+              <a class="btn btn-primary mr-3 w-190px">
                 <i class="fa fa-shopping-cart"></i>
                 افزودن به سبد خرید
               </a>

@@ -1,9 +1,10 @@
 ﻿@page
+@using Common.Domain.Utility
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Shop.Query.Products._DTOs
 @model Shop.UI.Pages.SearchModel
 @{
-  var pageIdName = "FilterParams.PageId";
+  const string pageIdName = "FilterParams.PageId";
 }
 
 <div class="row mb-5">
@@ -24,7 +25,7 @@
             {
               var isOpen = Model.Products.FilterParams.Attributes?.Any(a => attr.Values.Contains(a));
               <details @(isOpen is true ? "open" : null)>
-                <summary class="fs-16px mb-10px">@attr.Title</summary>
+                <summary class="fs-16px mb-15px">@attr.Title</summary>
                 @foreach (var value in attr.Values)
                 {
                   var isChecked = false;
@@ -36,7 +37,7 @@
                   <label class="container-checkbox fs-14px">
                     @value
                     <input type="checkbox" checked="@(isChecked ? "checked" : null)"
-                     onclick="addUrlParam('@("FilterParams.Attributes")', '@value')">
+                     onclick="addUrlParam('@("FilterParams.Attributes")', '@value.ReplaceFarsiDigits()')">
                     <span class="checkmark"></span>
                   </label>
                 }
@@ -154,49 +155,49 @@
         }
       </div>
     </div>
-    <div class="listing-items row">
-      @if (Model.Products.Data.Any())
-      {
+    @if (Model.Products.Data.Any())
+    {
+      <div class="listing-items row">
         @foreach (var product in Model.Products.Data)
         {
           <div class="col-lg-3 col-md-4 col-sm-6 px-0">
             <partial name="Shared/Product/_Card" model="product" />
           </div>
         }
-      }
-      else
-      {
-        <div class="alert alert-warning w-100 ta-center">محصولی یافت نشد.</div>
-      }
-      <div class="col-12 px-0">
-        <div class="pagination">
-          @if (Model.Products.CurrentPage > 1)
-          {
-            <a href="javascript:void(0)" onclick="setUrlParam('@pageIdName', @(Model.Products.CurrentPage - 1))"
+        <div class="col-12 px-0">
+          <div class="pagination">
+            @if (Model.Products.CurrentPage > 1)
+            {
+              <a href="javascript:void(0)" onclick="setUrlParam('@pageIdName', @(Model.Products.CurrentPage - 1))"
              class="prev">
-              <i class="far fa-arrow-from-left"></i>
-            </a>
-          }
-          @for (var i = Model.Products.StartPage; i <= Model.Products.EndPage; i++)
-          {
-            @if (i == Model.Products.CurrentPage)
-            {
-              <a class="current">@i</a>
+                <i class="far fa-arrow-from-left"></i>
+              </a>
             }
-            else
+            @for (var i = Model.Products.StartPage; i <= Model.Products.EndPage; i++)
             {
-              <a href="javascript:void(0)" onclick="setUrlParam('@pageIdName', @i)">@i</a>
+              @if (i == Model.Products.CurrentPage)
+              {
+                <a class="current">@i</a>
+              }
+              else
+              {
+                <a href="javascript:void(0)" onclick="setUrlParam('@pageIdName', @i)">@i</a>
+              }
             }
-          }
-          @if (Model.Products.CurrentPage < Model.Products.PageCount)
-          {
-            <a href="javascript:void(0)" onclick="setUrlParam('@pageIdName', @(Model.Products.CurrentPage + 1))"
+            @if (Model.Products.CurrentPage < Model.Products.PageCount)
+            {
+              <a href="javascript:void(0)" onclick="setUrlParam('@pageIdName', @(Model.Products.CurrentPage + 1))"
              class="next">
-              <i class="far fa-arrow-to-left"></i>
-            </a>
-          }
+                <i class="far fa-arrow-to-left"></i>
+              </a>
+            }
+          </div>
         </div>
       </div>
-    </div>
+    }
+    else
+    {
+      <div class="alert alert-warning w-100 ta-center">محصولی یافت نشد.</div>
+    }
   </div>
 </div>

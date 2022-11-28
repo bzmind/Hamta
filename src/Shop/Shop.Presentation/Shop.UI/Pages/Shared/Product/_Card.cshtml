@@ -2,7 +2,7 @@
 @model Shop.Query.Products._DTOs.ProductForShopDto
 @{
   var link = $"/product/{Model.Slug}";
-  var inventoryIsNullOrOutOfStock = Model.InventoryId == 0 || Model.InventoryQuantity == 0;
+  var inventoryIsNullOrOutOfStock = Model.InventoryQuantity == 0;
 }
 
 <div class="swiper-slide">
@@ -12,7 +12,11 @@
         <img src="@ServerPaths.GetProductMainImagePath(Model.MainImage)" alt="@Model.Name">
       </a>
       <div class="product-card-actions">
-        <button class="add-to-wishlist"><i class="fas fa-heart"></i></button>
+        <button class="add-to-wishlist"
+                onclick="sendAjaxPostWithRouteData('@(Url.Page("Product", "AddToFavorites",
+                                                      new { slug = Model.Slug, productId = Model.Id }))')">
+          <i class="fas fa-heart"></i>
+        </button>
       </div>
     </div>
     <div class="product-card-middle">
@@ -32,14 +36,31 @@
       }
       else
       {
-        <div class="product-price product-price-clone">@Model.TotalDiscountedPrice.ToString("#,0") تومان</div>
+        <div class="product-price product-price-clone">
+          @Model.TotalDiscountedPrice.ToString("#,0") تومان
+        </div>
       }
     </div>
     @if (!inventoryIsNullOrOutOfStock)
     {
       <div class="product-card-bottom">
         <div class="product-price">
-          @Model.TotalDiscountedPrice.ToString("#,0") تومان
+          <div class="d-flex ai-center jc-between">
+            @if (Model.DiscountPercentage > 0)
+            {
+              <div class="product-price-info jc-start w-unset">
+                <div class="product-price-off d-flex ai-center p-0 pt-2px pr-6px">
+                  %@Model.DiscountPercentage
+                </div>
+                <div class="product-price-prev">
+                  @Model.Price.ToString("#,0")
+                </div>
+              </div>
+            }
+            <span>
+              @Model.TotalDiscountedPrice.ToString("#,0") تومان
+            </span>
+          </div>
         </div>
         <button class="btn-add-to-cart"
               onclick="sendAjaxPostWithRouteData('@Url.Page("Cart", "AddItem",

@@ -1,6 +1,4 @@
-﻿using Common.Application.Utility.Validation;
-using Microsoft.AspNetCore.Mvc;
-using Shop.Domain.OrderAggregate;
+﻿using Shop.Domain.OrderAggregate;
 using Shop.Query.Orders._DTOs;
 using Shop.UI.Services.Orders;
 using Shop.UI.Setup.RazorUtility;
