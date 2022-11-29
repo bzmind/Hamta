@@ -51,14 +51,14 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
                 JOIN category_children cc
                     ON cc.Id = c.ParentId
             )
-            SELECT TOP(1) MIN(si.Price - si.Price * si.DiscountPercentage / 100) AS HighestPriceInCategory
+            SELECT TOP(1) MAX(si.Price - si.Price * si.DiscountPercentage / 100) AS HighestPriceInCategory
             FROM {_dapperContext.Products} p
             JOIN category_children cc
             	ON p.CategoryId = cc.Id
             JOIN {_dapperContext.SellerInventories} si
             	ON si.ProductId = p.Id
             GROUP BY p.Id
-            ORDER BY MAX(si.Price) DESC";
+            ORDER BY MAX(si.Price - si.Price * si.DiscountPercentage / 100) DESC";
 
         var highestPrice = await highestPriceConnection.QueryFirstOrDefaultAsync<int>(highestPriceSql);
 
@@ -76,8 +76,8 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
         var joinWithCategories = "";
         var joinWithCategorySpecifications = "";
         var categoryWhereCondition = "";
-        var totalPriceWithP = "p.Price - p.Price * p.DiscountPercentage / 100";
-        var totalPriceWithI = "i.Price - i.Price * DiscountPercentage / 100";
+        const string discountedPriceWithP = "p.Price - p.Price * p.DiscountPercentage / 100";
+        const string discountedPriceWithI = "i.Price - i.Price * DiscountPercentage / 100";
         var totalPriceConditionWithI = "";
         var totalPriceConditionWithP = "";
 
@@ -112,14 +112,14 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
 
         if (@params.MinPrice != null)
         {
-            totalPriceConditionWithP += $" AND ({totalPriceWithP} >= {@params.MinPrice})";
-            totalPriceConditionWithI += $" AND ({totalPriceWithI} >= {@params.MinPrice})";
+            totalPriceConditionWithP += $" AND ({discountedPriceWithP} >= {@params.MinPrice})";
+            totalPriceConditionWithI += $" AND ({discountedPriceWithI} >= {@params.MinPrice})";
         }
 
         if (@params.MaxPrice != null)
         {
-            totalPriceConditionWithP += $" AND ({totalPriceWithP} <= {@params.MaxPrice})";
-            totalPriceConditionWithI += $" AND ({totalPriceWithI} <= {@params.MaxPrice})";
+            totalPriceConditionWithP += $" AND ({discountedPriceWithP} <= {@params.MaxPrice})";
+            totalPriceConditionWithI += $" AND ({discountedPriceWithI} <= {@params.MaxPrice})";
         }
 
         if (@params.MinDiscountPercentage != null)
@@ -186,7 +186,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             		ON p.Id = c.ProductId
             	LEFT JOIN {_dapperContext.SellerInventories} i
             		ON p.Id = i.ProductId
-            	WHERE i.Id IS NOT NULL
+            	WHERE i.Id IS NOT NULL {conditions} {totalPriceConditionWithI}
             	{orderBy}
             	OFFSET @skip ROWS
             	FETCH NEXT @take ROWS ONLY
@@ -208,7 +208,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
             ) AS q
             	ON p.Id = q.ProductId
             {joinWithCategorySpecifications}
-            WHERE RN = 1 {conditions}{totalPriceConditionWithP}
+            WHERE RN = 1 {conditions} {totalPriceConditionWithP}
             {orderBy}";
 
         var result = await connection.QueryAsync<ProductForShopDto>(sql, new
@@ -262,7 +262,7 @@ public class GetProductForShopByFilterQueryHandler : IBaseQueryHandler<GetProduc
                     	ON p.Id = c.ProductId
                     LEFT JOIN {_dapperContext.SellerInventories} i
                     	ON p.Id = i.ProductId
-                    WHERE i.Id IS NOT NULL
+                    WHERE i.Id IS NOT NULL {conditions}
                 ) AS p
             	{joinWithCategories}
             	LEFT JOIN {_dapperContext.Comments} c

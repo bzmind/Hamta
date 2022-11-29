@@ -45,14 +45,14 @@
     {
       <div class="product-card-bottom">
         <div class="product-price">
-          <div class="d-flex ai-center jc-between">
+          <div class="d-flex ai-center @(Model.DiscountPercentage > 0 ? "jc-between" : "jc-end")">
             @if (Model.DiscountPercentage > 0)
             {
               <div class="product-price-info jc-start w-unset">
-                <div class="product-price-off d-flex ai-center p-0 pt-2px pr-6px">
+                <div class="product-price-off br-0px no-before pt-0 pb-0 pl-4px pr-4px fs-13px br-7px ml-5px">
                   %@Model.DiscountPercentage
                 </div>
-                <div class="product-price-prev">
+                <div class="product-price-prev fs-13px">
                   @Model.Price.ToString("#,0")
                 </div>
               </div>

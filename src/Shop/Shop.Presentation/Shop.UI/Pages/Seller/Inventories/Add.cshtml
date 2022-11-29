@@ -13,7 +13,7 @@
   ViewData["Title"] = "افزودن انبار";
   ViewData["Selected"] = "inventories";
   var oldCategory = Request.Query["FilterFilterParams.CategoryId"].ToString() ?? "0";
-  var highestProductPrice = Model.FilterResult.HighestPriceInCategory;
+  var highestProductPrice = Model.Products.HighestPriceInCategory;
   var categories = await CategoryService.GetAll();
   var colors = await ColorService.GetByFilter(new ColorFilterParams { Take = 0 });
 
@@ -187,92 +187,94 @@
   </div>
 </form>
 <form method="post" enctype="multipart/form-data">
+  <partial name="Admin/Shared/_Pagination" model="Model.Products" />
   <section>
     <div class="table-responsive card card-content" data-val-id="productVal">
       <table class="table table-striped choose-product mb-0">
         <thead>
-          <tr>
-            <th>انتخاب</th>
-            <th>عکس</th>
-            <th>نام</th>
-            <th>قیمت</th>
-            <th>سایر اطلاعات</th>
-          </tr>
+        <tr>
+          <th>انتخاب</th>
+          <th>عکس</th>
+          <th>نام</th>
+          <th>قیمت</th>
+          <th>سایر اطلاعات</th>
+        </tr>
         </thead>
         <tbody>
-          @foreach (var product in Model.FilterResult.Data)
-          {
-            var guid = Guid.NewGuid();
-            <tr>
-              <td class="font-weight-bolder">
-                <label class="radio mb-0 mt-5px">
-                  <input type="radio" class="radio-primary" id="@guid"
+        @foreach (var product in Model.Products.Data)
+        {
+          var guid = Guid.NewGuid();
+          <tr>
+            <td class="font-weight-bolder">
+              <label class="radio mb-0 mt-5px">
+                <input type="radio" class="radio-primary" id="@guid"
                        asp-for="@Model.AddInventoryViewModel.ProductId" value="@product.Id" />
-                  <label class="radio-circle align-items-center ml-5px" for="@guid"></label>
-                </label>
-              </td>
-              <td class="item-image-container">
-                <img alt="product image" width="100" height="100" class="item-image"
+                <label class="radio-circle align-items-center ml-5px" for="@guid"></label>
+              </label>
+            </td>
+            <td class="item-image-container">
+              <img alt="product image" width="100" height="100" class="item-image"
                    src="@ServerPaths.GetProductMainImagePath(product.MainImage)" />
+            </td>
+            <td class="font-weight-bolder">
+              <label class="grayed">نام:</label>
+              <span>@product.Name</span>
+              <br />
+              <label class="grayed">نام انگلیسی:</label>
+              <span>@product.EnglishName</span>
+            </td>
+            @if (product.InventoryId != 0)
+            {
+              <td class="font-weight-bolder">
+                @product.LowestInventoryPrice.ToString("#,0") <small class="grayed">تومان</small>
+                @if (product.LowestInventoryPrice != product.HighestInventoryPrice)
+                {
+                  <br />
+                  <span>تا</span>
+                  <br />
+                  @product.HighestInventoryPrice.ToString("#,0") <small class="grayed">تومان</small>
+                }
               </td>
               <td class="font-weight-bolder">
-                <label class="grayed">نام:</label>
-                <span>@product.Name</span>
+                <label class="grayed">امتیاز:</label>
+                <span>@(product.AverageScore != 0 ? product.AverageScore.ToString("#.#") : 0)</span>
                 <br />
-                <label class="grayed">نام انگلیسی:</label>
-                <span>@product.EnglishName</span>
-              </td>
-              @if (product.InventoryId != 0)
-              {
-                <td class="font-weight-bolder">
-                  @product.LowestInventoryPrice.ToString("#,0") <small class="grayed">تومان</small>
-                  @if (product.LowestInventoryPrice != product.HighestInventoryPrice)
-                  {
-                    <br />
-                    <span>تا</span>
-                    <br />
-                    @product.HighestInventoryPrice.ToString("#,0") <small class="grayed">تومان</small>
-                  }
-                </td>
-                <td class="font-weight-bolder">
-                  <label class="grayed">امتیاز:</label>
-                  <span>@(product.AverageScore != 0 ? product.AverageScore.ToString("#.#") : 0)</span>
-                  <br />
-                  <label class="grayed">موجودی:</label>
-                  <span>@product.InventoryQuantity <small class="grayed">عدد</small></span>
-                  <br />
-                  @if (product.Colors.Any())
-                  {
-                    <label class="grayed">رنگ ها:</label>
-                    <div>
-                      @foreach (var color in product.Colors)
+                <label class="grayed">موجودی:</label>
+                <span>@product.InventoryQuantity <small class="grayed">عدد</small></span>
+                <br />
+                @if (product.Colors.Any())
+                {
+                  <label class="grayed">رنگ ها:</label>
+                  <div>
+                    @foreach (var color in product.Colors)
+                    {
+                      if (color != null)
                       {
-                        if (color != null)
-                        {
-                          <span class="item-color" style="background-color: @color.Code"></span>
-                        }
+                        <span class="item-color" style="background-color: @color.Code"></span>
                       }
-                    </div>
-                  }
-                </td>
-              }
-              else
-              {
-                <td colspan="2" class="text-center p-2">فهرست موجودی برای این محصول وجود ندارد</td>
-              }
-            </tr>
-          }
-          @if (!Model.FilterResult.Data.Any())
-          {
-            <tr>
-              <td colspan="5" class="text-center p-2">موردی برای نمایش وجود ندارد</td>
-            </tr>
-          }
+                    }
+                  </div>
+                }
+              </td>
+            }
+            else
+            {
+              <td colspan="2" class="text-center p-2">فهرست موجودی برای این محصول وجود ندارد</td>
+            }
+          </tr>
+        }
+        @if (!Model.Products.Data.Any())
+        {
+          <tr>
+            <td colspan="5" class="text-center p-2">موردی برای نمایش وجود ندارد</td>
+          </tr>
+        }
         </tbody>
       </table>
       <span class="m-1" asp-validation-for="@Model.AddInventoryViewModel.ProductId" data-val-for="productVal"></span>
     </div>
   </section>
+  <partial name="Admin/Shared/_Pagination" model="Model.Products" />
   <div class="card">
     <div class="card-body">
       <div class="row">
@@ -350,7 +352,7 @@
 @section Scripts
   {
   <script>
-    setupRangeSlider(0, @highestProductPrice, @(Model.FilterResult.FilterParams.MinPrice ?? 0),
-    @(Model.FilterResult.FilterParams.MaxPrice ?? highestProductPrice))
+    setupRangeSlider(0, @highestProductPrice, @(Model.Products.FilterParams.MinPrice ?? 0),
+    @(Model.Products.FilterParams.MaxPrice ?? highestProductPrice))
   </script>
 }

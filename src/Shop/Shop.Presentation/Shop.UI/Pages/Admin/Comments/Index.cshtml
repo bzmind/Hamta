@@ -38,7 +38,9 @@
     </div>
   </div>
 </form>
+<partial name="Admin/Shared/_Pagination" model="Model.Comments" />
 <section>
+  <span class="entity-count">@Model.Comments.EntityCount مورد</span>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0" width="100%">
       <thead>

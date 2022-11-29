@@ -10,6 +10,9 @@
 <section>
   <open-modal url="@Url.Page("Index", "ShowAddPage")" title="افزودن اسلایدر"
               size="modal-md" class="btn btn-success mb-1">افزودن اسلایدر</open-modal>
+  <div>
+    <span class="entity-count">@Model.Sliders.Count مورد</span>
+  </div>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
@@ -26,7 +29,7 @@
         <tr>
           <td>
             <img class="item-image border-0" width="150" height="100" alt="slider image" style="object-fit: cover;"
-                 src="@ServerPaths.GetSliderImagePath(slider.Image)" />
+                 src="@ServerPaths.GetSliderImagePath(slider.Image)"/>
           </td>
           <td>@slider.Title</td>
           <td>@slider.Link</td>
@@ -53,4 +56,3 @@
     </table>
   </div>
 </section>
-<partial name="Admin/Shared/_Pagination" model="Model.Sliders" />

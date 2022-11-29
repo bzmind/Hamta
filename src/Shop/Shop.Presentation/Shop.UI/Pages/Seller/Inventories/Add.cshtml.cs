@@ -24,13 +24,13 @@ public class AddModel : BaseRazorPage
     [BindProperty(SupportsGet = true)]
     public ProductFilterParams FilterParams { get; set; }
 
-    public ProductFilterResult FilterResult { get; set; }
+    public ProductFilterResult Products { get; set; }
 
     public AddSellerInventoryViewModel AddInventoryViewModel { get; set; }
 
     public async Task OnGet()
     {
-        FilterResult = await GetData(async () => await _productService.GetByFilter(FilterParams));
+        Products = await GetData(async () => await _productService.GetByFilter(FilterParams));
     }
 
     public async Task<IActionResult> OnPost()

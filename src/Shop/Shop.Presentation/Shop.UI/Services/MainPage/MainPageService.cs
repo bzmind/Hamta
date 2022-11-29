@@ -28,7 +28,7 @@ public class MainPageService : IMainPageService
         {
             PageId = 1,
             Take = 5,
-            MinDiscountPercentage = 15
+            MinDiscountPercentage = 5
         });
         var mostSoldProducts = await _productService.GetForShopByFilter(new ProductForShopFilterParams
         {

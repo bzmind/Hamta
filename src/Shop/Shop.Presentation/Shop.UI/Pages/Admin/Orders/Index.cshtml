@@ -50,68 +50,70 @@
     </div>
   </div>
 </form>
+<partial name="Admin/Shared/_Pagination" model="Model.Orders" />
 <section>
+  <span class="entity-count">@Model?.Orders?.EntityCount مورد</span>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
-        <tr>
-          <th>شناسه سفارش</th>
-          <th>استان - شهر</th>
-          <th>تعداد محصولات</th>
-          <th>وضعیت</th>
-          <th>مبلغ</th>
-          <th>عملیات</th>
-        </tr>
+      <tr>
+        <th>شناسه سفارش</th>
+        <th>استان - شهر</th>
+        <th>تعداد محصولات</th>
+        <th>وضعیت</th>
+        <th>مبلغ</th>
+        <th>عملیات</th>
+      </tr>
       </thead>
       <tbody>
-        @foreach (var order in Model.Orders.Data)
-        {
-          <tr>
-            <td>@order.Id</td>
-            <td>
-              @if (order.Address != null)
+      @foreach (var order in Model.Orders.Data)
+      {
+        <tr>
+          <td>@order.Id</td>
+          <td>
+            @if (order.Address != null)
+            {
+              <span>@order.Address.Province، @order.Address.City</span>
+            }
+          </td>
+          <td>@order.Items.Sum(i => i.Count)</td>
+          <td>
+            @switch (order.Status)
+            {
+              case Order.OrderStatus.Canceled:
               {
-                <span>@order.Address.Province، @order.Address.City</span>
+                <span>لغو شده</span>
+                break;
               }
-            </td>
-            <td>@order.Items.Sum(i => i.Count)</td>
-            <td>
-              @switch (order.Status)
+              case Order.OrderStatus.Pending:
               {
-                case Order.OrderStatus.Canceled:
-                {
-                  <span>لغو شده</span>
-                  break;
-                }
-                case Order.OrderStatus.Pending:
-                {
-                  <span>در انتظار پرداخت</span>
-                  break;
-                }
-                case Order.OrderStatus.Preparing:
-                {
-                  <span>در حال پردازش</span>
-                  break;
-                }
-                case Order.OrderStatus.Sending:
-                {
-                  <span>در حال ارسال</span>
-                  break;
-                }
-                case Order.OrderStatus.Delivered:
-                {
-                  <span>ارسال شده</span>
-                  break;
-                }
+                <span>در انتظار پرداخت</span>
+                break;
               }
-            </td>
-            <td>@order.TotalOrderDiscountedPrice.ToString("#,0") تومان</td>
-            <td>
-              <a class="btn-sm badge-pill bg-rgba-primary text-primary"
+              case Order.OrderStatus.Preparing:
+              {
+                <span>در حال پردازش</span>
+                break;
+              }
+              case Order.OrderStatus.Sending:
+              {
+                <span>در حال ارسال</span>
+                break;
+              }
+              case Order.OrderStatus.Delivered:
+              {
+                <span>ارسال شده</span>
+                break;
+              }
+            }
+          </td>
+          <td>@order.TotalOrderDiscountedPrice.ToString("#,0") تومان</td>
+          <td>
+            <a class="btn-sm badge-pill bg-rgba-primary text-primary"
                asp-page="Show" asp-route-orderId="@order.Id">جزئیات</a>
-            </td>
-          </tr>
-        }
+          </td>
+        </tr>
+      }
       </tbody>
     </table>
   </div>

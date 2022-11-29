@@ -76,88 +76,92 @@
     </div>
   </div>
 </form>
+<partial name="Admin/Shared/_Pagination" model="Model.Inventories" />
 <section>
+  <span class="entity-count">@Model?.Inventories?.EntityCount مورد</span>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
-      <tr>
-        <th>عکس</th>
-        <th>اطلاعات</th>
-        <th>قیمت</th>
-        <th>وضعیت موجودی</th>
-        <th>موجودی</th>
-        <th>تخفیف</th>
-      </tr>
+        <tr>
+          <th>عکس</th>
+          <th>اطلاعات</th>
+          <th>قیمت</th>
+          <th>وضعیت موجودی</th>
+          <th>موجودی</th>
+          <th>تخفیف</th>
+        </tr>
       </thead>
       <tbody>
-      @if (Model.Inventories != null && Model.Inventories.Data.Any())
-      {
-        @foreach (var inventory in Model.Inventories.Data)
+        @if (Model.Inventories != null && Model.Inventories.Data.Any())
+        {
+          @foreach (var inventory in Model.Inventories.Data)
+          {
+            <tr>
+              <td class="item-image-container">
+                <img alt="product image" width="100" height="100" class="item-image"
+                 src="@ServerPaths.GetProductMainImagePath(inventory.ProductMainImage)" />
+              </td>
+              <td class="font-weight-bolder w-60">
+                <label class="grayed">نام:</label>
+                <span>@inventory.ProductName</span>
+                <br />
+                <label class="grayed">نام انگلیسی:</label>
+                <span>@inventory.ProductEnglishName</span>
+                <br />
+                <div class="d-inline-flex ai-center">
+                  <label class="grayed">رنگ:</label>
+                  <span class="mr-4px pb-5px d-inline-flex ai-center">
+                    <span class="item-color" style="background-color: @inventory.ColorCode;"></span>
+                    <span class="mr-4px">@inventory.ColorName</span>
+                  </span>
+                </div>
+              </td>
+              <td class="font-weight-bolder w-25">
+                <label class="grayed">قیمت@(inventory.IsDiscounted ? " اصلی" : ""):</label>
+                <bold>@inventory.Price.ToString("#,0") <small class="grayed">تومان</small></bold>
+                @if (inventory.IsDiscounted)
+                {
+                  <br />
+                  <label class="grayed">مقدار تخفیف:</label>
+                  <bold>@inventory.DiscountAmount.ToString("#,0") <small class="grayed">تومان</small></bold>
+                  <br />
+                  <label class="grayed">قیمت نهایی:</label>
+                  <bold>@inventory.TotalDiscountedPrice.ToString("#,0") <small class="grayed">تومان</small></bold>
+                }
+              </td>
+              <td>
+                @if (inventory.IsAvailable)
+                {
+                  <span>✅</span>
+                }
+                else
+                {
+                  <span>❌</span>
+                }
+              </td>
+              <td class="font-weight-bolder">@inventory.Quantity <small class="grayed">عدد</small></td>
+              <td class="font-weight-bolder">@inventory.DiscountPercentage%</td>
+              <td>
+                <div class="d-flex fd-col ai-center">
+                  <a asp-page="Edit" asp-route-inventoryId="@inventory.Id"
+                 class="btn-sm badge-pill bg-rgba-primary text-primary">
+                    ویرایش
+                  </a>
+                  <delete url="@Url.Page("Index", "RemoveInventory", new { inventoryId = inventory.Id })"
+                      class="btn-sm badge-pill bg-rgba-danger text-danger border-0 mt-3px">
+                    حذف
+                  </delete>
+                </div>
+              </td>
+            </tr>
+          }
+        }
+        else
         {
           <tr>
-            <td class="item-image-container">
-              <img alt="product image" width="100" height="100" class="item-image"
-                   src="@ServerPaths.GetProductMainImagePath(inventory.ProductMainImage)" />
-            </td>
-            <td class="font-weight-bolder w-60">
-              <label class="grayed">نام:</label>
-              <span>@inventory.ProductName</span>
-              <br />
-              <label class="grayed">نام انگلیسی:</label>
-              <span>@inventory.ProductEnglishName</span>
-              <br />
-              <label class="grayed">رنگ:</label>
-              <span>@inventory.ColorName</span>
-              <div>
-                <span class="item-color" style="background-color: @inventory.ColorCode;"></span>
-              </div>
-            </td>
-            <td class="font-weight-bolder w-25">
-              <label class="grayed">قیمت@(inventory.IsDiscounted ? " اصلی" : ""):</label>
-              <bold>@inventory.Price.ToString("#,0") <small class="grayed">تومان</small></bold>
-              @if (inventory.IsDiscounted)
-              {
-                <br />
-                <label class="grayed">مقدار تخفیف:</label>
-                <bold>@inventory.DiscountAmount.ToString("#,0") <small class="grayed">تومان</small></bold>
-                <br />
-                <label class="grayed">قیمت نهایی:</label>
-                <bold>@inventory.TotalDiscountedPrice.ToString("#,0") <small class="grayed">تومان</small></bold>
-              }
-            </td>
-            <td>
-              @if (inventory.IsAvailable)
-              {
-                <span>✅</span>
-              }
-              else
-              {
-                <span>❌</span>
-              }
-            </td>
-            <td class="font-weight-bolder">@inventory.Quantity <small class="grayed">عدد</small></td>
-            <td class="font-weight-bolder">@inventory.DiscountPercentage%</td>
-            <td>
-              <div class="d-flex fd-col ai-center">
-                <a asp-page="Edit" asp-route-inventoryId="@inventory.Id"
-                   class="btn-sm badge-pill bg-rgba-primary text-primary">
-                  ویرایش
-                </a>
-                <delete url="@Url.Page("Index", "RemoveInventory", new { inventoryId = inventory.Id })"
-                        class="btn-sm badge-pill bg-rgba-danger text-danger border-0 mt-3px">
-                  حذف
-                </delete>
-              </div>
-            </td>
+            <td colspan="6" class="text-center">موردی برای نمایش وجود ندارد</td>
           </tr>
         }
-      }
-      else
-      {
-        <tr>
-          <td colspan="6" class="text-center">موردی برای نمایش وجود ندارد</td>
-        </tr>
-      }
       </tbody>
     </table>
   </div>

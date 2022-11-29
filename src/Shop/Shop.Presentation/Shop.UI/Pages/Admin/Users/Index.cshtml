@@ -7,9 +7,13 @@
   ViewData["Selected"] = "users";
 }
 
+<partial name="Admin/Shared/_Pagination" model="Model.Users" />
 <section>
   <open-modal url="@Url.Page("Index", "ShowAddPage")" title="افزودن کاربر" size="modal-sm"
               class="btn btn-success mb-1">افزودن کاربر</open-modal>
+  <div>
+    <span class="entity-count">@Model?.Users?.EntityCount مورد</span>
+  </div>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
@@ -29,7 +33,7 @@
         <tr>
           <td>
             <img class="avatar-img" width="50" height="50" alt="avatar"
-                 src="@ServerPaths.GetAvatarPath(user.AvatarName)" />
+                 src="@ServerPaths.GetAvatarPath(user.AvatarName)"/>
           </td>
           <td>@user.FullName</td>
           <td>@user.Email</td>

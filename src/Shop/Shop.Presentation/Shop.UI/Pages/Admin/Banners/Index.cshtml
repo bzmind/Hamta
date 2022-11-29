@@ -10,6 +10,9 @@
 <section>
   <open-modal url="@Url.Page("Index", "ShowAddPage")" title="افزودن بنر" size="modal-md" backdrop="static"
               class="btn btn-success mb-1">افزودن بنر</open-modal>
+  <div>
+    <span class="entity-count">@Model.Banners.Count مورد</span>
+  </div>
   <div class="table-responsive card card-content">
     <table class="table table-striped mb-0">
       <thead>
@@ -53,4 +56,3 @@
     </table>
   </div>
 </section>
-<partial name="Admin/Shared/_Pagination" model="Model.Banners" />
