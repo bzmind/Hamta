@@ -12,4 +12,5 @@ public interface IUserTokenFacade
 
     Task<UserTokenDto?> GetTokenByRefreshTokenHash(string refreshToken);
     Task<UserTokenDto?> GetTokenByJwtTokenHash(string jwtToken);
+    Task<UserTokenDto?> GetTokenById(long tokenId);
 }

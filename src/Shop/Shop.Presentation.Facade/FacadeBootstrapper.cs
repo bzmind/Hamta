@@ -36,5 +36,10 @@ public static class FacadeBootstrapper
         services.AddScoped<IShippingFacade, ShippingFacade>();
         services.AddScoped<IBannerFacade, BannerFacade>();
         services.AddScoped<ISliderFacade, SliderFacade>();
+
+        services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = "localhost:6379";
+        });
     }
 }

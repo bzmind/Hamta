@@ -8,7 +8,6 @@ namespace Shop.UI.Services;
 public abstract class BaseService
 {
     private readonly HttpClient _client;
-    private readonly HttpContext _httpContext;
     private readonly JsonSerializerOptions _jsonOptions;
 
     protected BaseService(HttpClient client, JsonSerializerOptions jsonOptions)

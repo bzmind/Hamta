@@ -50,7 +50,7 @@
             </li>
           </ul>
         </div>
-        @if (User.Identity.IsAuthenticated)
+        @if (User.Identity.IsAuthenticated && currentUser.Data != null)
         {
           <div class="user-item account ml-13px">
             <a href="/profile">
