@@ -11,4 +11,6 @@ public class CacheKeys
     public static string Product(string slug) => $"product-{slug}";
     public static string Categories => "categories";
     public static string MenuCategories => "menu-categories";
+    public static string Banners => "banners";
+    public static string Sliders => "sliders";
 }

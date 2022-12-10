@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
+using Common.Api.Attributes;
 using Common.Application.Utility.Validation;
 using Common.Application.Utility.Validation.CustomAttributes;
 
@@ -18,7 +19,7 @@ public class EditSliderViewModel
     [DisplayName("لینک")]
     [Required(ErrorMessage = ValidationMessages.LinkRequired)]
     [MaxLength(500, ErrorMessage = ValidationMessages.MaxCharactersLength)]
-    [DataType(DataType.Url, ErrorMessage = ValidationMessages.InvalidLink)]
+    [Uri(ErrorMessage = ValidationMessages.InvalidLink)]
     public string Link { get; set; }
 
     [DisplayName("عکس اسلایدر")]

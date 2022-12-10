@@ -180,6 +180,11 @@ function reinitializeScripts()
   setupMoneyInputsFormatting();
   setupValidationErrors();
   reinitializeSelect2();
+  setupCropperJs();
+}
+
+function setupCropperJs()
+{
   if (typeof setupImageCroppers === "function")
   {
     setupImageCroppers();
@@ -301,6 +306,13 @@ function setupInputsChangeListeners()
 
     if (file)
     {
+      if (file.type == "image/gif")
+      {
+        removeImageCroppers();
+        setupCropperJs();
+        imageElement.removeAttr("data-crop");
+      }
+      imageElement.parent().find("i").hide();
       imageElement.attr("src", URL.createObjectURL(file));
       imageElement.show();
       URL.revokeObjectURL(file);

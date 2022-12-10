@@ -1,4 +1,19 @@
-﻿function setupImageCroppers()
+﻿function removeImageCroppers()
+{
+  const images = $("img[data-crop]");
+  images.each((i, image) =>
+  {
+    if (image.cropper != null)
+      image.cropper.destroy();
+    $(image).unbind("load");
+  });
+
+  const formsWithImageCrops = $("form").has("img[data-crop]");
+  formsWithImageCrops.find("button:submit").unbind("click");
+  formsWithImageCrops.find("button:submit").on("click", (e) => $(e.target).parents("form").submit());
+}
+
+function setupImageCroppers()
 {
   const images = $("img[data-crop]");
   images.each((i, image) =>
